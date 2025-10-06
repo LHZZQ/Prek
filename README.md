@@ -49,13 +49,13 @@ This repository focuses on
 ---
 ## Stakeholders
 Individual Client:
-The project owner who will oversee the general direction of the app and receive the final deliverables.
+- The project owner who will oversee the general direction of the app and receive the final deliverables.
 
 End Users:
-The individuals seeking to enhance their mindfulness and general wellbeing by daily reflection and gratitude.
+- The individuals seeking to enhance their mindfulness and general wellbeing by daily reflection and gratitude.
 
 Student Team:
-The group of programmers and designers responsible for designing and developing the application.
+- The group of programmers and designers responsible for designing and developing the application.
 
 ---
 ## User Stories
