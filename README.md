@@ -47,6 +47,17 @@ This repository focuses on
 - **Data Sync** :
 
 ---
+## Stakeholders
+Individual Client:
+The project owner who will oversee the general direction of the app and receive the final deliverables.
+
+End Users:
+The individuals seeking to enhance their mindfulness and general wellbeing by daily reflection and gratitude.
+
+Student Team:
+The group of programmers and designers responsible for designing and developing the application.
+
+---
 ## User Stories
 - As a university student, I want to be able to quickly write or record what I am grateful for between classes in order to reduce stress and prfioritise the positive aspects in my day.
 
