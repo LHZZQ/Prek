@@ -47,6 +47,14 @@ This repository focuses on
 - **Data Sync** :
 
 ---
+## User Stories
+- As a university student, I want to be able to quickly write or record what I am grateful for between classes in order to reduce stress and prfioritise the positive aspects in my day.
+
+- As a busy professional, I want short daily prompts that help me reflect on what went well today, so that I can maintain a healthy work-life balance. 
+
+- As someone trying to improve my mental health, I want to look back at my past gratitude entries, so that I can see how my mindset has improved over time.
+
+---
 ## Project-related links
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
 ---
@@ -59,8 +67,3 @@ This repository focuses on
 | Layan Alaskar  |pk23085@bristol.ac.uk |
 | Ziqian Zhang   |ni24790@bristol.ac.uk |
 
-
-## User Stories
-As a university student, I want to quickly write or record what I am grateful for between classes in order to reduce stress and prfioritise the positive aspects in my day.
-As a busy professional, I want short daily prompts that help me reflect on what went well today, so that I can maintain a healthy work-life balance. 
-As someone trying to improve my mental health, I want to look back at my past gratitude entries, so that I can see how my mindset has improved over time. 
