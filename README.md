@@ -55,6 +55,17 @@ This repository focuses on
 - As someone trying to improve my mental health, I want to look back at my past gratitude entries, so that I can see how my mindset has improved over time.
 
 ---
+## Basic Flow 
+- Open the Prek App
+- Log in or create account
+- View home screen
+- Read prompts such as 'What are you grateful for'
+- Enter response using text or voice input
+- Review, edit or share entry
+- View previous entries with timestamps
+- Save progress
+
+---
 ## Project-related links
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
 ---
