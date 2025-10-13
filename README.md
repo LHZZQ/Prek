@@ -90,7 +90,7 @@ Student Team:
 
 | Members        | Email                |
 |----------------|----------------------|
-| Carol Tan      |PN24594@bristol.ac.uk |
+| Carol Tan      |pn24594@bristol.ac.uk |
 | Daud Ismail    |kk24104@bristol.ac.uk |
 | Layan Alaskar  |pk23085@bristol.ac.uk |
 | Ziqian Zhang   |ni24790@bristol.ac.uk |
