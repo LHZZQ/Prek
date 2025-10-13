@@ -12,7 +12,7 @@
 
 ### Design
 - client has entrusted our team with the creative direction for the web app's design
-- stretch goals are not defined at this stage but may be considered later in the project.
+- stretch goals are not defined at this stage but may be considered later in the project
 - partner mode can involve two or more users
 
 ### Timelines
