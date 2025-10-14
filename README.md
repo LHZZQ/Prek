@@ -5,7 +5,7 @@
 
 This repository focuses on 
 
-### **#Section 1: Gratitude**<br>
+### **Section 1: Gratitude**<br>
 
 ---
 #### **Purpose**: Help users identify and reflect on things they're grateful for
@@ -28,7 +28,7 @@ This repository focuses on
 - Delete entries if needed  
 - Navigate to the next section when ready  
 ---
-### **#Section 5: Intentions/Requests**
+### **Section 5: Intentions/Requests**
 
 #### **Purpose**: Allow users to make requests to "God or the Universe" based on their beliefs
 
