@@ -1,6 +1,10 @@
 name: Continuous Integration - Flutter
 
 on:
+  push:
+    branches:
+      - main
+      - dev
   pull_request:
     branches:
       - main
