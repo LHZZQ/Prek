@@ -1,13 +1,5 @@
-.dart_tool/
+
 .env
-.flutter-plugins-dependencies
-.flutter-plugins-dependencies 2
 .idea/
-_2025_prek.iml
-android/
-build/
-ios/
-linux/
-macos/
-windows/
+
 
