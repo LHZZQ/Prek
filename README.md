@@ -70,9 +70,9 @@
 - to be added
 
 ## Tech Stack  
-- **Frontend** :
-- **Backend**  :
-- **Database** :
+- **Frontend** : Flutter
+- **Backend**  : Supabase
+- **Database** : PostgreSQL
 - **Voice Input** :
 - **Data Sync** :
   
@@ -89,7 +89,7 @@
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
 - [AI document]
 - [License](https://github.com/spe-uob/2025-Prek/blob/a588db8ce4e40b9cb71dcd3317db70c8fcda09c1/LICENSE)
-- [Ethics]
+- [Ethics](https://github.com/spe-uob/2025-Prek/blob/dev/docs/meeting%20minutes/Ethics.md)
   
 ## Team Members 
 
