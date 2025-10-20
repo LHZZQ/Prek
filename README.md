@@ -15,17 +15,32 @@
 - [Team Members](#team-members)
 
 ## Project Description  
-**Prek** is a wellbeing app designed to help users focus on the positive aspects of their lives through structured reflection exercises.   
+**Prek** is a wellbeing application designed to help users cultivate mindfulness and positivity through guided reflection exercises. 
+The application encourages users to focus on gratitude and intentional living by providing structured daily prompts and journaling features that promote positive thinking and emotional balance.   
+
+The **goal** of Prek is to create a simple, reflective, and uplifting digital space that helps users cultivate gratitude, mindfulness, and intentional living. By providing structured prompts and seamless journaling features, the project aims to empower users to recognise positive moments, manage stress, and enhance their sense of wellbeing over time. 
 
 ## Stakeholders
-- Individual Client: The project owner who will oversee the general direction of the app and receive the final deliverables.
-- End Users: The individuals seeking to enhance their mindfulness and general wellbeing by daily reflection and gratitude.
-- Student Team: The group of programmers and designers responsible for designing and developing the application.
+- **Individual Client**: The project owner who will oversee the general direction of the app and receive the final deliverables.
+
+- **End Users**: The individuals seeking to enhance their mindfulness and general wellbeing by daily reflection and gratitude.
+
+- **Student Team**: The group of programmers and designers responsible for designing and developing the application.
 
 ## User Stories
-- As a **university student**, I want to be able to quickly write or record what I am grateful for between classes in order to reduce stress and prfioritise the positive aspects in my day.
-- As a **busy professional**, I want short daily prompts that help me reflect on what went well today, so that I can maintain a healthy work-life balance. 
-- As **someone trying to improve my mental health**, I want to look back at my past gratitude entries, so that I can see how my mindset has improved over time.
+- As a **university student**, I want an outlet to record what I am grateful for after lectures, so that I am able to keep a positive mindset even when facing harder days, improve my mental health, and feel more at ease at university.
+  
+- As a **busy professional**, I want to get simple daily prompts that guide my gratitude reflections, so I can include mindfulness in my routine, establish a positive work-life balance, and enhance my concentration as well as mood at work.
+
+- As **someone trying to improve my mental health**, I want to review my past entries, so I can reflect on the improvement of my mental state, identify trends in my growth, maintain motivation when faced with disappointments, and get a deeper grasp of the factors that influence my happiness.
+
+## Releases
+
+| Release        | Description                                               | Target Date | Status  |
+|----------------|-----------------------------------------------------------|--------------|----------|
+| **MVP**         | Core functionality for initial launch.                    | 20/11/2025   | Pending  |
+| **Beta**        | Majority of functionality implemented.                    | 19/02/2026   | Pending  |
+| **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Pending  |
 
 ## Features
 ### Feature 1: Help users identify and reflect on things they're grateful for
