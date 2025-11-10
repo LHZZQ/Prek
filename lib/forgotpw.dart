@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+class ForgotPW extends StatefulWidget {
+  const ForgotPW({super.key});
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<ForgotPW> createState() => _ForgotPWState();
 }
 
-class _SignUpState extends State<SignUp> {
+class _ForgotPWState extends State<ForgotPW> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
@@ -33,15 +33,22 @@ class _SignUpState extends State<SignUp> {
               //image
               Image(image: AssetImage('images/prek_logo.png')),
 
-              //create new account
+              //forgot password
               Text(
-                'Create New Account',
+                'Forgot Password',
                 textDirection: TextDirection.ltr,
                 style: TextStyle(
                   fontSize: 28,
                   fontWeight: FontWeight.bold,
                   color: Color(0xFFFF66C4),
                 ),
+              ),
+
+              //new password
+              Text(
+                'New Password',
+                textDirection: TextDirection.ltr,
+                style: TextStyle(fontSize: 20, color: Color(0xFFFF66C4)),
               ),
 
               SizedBox(height: 30),
@@ -151,16 +158,16 @@ class _SignUpState extends State<SignUp> {
                 ),
               ),
 
-              SizedBox(height: 30),
+              SizedBox(height: 20),
 
-              //signup button
+              //done button
               TextButton(
                 style: TextButton.styleFrom(
                   foregroundColor: Colors.amber[50],
                   backgroundColor: Color(0xFFFF66C4),
                   side: BorderSide(color: Color(0xFFFF66C4)),
                 ),
-                child: Text('Sign Up', style: TextStyle(fontSize: 20)),
+                child: Text('Done', style: TextStyle(fontSize: 20)),
                 onPressed: () {},
               ),
             ],
