@@ -24,6 +24,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
   Duration _pos = Duration.zero;
   Duration _dur = Duration.zero;
   bool _playingMine = false; // test  this currently playing or not
+  bool _isUrl(String s) => s.startsWith('http://') || s.startsWith('https://');
 
   @override
   void initState() {
@@ -39,10 +40,12 @@ class _GratitudeTileState extends State<GratitudeTile> {
     _stateSub = _player.onPlayerStateChanged.listen((s) {
       setState(() {
         _playingMine = _isMine && s == PlayerState.playing;
-        if (!_playingMine) {
-          // if now currently playing, don't show the bar
+        if (s == PlayerState.completed || s == PlayerState.stopped || s == PlayerState.paused) {
           _pos = Duration.zero;
           _dur = Duration.zero;
+          if (s == PlayerState.completed) {
+            _currentSrc = null;
+            }
         }
       });
     });
@@ -62,20 +65,25 @@ class _GratitudeTileState extends State<GratitudeTile> {
   }
 
   Future<void> _togglePlay() async {
-    final src = widget.entry.audioAssetPath;
-    if (src == null) return;
+  final src = widget.entry.audioAssetPath;
+  if (src == null) return;
 
-    if (_playingMine) {
-      await _player.pause();
-    } else {
-      await _player.stop(); //stop other playing
-      _currentSrc = src;
-      _pos = Duration.zero;
-      _dur = Duration.zero;
-      setState(() {});
-      await _player.play(AssetSource(src)); // src format: 'audio/xxx.m4a'
-    }
+  //print('Click the play button：$src');
+
+  if (_playingMine) {
+    //print('Pause');
+    await _player.pause();
+  } else {
+    //print('Try to play');
+    await _player.stop(); // stop other playing
+    _currentSrc = src;
+    _pos = Duration.zero;
+    _dur = Duration.zero;
+    setState(() {});
+    await _player.play(AssetSource(src));
+    //print('use play() to play asset: $src');
   }
+}
 
   String _mmss(Duration d) {
     String two(int n) => n.toString().padLeft(2, '0');
@@ -114,11 +122,13 @@ class _GratitudeTileState extends State<GratitudeTile> {
   Widget build(BuildContext context) {
     final e = widget.entry;
 
+    
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      elevation: 0,
+      color: Colors.white.withOpacity(0.96),
+      elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-      child: Padding(
+       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

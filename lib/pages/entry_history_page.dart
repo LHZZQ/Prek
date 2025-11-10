@@ -14,21 +14,37 @@ class EntryHistoryPage extends StatelessWidget {
     final items = [...mockEntries]
       ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
+    const bg = Color(0xFF6F427D);
+
     if (items.isEmpty) {
       return Scaffold(
-        appBar: AppBar(title: const Text('Gratitude History')),
+        backgroundColor: bg,
+        appBar: AppBar(
+          title: const Text('Gratitude History'),
+          backgroundColor: bg,
+          foregroundColor: Colors.white,
+          elevation: 0,
+        ),
         body: Center(
           child: Text(
             "No entries yet.\nAdd your first gratitude today!",
             textAlign: TextAlign.center,
-            style: Theme.of(context).textTheme.titleMedium,
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                  color: Colors.white,
+                ),
           ),
         ),
       );
     }
 
     return Scaffold(
-      appBar: AppBar(title: const Text('Gratitude History')),
+      backgroundColor: bg,
+      appBar: AppBar(
+        title: const Text('Gratitude History'),
+        backgroundColor: bg,
+        foregroundColor: Colors.white,
+        elevation: 0,
+      ),
       body: ListView.builder(
         itemCount: items.length,
         itemBuilder: (_, i) {
@@ -47,7 +63,10 @@ class EntryHistoryPage extends StatelessWidget {
                   padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
                   child: Text(
                     dateStr,
-                    style: Theme.of(context).textTheme.labelLarge,
+                    style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Colors.white70,
+                          fontWeight: FontWeight.w600,
+                        ),
                   ),
                 ),
               GratitudeTile(entry: e),
