@@ -98,7 +98,7 @@ class _LoginState extends State<Login> {
                 decoration: InputDecoration(
                   hintText: 'Your Password',
                   labelText: 'Password',
-                  errorText: 'Password entered is wrong',
+                  //errorText: 'Password entered is wrong',
                   icon: Icon(
                     CupertinoIcons.padlock,
                     color: Color(0xFFFFDE59),
@@ -122,7 +122,31 @@ class _LoginState extends State<Login> {
               ),
             ),
 
-            SizedBox(height: 40),
+            //Forgot Password
+            Padding(
+              padding: EdgeInsets.only(right: 10),
+              child: Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  child: Text(
+                    "Forgot Password",
+                    style: TextStyle(
+                      color: Colors.black87,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
+                    ),
+                  ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const SignUp()),
+                    );
+                  },
+                ),
+              ),
+            ),
+
+            SizedBox(height: 10),
 
             //login button
             TextButton(
