@@ -1,3 +1,4 @@
+import 'package:_2025_prek/signup.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
@@ -24,17 +25,15 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.yellow[50],
-      body: SingleChildScrollView(
+      body: Center(
         child: Column(
           children: [
             Padding(
-              padding: EdgeInsets.symmetric(vertical: 40, horizontal: 60),
+              padding: EdgeInsets.symmetric(vertical: 80, horizontal: 1500),
             ),
 
             //image
-            Image(image: AssetImage('images/image1.png')),
-
-            SizedBox(height: 30),
+            Image(image: AssetImage('images/prek_logo.png')),
 
             //login
             Text(
@@ -43,7 +42,7 @@ class _LoginState extends State<Login> {
               style: TextStyle(
                 fontSize: 28,
                 fontWeight: FontWeight.bold,
-                color: const Color.fromARGB(255, 100, 62, 165),
+                color: Color(0xFFFF66C4),
               ),
             ),
 
@@ -51,10 +50,7 @@ class _LoginState extends State<Login> {
             Text(
               'Sign in to continue',
               textDirection: TextDirection.ltr,
-              style: TextStyle(
-                fontSize: 20,
-                color: const Color.fromARGB(255, 100, 62, 165),
-              ),
+              style: TextStyle(fontSize: 20, color: Color(0xFFFF66C4)),
             ),
 
             SizedBox(height: 30),
@@ -69,7 +65,7 @@ class _LoginState extends State<Login> {
                   labelText: 'Email',
                   icon: Icon(
                     CupertinoIcons.envelope,
-                    color: const Color.fromARGB(255, 100, 62, 165),
+                    color: Color(0xFFFFDE59),
                     size: 40,
                   ),
 
@@ -105,7 +101,7 @@ class _LoginState extends State<Login> {
                   errorText: 'Password entered is wrong',
                   icon: Icon(
                     CupertinoIcons.padlock,
-                    color: const Color.fromARGB(255, 100, 62, 165),
+                    color: Color(0xFFFFDE59),
                     size: 40,
                   ),
                   suffixIcon: IconButton(
@@ -132,10 +128,8 @@ class _LoginState extends State<Login> {
             TextButton(
               style: TextButton.styleFrom(
                 foregroundColor: Colors.amber[50],
-                backgroundColor: const Color.fromARGB(255, 100, 62, 165),
-                side: BorderSide(
-                  color: const Color.fromARGB(255, 100, 62, 165),
-                ),
+                backgroundColor: Color(0xFFFF66C4),
+                side: BorderSide(color: Color(0xFFFF66C4)),
               ),
               child: Text('Login', style: TextStyle(fontSize: 20)),
               onPressed: () {},
@@ -147,11 +141,9 @@ class _LoginState extends State<Login> {
             ElevatedButton.icon(
               style: TextButton.styleFrom(
                 foregroundColor: Colors.amber[50],
-                backgroundColor: const Color.fromARGB(255, 181, 153, 230),
+                backgroundColor: Color.fromARGB(255, 243, 134, 201),
 
-                side: BorderSide(
-                  color: const Color.fromARGB(255, 181, 153, 230),
-                ),
+                side: BorderSide(color: Color.fromARGB(255, 243, 134, 201)),
               ),
 
               icon: Image(
@@ -173,8 +165,9 @@ class _LoginState extends State<Login> {
             Text(
               "Don't have an account?",
               style: TextStyle(
-                color: const Color.fromARGB(255, 100, 62, 165),
+                color: Colors.black87,
                 fontWeight: FontWeight.bold,
+                fontSize: 15,
               ),
             ),
 
@@ -183,12 +176,17 @@ class _LoginState extends State<Login> {
               child: Text(
                 "Sign up",
                 style: TextStyle(
-                  color: const Color.fromARGB(255, 92, 48, 169),
+                  color: Colors.black87,
                   fontWeight: FontWeight.bold,
                   decoration: TextDecoration.underline,
                 ),
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignUp()),
+                );
+              },
             ),
           ],
         ),
