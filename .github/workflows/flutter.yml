@@ -18,6 +18,14 @@ jobs:
         with:
           channel: stable
           cache: true # open the cache
+      - name: Create .env for CI
+        shell: bash
+        run: |
+          cat > .env <<'EOF'
+          SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          EOF
+          test -s .env && echo ".env created (size: $(wc -c < .env) bytes)"
 
       - name: Install Flutter Dependencies
         run: flutter pub get
