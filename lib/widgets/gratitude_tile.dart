@@ -24,7 +24,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
   Duration _pos = Duration.zero;
   Duration _dur = Duration.zero;
   bool _playingMine = false; // test  this currently playing or not
-  bool _isUrl(String s) => s.startsWith('http://') || s.startsWith('https://');
+  //bool _isUrl(String s) => s.startsWith('http://') || s.startsWith('https://');
 
   @override
   void initState() {
@@ -125,7 +125,8 @@ class _GratitudeTileState extends State<GratitudeTile> {
     
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
-      color: Colors.white.withOpacity(0.96),
+      //color: Colors.white.withOpacity(0.96),
+      color: const Color.fromRGBO(255, 255, 255, 0.96),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
        child: Padding(
