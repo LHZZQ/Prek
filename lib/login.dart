@@ -1,6 +1,5 @@
 import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatefulWidget {
@@ -24,6 +23,10 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
+    const pink = Color(0xFFFFC7E0);
+    const peach = Color(0xFFFFE4B5);
+    const softWhite = Color(0xFFFFFFFF);
+    const textColor = Color(0xFF94697E);
     return Scaffold(
       backgroundColor: Colors.yellow[50],
       appBar: AppBar(backgroundColor: Colors.yellow[50]),
@@ -67,7 +70,7 @@ class _LoginState extends State<Login> {
                       hintText: 'hello@example.com',
                       labelText: 'Email',
                       icon: Icon(
-                        CupertinoIcons.envelope,
+                        Icons.mail_outline,
                         color: Color(0xFFFFDE59),
                         size: 40,
                       ),
@@ -103,7 +106,7 @@ class _LoginState extends State<Login> {
                       labelText: 'Password',
                       //errorText: 'Password entered is wrong',
                       icon: Icon(
-                        CupertinoIcons.padlock,
+                        Icons.lock,
                         color: Color(0xFFFFDE59),
                         size: 40,
                       ),
