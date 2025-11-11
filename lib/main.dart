@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+
 
 
 Future <void> main() async {
@@ -21,7 +23,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Supabase Test',
+      title: 'Prek',
       theme: ThemeData(
         // This is the theme of your application.
         //
@@ -40,7 +42,11 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Prek Home'),
+        '/history': (context) => const EntryHistoryPage(),
+      },
     );
   }
 }
@@ -94,6 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+
+        actions: [
+        IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () => Navigator.pushNamed(context, '/history'),
+            tooltip: 'History',
+          ),
+        ],
+        
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
