@@ -1,6 +1,6 @@
 ## In the historical pages
  ### First of all
-  Weone designs the appearance of the page as desired and builds out the basic framework.
+  We designed the appearance of my own page based on the requirements and built the basic framework.
   
   Then during the compilation process, since it was a completely new language, we used AI Tools to assist us in learning this language.
   

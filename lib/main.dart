@@ -42,7 +42,11 @@ class MyApp extends StatelessWidget {
         // tested with just a hot reload.
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
       ),
-      home: EntryHistoryPage(),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const MyHomePage(title: 'Prek Home'),
+        '/history': (context) => const EntryHistoryPage(),
+      },
     );
   }
 }
@@ -96,6 +100,15 @@ class _MyHomePageState extends State<MyHomePage> {
         // Here we take the value from the MyHomePage object that was created by
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
+
+        actions: [
+        IconButton(
+            icon: const Icon(Icons.history),
+            onPressed: () => Navigator.pushNamed(context, '/history'),
+            tooltip: 'History',
+          ),
+        ],
+        
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
