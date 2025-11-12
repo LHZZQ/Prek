@@ -103,7 +103,7 @@ class HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     image: const DecorationImage(
-                      image: AssetImage('assets/images/prek-logo2.png'), //showing logo and i added rounded corners so it would reflect the app icon look
+                      image: AssetImage('images/prek-logo2.png'), //showing logo and i added rounded corners so it would reflect the app icon look
                       fit: BoxFit.cover,
                     ),
                   ),
