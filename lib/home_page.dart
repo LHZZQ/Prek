@@ -131,15 +131,15 @@ class HomePageState extends State<HomePage> {
                   ),
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                      color: softWhite.withOpacity(0.7),
+                      color: softWhite.withValues(alpha: 0.7),
                       borderRadius: BorderRadius.circular(30),
                       border: Border.all(
-                          color: Colors.white.withOpacity(0.5),
+                          color: Colors.white.withValues(alpha: 0.5),
                           width: 1.5,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pink.withOpacity(0.1),
+                          color: Colors.pink.withValues(alpha: 0.1),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -189,7 +189,7 @@ class HomePageState extends State<HomePage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.pinkAccent.withOpacity(0.2),
+                      color: Colors.pinkAccent.withValues(alpha: 0.2),
                       blurRadius: 15,
                       offset: const Offset(0, 6),
                     ),
