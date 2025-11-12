@@ -26,7 +26,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     const pink = Color(0xFFFFC7E0);
     const peach = Color(0xFFFFE4B5);
-    const softWhite = Color(0xFFFFFFFF);
+
     const textColor = Color(0xFF94697E);
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent),
