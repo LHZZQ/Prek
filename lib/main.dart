@@ -2,8 +2,6 @@ import 'package:_2025_prek/login.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:_2025_prek/pages/entry_history_page.dart';
-
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -77,13 +75,12 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
 
         actions: [
-        IconButton(
+          IconButton(
             icon: const Icon(Icons.history),
             onPressed: () => Navigator.pushNamed(context, '/history'),
             tooltip: 'History',
           ),
         ],
-        
       ),
       body: Center(
         // Center is a layout widget. It takes a single child and positions it
