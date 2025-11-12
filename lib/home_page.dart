@@ -36,7 +36,7 @@ class HomePageState extends State<HomePage> {
 
  String getAffirmationForToday() {
    final today = DateTime.now();
-   final seed = today.year * 10000 + today.month * 100 + today.day;
+   final seed = today.year * 10000 + today.month * 100 + today.day; //picks a new one each day based on date
    final random = Random(seed);
    return affirmations[random.nextInt(affirmations.length)];
  }
@@ -49,6 +49,37 @@ class HomePageState extends State<HomePage> {
     const textColor = Color(0xFF94697E);
 
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: PopupMenuButton<String>(
+          icon: const Icon(
+              Icons.menu,
+              color: textColor,
+              size: 30,
+          ),
+          color: Colors.white,
+          onSelected: (value) {
+            //not functional yet its just a menu bar for show right now
+          },
+          itemBuilder: (context) {
+            return const [
+              PopupMenuItem(
+                value: 'profile',
+                child: Text('Profile'),
+              ),
+              PopupMenuItem(
+                value: 'settings',
+                child: Text('Settings'),
+              ),
+              PopupMenuItem(
+              value: 'history',
+              child: Text('History'),
+              ),
+            ];
+          },
+        ),
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -66,21 +97,24 @@ class HomePageState extends State<HomePage> {
             child: Column(
               children: [
                 //logo
-                ClipRRect(
-                  borderRadius: BorderRadius.circular(40),
-                  child: Image.asset(
-                    'assets/images/prek-logo2.png',
-                      height: 140,
-                      width: 140,
+                Container(
+                  height: 140,
+                  width: 140,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    image: const DecorationImage(
+                      image: AssetImage('assets/images/prek-logo2.png'), //showing logo and i added rounded corners so it would reflect the app icon look
                       fit: BoxFit.cover,
+                    ),
                   ),
                 ),
+
 
                 const SizedBox(height: 50),
 
                 //welcome text when you open homepage
                 const Text(
-                  "Welcome Back 🌞",
+                  "Welcome Back 🌞", //emoji to match our style
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
@@ -97,15 +131,15 @@ class HomePageState extends State<HomePage> {
                   ),
                     margin: const EdgeInsets.symmetric(horizontal: 10),
                     decoration: BoxDecoration(
-                        color: softWhite.withValues(alpha: 0.7),
-                        borderRadius: BorderRadius.circular(30),
-                        border: Border.all(
-                          color: Colors.white.withValues(alpha: 0.5),
+                      color: softWhite.withOpacity(0.7),
+                      borderRadius: BorderRadius.circular(30),
+                      border: Border.all(
+                          color: Colors.white.withOpacity(0.5),
                           width: 1.5,
-                ),
+                      ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pink.withValues(alpha: 0.1),
+                          color: Colors.pink.withOpacity(0.1),
                           blurRadius: 20,
                           offset: const Offset(0, 10),
                         ),
@@ -155,7 +189,7 @@ class HomePageState extends State<HomePage> {
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.pinkAccent.withValues(alpha: 0.2),
+                      color: Colors.pinkAccent.withOpacity(0.2),
                       blurRadius: 15,
                       offset: const Offset(0, 6),
                     ),
@@ -176,7 +210,7 @@ class HomePageState extends State<HomePage> {
                   onPressed: () {
                     // reflection page not added yet, will link later
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text('Reflection feature coming soon!'),
                         duration: Duration(seconds: 2),
                       ),
