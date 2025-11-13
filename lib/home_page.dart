@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:_2025_prek/reflection_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 
 
@@ -219,7 +220,14 @@ class HomePageState extends State<HomePage> {
                       ),
                     ),
                   onPressed: () {
-                    // reflection page not added yet, will link later
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ReflectionPage();
+                        },
+                      ),
+                    );
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Reflection feature coming soon!'),
