@@ -1,0 +1,37 @@
+name: Continuous Integration - Flutter
+
+on:
+  pull_request:
+    branches:
+      - main
+      - dev
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Setup and Install Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true # open the cache
+      - name: Create .env for CI
+        shell: bash
+        run: |
+          cat > .env <<'EOF'
+          SUPABASE_URL=${{ secrets.SUPABASE_URL }}
+          SUPABASE_ANON_KEY=${{ secrets.SUPABASE_ANON_KEY }}
+          EOF
+          test -s .env && echo ".env created (size: $(wc -c < .env) bytes)"
+
+      - name: Install Flutter Dependencies
+        run: flutter pub get
+
+      - name: Static Analysis (flutter analyze)
+        run: flutter analyze
+
+      - name: Run Tests
+        run: flutter test
