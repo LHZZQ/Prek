@@ -228,7 +228,6 @@ class HomePageState extends State<HomePage> {
                         },
                       ),
                     );
-                    // reflection page not added yet, will link later
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
                         content: Text('Reflection feature coming soon!'),
