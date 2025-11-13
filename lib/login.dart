@@ -1,6 +1,7 @@
 import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -166,7 +167,17 @@ class _LoginState extends State<Login> {
                       side: BorderSide(color: peach),
                     ),
                     child: Text('Login', style: TextStyle(fontSize: 18)),
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) {
+                            // move to homepage after login
+                            return const HomePage();
+                          },
+                        ),
+                      );
+                    },
                   ),
 
                   SizedBox(height: 10),
