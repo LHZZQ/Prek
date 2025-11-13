@@ -2,6 +2,7 @@ import 'package:_2025_prek/login.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:_2025_prek/login.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -17,10 +18,14 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(title: 'Login Page', home: Login());
+    return MaterialApp(
+      title: 'Prek App',
+      debugShowCheckedModeBanner: false,
+      home: const Login(),  // Start on login
+    );
   }
 }
 
