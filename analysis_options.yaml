@@ -35,3 +35,4 @@ analyzer:
     unused_element: error
     unused_import: error
     dead_code: error
+    deprecated_member_use: ignore
