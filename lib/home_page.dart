@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+
 
 class HomePage extends StatefulWidget {
   const HomePage();
@@ -60,8 +62,17 @@ class HomePageState extends State<HomePage> {
           ),
           color: Colors.white,
           onSelected: (value) {
-            //not functional yet its just a menu bar for show right now
+            if (value == 'history') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const EntryHistoryPage(),
+                ),
+              );
+            }
+            // leave profile/settings empty for now
           },
+
           itemBuilder: (context) {
             return const [
               PopupMenuItem(
