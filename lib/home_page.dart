@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:math';
+import 'package:_2025_prek/reflection_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage();
@@ -208,6 +209,14 @@ class HomePageState extends State<HomePage> {
                       ),
                     ),
                   onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) {
+                          return const ReflectionPage();
+                        },
+                      ),
+                    );
                     // reflection page not added yet, will link later
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(
