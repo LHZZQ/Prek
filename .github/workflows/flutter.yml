@@ -28,10 +28,13 @@ jobs:
           test -s .env && echo ".env created (size: $(wc -c < .env) bytes)"
 
       - name: Install Flutter Dependencies
+        working-directory: ./prek-app
         run: flutter pub get
 
       - name: Static Analysis (flutter analyze)
+        working-directory: ./prek-app
         run: flutter analyze
 
       - name: Run Tests
+        working-directory: ./prek-app
         run: flutter test
