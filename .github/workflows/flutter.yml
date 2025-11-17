@@ -19,6 +19,7 @@ jobs:
           channel: stable
           cache: true # open the cache
       - name: Create .env for CI
+        working-directory: prek-app
         shell: bash
         run: |
           cat > .env <<'EOF'
