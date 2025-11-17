@@ -58,7 +58,7 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - .env
+    #- .env
     - images/
     - images/prek_logo.png
     - images/google_logo.png
