@@ -18,8 +18,6 @@
 - [Project description](#project-description)
 - [Stakeholders](#stakeholders)
 - [User Stories](#user-stories)
-- [Features](#features)
-- [Basic Flow](#basic-flow)
 - [Project Structure](#project-structure)
 - [Tech Stack](#tech-stack)
 - [Architecture Diagram](#architecture-diagram)
@@ -102,8 +100,38 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
    - Your past entries will show up here with timestamps.
 
 ## Developer Instructions
-- to be added
+1. Install [Flutter](https://docs.flutter.dev/install/manual)
+2. In the terminal, clone this repository:
+   
+   ```
+   git clone https://github.com/spe-uob/2025-Prek.git
+   ```
+3. In the terminal, install dependencies at the project root:
 
+    ```
+     flutter pub get
+    ```
+4. In the terminal, create .env file at the project root:
+    ```
+     touch .env
+    ```
+5. In the .env file, type in:
+   
+   ```
+   SUPABASE_URL="YOUR_SECRET_KEY"
+   SUPABASE_ANON_KEY="YOUR_ENCRYPTION_KEY"
+   ```
+6. In the .gitignore file, type in:
+
+   ```
+   .env
+   ```
+7. In the terminal, run the application:
+   
+   ```
+   flutter run
+   ```
+   
 ## Internal Links
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
 - [AI document]
