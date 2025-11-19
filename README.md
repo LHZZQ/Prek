@@ -144,6 +144,12 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 |----------------|----------------------|
 | Carol Tan      |pn24594@bristol.ac.uk |
 | Daud Ismail    |kk24104@bristol.ac.uk |
-| Layan Alaskar  |pk23085@bristol.ac.uk |
+| Layan Alaskar (Client Liaison)  |pk23085@bristol.ac.uk |
 | Ziqian Zhang   |ni24790@bristol.ac.uk |
 
+| Week        | Project Manager         |
+|----------------|----------------------|
+| 2-7 |Layan Alaskar|
+| 8-12| |
+|13-18| |
+|19-24| |
