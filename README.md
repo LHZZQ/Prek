@@ -59,28 +59,16 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 ## Features
 ### Purpose: Help users identify and reflect on things they're grateful for
 #### User Interface  
-- **Prompt**: *"What are you grateful for today?"*  
+- **Affirmation**: *"I choose to give myself grace, even when faced with challenges"*  
 - **Input**: Multi-line text area   
-- **Suggestion**: Up to 3 entries recommended 
 - **Examples**:  
   - "Grateful for the community at the library"
   - "Thankful for my morning coffee ritual"
     
 #### User Functionality  
-- Add gratitude entries   
-- View all past entries 
-- Share individual reflections  
-- Navigate to the next section when ready  
-
-## Basic Flow 
-- Open the Prek App
-- Log in or create account
-- View home screen
-- Read prompts such as 'What are you grateful for'
-- Enter response using text or voice input
-- Review, edit or share entry
-- View previous entries with timestamps
-- Save progress
+- Receive daily affirmations
+- Add gratitude entries
+- View all past entries with timestamps
 
 ## Project Structure
 - to be added
@@ -94,7 +82,33 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 <img width="1587" height="2245" alt="tech stack (1)" src="https://github.com/user-attachments/assets/f3dd7db0-8aab-4600-8634-5b9c3c9f9be9" />
 
 ## User Instructions
-- to be added
+1. Login
+    - Enter your email and password then click Login.
+    - You can sign in with Google by clicking the button.
+    
+2. Sign Up
+   - Click the Sign Up button if you are a new user.
+   - Enter your email.
+   - Enter your password twice for verification process.
+   - Click the Sign Up button and your account will be created.
+
+3. Forgot Password
+   - Click the Forgot Password button if you have forgotten your password.
+   - Enter your email.
+   - Enter your new password twice and click done.
+   - It will be saved and you can now login with your new password.
+  
+4. Home Page
+   - Once logged in, you will see a new affirmation everyday.
+   - Click the Start Reflection button to write your reflection.
+   - Click on the top left menu button to go to Profile, Settings and History Page.
+
+5. Reflection Page
+   - Enter your reflection in the reflection box.
+   - Click the Save Reflection button to save it.
+  
+6. History Page
+   - Your past entries will show up here with timestamps.
 
 ## Developer Instructions
 - to be added
