@@ -34,6 +34,11 @@ The application encourages users to focus on gratitude and intentional living by
 
 The **goal** of Prek is to create a simple, reflective, and uplifting digital space that helps users cultivate gratitude, mindfulness, and intentional living. By providing structured prompts and seamless journaling features, the project aims to empower users to recognise positive moments, manage stress, and enhance their sense of wellbeing over time. 
 
+**Main functionality**:
+- Providing different affirmations every day
+- Write daily reflections
+- View past entries
+
 ## Stakeholders
 - **Individual Client**: The project owner who will oversee the general direction of the app and receive the final deliverables.
 
@@ -55,20 +60,6 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 | **MVP**         | Core functionality for initial launch.                    | 20/11/2025   | Pending  |
 | **Beta**        | Majority of functionality implemented.                    | 19/02/2026   | Pending  |
 | **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Pending  |
-
-## Features
-### Purpose: Help users identify and reflect on things they're grateful for
-#### User Interface  
-- **Affirmation**: *"I choose to give myself grace, even when faced with challenges"*  
-- **Input**: Multi-line text area   
-- **Examples**:  
-  - "Grateful for the community at the library"
-  - "Thankful for my morning coffee ritual"
-    
-#### User Functionality  
-- Receive daily affirmations
-- Add gratitude entries
-- View all past entries with timestamps
 
 ## Project Structure
 - to be added
