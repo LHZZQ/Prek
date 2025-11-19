@@ -91,11 +91,9 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 - **Frontend** : Flutter
 - **Backend**  : Supabase
 - **Database** : PostgreSQL
-- **Voice Input** :
-- **Data Sync** :
   
 ## Architecture Diagram
-- to be added
+<img width="1587" height="2245" alt="tech stack (1)" src="https://github.com/user-attachments/assets/f3dd7db0-8aab-4600-8634-5b9c3c9f9be9" />
 
 ## User Instructions
 - to be added
