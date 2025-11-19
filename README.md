@@ -134,9 +134,9 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
    
 ## Internal Links
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
-- [AI document]
 - [License](https://github.com/spe-uob/2025-Prek/blob/a588db8ce4e40b9cb71dcd3317db70c8fcda09c1/LICENSE)
-- [Ethics](https://github.com/spe-uob/2025-Prek/blob/dev/docs/meeting%20minutes/Ethics.md)
+- Ethics
+- AI document
   
 ## Team Members 
 
@@ -147,9 +147,9 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 | Layan Alaskar (Client Liaison)  |pk23085@bristol.ac.uk |
 | Ziqian Zhang   |ni24790@bristol.ac.uk |
 
-| Week        | Project Manager         |
-|----------------|----------------------|
-| 2-7 |Layan Alaskar|
-| 8-12| |
-|13-18| |
-|19-24| |
+| Week        | Project Manager      |
+|-------------|----------------------|
+| 2-7         |Layan Alaskar         |
+| 8-12        |Daud Ismail           |
+|13-18        | |
+|19-24        | |
