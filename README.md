@@ -136,7 +136,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
 - [License](https://github.com/spe-uob/2025-Prek/blob/a588db8ce4e40b9cb71dcd3317db70c8fcda09c1/LICENSE)
 - Ethics
-- AI document
+- [AI document](https://github.com/spe-uob/2025-Prek/blob/dev/AI%20Tools.md)
   
 ## Team Members 
 
