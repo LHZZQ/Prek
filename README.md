@@ -1,8 +1,19 @@
-# 2025-Prek
+
+<p align="center">
+  <img width="300" height="200" alt="image" src="https://github.com/user-attachments/assets/69f9251c-1c12-4b86-a194-aef5576b58aa" />
+</p>
+
+<h1 align="center">2025-Prek</h1>
+
+<div align="center">
+  
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
 [![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
-[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.io)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+
+</div>
+
 ## Contents
 - [Project description](#project-description)
 - [Stakeholders](#stakeholders)
@@ -46,33 +57,20 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 | **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Pending  |
 
 ## Features
-### Feature 1: Help users identify and reflect on things they're grateful for
+### Purpose: Help users identify and reflect on things they're grateful for
 #### User Interface  
 - **Prompt**: *"What are you grateful for today?"*  
-- **Input**: Multi-line text area (3 rows) with optional **voice input**  
-- **Suggestion**: Up to 3 entries recommended (optional)  
+- **Input**: Multi-line text area   
+- **Suggestion**: Up to 3 entries recommended 
 - **Examples**:  
   - "Grateful for the community at the library"
   - "Thankful for my morning coffee ritual"
     
 #### User Functionality  
-- Add gratitude entries (text or voice)  
-- View all past entries with timestamps  
+- Add gratitude entries   
+- View all past entries 
 - Share individual reflections  
-- Delete entries if needed  
 - Navigate to the next section when ready  
-
-### Feature 2: Allow users to make requests to "God or the Universe" based on their beliefs
-#### User Interface
-- Prompt: "What would you like to request from God or the Universe?"
-- Title: "Requests of God or the Universe: You Choose!"
-- Description: "Make requests to whatever you believe in"
-
-### User Functionality
-- Write personal requests/prayers/intentions
-- Review past requests to see what manifested
-- Share universal intentions for collective good
-- Track personal spiritual/intention practice
 
 ## Basic Flow 
 - Open the Prek App
