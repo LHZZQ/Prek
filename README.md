@@ -57,8 +57,13 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
   
 - As a busy professional, I want to log my mood alongside my gratitude entries so that I can notice patterns that influence my focus and work-life balance.
 
-- As **someone trying to improve my mental health**, I want to review my past entries, so I can reflect on the improvement of my mental state, identify trends in my growth, maintain motivation when faced with disappointments, and get a deeper grasp of the factors that influence my happiness.
+**As Someone Working on Their Mental Health**
 
+- As someone working on my mental health, I want to review my past gratitude entries so that I can see how far I’ve come and stay motivated on harder days.
+
+- As someone working on my mental health, I want to see simple trends or highlights from my entries so that I can better understand what contributes to my happiness.
+
+  
 ## Releases
 
 | Release        | Description                                               | Target Date | Status  |
