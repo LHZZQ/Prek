@@ -47,21 +47,21 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 ## User Stories
 **As a Univeristy Student**
 
-- As a university student, I want a quick way to record what I’m grateful for after lectures so that I can keep a positive mindset and handle academic stress better.
+- I want a quick way to record what I’m grateful for after lectures so that I can keep a positive mindset and handle academic stress better.
   
-- As a university student, I want my gratitude entries linked to specific days or classes so that I can see which parts of my routine affect my well-being.
+- I want my gratitude entries linked to specific days or classes so that I can see which parts of my routine affect my well-being.
 
 **As a Busy Professional**
 
-- As a busy professional, I want short daily prompts that guide my gratitude reflections so that I can practice mindfulness without adding extra effort to my schedule.
+- I want short daily prompts that guide my gratitude reflections so that I can practice mindfulness without adding extra effort to my schedule.
   
-- As a busy professional, I want to log my mood alongside my gratitude entries so that I can notice patterns that influence my focus and work-life balance.
+- I want to log my mood alongside my gratitude entries so that I can notice patterns that influence my focus and work-life balance.
 
 **As Someone Working on Their Mental Health**
 
-- As someone working on my mental health, I want to review my past gratitude entries so that I can see how far I’ve come and stay motivated on harder days.
+- I want to review my past gratitude entries so that I can see how far I’ve come and stay motivated on harder days.
 
-- As someone working on my mental health, I want to see simple trends or highlights from my entries so that I can better understand what contributes to my happiness.
+- I want to see simple trends or highlights from my entries so that I can better understand what contributes to my happiness.
 
   
 ## Releases
