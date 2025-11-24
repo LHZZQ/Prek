@@ -9,6 +9,6 @@ Future<void> saveGratitudeEntry(String text) async {
       'created_at': DateTime.now().toIso8601String(),
     });
   } catch (e) {
-    throw Exception('Error savin gratitude entry: $e');
+    throw Exception('Error saving gratitude entry: $e');
   }
 }
