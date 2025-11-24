@@ -10,14 +10,18 @@ jobs:
   test:
     runs-on: ubuntu-latest
     steps:
+      # Pull the code
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      # Setup and Install Flutter SDK
       - name: Setup and Install Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: stable
           cache: true # open the cache
+
+      # Create .env file for CI from secrets
       - name: Create .env for CI
         working-directory: prek-app
         shell: bash
@@ -28,14 +32,24 @@ jobs:
           EOF
           test -s .env && echo ".env created (size: $(wc -c < .env) bytes)"
 
+      # Install Flutter Dependencies
       - name: Install Flutter Dependencies
         working-directory: ./prek-app
         run: flutter pub get
 
+      # Static Analysis
       - name: Static Analysis (flutter analyze)
         working-directory: ./prek-app
         run: flutter analyze
 
-      - name: Run Tests
+      # Run Tests with Coverage
+      - name: Run Tests with Coverage
         working-directory: ./prek-app
-        run: flutter test
+        run: flutter test --coverage
+
+      # Upload Coverage Artifact
+      - name: Upload Coverage Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: ./prek-app/coverage/lcov.info

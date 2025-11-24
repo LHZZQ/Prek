@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import '../data/mock_entries.dart';
+import '../utils/time_utils.dart';
 import '../widgets/gratitude_tile.dart';
 
 class EntryHistoryPage extends StatelessWidget {
   const EntryHistoryPage({super.key});
-
-  bool _sameDay(DateTime a, DateTime b) =>
-      a.year == b.year && a.month == b.month && a.day == b.day;
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +64,7 @@ class EntryHistoryPage extends StatelessWidget {
           itemBuilder: (_, i) {
             final e = items[i];
             final showHeader =
-                i == 0 || !_sameDay(e.createdAt, items[i - 1].createdAt);
+                i == 0 || !sameDay(e.createdAt, items[i - 1].createdAt);
 
             String two(int n) => n.toString().padLeft(2, '0');
             final dateStr =
