@@ -15,7 +15,9 @@ void main() {
     await tester.pumpWidget(MyApp());
     await tester.pumpAndSettle();
 
+    //There should be a MaterialApp component throughout the entire application
     expect(find.byType(MaterialApp), findsOneWidget);
+    //There is at least one Scaffold on the interface
     expect(find.byType(Scaffold), findsAtLeastNWidgets(1));
   });
 }
