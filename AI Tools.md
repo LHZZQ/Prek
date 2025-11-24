@@ -1,7 +1,3 @@
-## In the historical pages
- ### First of all
-  We designed the appearance of my own page based on the requirements and built the basic framework.
-  
-  Then during the compilation process, since it was a completely new language, we used AI Tools to assist us in learning this language.
-  
-   We also wrote the basic framework. When dealing with errors, we relied on AI's help to fix the bugs and tell us where the mistakes were.
+## AI Usage in this project
+1. **.github/workflows/flutter.yml**: AI guided us on how to run automatic tests on GitHub so that our code is checked every time a pull request is created.
+2. **prek-app/lib/data/mock_entries.dart**: AI generated the fake reflection (e.g: Grateful for sunshine, Had a nice walk, Good chat with a friend).
