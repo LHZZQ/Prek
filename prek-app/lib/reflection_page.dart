@@ -1,3 +1,4 @@
+import 'package:_2025_prek/services/supabase_services.dart';
 import 'package:flutter/material.dart';
 
 class ReflectionPage extends StatefulWidget {
@@ -26,10 +27,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
         centerTitle: true,
         title: const Text(
           "Reflection 🌸", //title
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
         iconTheme: const IconThemeData(color: textColor),
       ),
@@ -39,13 +37,11 @@ class _ReflectionPageState extends State<ReflectionPage> {
         padding: const EdgeInsets.only(left: 20, right: 20, top: 90),
 
         decoration: const BoxDecoration(
-          gradient: LinearGradient( // background gradient
+          gradient: LinearGradient(
+            // background gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFFFFF1F5),
-              Color(0xFFFFF8EE),
-            ],
+            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
 
@@ -66,7 +62,8 @@ class _ReflectionPageState extends State<ReflectionPage> {
             const SizedBox(height: 40),
 
             Container(
-              decoration: BoxDecoration( //input box
+              decoration: BoxDecoration(
+                //input box
                 color: Colors.white70,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
@@ -90,7 +87,8 @@ class _ReflectionPageState extends State<ReflectionPage> {
 
             const SizedBox(height: 40),
 
-            Container( //gradient wrapper for button
+            Container(
+              //gradient wrapper for button
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
                 gradient: const LinearGradient(
@@ -100,22 +98,28 @@ class _ReflectionPageState extends State<ReflectionPage> {
                 ),
               ),
 
-              child: ElevatedButton( //save button
+              child: ElevatedButton(
+                //save button
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
                   minimumSize: const Size(double.infinity, 55),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(40),
+                  ),
                 ),
 
-
-                onPressed: () {
+                onPressed: () async {
                   final text = _controller.text.trim();
 
-                  if (text.isNotEmpty) {
+                  if (text.isEmpty) return;
+
+                  try {
+                    await saveGratitudeEntry(text);
+                    
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: const Text(
+                        content: Text(
                           "🌸 Reflection saved (will link to history later)!",
                         ),
                         backgroundColor: pink.withValues(alpha: 0.9),
@@ -123,8 +127,14 @@ class _ReflectionPageState extends State<ReflectionPage> {
                     );
 
                     _controller.clear(); //clears input
+                  } catch (e) {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      SnackBar(content: Text("Error saving reflection: $e"),
+                      backgroundColor: Colors.redAccent,
+                      )
+                    );
                   }
-                },
+                }, 
 
                 child: const Text(
                   "Save Reflection",
