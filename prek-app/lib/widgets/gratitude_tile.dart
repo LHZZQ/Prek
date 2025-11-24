@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../models/gratitude_entry.dart';
+import '../utils/time_utils.dart';
 
 //Single gratitude record card: Text + Timestamp + (Optional) Voice Playback
 class GratitudeTile extends StatefulWidget {
@@ -86,18 +87,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
 }
 
   String _mmss(Duration d) {
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '${two(d.inMinutes.remainder(60))}:${two(d.inSeconds.remainder(60))}';
-  }
-
-  String _friendlyTime(DateTime dt) {
-    final now = DateTime.now();
-    final d0 = DateTime(now.year, now.month, now.day);
-    final d1 = DateTime(dt.year, dt.month, dt.day);
-    final days = d0.difference(d1).inDays;
-    String day = days == 0 ? 'Today' : (days == 1 ? 'Yesterday' : '$days days ago');
-    String two(int n) => n.toString().padLeft(2, '0');
-    return '$day · ${two(dt.hour)}:${two(dt.minute)}';
+    return formatMmSs(d);
   }
 
   Widget _moodChip(String mood) {
@@ -141,7 +131,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
                 if (e.mood != null) _moodChip(e.mood!),
                 if (e.mood != null) const SizedBox(width: 8),
                 Text(
-                  _friendlyTime(e.createdAt),
+                  friendlyTime(e.createdAt),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
               ],
