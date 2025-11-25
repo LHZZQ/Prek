@@ -45,7 +45,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 - **Student Team**: The group of programmers and designers responsible for designing and developing the application.
 
 ## User Stories
-**As a Univeristy Student,**
+**As a University Student,**
 
 - I want a quick way to record what I’m grateful for after lectures so that I can keep a positive mindset and handle academic stress better.
   
