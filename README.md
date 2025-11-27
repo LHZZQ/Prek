@@ -75,7 +75,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 ## Project Structure
 ```
 2025-Prek
-├─ github/workflows/flutter.yml (Continuous Integration workflows) 
+├─ .github/workflows (Continuous Integration workflows and PR templates) 
 ├─ docs/minutes (Documentation and meeting minutes)
 ├─ prek-app (Project root with all source code)
 ├─ AI Tools.md
