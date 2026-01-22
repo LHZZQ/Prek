@@ -73,7 +73,16 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 | **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Pending  |
 
 ## Project Structure
-- to be added
+```
+2025-Prek
+├─ .github/workflows (Continuous Integration workflows and PR templates) 
+├─ docs/minutes (Documentation and meeting minutes)
+├─ prek-app (Project root with all source code)
+├─ AI Tools.md
+├─ ETHICS.md
+├─ LICENSE
+└─ README.md
+```
 
 ## Tech Stack  
 - **Frontend** : Flutter
