@@ -8,9 +8,11 @@ assignees: []
 
 ### **📝 Summary**
 
+N/A
 
 ### **💡 Details**
 
+N/A
 
 ### **🧩 Type of Change**
 
@@ -36,3 +38,5 @@ Other (if applicable):
 
 
 ### **🗒️ Additional Notes**
+
+N/A
