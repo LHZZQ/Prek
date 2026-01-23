@@ -71,7 +71,7 @@ class HomePageState extends State<HomePage> {
                 ),
               );
             }
-            // leave profile/settings empty for now
+            // settings is not done
           },
 
           itemBuilder: (context) {
