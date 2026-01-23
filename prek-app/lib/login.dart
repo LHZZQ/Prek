@@ -2,6 +2,8 @@ import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/home_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,13 +15,42 @@ class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
-  String password = '';
+  bool isLoading = false;
+  String? authError;
 
   @override
   void initState() {
     super.initState();
-
     emailController.addListener(() => setState(() {}));
+  }
+
+  Future<void> _login() async {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      setState(() => authError = 'Please enter email and password.');
+      return;
+    }
+    setState(() {
+      isLoading = true;
+      authError = null;
+    });
+
+    try {
+      //Calling login function from auth_services
+      await login(emailController.text, passwordController.text);
+      // Navigate to homepage if successful
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } catch (e) {
+      setState(() => authError = e.toString());
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
+    }
   }
 
   @override
