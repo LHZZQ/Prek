@@ -203,8 +203,17 @@ class _LoginState extends State<Login> {
                       backgroundColor: peach,
                       side: BorderSide(color: peach),
                     ),
-                    child: Text('Login', style: TextStyle(fontSize: 18)),
                     onPressed: isLoading ? null : _login,
+                    child: isLoading
+                      ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: textColor,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text('Login', style: TextStyle(fontSize: 18)),
                   ),
 
                   SizedBox(height: 10),

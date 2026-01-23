@@ -11,9 +11,9 @@ Future<void> login(String email, String password) async {
     );
 
     if (response.session == null) {
-      throw Exception('Login failed. Check email and password.');
+      throw Exception('Email or password incorrect');
     }
   } catch (e) {
-    throw Exception('Error logging in: $e');
+    throw ('Email or password incorrect');
   }
 }
