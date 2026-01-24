@@ -8,10 +8,19 @@ assignees: []
 
 ### **📝 Summary**
 
+<!--
+Briefly describe what this task/feature is about.
+Example:
+"Add validation to the login form to prevent empty submissions."
+-->
+
 N/A
 
 ### **💡 Details**
 
+<!--
+Provide a detailed explanation of this issue.
+-->
 N/A
 
 ### **🧩 Type of Change**
@@ -39,4 +48,7 @@ Other (if applicable):
 
 ### **🗒️ Additional Notes**
 
+<!--
+Add additional Notes.
+-->
 N/A
