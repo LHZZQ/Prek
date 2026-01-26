@@ -5,12 +5,29 @@ class ProfilePage extends StatelessWidget{
 
   @override 
   Widget build(BuildContext context){
-    const bgTop = Color(0xFFFFF6FB);
-    const bgBottom = Color(0xFFFFF1E8);
-    const textPrimary = Color(0xFF6D4C5B);
-    
-    return const Scaffold(
-      body: Center(
+    const pink = Color(0xFFFFC7E0);
+    const peach = Color(0xFFFFE4B5);
+    const softWhite = Color(0xFFFFFFFF);
+    const textColor = Color(0xFF94697E);
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      appBar: AppBar( 
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: textColor),
+        centerTitle: true,
+        title: const Text(
+          "Profile",
+          style: TextStyle(
+            color: textColor,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+        )
+
+        ),
+      body: const Center(
         child: Text(
           'Profile Page',
           style: TextStyle(fontSize: 24),
