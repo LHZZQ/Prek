@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'dart:math';
 import 'package:_2025_prek/reflection_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
+import 'package:_2025_prek/profile_page.dart';
 
 
 class HomePage extends StatefulWidget {
@@ -63,7 +64,14 @@ class HomePageState extends State<HomePage> {
           ),
           color: Colors.white,
           onSelected: (value) {
-            if (value == 'history') {
+            if (value == 'profile') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const ProfilePage(),
+                  ),
+                );
+            } else if (value == 'history') {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -71,7 +79,7 @@ class HomePageState extends State<HomePage> {
                 ),
               );
             }
-            // leave profile/settings empty for now
+            // settings is not done
           },
 
           itemBuilder: (context) {
