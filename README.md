@@ -174,5 +174,5 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 |-------------|----------------------|
 | 2-7         |Layan Alaskar         |
 | 8-12        |Daud Ismail           |
-|13-18        | |
-|19-24        | |
+|13-18        |Carol Tan             |
+|19-24        |Ziqian Zhang          |
