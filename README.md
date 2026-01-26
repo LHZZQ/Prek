@@ -168,7 +168,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 | Daud Ismail    |kk24104@bristol.ac.uk |
 | Layan Alaskar (Client Liaison)  |pk23085@bristol.ac.uk |
 | Ziqian Zhang   |ni24790@bristol.ac.uk |
-| kylan Zou      |gn23627@bristol.ac.uk |
+| Kylan Zou      |gn23627@bristol.ac.uk |
 
 | Week        | Project Manager      |
 |-------------|----------------------|
