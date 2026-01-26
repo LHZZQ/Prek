@@ -204,7 +204,7 @@ class SignUpValidator {
     if (value == null || value.isEmpty) {
       return 'Email is required';
     }
-    // Simple check: does it contain @?
+
     if (!value.contains('@')) {
       return 'Enter a valid email';
     }
@@ -215,7 +215,11 @@ class SignUpValidator {
     if (value == null || value.isEmpty) {
       return 'Password is required';
     }
-    if (value.length < 10) {
+
+    final regex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#%^&*()-_+={}[]|:"<>,./?]).+$',
+    );
+    if (value.length < 10 || !regex.hasMatch(value)) {
       return 'Password must have a minimum of 1 lower case letter [a-z], a minimum of 1 upper case letter [A-Z], a minimum of 1 numeric character [0-9], a minimum of 1 special character: ~`!@#%^&*()-_+={}[]|:"<>,./?, and must be at least 10 characters';
     }
     return null;
