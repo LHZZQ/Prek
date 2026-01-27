@@ -9,7 +9,9 @@ class ProfilePage extends StatelessWidget{
     const peach = Color(0xFFFFE4B5);
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
-
+    const bgTop = Color(0xFFFFF1F5);
+    const bgBottom = Color(0xFFFFF8EE);
+    
     return Scaffold(
       backgroundColor: Colors.transparent,
       appBar: AppBar( 
@@ -34,10 +36,17 @@ class ProfilePage extends StatelessWidget{
             icon: const Icon(Icons.logout_rounded, color: textColor),
           ),
         ],
-              
-      
-      
      ),
+     body: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin:Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: const [bgTop, bgBottom],
+        ),
+      ),
+     )
     ); 
   }
 }

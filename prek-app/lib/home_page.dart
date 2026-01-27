@@ -30,6 +30,7 @@ class HomePageState extends State<HomePage> {
    "I surround myself with people who make me laugh and appreciate my presence.",
  ];
 
+
  late String dailyAffirmation;
 
  @override
@@ -176,6 +177,7 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+
 
             const SizedBox(height: 30),
 
