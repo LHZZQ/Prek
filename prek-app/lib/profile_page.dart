@@ -25,14 +25,3 @@ class ProfilePage extends StatelessWidget{
           ),
         ),
         )
-
-        ),
-      body: const Center(
-        child: Text(
-          'Profile Page',
-          style: TextStyle(fontSize: 24),
-        ),
-      ),
-    );
-  }
-}
