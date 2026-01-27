@@ -2,7 +2,7 @@ import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/home_page.dart';
-import 'package:_2025_prek/services/auth_service.dart';
+//import 'package:_2025_prek/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -23,7 +23,7 @@ class _LoginState extends State<Login> {
     emailController.addListener(() => setState(() {}));
   }
 
-  Future<void> _login() async {
+  /*Future<void> _login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       setState(() => authError = 'Please enter email and password.');
       return;
@@ -51,6 +51,7 @@ class _LoginState extends State<Login> {
       }
     }
   }
+  */
 
   @override
   Widget build(BuildContext context) {
@@ -68,10 +69,11 @@ class _LoginState extends State<Login> {
             colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
-        child: SingleChildScrollView(
-          child: Center(
-            child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32),
+
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: SingleChildScrollView(
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
@@ -164,9 +166,8 @@ class _LoginState extends State<Login> {
                       child: Text(
                         authError!,
                         style: TextStyle(color: Colors.red),
-                       ),
-                  ),
-
+                      ),
+                    ),
 
                   //Forgot Password
                   Padding(
@@ -203,17 +204,24 @@ class _LoginState extends State<Login> {
                       backgroundColor: peach,
                       side: BorderSide(color: peach),
                     ),
-                    onPressed: isLoading ? null : _login,
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => const HomePage(),
+                        ),
+                      );
+                    },
                     child: isLoading
-                      ? SizedBox(
-                          height: 20,
-                          width: 20,
-                          child: CircularProgressIndicator(
-                            color: textColor,
-                            strokeWidth: 2,
-                          ),
-                        )
-                      : Text('Login', style: TextStyle(fontSize: 18)),
+                        ? SizedBox(
+                            height: 20,
+                            width: 20,
+                            child: CircularProgressIndicator(
+                              color: textColor,
+                              strokeWidth: 2,
+                            ),
+                          )
+                        : Text('Login', style: TextStyle(fontSize: 18)),
                   ),
 
                   SizedBox(height: 10),
