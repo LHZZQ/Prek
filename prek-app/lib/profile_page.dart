@@ -24,4 +24,20 @@ class ProfilePage extends StatelessWidget{
             fontWeight: FontWeight.w600,
           ),
         ),
-        )
+        actions: [
+          IconButton(
+            onPressed: () {
+              ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(content: Text("Action not available")),
+              );
+            },
+            icon: const Icon(Icons.logout_rounded, color: textColor),
+          ),
+        ],
+              
+      
+      
+     ),
+    ); 
+  }
+}
