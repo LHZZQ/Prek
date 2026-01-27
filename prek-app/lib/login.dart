@@ -2,6 +2,7 @@ import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -13,13 +14,42 @@ class _LoginState extends State<Login> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   bool isPasswordVisible = false;
-  String password = '';
+  bool isLoading = false;
+  String? authError;
 
   @override
   void initState() {
     super.initState();
-
     emailController.addListener(() => setState(() {}));
+  }
+
+  Future<void> _login() async {
+    if (emailController.text.isEmpty || passwordController.text.isEmpty) {
+      setState(() => authError = 'Please enter email and password.');
+      return;
+    }
+    setState(() {
+      isLoading = true;
+      authError = null;
+    });
+
+    try {
+      //Calling login function from auth_services
+      await login(emailController.text, passwordController.text);
+      // Navigate to homepage if successful
+      if (mounted) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
+      }
+    } catch (e) {
+      setState(() => authError = e.toString());
+    } finally {
+      if (mounted) {
+        setState(() => isLoading = false);
+      }
+    }
   }
 
   @override
@@ -103,9 +133,6 @@ class _LoginState extends State<Login> {
                   SizedBox(
                     width: 400,
                     child: TextFormField(
-                      onChanged: (value) => setState(() => password = value),
-                      onFieldSubmitted: (value) =>
-                          setState(() => password = value),
                       controller: passwordController,
                       decoration: InputDecoration(
                         hintText: 'Your Password',
@@ -125,11 +152,21 @@ class _LoginState extends State<Login> {
                           borderSide: BorderSide(color: softWhite),
                         ),
                       ),
-                      obscureText: isPasswordVisible,
-                      keyboardType: TextInputType.emailAddress,
+                      obscureText: !isPasswordVisible,
+                      keyboardType: TextInputType.text,
                       textInputAction: TextInputAction.done,
                     ),
                   ),
+
+                  if (authError != null)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 8.0),
+                      child: Text(
+                        authError!,
+                        style: TextStyle(color: Colors.red),
+                       ),
+                  ),
+
 
                   //Forgot Password
                   Padding(
@@ -166,18 +203,17 @@ class _LoginState extends State<Login> {
                       backgroundColor: peach,
                       side: BorderSide(color: peach),
                     ),
-                    child: Text('Login', style: TextStyle(fontSize: 18)),
-                    onPressed: () {
-                      Navigator.pushReplacement(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) {
-                            // move to homepage after login
-                            return const HomePage();
-                          },
-                        ),
-                      );
-                    },
+                    onPressed: isLoading ? null : _login,
+                    child: isLoading
+                      ? SizedBox(
+                          height: 20,
+                          width: 20,
+                          child: CircularProgressIndicator(
+                            color: textColor,
+                            strokeWidth: 2,
+                          ),
+                        )
+                      : Text('Login', style: TextStyle(fontSize: 18)),
                   ),
 
                   SizedBox(height: 10),

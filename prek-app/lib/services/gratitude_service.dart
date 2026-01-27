@@ -2,6 +2,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 final supabase = Supabase.instance.client;
 
+// Saves new gratitude entry to Supabase database
 Future<void> saveGratitudeEntry(String text) async {
   try {
     await supabase.from('Gratitude Entries').insert({
