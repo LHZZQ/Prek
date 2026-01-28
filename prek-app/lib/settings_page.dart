@@ -1,3 +1,4 @@
+import 'package:_2025_prek/login.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -52,8 +53,15 @@ class SettingsPage extends StatelessWidget {
                     ),
 
                     child: ElevatedButton(
-                      onPressed: () {},
-                      //save button
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ForgotPW(),
+                          ),
+                        );
+                      },
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
@@ -91,7 +99,7 @@ class SettingsPage extends StatelessWidget {
 
                     child: ElevatedButton(
                       onPressed: () {},
-                      //save button
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
@@ -129,7 +137,7 @@ class SettingsPage extends StatelessWidget {
 
                     child: ElevatedButton(
                       onPressed: () {},
-                      //save button
+
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
@@ -151,7 +159,7 @@ class SettingsPage extends StatelessWidget {
 
                   SizedBox(height: 65),
 
-                  //change password
+                  //logout
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
@@ -159,7 +167,14 @@ class SettingsPage extends StatelessWidget {
                     ),
 
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const Login(),
+                          ),
+                        );
+                      },
                       //save button
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
