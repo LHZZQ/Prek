@@ -69,7 +69,7 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 20),
 
                   //new password
                   Container(
@@ -95,7 +95,7 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 20),
 
                   //confirm password
                   Container(
