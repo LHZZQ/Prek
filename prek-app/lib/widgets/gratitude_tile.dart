@@ -132,6 +132,11 @@ if (!names.contains(fileName)) {
   if (mounted) {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(content: Text('Could not play audio'))
+} catch (e) {
+  debugPrint('createSignedUrl failed: $e');
+  if (mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Could not play audio'))
     );
   }
 }
