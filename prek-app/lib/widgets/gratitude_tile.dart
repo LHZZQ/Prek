@@ -128,7 +128,12 @@ if (!names.contains(fileName)) {
   print('signedUrl=$signedUrl');
   await _player.play(UrlSource(signedUrl));
 } catch (e) {
-  print('createSignedUrl failed: $e');
+  debugPrint('createSignedUrl failed: $e');
+  if (mounted) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Could not play audio'))
+    );
+  }
 }
 }
 }
