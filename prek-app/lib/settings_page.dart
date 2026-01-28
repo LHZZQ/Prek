@@ -1,3 +1,4 @@
+import 'package:_2025_prek/change_name.dart';
 import 'package:_2025_prek/login.dart';
 import 'package:flutter/material.dart';
 
@@ -57,7 +58,7 @@ class SettingsPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const ForgotPW(),
+                            builder: (context) => const ChangeName(),
                           ),
                         );
                       },
