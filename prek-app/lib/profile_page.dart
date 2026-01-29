@@ -5,10 +5,10 @@ class ProfilePage extends StatelessWidget{
 
   @override 
   Widget build(BuildContext context){
-    const pink = Color(0xFFFB7DA8);
-    const yellow = Color(0xFFFFC567);
-    const retroBlue = Color(0xFF058CD7);
-    const softWhite = Color(0xFFFFFFFF); 
+    //const pink = Color(0xFFFB7DA8);
+    //const yellow = Color(0xFFFFC567);
+    //const blue = Color(0xFF058CD7);
+   // const softWhite = Color(0xFFFFFFFF); 
     const textColor = Color(0xFF94697E); 
     const bgTop = Color(0xFFFFF1F5);
     const bgBottom = Color(0xFFFFF8EE);
@@ -51,7 +51,113 @@ class ProfilePage extends StatelessWidget{
           colors: const [bgTop, bgBottom],
         ),
       ),
-     )
-    ); 
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                const SizedBox(height: 6),
+
+                const _ProfileTopCard(
+                  displayName: "Username",
+                  email: "user@email.com",
+                  reflections: "14",
+                  streak: "06",
+                  daysActive: "12",
+                 ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
+class _ProfileTopCard extends StatelessWidget {
+  final String displayName;
+  final String email;
+  final String reflections;
+  final String streak;
+  final String daysActive;
+
+  const _ProfileTopCard({
+    required this.displayName,
+    required this.email,
+    required this.reflections,
+    required this.streak,
+    required this.daysActive,
+
+  }
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    const softWhite = Color(0xFFFFFFFF);
+    const textColor = Color(0xFF94697E);
+    const pink = Color(0xFFFFC7E0);
+    const peach = Color(0xFFFFE4B5);
+    
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: softWhite.withOpacity(0.78),
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: softWhite.withOpacity(0.8)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 18,
+            offset: const Offset(0, 12),
+          ),
+        ],
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Stack(
+            clipBehavior: Clip.none,
+            children: [
+              Container(
+                width: 84,
+                height: 84,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: const LinearGradient(colors: [pink, peach]),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.05),
+                      blurRadius: 12,
+                      offset: const Offset(0, 10),
+                    ),
+                  ],
+                ),
+                child: const Icon(Icons.person, color: Colors.white, size: 38),
+              ),
+              Positioned(
+                right: -4,
+                top: -6,
+                child: Container(
+                  padding: const EdgeInsets.all(8),
+                  decoration: BoxDecoration(
+                    color: pink,
+                    shape: BoxShape.circle,
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withOpacity(0.06),
+                        blurRadius: 10,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
+                  ),
+                  child: const Icon(Icons.auto_awesome_rounded, size: 16, color: textColor),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
