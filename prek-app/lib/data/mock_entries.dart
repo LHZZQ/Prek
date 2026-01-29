@@ -7,7 +7,7 @@ final List<GratitudeEntry> mockEntries = [
     text: 'Grateful for sunshine',
     mood: 'happy',
     createdAt: DateTime.now().subtract(const Duration(hours: 2)),
-    audioAssetPath: 'audio/gratitude1.m4a', // can relplay
+    audioAssetPath: 'user123/gratitude1.m4a', // can relplay
   ),
   GratitudeEntry(
     id: 'entry2',
@@ -23,6 +23,6 @@ final List<GratitudeEntry> mockEntries = [
     text: 'Good chat with a friend',
     mood: 'warm',
     createdAt: DateTime.now().subtract(const Duration(days: 3)),
-    audioAssetPath: 'audio/gratitude2.m4a',
+    audioAssetPath: 'user123/gratitude2.m4a',
   ),
 ];
