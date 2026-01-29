@@ -180,9 +180,52 @@ class _ProfileTopCard extends StatelessWidget {
                     fontSize: 14,
                   ),
                 ),
+                const SizedBox(height: 12),
+                Wrap(
+                  spacing: 8,
+                  children: [
+                    _MiniChip(label: "Reflections", value: reflections, accent: pink),
+                    _MiniChip(label: "Streak", value: streak, accent: yellow),
+                    _MiniChip(label: "Days", value: daysActive, accent: blue),
+                  ],
+                )
               ],
             ),
           ),
+        ],
+      ),
+    );
+  }
+}
+
+class _MiniChip extends StatelessWidget {
+  final String label;
+  final String value;
+  final Color accent;
+
+  const _MiniChip({
+    required this.label,
+    required this.value,
+    required this.accent,
+  });
+  @override
+  Widget build(BuildContext context) {
+    const softWhite = Color(0xFFFFFFFF);
+    const textColor = Color(0xFF94697E);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+      decoration: BoxDecoration(
+        color: softWhite.withValues(alpha: 0.6),
+        borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: accent.withValues(alpha: 0.35)),
+    ),
+    child: Row(
+      mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(value, style: const TextStyle(fontWeight: FontWeight.w900, color: textColor)),
+          const SizedBox(width: 6),
+          Text(label, style: TextStyle(color: textColor.withValues(alpha: 0.75))),
         ],
       ),
     );
