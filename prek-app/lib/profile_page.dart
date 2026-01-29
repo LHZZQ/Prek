@@ -66,6 +66,22 @@ class ProfilePage extends StatelessWidget{
                   streak: "06",
                   daysActive: "12",
                  ),
+                 const SizedBox(height: 14),
+
+                 const _FunInfoPill(
+                  leftText: "PREK",
+                  rightText: "Member since 2025",
+                ),
+                 const SizedBox(height: 18),
+
+                 const Text(
+                  "Your wellness",
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
               ],
             ),
           ),
@@ -226,6 +242,34 @@ class _MiniChip extends StatelessWidget {
           Text(value, style: const TextStyle(fontWeight: FontWeight.w900, color: textColor)),
           const SizedBox(width: 6),
           Text(label, style: TextStyle(color: textColor.withValues(alpha: 0.75))),
+        ],
+      ),
+    );
+  }
+}
+class _FunInfoPill extends StatelessWidget {
+  final String leftText;
+  final String rightText;
+
+  const _FunInfoPill({required this.leftText, required this.rightText});
+
+  @override 
+  Widget build(BuildContext context) {
+    const yellow = Color(0xFFFFC567);
+    const pink = Color(0xFFFB7DA8);
+    const blue = Color(0xFF058CD7);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(colors: [yellow, pink, blue]),
+        borderRadius: BorderRadius.circular(999),
+      ),
+      child: Row(
+        children: [
+          Text(leftText, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
+          const Spacer(),
+          Text(rightText, style: const TextStyle(color: Colors.white)),
         ],
       ),
     );
