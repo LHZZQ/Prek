@@ -95,8 +95,11 @@ class _ProfileTopCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
-    const pink = Color(0xFFFFC7E0);
-    const peach = Color(0xFFFFE4B5);
+    const pink = Color(0xFFFB7DA8);
+    //const peach = Color(0xFFFFE4B5);
+    const blue = Color(0xFF058CD7);
+    const yellow = Color(0xFFFFC567);
+
     
 
     return Container(
@@ -124,7 +127,7 @@ class _ProfileTopCard extends StatelessWidget {
                 height: 84,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  gradient: const LinearGradient(colors: [pink, peach]),
+                  gradient: const LinearGradient(colors: [pink, yellow]),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.05),
@@ -141,7 +144,7 @@ class _ProfileTopCard extends StatelessWidget {
                 child: Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: pink,
+                    color: blue,
                     shape: BoxShape.circle,
                     boxShadow: [
                       BoxShadow(
@@ -151,10 +154,34 @@ class _ProfileTopCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.auto_awesome_rounded, size: 16, color: textColor),
+                  child: const Icon(Icons.auto_awesome_rounded, size: 16, color: Colors.white),
                 ),
               ),
             ],
+          ),
+          const SizedBox(width: 14),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  displayName,
+                  style: const TextStyle(
+                    color: textColor,
+                    fontSize: 26,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Text(
+                  email,
+                  style: TextStyle(
+                    color: textColor.withValues(alpha: 0.75),
+                    fontSize: 14,
+                  ),
+                ),
+              ],
+            ),
           ),
         ],
       ),
