@@ -12,6 +12,7 @@ jobs:
     defaults:
       run:
         working-directory: prek-app
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -21,6 +22,27 @@ jobs:
         with:
           channel: stable
           cache: true
+
+      # Pub cache
+      - name: Cache Pub packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('prek-app/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
+      # Gradle cache
+      - name: Cache Gradle
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('prek-app/android/**/*.gradle*', 'prek-app/android/**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
 
       - name: Install deps
         run: flutter pub get
@@ -31,17 +53,24 @@ jobs:
       - name: Unit & widget tests
         run: flutter test
 
+      # Build Web release
       - name: Build Web (release)
         run: flutter build web --release
 
+      # Only on PRs: Android & iOS debug builds to verify native projects
       - name: Build Android (debug)
+        if: github.event_name == 'pull_request'
         run: flutter build apk --debug
+
 
   ios-build:
     runs-on: macos-latest
     defaults:
       run:
         working-directory: prek-app
+
+    if: github.event_name == 'pull_request'
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -52,8 +81,17 @@ jobs:
           channel: stable
           cache: true
 
+      - name: Cache Pub packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-pub-${{ hashFiles('prek-app/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-pub-
+
       - name: Install deps
         run: flutter pub get
 
-      - name: Build iOS (minimum)
+      - name: Build iOS
         run: flutter build ios --no-codesign
