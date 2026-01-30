@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class ProfilePage extends StatelessWidget{
   const ProfilePage({super.key});
@@ -57,7 +58,7 @@ class ProfilePage extends StatelessWidget{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: 6),
+                const SizedBox(height: kToolbarHeight + 6),
 
                 const _ProfileTopCard(
                   displayName: "Username",
@@ -376,6 +377,11 @@ class _SectionRow extends StatelessWidget {
 
     return ListTile(
       onTap: onTap,
+      contentPadding: const EdgeInsets.symmetric(
+        horizontal: 18,
+        vertical: 10,
+      ),
+      minVerticalPadding: 16,
       leading: Container(
         width: 44,
         height: 44,
