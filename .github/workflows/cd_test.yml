@@ -58,11 +58,14 @@ jobs:
       - name: Install deps
         run: flutter pub get
 
+      - name: Dart format check
+        run: dart format --output=none --set-exit-if-changed lib test
+
       - name: Static analysis
         run: flutter analyze
 
-      - name: Unit & widget tests
-        run: flutter test
+      - name: Unit & widget tests (with coverage)
+        run: flutter test --coverage
 
       # Build Web release
       - name: Build Web (release)
@@ -84,6 +87,14 @@ jobs:
       - name: Build Android (debug)
         if: github.event_name == 'pull_request' && steps.android_changes.outputs.changed == 'true'
         run: flutter build apk --debug
+
+      - name: Upload coverage artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: coverage-lcov
+          path: prek-app/coverage/lcov.info
+          if-no-files-found: ignore
 
 
   ios-build:
