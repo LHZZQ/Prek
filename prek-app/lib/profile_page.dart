@@ -82,6 +82,8 @@ class ProfilePage extends StatelessWidget{
                     fontWeight: FontWeight.w800,
                   ),
                 ),
+                const SizedBox(height: 12),
+                _SectionCard(children: [],)
               ],
             ),
           ),
@@ -272,6 +274,23 @@ class _FunInfoPill extends StatelessWidget {
           Text(rightText, style: const TextStyle(color: Colors.white)),
         ],
       ),
+    );
+  }
+}
+
+class _SectionCard extends StatelessWidget {
+  final List<Widget> children;
+  const _SectionCard({required this.children});
+
+  @override
+  Widget build(BuildContext context) {
+    const softWhite = Color(0xFFFFFFFF);
+    return Container(
+      decoration: BoxDecoration(
+        color: softWhite.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(24),
+      ),
+      child: Column(children: children),
     );
   }
 }
