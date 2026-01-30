@@ -60,7 +60,11 @@ class _LoginState extends State<Login> {
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent),
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        toolbarHeight: 0
+        ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(

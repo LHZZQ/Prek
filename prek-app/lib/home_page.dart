@@ -50,8 +50,8 @@ class HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const pink = Color(0xFFFFC7E0);
-    const peach = Color(0xFFFFE4B5);
+    // const pink = Color(0xFFFFC7E0);
+    // const peach = Color(0xFFFFE4B5);
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
 
@@ -199,13 +199,17 @@ class HomePageState extends State<HomePage> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     gradient: const LinearGradient(
-                      colors: [pink, peach],
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
+                      colors: [
+                       Color(0xFFFFC567), 
+                       Color(0xFFFB7DA8), 
+                       Color(0xFF058CD7), 
+                      ],
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pinkAccent.withValues(alpha: 0.2),
+                        color: Colors.pinkAccent.withValues(alpha: 0.25),
                         blurRadius: 15,
                         offset: const Offset(0, 6),
                       ),

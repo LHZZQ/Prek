@@ -1,5 +1,6 @@
 import 'package:_2025_prek/change_name.dart';
 import 'package:_2025_prek/login.dart';
+import 'package:_2025_prek/change_email.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatelessWidget {
@@ -99,8 +100,15 @@ class SettingsPage extends StatelessWidget {
                     ),
 
                     child: ElevatedButton(
-                      onPressed: () {},
-
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const ChangeEmail(),
+                          ),
+                        );
+                      },
+                      //save button
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
