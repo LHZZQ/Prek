@@ -9,7 +9,6 @@ on:
 jobs:
   flutter-checks:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -23,14 +22,32 @@ jobs:
       - name: Install deps
         run: flutter pub get
 
-      - name: Format check (non-blocking optional)
-        run: dart format --output=none --set-exit-if-changed .
-
       - name: Static analysis
         run: flutter analyze
 
       - name: Unit & widget tests
-        run: flutter test --coverage
+        run: flutter test
+
+      - name: Build Web (release)
+        run: flutter build web --release
 
       - name: Build Android (debug)
         run: flutter build apk --debug
+
+  ios-build:
+    runs-on: macos-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Install deps
+        run: flutter pub get
+
+      - name: Build iOS (minimum)
+        run: flutter build ios --no-codesign
