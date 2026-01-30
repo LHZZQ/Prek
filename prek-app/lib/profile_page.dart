@@ -15,6 +15,7 @@ class ProfilePage extends StatelessWidget{
     const bgBottom = Color(0xFFFFF8EE);
     
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
       appBar: AppBar( 
         backgroundColor: Colors.transparent,
