@@ -5,9 +5,9 @@ class ProfilePage extends StatelessWidget{
 
   @override 
   Widget build(BuildContext context){
-    //const pink = Color(0xFFFB7DA8);
-    //const yellow = Color(0xFFFFC567);
-    //const blue = Color(0xFF058CD7);
+  const pink = Color(0xFFFB7DA8);
+    const yellow = Color(0xFFFFC567);
+    const blue = Color(0xFF058CD7);
    // const softWhite = Color(0xFFFFFFFF); 
     const textColor = Color(0xFF94697E); 
     const bgTop = Color(0xFFFFF1F5);
@@ -83,7 +83,67 @@ class ProfilePage extends StatelessWidget{
                   ),
                 ),
                 const SizedBox(height: 12),
-                _SectionCard(children: [],)
+                _SectionCard(
+                  children:[
+                    _SectionRow(
+                      icon:Icons.auto_awesome_rounded,
+                      iconBg: pink.withValues(alpha: 0.55),
+                      title: "Affirmations saved",
+                      badgeText: "14",
+                      badgeBg: pink.withValues(alpha: 0.18),
+                      onTap: () {},
+                      ),
+                      _SectionRow(
+                        icon: Icons.local_fire_department_rounded,
+                        iconBg: yellow.withValues(alpha: 0.55),
+                        title: "Reflection streak",
+                        badgeText: "6",
+                        badgeBg: yellow.withValues(alpha: 0.20),
+                        onTap: () {},
+                      ),
+                      _SectionRow(
+                        icon: Icons.flag_rounded,
+                        iconBg: blue.withValues(alpha: 0.45),
+                        title: "Reflection goals",
+                        onTap: () {},
+                      ),
+                      _SectionRow(
+                        icon: Icons.emoji_emotions_rounded,
+                        iconBg: pink.withValues(alpha: 0.35),
+                        title: "Mood Calander",
+                        onTap: () {},
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 18),
+                  const Text(
+                    "Your Account",
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 20,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+
+                  _SectionCard(
+                    children: [
+                      _SectionRow(
+                         icon: Icons.lock_rounded,
+                         iconBg: yellow.withValues(alpha: 0.35),
+                         title: "Privacy",
+                         onTap: () {},
+                      ),
+                       _SectionRow(
+                         icon: Icons.notifications_rounded,
+                         iconBg: blue.withValues(alpha: 0.35),
+                         title: "Reminders",
+                         badgeText: "Off",
+                         badgeBg: pink.withValues(alpha: 0.16),
+                         onTap: () {},
+                       ),
+                  ],
+                ),
               ],
             ),
           ),
@@ -291,6 +351,48 @@ class _SectionCard extends StatelessWidget {
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(children: children),
+    );
+  }
+}
+class _SectionRow extends StatelessWidget {
+   final IconData icon;
+   final Color iconBg;
+   final String title;
+   final String? badgeText;
+   final Color? badgeBg;
+   final VoidCallback onTap;
+
+   const _SectionRow({
+    required this.icon,
+    required this.iconBg,
+    required this.title,
+    required this.onTap,
+    this.badgeText,
+    this.badgeBg,
+  });
+  @override
+  Widget build(BuildContext context) {
+    const textColor = Color(0xFF94697E);
+
+    return ListTile(
+      onTap: onTap,
+      leading: Container(
+        width: 44,
+        height: 44,
+        decoration: BoxDecoration(color: iconBg, borderRadius: BorderRadius.circular(14)),
+        child: Icon(icon, color: textColor),
+      ),
+      title: Text(title, style: const TextStyle(color: textColor, fontWeight: FontWeight.w800)),
+      trailing: badgeText != null
+      ? Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+        decoration: BoxDecoration(
+          color: badgeBg ?? textColor.withValues(alpha: 0.12),
+          borderRadius: BorderRadius.circular(999),
+        ),
+        child: Text(badgeText!, style: const TextStyle(color: textColor)),
+      )
+      : const Icon(Icons.chevron_right_rounded, color: textColor),
     );
   }
 }
