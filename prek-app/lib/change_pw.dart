@@ -60,9 +60,9 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                     child: TextField(
                       controller: currentPWController,
-obscureText: true,
-autocorrect: false,
-enableSuggestions: false,
+                      obscureText: true,
+                      autocorrect: false,
+                      enableSuggestions: false,
                       decoration: const InputDecoration(
                         hintText: "Current password",
                         contentPadding: EdgeInsets.all(20),
@@ -88,7 +88,9 @@ enableSuggestions: false,
                     ),
                     child: TextField(
                       controller: newPWController,
-
+                      obscureText: true,
+                      autocorrect: false,
+                      enableSuggestions: false,
                       decoration: const InputDecoration(
                         hintText: "New password",
                         contentPadding: EdgeInsets.all(20),
@@ -114,7 +116,9 @@ enableSuggestions: false,
                     ),
                     child: TextField(
                       controller: confirmPWController,
-
+                      obscureText: true,
+                      autocorrect: false,
+                      enableSuggestions: false,
                       decoration: const InputDecoration(
                         hintText: "Confirm new password ",
                         contentPadding: EdgeInsets.all(20),
