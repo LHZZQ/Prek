@@ -11,7 +11,7 @@ class _MoodPageState extends State<MoodPage> {
   static const softWhite = Color(0xFFFFFFFF);
   static const textColor = Color(0xFF94697E);
   static const pink = Color(0xFFFB7DA8);
-  //static const blue = Color(0xFF058CD7);
+  static const blue = Color(0xFF058CD7);
   static const yellow = Color(0xFFFFC567);
 
   String? selectedLabel;
@@ -119,6 +119,16 @@ class _MoodPageState extends State<MoodPage> {
                                 ),
                               ],
                             ),
+                            child: Column(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                CircleAvatar(
+                                  radius: 40,
+                                  backgroundColor: _moodBg(label),
+
+                                )
+                              ]
+                            )
 
                           ),
                           
@@ -142,5 +152,18 @@ class _MoodPageState extends State<MoodPage> {
     if (hour < 12) return "Good morning";
     if (hour < 18) return "Good afternoon";
     return "Good evening";
+  }
+
+  Color _moodBg(String label) {
+    switch (label) {
+      case "Happy":
+      case "Good":
+      return Color.lerp(softWhite, yellow, 0.55)!;
+      case "Neutral":
+      case "Confused":
+      return Color.lerp(softWhite, blue, 0.40)!;
+      default:
+      return Color.lerp(softWhite, pink, 0.45)!;
+    }
   }
 }
