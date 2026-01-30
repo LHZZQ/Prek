@@ -77,7 +77,7 @@ class _MoodPageState extends State<MoodPage> {
                   "How are you feeling\ntoday?",
                   textAlign: TextAlign.center,
                   style: TextStyle(
-                    fontSize: 30,
+                    fontSize: 33,
                     fontWeight: FontWeight.w900,
                     color: textColor,
                     height: 1.1,
@@ -171,9 +171,9 @@ class _MoodPageState extends State<MoodPage> {
                         );                     
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.black,
+                        backgroundColor: pink,
                         disabledBackgroundColor:
-                        Colors.black.withValues(alpha: 0.25),
+                        pink.withValues(alpha: 0.25),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(999),
                         ),

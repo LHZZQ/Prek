@@ -19,7 +19,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
   Widget build(BuildContext context) {
     //colors 
     const pink = Color(0xFFFFC7E0);
-    const peach = Color(0xFFFFE4B5);
+   // const peach = Color(0xFFFFE4B5);
     const textColor = Color(0xFF94697E);
 
     return Scaffold(
@@ -37,8 +37,6 @@ class _ReflectionPageState extends State<ReflectionPage> {
       ),
 
       body: Container(
-        // spacing issue
-        padding: const EdgeInsets.only(left: 20, right: 20, top: 90),
 
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -48,20 +46,35 @@ class _ReflectionPageState extends State<ReflectionPage> {
             colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
+      child: SafeArea(
+        child: LayoutBuilder(
+          builder: (context, constraints) {
+            return SingleChildScrollView(
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(minHeight: constraints.maxHeight),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 820),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    
+
+          
           children: [
+            const SizedBox(height: 30),
             const Text(
               "Take a moment to reflect on something you're grateful for today 💭", //header text
               textAlign: TextAlign.center,
               style: TextStyle(
                 color: textColor,
-                fontSize: 17,
+                fontSize: 18,
                 fontWeight: FontWeight.w500,
                 height: 1.5,
               ),
             ),
+            
 
             const SizedBox(height: 40),
 
@@ -80,7 +93,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
               ),
               child: TextField(
                 controller: _controller,
-                maxLines: 6, //enough space for a short reflection
+                maxLines: 9, //enough space for a short reflection
                 decoration: const InputDecoration(
                   hintText: "Write your reflection here...",
                   contentPadding: EdgeInsets.all(20),
@@ -92,14 +105,27 @@ class _ReflectionPageState extends State<ReflectionPage> {
             const SizedBox(height: 40),
 
             Container(
+              width: double.infinity,
+              height: 62,
               //gradient wrapper for button
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(40),
                 gradient: const LinearGradient(
-                  colors: [pink, peach],
                   begin: Alignment.centerLeft,
                   end: Alignment.centerRight,
+                  colors: [
+                    Color(0xFFFFC567), // yellow
+                    Color(0xFFFB7DA8), // pink
+                    Color(0xFF058CD7), // blue
+                  ],
                 ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.pinkAccent.withValues(alpha: 0.25),
+                    blurRadius: 15,
+                    offset: const Offset(0, 6),
+                  ),
+                ],
               ),
 
               child: ElevatedButton(
@@ -107,7 +133,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.transparent,
                   shadowColor: Colors.transparent,
-                  minimumSize: const Size(double.infinity, 55),
+                  padding: EdgeInsets.zero,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(40),
                   ),
@@ -145,12 +171,21 @@ class _ReflectionPageState extends State<ReflectionPage> {
                   style: TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
-                    fontSize: 17,
+                    fontSize: 18,
+                    ),
+                              ),
+                            ),
+                          ),
+
+                          const SizedBox(height: 30),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
-              ),
-            ),
-          ],
+              );
+            },
+          ),
         ),
       ),
     );
