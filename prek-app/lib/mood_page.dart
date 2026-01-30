@@ -72,6 +72,62 @@ class _MoodPageState extends State<MoodPage> {
                   ),
                 ),
                 const SizedBox(height: 18),
+                const Text(
+                  "How are you feeling\ntoday?",
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 30,
+                    fontWeight: FontWeight.w900,
+                    color: textColor,
+                    height: 1.1,
+                  ),
+                ),
+
+                const SizedBox(height: 22),
+
+                Expanded(
+                  child: Center(
+                    child: Wrap(
+                      spacing: 22,
+                      runSpacing: 22,
+                      alignment: WrapAlignment.center,
+                      children: moods.map((m) {
+                        //final emoji = m.$1;
+                        final label = m.$2;
+                        final isSelected = selectedLabel == label;
+
+                        return GestureDetector(
+                          onTap: () => setState(() => selectedLabel = label),
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 180),
+                            padding: const EdgeInsets.all(14),
+                            decoration: BoxDecoration(
+                              color: softWhite.withValues(
+                                alpha: isSelected ? 0.95 : 0.78),
+                              borderRadius: BorderRadius.circular(999),
+                              border: Border.all(
+                                color: isSelected
+                                  ? pink.withValues(alpha: 0.6)
+                                  : Colors.transparent,
+                                width: 2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(alpha: 0.07),
+                                  blurRadius: 18,
+                                  offset: const Offset(0, 10),
+                                ),
+                              ],
+                            ),
+
+                          ),
+                          
+                        );
+                      
+                      }).toList(),
+                    )
+                  )
+                )
               ]
             )
 
