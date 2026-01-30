@@ -58,7 +58,7 @@ class ProfilePage extends StatelessWidget{
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: kToolbarHeight + 6),
+                const SizedBox(height: kToolbarHeight - 12),
 
                 const _ProfileTopCard(
                   displayName: "Username",
@@ -116,35 +116,7 @@ class ProfilePage extends StatelessWidget{
                       ),
                     ],
                   ),
-                  const SizedBox(height: 18),
-                  const Text(
-                    "Your Account",
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 20,
-                      fontWeight: FontWeight.w800,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  _SectionCard(
-                    children: [
-                      _SectionRow(
-                         icon: Icons.lock_rounded,
-                         iconBg: yellow.withValues(alpha: 0.35),
-                         title: "Privacy",
-                         onTap: () {},
-                      ),
-                       _SectionRow(
-                         icon: Icons.notifications_rounded,
-                         iconBg: blue.withValues(alpha: 0.35),
-                         title: "Reminders",
-                         badgeText: "Off",
-                         badgeBg: pink.withValues(alpha: 0.16),
-                         onTap: () {},
-                       ),
-                  ],
-                ),
+                  const SizedBox(height: 18),                 
               ],
             ),
           ),
