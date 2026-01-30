@@ -1,19 +1,23 @@
 import 'package:_2025_prek/services/gratitude_service.dart';
 import 'package:flutter/material.dart';
 
-class ReflectionPage extends StatefulWidget {
-  const ReflectionPage({super.key});
 
-  @override
-  State<ReflectionPage> createState() => _ReflectionPageState();
-}
-
-class _ReflectionPageState extends State<ReflectionPage> {
+class ReflectionPage extends StatefulWidget { 
+  final String selectedMood;
+  const ReflectionPage({
+  super.key, 
+  required this.selectedMood,});
+ 
+  @override 
+  State<ReflectionPage> createState() => _ReflectionPageState(); 
+} 
+ 
+class _ReflectionPageState extends State<ReflectionPage> { 
   final _controller = TextEditingController(); //text controller for inputs
-
-  @override
+ 
+  @override 
   Widget build(BuildContext context) {
-    //colors
+    //colors 
     const pink = Color(0xFFFFC7E0);
     const peach = Color(0xFFFFE4B5);
     const textColor = Color(0xFF94697E);
