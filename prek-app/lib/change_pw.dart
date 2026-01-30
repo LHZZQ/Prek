@@ -60,7 +60,9 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                     child: TextField(
                       controller: currentPWController,
-
+obscureText: true,
+autocorrect: false,
+enableSuggestions: false,
                       decoration: const InputDecoration(
                         hintText: "Current password",
                         contentPadding: EdgeInsets.all(20),
