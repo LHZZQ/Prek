@@ -68,37 +68,46 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   ),
 
                   SizedBox(height: 50),
+
                   //save button
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       gradient: const LinearGradient(
-                        colors: [
-                          Color.fromRGBO(255, 199, 224, 1),
-                          Color.fromRGBO(255, 228, 181, 1),
-                        ],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
-
                     child: ElevatedButton(
-                      onPressed: () {},
-
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
                         minimumSize: const Size(double.infinity, 55),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
+                          borderRadius: BorderRadius.circular(30),
                         ),
                       ),
+                      onPressed: () {},
+
                       child: const Text(
                         "Save",
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
                           fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.3,
                         ),
                       ),
                     ),
