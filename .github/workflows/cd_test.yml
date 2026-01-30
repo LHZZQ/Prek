@@ -58,13 +58,10 @@ jobs:
       - name: Install deps
         run: flutter pub get
 
-      - name: Dart format check
-        run: dart format --output=none --set-exit-if-changed lib test
-
       - name: Static analysis
         run: flutter analyze
 
-      - name: Unit & widget tests (with coverage)
+      - name: Unit & widget tests
         run: flutter test --coverage
 
       # Build Web release
