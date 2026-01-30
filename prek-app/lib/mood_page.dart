@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:_2025_prek/reflection_page.dart';
 
 class MoodPage extends StatefulWidget {
   const MoodPage({super.key});
@@ -28,12 +29,12 @@ class _MoodPageState extends State<MoodPage> {
   ];
 
   @override
-  Widget build(BuildContext) {
+  Widget build(BuildContext context) {
     final bgTop = Color.lerp(softWhite, pink, 0.12)!;
     final bgBottom = Color.lerp(softWhite, yellow, 0.14)!;
 
     return Scaffold(
-      backgroundColor: Colors.transparent,
+      backgroundColor: bgTop,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -92,7 +93,7 @@ class _MoodPageState extends State<MoodPage> {
                       runSpacing: 22,
                       alignment: WrapAlignment.center,
                       children: moods.map((m) {
-                        //final emoji = m.$1;
+                        final emoji = m.$1;
                         final label = m.$2;
                         final isSelected = selectedLabel == label;
 
@@ -125,25 +126,76 @@ class _MoodPageState extends State<MoodPage> {
                                 CircleAvatar(
                                   radius: 40,
                                   backgroundColor: _moodBg(label),
+                                  child: Text(
+                                    emoji,
+                                    style: const TextStyle(fontSize: 32),
+                                  ),
 
-                                )
-                              ]
-                            )
+                                ),
+                                const SizedBox(height: 8),
+                                Text(
+                                  label,
+                                  style: TextStyle(
+                                  color: textColor,
+                                  fontWeight: isSelected
+                                    ? FontWeight.w900
+                                    : FontWeight.w700,
+                                  ),
+                                ),
+                              ],
+                            ),
 
                           ),
                           
                         );
                       
                       }).toList(),
-                    )
-                  )
-                )
-              ]
-            )
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 14),
+                SizedBox(
+                  width: double.infinity,
+                  height: 56,
+                  child: ElevatedButton(
+                    onPressed: selectedLabel == null
+                      ? null
+                      : () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ReflectionPage(
+                              selectedMood: selectedLabel!,
+                            ),
+                          ),
+                        );                     
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.black,
+                        disabledBackgroundColor:
+                        Colors.black.withValues(alpha: 0.25),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        elevation: 0,
+                      ),
+                      child: const Text(
+                        "Next",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                        ),
+                      ),
+                  ),
+                ),
+                const SizedBox(height: 18),
+              ],
+            ),
 
-          )
-        )
-      )
+          ),
+        ),
+      ),
     );
   
   }
