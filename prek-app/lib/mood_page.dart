@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/reflection_page.dart';
 
+
+
 class MoodPage extends StatefulWidget {
   const MoodPage({super.key});
 
@@ -20,17 +22,15 @@ class _MoodPageState extends State<MoodPage> {
   String? selectedLabel;
 
   final moods = const [
-
-    ('😊', 'Happy'),
-    ('🙂', 'Good'),
-    ('😐', 'Neutral'),
-    ('😕', 'Confused'),
-    ('😔', 'Sad'),
-    ('😣', 'Overwhelmed'),
-    ('😤', 'Frustrated'),
-    ('😡', 'Angry'),
-
-  ];
+  (Icons.sentiment_very_satisfied_rounded, 'Happy'),
+  (Icons.sentiment_satisfied_rounded, 'Good'),
+  (Icons.sentiment_neutral_rounded, 'Neutral'),
+  (Icons.psychology_alt_rounded, 'Confused'),
+  (Icons.sentiment_dissatisfied_rounded, 'Sad'),
+  (Icons.warning_amber_rounded, 'Overwhelmed'),
+  (Icons.whatshot_rounded, 'Frustrated'),
+  (Icons.mood_bad_rounded, 'Angry'),
+];
 
 
 
@@ -132,8 +132,7 @@ class _MoodPageState extends State<MoodPage> {
                       alignment: WrapAlignment.center,
                       children: moods.map((m) {
 
-                        final emoji = m.$1;
-
+                        final icon = m.$1;
                         final label = m.$2;
 
                         final isSelected = selectedLabel == label;
@@ -180,10 +179,11 @@ class _MoodPageState extends State<MoodPage> {
 
                                   radius: 40,
                                   backgroundColor: _moodBg(label),
-                                  child: Text(
+                                  child: Icon(
 
-                                    emoji,
-                                    style: const TextStyle(fontSize: 32),
+                                    icon,
+                                    size: 38,
+                                    color: textColor,
 
                                   ),
 
