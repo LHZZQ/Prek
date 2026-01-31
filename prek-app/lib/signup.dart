@@ -27,8 +27,6 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     const pink = Color(0xFFFFC7E0);
-    const peach = Color(0xFFFFE4B5);
-
     const textColor = Color(0xFF94697E);
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent),
@@ -175,19 +173,52 @@ class _SignUpState extends State<SignUp> {
 
                   SizedBox(height: 30),
 
-                  //signup button
-                  TextButton(
-                    style: TextButton.styleFrom(
-                      foregroundColor: textColor,
-                      backgroundColor: peach,
-                      side: BorderSide(color: peach),
+                  //login button
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      gradient: const LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
-                    child: Text('Sign Up', style: TextStyle(fontSize: 20)),
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        print("Success!");
-                      }
-                    },
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          print("Success!");
+                        }
+                      },
+
+                      child: const Text(
+                        "Sign Up",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
