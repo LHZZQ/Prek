@@ -56,15 +56,14 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     const pink = Color(0xFFFFC7E0);
-    const peach = Color(0xFFFFE4B5);
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        toolbarHeight: 0
-        ),
+        toolbarHeight: 0,
+      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -173,83 +172,151 @@ class _LoginState extends State<Login> {
                       ),
                     ),
 
-                  //Forgot Password
-                  Padding(
-                    padding: EdgeInsets.only(right: 10),
-                    child: Align(
-                      alignment: Alignment.center,
-                      child: TextButton(
-                        child: Text(
-                          "Forgot Password",
-                          style: TextStyle(
-                            color: textColor,
-                            fontWeight: FontWeight.bold,
-                            decoration: TextDecoration.underline,
-                          ),
-                        ),
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const ForgotPW(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-
                   SizedBox(height: 10),
 
-                  //login button
+                  //Forgot Password
                   TextButton(
                     style: TextButton.styleFrom(
-                      foregroundColor: textColor,
-                      backgroundColor: peach,
-                      side: BorderSide(color: peach),
+                      padding: EdgeInsets.only(left: 20),
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
+                    child: Text(
+                      "Forgot Password",
+                      style: TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                      ),
                     ),
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => const ForgotPW(),
                         ),
                       );
                     },
-                    child: isLoading
-                        ? SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: CircularProgressIndicator(
-                              color: textColor,
-                              strokeWidth: 2,
-                            ),
-                          )
-                        : Text('Login', style: TextStyle(fontSize: 18)),
                   ),
 
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
 
-                  //sign in with google button
-                  ElevatedButton.icon(
-                    style: TextButton.styleFrom(
-                      foregroundColor: textColor,
-                      backgroundColor: peach,
-
-                      side: BorderSide(color: peach),
+                  //login button
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      gradient: const LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
 
-                    icon: Image(
-                      image: AssetImage('images/google_logo.png'),
-                      height: 24,
+                      child: const Text(
+                        "Login",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
                     ),
+                  ),
 
-                    label: Text(
-                      'Sign in with Google',
-                      style: TextStyle(fontSize: 18),
+                  SizedBox(height: 15),
+
+                  ///sign in with google button
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      gradient: const LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
 
-                    onPressed: () {},
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Image.asset(
+                            'images/google_logo.png',
+                            height: 24,
+                            width: 24,
+                          ),
+
+                          const SizedBox(width: 20),
+
+                          const Text(
+                            "Sign in with google",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
 
                   SizedBox(height: 20),
@@ -266,6 +333,11 @@ class _LoginState extends State<Login> {
 
                   //Sign up
                   TextButton(
+                    style: TextButton.styleFrom(
+                      padding: EdgeInsets.zero,
+                      minimumSize: Size.zero,
+                      tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                    ),
                     child: Text(
                       "Sign up",
                       style: TextStyle(
