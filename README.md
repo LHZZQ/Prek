@@ -75,13 +75,16 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 ## Project Structure
 ```
 2025-Prek
-├─ .github/workflows (Continuous Integration workflows and PR templates) 
-├─ docs/minutes (Documentation and meeting minutes)
-├─ prek-app (Project root with all source code)
-├─ AI Tools.md
-├─ ETHICS.md
-├─ LICENSE
-└─ README.md
+├─ .github/
+│  ├─ workflows/     # CI / CD pipelines (Flutter checks, tests, etc.)
+│  └─ PULL_REQUEST_TEMPLATE.md
+├─ docs/minutes      # Documentation and meeting minutes
+├─ prek-app          # Project root with all source code
+├─ AI Tools.md       # AI usage disclosure and coverage
+├─ CONTRIBUTING.md   # Contribution guidelines and development workflow
+├─ ETHICS.md         # Ethical considerations and responsible design
+├─ LICENSE           # Project license (MIT)
+└─ README.md         # Project overview and setup instructions
 ```
 
 ## Tech Stack  
