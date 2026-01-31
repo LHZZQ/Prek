@@ -11,38 +11,27 @@ class MoodPage extends StatefulWidget {
 class _MoodPageState extends State<MoodPage> {
 
   static const softWhite = Color(0xFFFFFFFF);
-
   static const textColor = Color(0xFF94697E);
-
   static const pink = Color(0xFFFB7DA8);
-
   static const blue = Color(0xFF058CD7);
-
   static const yellow = Color(0xFFFFC567);
 
 
   String? selectedLabel;
 
-
   final moods = const [
 
     ('😊', 'Happy'),
-
     ('🙂', 'Good'),
-
     ('😐', 'Neutral'),
-
     ('😕', 'Confused'),
-
     ('😔', 'Sad'),
-
     ('😣', 'Overwhelmed'),
-
     ('😤', 'Frustrated'),
-
     ('😡', 'Angry'),
 
   ];
+
 
 
   @override
@@ -50,89 +39,70 @@ class _MoodPageState extends State<MoodPage> {
   Widget build(BuildContext context) {
 
     final bgTop = Color.lerp(softWhite, pink, 0.12)!;
-
     final bgBottom = Color.lerp(softWhite, yellow, 0.14)!;
 
-
     return Scaffold(
-
       backgroundColor: bgTop,
-
       appBar: AppBar(
 
         backgroundColor: Colors.transparent,
-
         elevation: 0,
-
         iconTheme: const IconThemeData(color: textColor),
 
       ),
 
 
+
       body: Container(
-
         width: double.infinity,
-
         decoration: BoxDecoration(
-
           gradient: LinearGradient(
 
             begin: Alignment.topCenter,
-
             end: Alignment.bottomCenter,
 
             colors: [bgTop, bgBottom],
 
           ),
 
+
         ),
+
+
 
 
         child: SafeArea(
 
           child: Padding(
-
             padding: const EdgeInsets.symmetric(horizontal: 22),
 
             child: Column(
-
               children: [
-
                 const SizedBox(height: 18),
-
 
                 Container(
 
                   padding:
-
                     const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
-
                   decoration: BoxDecoration(
-
                     color: softWhite.withValues(alpha: 0.75),
-
                     borderRadius: BorderRadius.circular(999),
-
 
                 ),
 
-
                 child: Text(
-
                   _greeting(),
-
                   style: const TextStyle(
-
                     color: textColor,
-
                     fontWeight: FontWeight.w700,
 
                     ),
 
+
                   ),
 
-                ),
 
+                ),
 
                 const SizedBox(height: 18),
 
@@ -141,36 +111,25 @@ class _MoodPageState extends State<MoodPage> {
                   "How are you feeling\ntoday?",
 
                   textAlign: TextAlign.center,
-
                   style: TextStyle(
-
                     fontSize: 33,
-
                     fontWeight: FontWeight.w900,
-
                     color: textColor,
-
                     height: 1.1,
 
                   ),
 
-                ),
 
+                ),
 
                 const SizedBox(height: 22),
 
                 Expanded(
-
                   child: Center(
-
                     child: Wrap(
-
                       spacing: 22,
-
                       runSpacing: 22,
-
                       alignment: WrapAlignment.center,
-
                       children: moods.map((m) {
 
                         final emoji = m.$1;
@@ -179,86 +138,64 @@ class _MoodPageState extends State<MoodPage> {
 
                         final isSelected = selectedLabel == label;
 
-
                         return GestureDetector(
 
                           onTap: () => setState(() => selectedLabel = label),
-
                           child: AnimatedContainer(
-
                             duration: const Duration(milliseconds: 180),
-
                             padding: const EdgeInsets.all(14),
-
                             decoration: BoxDecoration(
-
                               color: softWhite.withValues(
-
                                 alpha: isSelected ? 0.95 : 0.78),
-
                               borderRadius: BorderRadius.circular(999),
 
                               border: Border.all(
-
                                 color: isSelected
 
                                   ? pink.withValues(alpha: 0.6)
-
                                   : Colors.transparent,
 
                                 width: 2,
-
                               ),
 
                               boxShadow: [
-
                                 BoxShadow(
-
                                   color: Colors.black.withValues(alpha: 0.07),
-
                                   blurRadius: 18,
-
                                   offset: const Offset(0, 10),
 
                                 ),
 
+
                               ],
+
 
                             ),
 
                             child: Column(
 
                               mainAxisSize: MainAxisSize.min,
-
                               children: [
-
                                 CircleAvatar(
 
                                   radius: 40,
-
                                   backgroundColor: _moodBg(label),
-
                                   child: Text(
 
                                     emoji,
-
                                     style: const TextStyle(fontSize: 32),
 
                                   ),
 
 
                                 ),
-
                                 const SizedBox(height: 8),
 
                                 Text(
 
                                   label,
-
                                   style: TextStyle(
-
                                   color: textColor,
-
                                   fontWeight: isSelected
 
                                     ? FontWeight.w900
@@ -267,55 +204,55 @@ class _MoodPageState extends State<MoodPage> {
 
                                   ),
 
+
                                 ),
+
 
                               ],
 
-                            ),
 
+                            ),
 
                           ),
                           
                         );
-                      
+                    
+                    
                       }).toList(),
+
 
                     ),
 
+
                   ),
+
 
                 ),
 
 
                 const SizedBox(height: 14),
-
                 SizedBox(
 
                   width: double.infinity,
-
                   height: 56,
-
                   child: ElevatedButton(
 
                     onPressed: selectedLabel == null
 
                       ? null
-
                       : () {
 
                         Navigator.push(
-
                           context,
-
                           MaterialPageRoute(
 
                             builder: (_) => ReflectionPage(
-
                               selectedMood: selectedLabel!,
 
                             ),
 
                           ),
+
 
                         );                     
 
@@ -324,17 +261,13 @@ class _MoodPageState extends State<MoodPage> {
                       style: ElevatedButton.styleFrom(
 
                         backgroundColor: pink,
-
                         disabledBackgroundColor:
-
                         pink.withValues(alpha: 0.25),
-
                         shape: RoundedRectangleBorder(
 
                           borderRadius: BorderRadius.circular(999),
 
                         ),
-
                         elevation: 0,
 
                       ),
@@ -344,21 +277,18 @@ class _MoodPageState extends State<MoodPage> {
                         "Next",
 
                         style: TextStyle(
-
                           color: Colors.white,
-
                           fontWeight: FontWeight.w900,
-
                           fontSize: 16,
 
                         ),
 
                       ),
 
+
                   ),
 
                 ),
-
                 const SizedBox(height: 18),
 
               ],
@@ -369,6 +299,7 @@ class _MoodPageState extends State<MoodPage> {
           ),
 
         ),
+
 
       ),
 
@@ -382,12 +313,12 @@ class _MoodPageState extends State<MoodPage> {
     final hour = DateTime.now().hour;
 
     if (hour < 12) return "Good morning";
-
     if (hour < 18) return "Good afternoon";
-
     return "Good evening";
 
   }
+
+
 
 
   Color _moodBg(String label) {
@@ -395,13 +326,11 @@ class _MoodPageState extends State<MoodPage> {
     switch (label) {
 
       case "Happy":
-
       case "Good":
 
       return Color.lerp(softWhite, yellow, 0.55)!;
 
       case "Neutral":
-
       case "Confused":
 
       return Color.lerp(softWhite, blue, 0.40)!;
