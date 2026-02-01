@@ -46,16 +46,31 @@ class SettingsPage extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       gradient: const LinearGradient(
-                        colors: [
-                          Color.fromRGBO(255, 199, 224, 1),
-                          Color.fromRGBO(255, 228, 181, 1),
-                        ],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
-
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -65,42 +80,68 @@ class SettingsPage extends StatelessWidget {
                         );
                       },
 
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                      ),
-                      child: const Text(
-                        "Change Name",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(Icons.person, color: Colors.white, size: 30),
+
+                          const SizedBox(width: 20),
+
+                          const Text(
+                            "Change Name",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+
+                          Spacer(),
+
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ],
                       ),
                     ),
                   ),
 
                   SizedBox(height: 20),
 
-                  //change email
+                  //Change Email
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       gradient: const LinearGradient(
-                        colors: [
-                          Color.fromRGBO(255, 199, 224, 1),
-                          Color.fromRGBO(255, 228, 181, 1),
-                        ],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
-
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -109,43 +150,69 @@ class SettingsPage extends StatelessWidget {
                           ),
                         );
                       },
-                      //save button
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                      ),
-                      child: const Text(
-                        "Change Email",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
+
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(Icons.email, color: Colors.white, size: 30),
+
+                          const SizedBox(width: 20),
+
+                          const Text(
+                            "Change Email",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+
+                          Spacer(),
+
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ],
                       ),
                     ),
                   ),
 
                   SizedBox(height: 20),
 
-                  //change password
+                  //
                   Container(
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       gradient: const LinearGradient(
-                        colors: [
-                          Color.fromRGBO(255, 199, 224, 1),
-                          Color.fromRGBO(255, 228, 181, 1),
-                        ],
                         begin: Alignment.centerLeft,
                         end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
                     ),
-
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -154,22 +221,33 @@ class SettingsPage extends StatelessWidget {
                           ),
                         );
                       },
-                      //save button
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(40),
-                        ),
-                      ),
-                      child: const Text(
-                        "Change Password",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20,
-                        ),
+
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.max,
+                        children: [
+                          Icon(Icons.lock, color: Colors.white, size: 30),
+
+                          const SizedBox(width: 20),
+
+                          const Text(
+                            "Change Password",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              letterSpacing: 0.3,
+                            ),
+                          ),
+
+                          Spacer(),
+
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            color: Colors.white,
+                            size: 30,
+                          ),
+                        ],
                       ),
                     ),
                   ),
