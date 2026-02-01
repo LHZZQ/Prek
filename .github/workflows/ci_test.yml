@@ -1,4 +1,4 @@
-name: Continuous Integration - Flutter
+name: CI tests
 
 on:
   pull_request:
