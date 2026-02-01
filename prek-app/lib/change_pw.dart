@@ -10,6 +10,9 @@ class _ChangePWState extends State<ChangePW> {
   final TextEditingController currentPWController = TextEditingController();
   final TextEditingController newPWController = TextEditingController();
   final TextEditingController confirmPWController = TextEditingController();
+  bool isPasswordVisible1 = true;
+  bool isPasswordVisible2 = true;
+  bool isPasswordVisible3 = true;
 
   @override
   Widget build(BuildContext context) {
@@ -58,16 +61,28 @@ class _ChangePWState extends State<ChangePW> {
                         ),
                       ],
                     ),
-                    child: TextField(
+                    child: TextFormField(
                       controller: currentPWController,
-                      obscureText: true,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "Current password",
-                        contentPadding: EdgeInsets.all(20),
+                        contentPadding: const EdgeInsets.all(20),
                         border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: isPasswordVisible1
+                              ? const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink,
+                                )
+                              : const Icon(
+                                  Icons.visibility,
+                                  color: Colors.pink,
+                                ),
+                          onPressed: () => setState(
+                            () => isPasswordVisible1 = !isPasswordVisible1,
+                          ),
+                        ),
                       ),
+                      obscureText: isPasswordVisible1,
                     ),
                   ),
 
@@ -86,16 +101,28 @@ class _ChangePWState extends State<ChangePW> {
                         ),
                       ],
                     ),
-                    child: TextField(
+                    child: TextFormField(
                       controller: newPWController,
-                      obscureText: true,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
                         hintText: "New password",
-                        contentPadding: EdgeInsets.all(20),
+                        contentPadding: const EdgeInsets.all(20),
                         border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: isPasswordVisible2
+                              ? const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink,
+                                )
+                              : const Icon(
+                                  Icons.visibility,
+                                  color: Colors.pink,
+                                ),
+                          onPressed: () => setState(
+                            () => isPasswordVisible2 = !isPasswordVisible2,
+                          ),
+                        ),
                       ),
+                      obscureText: isPasswordVisible2,
                     ),
                   ),
 
@@ -114,16 +141,28 @@ class _ChangePWState extends State<ChangePW> {
                         ),
                       ],
                     ),
-                    child: TextField(
+                    child: TextFormField(
                       controller: confirmPWController,
-                      obscureText: true,
-                      autocorrect: false,
-                      enableSuggestions: false,
-                      decoration: const InputDecoration(
-                        hintText: "Confirm new password ",
-                        contentPadding: EdgeInsets.all(20),
+                      decoration: InputDecoration(
+                        hintText: "Confirm new password",
+                        contentPadding: const EdgeInsets.all(20),
                         border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: isPasswordVisible3
+                              ? const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink,
+                                )
+                              : const Icon(
+                                  Icons.visibility,
+                                  color: Colors.pink,
+                                ),
+                          onPressed: () => setState(
+                            () => isPasswordVisible3 = !isPasswordVisible3,
+                          ),
+                        ),
                       ),
+                      obscureText: isPasswordVisible3,
                     ),
                   ),
 
