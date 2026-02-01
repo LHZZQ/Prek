@@ -1,0 +1,222 @@
+import 'package:flutter/material.dart';
+
+class ChangePW extends StatefulWidget {
+  const ChangePW({super.key});
+  @override
+  State<ChangePW> createState() => _ChangePWState();
+}
+
+class _ChangePWState extends State<ChangePW> {
+  final TextEditingController currentPWController = TextEditingController();
+  final TextEditingController newPWController = TextEditingController();
+  final TextEditingController confirmPWController = TextEditingController();
+  bool isPasswordVisible1 = true;
+  bool isPasswordVisible2 = true;
+  bool isPasswordVisible3 = true;
+
+  @override
+  Widget build(BuildContext context) {
+    const textColor = Color(0xFF94697E);
+    const topBarColor = Color(0xFFFFF1F5);
+
+    return Scaffold(
+      backgroundColor: topBarColor,
+      appBar: AppBar(
+        title: const Text(
+          'Settings',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: topBarColor,
+        elevation: 0,
+        foregroundColor: textColor,
+      ),
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+          ),
+        ),
+
+        child: Center(
+          child: Padding(
+            padding: EdgeInsets.symmetric(horizontal: 25),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  //logo
+                  Image(image: AssetImage('images/prek_logo.png')),
+
+                  //current password
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: currentPWController,
+                      decoration: InputDecoration(
+                        hintText: "Current password",
+                        contentPadding: const EdgeInsets.all(20),
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: isPasswordVisible1
+                              ? const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink,
+                                )
+                              : const Icon(
+                                  Icons.visibility,
+                                  color: Colors.pink,
+                                ),
+                          onPressed: () => setState(
+                            () => isPasswordVisible1 = !isPasswordVisible1,
+                          ),
+                        ),
+                      ),
+                      obscureText: isPasswordVisible1,
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  //new password
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: newPWController,
+                      decoration: InputDecoration(
+                        hintText: "New password",
+                        contentPadding: const EdgeInsets.all(20),
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: isPasswordVisible2
+                              ? const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink,
+                                )
+                              : const Icon(
+                                  Icons.visibility,
+                                  color: Colors.pink,
+                                ),
+                          onPressed: () => setState(
+                            () => isPasswordVisible2 = !isPasswordVisible2,
+                          ),
+                        ),
+                      ),
+                      obscureText: isPasswordVisible2,
+                    ),
+                  ),
+
+                  SizedBox(height: 20),
+
+                  //confirm password
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white70,
+                      borderRadius: BorderRadius.circular(20),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          blurRadius: 6,
+                          offset: Offset(0, 3),
+                        ),
+                      ],
+                    ),
+                    child: TextFormField(
+                      controller: confirmPWController,
+                      decoration: InputDecoration(
+                        hintText: "Confirm new password",
+                        contentPadding: const EdgeInsets.all(20),
+                        border: InputBorder.none,
+                        suffixIcon: IconButton(
+                          icon: isPasswordVisible3
+                              ? const Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink,
+                                )
+                              : const Icon(
+                                  Icons.visibility,
+                                  color: Colors.pink,
+                                ),
+                          onPressed: () => setState(
+                            () => isPasswordVisible3 = !isPasswordVisible3,
+                          ),
+                        ),
+                      ),
+                      obscureText: isPasswordVisible3,
+                    ),
+                  ),
+
+                  SizedBox(height: 50),
+
+                  //save button
+                  Container(
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(40),
+                      gradient: const LinearGradient(
+                        begin: Alignment.centerLeft,
+                        end: Alignment.centerRight,
+                        colors: [
+                          Color(0xFFFFC567),
+                          Color(0xFFFB7DA8),
+                          Color(0xFF058CD7),
+                        ],
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.pinkAccent.withValues(alpha: 0.25),
+                          blurRadius: 15,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.transparent,
+                        shadowColor: Colors.transparent,
+                        minimumSize: const Size(double.infinity, 55),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(30),
+                        ),
+                      ),
+                      onPressed: () {},
+
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(
+                          fontSize: 20,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+}
