@@ -58,6 +58,14 @@ jobs:
       - name: Install deps
         run: flutter pub get
 
+      # Create fake .env
+      - name: Create fake .env for CI
+        run: |
+          if [ ! -f .env ]; then
+            echo "SUPABASE_URL=https://example.supabase.co" > .env
+            echo "SUPABASE_ANON_KEY=example_key" >> .env
+          fi
+
       - name: Static analysis
         run: flutter analyze
 
@@ -123,6 +131,14 @@ jobs:
 
       - name: Install deps
         run: flutter pub get
+
+      # Create fake .env
+      - name: Create fake .env for CI
+        run: |
+          if [ ! -f .env ]; then
+            echo "SUPABASE_URL=https://example.supabase.co" > .env
+            echo "SUPABASE_ANON_KEY=example_key" >> .env
+          fi
 
       - name: Build iOS
         run: flutter build ios --no-codesign

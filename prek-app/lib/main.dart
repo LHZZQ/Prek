@@ -6,10 +6,28 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await dotenv.load();
+  bool envLoaded = false;
+  try {
+    await dotenv.load(fileName: ".env");
+    //debugPrint('dotenv keys: ${dotenv.env.keys.toList()}');
+    //debugPrint('SUPABASE_URL: ${dotenv.env['SUPABASE_URL']}');
+    envLoaded = true;
+  } catch (_) {
+    envLoaded = false;
+  }
+  final supabaseUrl = envLoaded ? dotenv.env['SUPABASE_URL'] : null;
+  final supabaseAnonKey = envLoaded ? dotenv.env['SUPABASE_ANON_KEY'] : null;
+
+
+   if (supabaseUrl == null || supabaseUrl.isEmpty || supabaseAnonKey == null || supabaseAnonKey.isEmpty) {
+    //throw Exception('Supabase URL or Anon Key is not set in environment variables.');
+    runApp(const MyApp());
+    return;
+  }
+
   await Supabase.initialize(
-    url: dotenv.env['SUPABASE_URL']!,
-    anonKey: dotenv.env['SUPABASE_ANON_KEY']!,
+    url: supabaseUrl,
+    anonKey: supabaseAnonKey,
   );
 
   runApp(const MyApp());
