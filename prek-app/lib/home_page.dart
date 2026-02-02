@@ -1,7 +1,7 @@
 import 'package:_2025_prek/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'dart:math';
-import 'package:_2025_prek/reflection_page.dart';
+import 'package:_2025_prek/mood_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 
@@ -28,6 +28,22 @@ class HomePageState extends State<HomePage> {
     "I choose to give myself grace, even when faced with challenges.",
     "I will continue to grow into the best version of myself.",
     "I surround myself with people who make me laugh and appreciate my presence.",
+    "I'm allowed to move at my own pace today.",
+    "Nothing is wrong with taking things slowly.",
+    "I can give myself grace and still grow.",
+    "I don't need to have everything figured out.",
+    "I'm being kinder to myself than I was before.",
+    "It's okay if today feels a little heavy.",
+    "This moment doesn't define the whole day.",
+    "Tomorrow doesn't need to be planned yet.",
+    "I can take today one decision at a time.",
+    "I'm learning how to listen to myself.",
+    "Today, showing up is enough.",
+    "I'm allowed to change my mind.",
+    "I can pause without falling behind.",
+    "I can handle what comes next.",
+
+
   ];
 
   late String dailyAffirmation;
@@ -169,7 +185,7 @@ class HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 30),
 
-                //info row (using Row to stylistically place the icon flowers on either side of the text)
+                //info row
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -194,7 +210,8 @@ class HomePageState extends State<HomePage> {
 
                 const SizedBox(height: 50),
 
-                //reflection button
+                //start reflection button on homepage
+                //now flow is home->mood->reflection
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
@@ -231,17 +248,10 @@ class HomePageState extends State<HomePage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) {
-                            return const ReflectionPage();
-                          },
+                          builder: (context) => const MoodPage(),
                         ),
                       );
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Reflection feature coming soon!'),
-                          duration: Duration(seconds: 2),
-                        ),
-                      );
+                      
                     },
                     child: const Text(
                       "Start Reflection",
