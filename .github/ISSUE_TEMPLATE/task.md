@@ -1,7 +1,7 @@
 ---
-name: Task / Enhancement
+name: Task / Enhancement / Bug
 about: Create a new task, feature, or improvement request
-title: "[Task] "
+title: []
 labels: []
 assignees: []
 ---
@@ -13,7 +13,6 @@ Briefly describe what this task/feature is about.
 Example:
 "Add validation to the login form to prevent empty submissions."
 -->
-
 N/A
 
 ### **💡 Details**
