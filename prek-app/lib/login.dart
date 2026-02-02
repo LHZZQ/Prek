@@ -84,26 +84,6 @@ class _LoginState extends State<Login> {
                   //image
                   Image(image: AssetImage('images/prek_logo.png')),
 
-                  //login
-                  Text(
-                    'Login',
-                    textDirection: TextDirection.ltr,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
-                    ),
-                  ),
-
-                  //sign in to continue
-                  Text(
-                    'Sign in to continue',
-                    textDirection: TextDirection.ltr,
-                    style: TextStyle(fontSize: 20, color: textColor),
-                  ),
-
-                  SizedBox(height: 30),
-
                   //email
                   SizedBox(
                     width: 400,
@@ -113,7 +93,11 @@ class _LoginState extends State<Login> {
                         hintText: 'hello@example.com',
 
                         labelText: 'Email',
-                        icon: Icon(Icons.mail_outline, color: pink, size: 40),
+                        icon: Icon(
+                          Icons.mail_outline,
+                          color: Colors.pink[200],
+                          size: 40,
+                        ),
 
                         suffixIcon: emailController.text.isEmpty
                             ? Container(width: 0)
@@ -143,18 +127,24 @@ class _LoginState extends State<Login> {
                         hintText: 'Your Password',
                         labelText: 'Password',
                         //errorText: 'Password entered is wrong',
-                        icon: Icon(Icons.lock, color: pink, size: 40),
+                        icon: Icon(
+                          Icons.lock,
+                          color: Colors.pink[200],
+                          size: 40,
+                        ),
                         suffixIcon: IconButton(
                           icon: isPasswordVisible
-                              ? Icon(Icons.visibility_off, color: pink)
-                              : Icon(Icons.visibility, color: pink),
+                              ? Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink[200],
+                                )
+                              : Icon(Icons.visibility, color: Colors.pink[200]),
                           onPressed: () => setState(
                             () => isPasswordVisible = !isPasswordVisible,
                           ),
                         ),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color: softWhite),
                         ),
                       ),
                       obscureText: !isPasswordVisible,
@@ -177,7 +167,7 @@ class _LoginState extends State<Login> {
                   //Forgot Password
                   TextButton(
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.only(left: 20),
+                      padding: EdgeInsets.only(left: 10),
                       minimumSize: Size.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
@@ -226,7 +216,7 @@ class _LoginState extends State<Login> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
+                        minimumSize: const Size(400, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -279,7 +269,7 @@ class _LoginState extends State<Login> {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
+                        minimumSize: const Size(400, 50),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -334,7 +324,6 @@ class _LoginState extends State<Login> {
                   //Sign up
                   TextButton(
                     style: TextButton.styleFrom(
-                      padding: EdgeInsets.zero,
                       minimumSize: Size.zero,
                       tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                     ),
