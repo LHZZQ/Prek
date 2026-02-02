@@ -1,7 +1,8 @@
-import 'package:_2025_prek/forgotpw.dart';
+// import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/home_page.dart';
+// import 'package:_2025_prek/mood_page.dart';
 //import 'package:_2025_prek/services/auth_service.dart';
 
 class Login extends StatefulWidget {
@@ -181,7 +182,7 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const ForgotPW(),
+                          builder: (context) => const HomePage(),
                         ),
                       );
                     },
