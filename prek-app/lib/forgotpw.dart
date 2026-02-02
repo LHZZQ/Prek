@@ -24,9 +24,6 @@ class _ForgotPWState extends State<ForgotPW> {
 
   @override
   Widget build(BuildContext context) {
-    const pink = Color(0xFFFFC7E0);
-    const peach = Color(0xFFFFE4B5);
-    const textColor = Color(0xFF94697E);
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent),
       body: Container(
@@ -40,31 +37,11 @@ class _ForgotPWState extends State<ForgotPW> {
 
         child: Center(
           child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 32),
+            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
             child: Column(
               children: [
                 //image
                 Image(image: AssetImage('images/prek_logo.png')),
-
-                //forgot password
-                Text(
-                  'Forgot Password',
-                  textDirection: TextDirection.ltr,
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                  ),
-                ),
-
-                //new password
-                Text(
-                  'New Password',
-                  textDirection: TextDirection.ltr,
-                  style: TextStyle(fontSize: 20, color: textColor),
-                ),
-
-                SizedBox(height: 30),
 
                 //email
                 SizedBox(
@@ -76,7 +53,7 @@ class _ForgotPWState extends State<ForgotPW> {
                       labelText: 'Email',
                       icon: Icon(
                         CupertinoIcons.envelope,
-                        color: pink,
+                        color: Colors.pink[200],
                         size: 40,
                       ),
 
@@ -111,11 +88,14 @@ class _ForgotPWState extends State<ForgotPW> {
                       hintText: 'Your Password',
                       labelText: 'Password',
                       //errorText: 'Password entered is wrong',
-                      icon: Icon(CupertinoIcons.padlock, color: pink, size: 40),
+                      icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
                       suffixIcon: IconButton(
                         icon: isPasswordVisible
-                            ? Icon(Icons.visibility_off, color: pink)
-                            : Icon(Icons.visibility, color: pink),
+                            ? Icon(
+                                Icons.visibility_off,
+                                color: Colors.pink[200],
+                              )
+                            : Icon(Icons.visibility, color: Colors.pink[200]),
                         onPressed: () => setState(
                           () => isPasswordVisible = !isPasswordVisible,
                         ),
@@ -145,11 +125,14 @@ class _ForgotPWState extends State<ForgotPW> {
                       hintText: 'Your Password',
                       labelText: 'Password',
                       //errorText: 'Password entered is wrong',
-                      icon: Icon(CupertinoIcons.padlock, color: pink, size: 40),
+                      icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
                       suffixIcon: IconButton(
                         icon: isPasswordVisible
-                            ? Icon(Icons.visibility_off, color: pink)
-                            : Icon(Icons.visibility, color: pink),
+                            ? Icon(
+                                Icons.visibility_off,
+                                color: Colors.pink[200],
+                              )
+                            : Icon(Icons.visibility, color: Colors.pink[200]),
                         onPressed: () => setState(
                           () => isPasswordVisible = !isPasswordVisible,
                         ),
@@ -165,17 +148,50 @@ class _ForgotPWState extends State<ForgotPW> {
                   ),
                 ),
 
-                SizedBox(height: 20),
+                SizedBox(height: 30),
 
                 //done button
-                TextButton(
-                  style: TextButton.styleFrom(
-                    foregroundColor: textColor,
-                    backgroundColor: peach,
-                    side: BorderSide(color: peach),
+                Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(40),
+                    gradient: const LinearGradient(
+                      begin: Alignment.centerLeft,
+                      end: Alignment.centerRight,
+                      colors: [
+                        Color(0xFFFFC567),
+                        Color(0xFFFB7DA8),
+                        Color(0xFF058CD7),
+                      ],
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.pinkAccent.withValues(alpha: 0.25),
+                        blurRadius: 15,
+                        offset: const Offset(0, 6),
+                      ),
+                    ],
                   ),
-                  child: Text('Done', style: TextStyle(fontSize: 20)),
-                  onPressed: () {},
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.transparent,
+                      shadowColor: Colors.transparent,
+                      minimumSize: const Size(420, 50),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(30),
+                      ),
+                    ),
+                    onPressed: () {},
+
+                    child: const Text(
+                      "Done",
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             ),
