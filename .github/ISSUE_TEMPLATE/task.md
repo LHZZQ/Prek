@@ -1,7 +1,6 @@
 ---
 name: Task / Enhancement / Bug
 about: Create a new task, feature, or improvement request
-title: []
 labels: []
 assignees: []
 ---
