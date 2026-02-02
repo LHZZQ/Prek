@@ -80,7 +80,7 @@ class TaskSelectionPage extends StatelessWidget {
                   context,
                   icon: Icons.mic_rounded,
                   iconBg: blue.withValues(alpha: 0.2),
-                  title: "Voive Reflection",
+                  title: "Voice Reflection",
                   subtitle: "Record your thoughts with audio",
                   onTap: () {
               
