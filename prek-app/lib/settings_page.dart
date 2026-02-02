@@ -43,6 +43,8 @@ class SettingsPage extends StatelessWidget {
 
                   //change name
                   Container(
+                    width: 420,
+                    height: 55,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       gradient: const LinearGradient(
@@ -66,7 +68,7 @@ class SettingsPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -114,6 +116,8 @@ class SettingsPage extends StatelessWidget {
 
                   //Change Email
                   Container(
+                    width: 420,
+                    height: 55,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       gradient: const LinearGradient(
@@ -137,7 +141,7 @@ class SettingsPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -185,6 +189,8 @@ class SettingsPage extends StatelessWidget {
 
                   //
                   Container(
+                    width: 420,
+                    height: 55,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       gradient: const LinearGradient(
@@ -208,7 +214,7 @@ class SettingsPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(30),
                         ),
@@ -252,10 +258,12 @@ class SettingsPage extends StatelessWidget {
                     ),
                   ),
 
-                  SizedBox(height: 65),
+                  SizedBox(height: 55),
 
                   //logout
                   Container(
+                    width: 420,
+                    height: 55,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
                       border: Border.all(color: Colors.pink, width: 2.5),
@@ -274,7 +282,7 @@ class SettingsPage extends StatelessWidget {
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.transparent,
                         shadowColor: Colors.transparent,
-                        minimumSize: const Size(double.infinity, 55),
+
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(40),
                         ),
