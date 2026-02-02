@@ -26,8 +26,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    const pink = Color(0xFFFFC7E0);
-    const textColor = Color(0xFF94697E);
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent),
       body: Form(
@@ -42,24 +40,11 @@ class _SignUpState extends State<SignUp> {
           ),
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 32),
+              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
               child: Column(
                 children: [
                   //image
                   Image(image: AssetImage('images/prek_logo.png')),
-
-                  //create new account
-                  Text(
-                    'Create New Account',
-                    textDirection: TextDirection.ltr,
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      color: textColor,
-                    ),
-                  ),
-
-                  SizedBox(height: 30),
 
                   //email
                   SizedBox(
@@ -72,7 +57,7 @@ class _SignUpState extends State<SignUp> {
                         labelText: 'Email',
                         icon: Icon(
                           CupertinoIcons.envelope,
-                          color: pink,
+                          color: Colors.pink[200],
                           size: 40,
                         ),
 
@@ -109,14 +94,17 @@ class _SignUpState extends State<SignUp> {
                         labelText: 'Password',
                         //errorText: 'Password entered is wrong',
                         icon: Icon(
-                          CupertinoIcons.padlock,
-                          color: pink,
+                          Icons.lock,
+                          color: Colors.pink[200],
                           size: 40,
                         ),
                         suffixIcon: IconButton(
                           icon: isPasswordVisible
-                              ? Icon(Icons.visibility_off, color: pink)
-                              : Icon(Icons.visibility, color: pink),
+                              ? Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink[200],
+                                )
+                              : Icon(Icons.visibility, color: Colors.pink[200]),
                           onPressed: () => setState(
                             () => isPasswordVisible = !isPasswordVisible,
                           ),
@@ -148,14 +136,17 @@ class _SignUpState extends State<SignUp> {
                         labelText: 'Password',
                         //errorText: 'Password entered is wrong',
                         icon: Icon(
-                          CupertinoIcons.padlock,
-                          color: pink,
+                          Icons.lock,
+                          color: Colors.pink[200],
                           size: 40,
                         ),
                         suffixIcon: IconButton(
                           icon: isPasswordVisible
-                              ? Icon(Icons.visibility_off, color: pink)
-                              : Icon(Icons.visibility, color: pink),
+                              ? Icon(
+                                  Icons.visibility_off,
+                                  color: Colors.pink[200],
+                                )
+                              : Icon(Icons.visibility, color: Colors.pink[200]),
                           onPressed: () => setState(
                             () => isPasswordVisible = !isPasswordVisible,
                           ),

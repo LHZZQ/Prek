@@ -55,8 +55,6 @@ class _LoginState extends State<Login> {
 
   @override
   Widget build(BuildContext context) {
-    const pink = Color(0xFFFFC7E0);
-    const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
     return Scaffold(
       appBar: AppBar(
