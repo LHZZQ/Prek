@@ -3,10 +3,15 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 final supabase = Supabase.instance.client;
 
 // Saves new gratitude entry to Supabase database
-Future<void> saveGratitudeEntry(String text) async {
+Future<void> saveGratitudeEntry({required String text, String? mood}) async {
+  final user = supabase.auth.currentUser;
+  if (user == null) throw Exception('User not logged in');
+
   try {
     await supabase.from('Gratitude Entries').insert({
+      'user_id': user.id,
       'text': text,
+      'mood': mood,
       'created_at': DateTime.now().toIso8601String(),
     });
   } catch (e) {
