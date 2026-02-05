@@ -40,13 +40,19 @@ jobs:
       # Format check
       - name: Dart format check
         working-directory: ./prek-app
-        run: dart format --set-exit-if-changed .
+        run: |
+          echo "Checking Dart formatting..."
+          dart format --set-exit-if-changed . || (
+            echo "::error title=Format check failed::Code is not formatted. Run 'dart format .' locally."
+            exit 1
+          )
+
 
       # Static Analysis
       - name: Static Analysis (flutter analyze)
         working-directory: ./prek-app
         run: |
-          echo "🔍 Running Flutter static analysis..."
+          echo "Running Flutter static analysis..."
           flutter analyze || (
             echo "::error title=Lint failed::Flutter analyze found issues. Please fix lint errors before merging."
             exit 1
