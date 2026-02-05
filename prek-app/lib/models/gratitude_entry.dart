@@ -1,5 +1,5 @@
 class GratitudeEntry {
-  final String id;  // unique identifier for entry
+  final String id; // unique identifier for entry
   final String userId; //profile
   final String text; //text content
   final DateTime createdAt; // timestamp

@@ -58,6 +58,9 @@ jobs:
       - name: Install deps
         run: flutter pub get
 
+      - name: Dart format check
+        run: dart format --set-exit-if-changed .
+
       # Create fake .env
       - name: Create fake .env for CI
         run: |
@@ -131,6 +134,9 @@ jobs:
 
       - name: Install deps
         run: flutter pub get
+
+      - name: Dart format check
+        run: dart format --set-exit-if-changed .
 
       # Create fake .env
       - name: Create fake .env for CI

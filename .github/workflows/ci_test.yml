@@ -37,6 +37,11 @@ jobs:
         working-directory: ./prek-app
         run: flutter pub get
 
+      # Format check
+      - name: Dart format check
+        working-directory: ./prek-app
+        run: dart format --set-exit-if-changed .
+
       # Static Analysis
       - name: Static Analysis (flutter analyze)
         working-directory: ./prek-app

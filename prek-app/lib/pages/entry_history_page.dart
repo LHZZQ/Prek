@@ -41,9 +41,9 @@ class EntryHistoryPage extends StatelessWidget {
             child: Text(
               "No entries yet.\nAdd your first gratitude today!",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: textColor,
-                  ),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: textColor),
             ),
           ),
         ),
@@ -79,9 +79,9 @@ class EntryHistoryPage extends StatelessWidget {
                     child: Text(
                       dateStr,
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                            color: textColor.withOpacity(0.7),
-                            fontWeight: FontWeight.w600,
-                          ),
+                        color: textColor.withOpacity(0.7),
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 GratitudeTile(entry: e),

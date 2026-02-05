@@ -3,14 +3,9 @@ class Profiles {
   final String email;
   final DateTime createdAt;
 
+  Profiles({required this.id, required this.email, required this.createdAt});
 
-Profiles({
-  required this.id,
-  required this.email,
-  required this.createdAt,
-});
-
-factory Profiles.fromMap(Map<String, dynamic> map) {
+  factory Profiles.fromMap(Map<String, dynamic> map) {
     return Profiles(
       id: map['id'],
       email: map['email'],

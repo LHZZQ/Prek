@@ -57,6 +57,7 @@ To help reviews go smoothly, please check the following before submitting:
 - All changes have been tested locally
 - Related issues are referenced or closed where applicable
 - The Pull Request description is fully completed and reviewers are assigned
+- All PRs must pass formatting and static analysis checks.
 
 ---
 
