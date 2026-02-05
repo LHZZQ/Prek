@@ -45,7 +45,12 @@ jobs:
       # Static Analysis
       - name: Static Analysis (flutter analyze)
         working-directory: ./prek-app
-        run: flutter analyze
+        run: |
+          echo "🔍 Running Flutter static analysis..."
+          flutter analyze || (
+            echo "::error title=Lint failed::Flutter analyze found issues. Please fix lint errors before merging."
+            exit 1
+          )
 
       # Run Tests with Coverage
       - name: Run Tests with Coverage
