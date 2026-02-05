@@ -375,3 +375,20 @@ class _SectionRow extends StatelessWidget {
     );
   }
 }
+
+class _MoodBoardSection extends StatefulWidget {
+  const _MoodBoardSection();
+
+  @override 
+  State<_MoodBoardSection> createState() => _MoodBoardSectionState();
+}
+
+class _MoodBoardSectionState extends State<_MoodBoardSection> {
+  //static const textColor = Color(0xFF94697E);
+  //static const softWhite = Color(0xFFFFFFFF);
+  //static const pink = Color(0xFFFB7DA8);
+  //static const yellow = Color(0xFFFFC567);
+  //static const blue = Color(0xFF058CD7);
+
+
+}
