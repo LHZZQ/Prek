@@ -13,7 +13,7 @@ Future<void> saveGratitudeEntry({required String text, String? mood, String? aud
       'text': text,
       'mood': mood,
       'audio_path': audioPath,
-      'created_at': DateTime.now().toIso8601String(),
+      'created_at': DateTime.now().toUtc().toIso8601String(),
     });
   } catch (e) {
     throw Exception('Error saving gratitude entry: $e');
