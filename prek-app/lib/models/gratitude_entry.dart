@@ -21,8 +21,8 @@ class GratitudeEntry {
       userId: map['user_id'],
       text: map['text'],
       createdAt: DateTime.parse(map['created_at']),
-      // mood: map['mood']
-      //audioAssetPath: map['audio_url']
+      mood: map['mood'],
+      audioAssetPath: map['audio_url']
     );
   }
 }
