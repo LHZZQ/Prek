@@ -403,7 +403,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     "2026-01-08": "🤯",
     "2026-01-09": "🥺",
   };
-  
+
   String _keyFor(DateTime d) {
     final mm = d.month.toString().padLeft(2, "0");
     final dd = d.day.toString().padLeft(2, "0");
@@ -427,6 +427,33 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     ];
 
     return names[month - 1];
+
+  }
+
+  void _prevMonth() {
+    setState(() {
+      shownMonth = DateTime(shownMonth.year, shownMonth.month - 1);
+
+    });
+  }
+
+  void _nextMonth() {
+    setState(() {
+      shownMonth = DateTime(shownMonth.year, shownMonth.month + 1);
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final daysInMonth = DateUtils.getDaysInMonth(shownMonth.year, shownMonth.month);
+    final firstDay = DateTime(shownMonth.year, shownMonth.month, 1);
+
+    final leadingEmpty = (firstDay.weekday - DateTime.monday) % 7; //bcs monday is the start of the week so im going based off it
+
+    final totalCells = leadingEmpty + daysInMonth;
+    final rows = (totalCells / 7).ceil();
+    final gridCount = rows * 7;
+    
   }
   
 
