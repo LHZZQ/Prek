@@ -385,7 +385,7 @@ class _MoodBoardSection extends StatefulWidget {
 
 class _MoodBoardSectionState extends State<_MoodBoardSection> {
   //static const textColor = Color(0xFF94697E);
-  //static const softWhite = Color(0xFFFFFFFF);
+  static const softWhite = Color(0xFFFFFFFF);
   //static const pink = Color(0xFFFB7DA8);
   //static const yellow = Color(0xFFFFC567);
   //static const blue = Color(0xFF058CD7);
@@ -453,7 +453,64 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     final totalCells = leadingEmpty + daysInMonth;
     final rows = (totalCells / 7).ceil();
     final gridCount = rows * 7;
-    
+
+    return Container(
+      decoration: BoxDecoration(
+        color: softWhite.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: softWhite.withValues(alpha: 0.65)),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.04),
+            blurRadius: 16,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.fromLTRB(14, 14, 14, 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          _MoodBoardHeader(
+            title: "${_monthName(shownMonth.month)} ${shownMonth.year}",
+            onPrev: _prevMonth,
+            onNext: _nextMonth,
+          ),
+          const SizedBox(height: 10),
+
+          const _WeekdayRow(), 
+          const SizedBox(height: 10),
+
+          GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: gridCount,
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 7,
+              mainAxisSpacing: 10,
+              crossAxisSpacing: 10,
+            ),
+            itemBuilder: (context, index) {
+              final dayNumber = index - leadingEmpty + 1;
+
+              if (dayNumber < 1 || dayNumber > daysInMonth) {
+                return _MoodCell.empty();
+              }
+
+              final date = DateTime(shownMonth.year, shownMonth.month, dayNumber);
+              final emoji = moodByDay[_keyFor(date)];
+
+              return _MoodCell(
+                day: dayNumber,
+                emoji: emoji,
+                accent: _accentForEmoji(emoji),
+              );
+
+            },
+          ),
+        ],
+      ),
+    );
   }
   
 
