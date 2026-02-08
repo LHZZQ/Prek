@@ -403,10 +403,30 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     "2026-01-08": "🤯",
     "2026-01-09": "🥺",
   };
+  
   String _keyFor(DateTime d) {
     final mm = d.month.toString().padLeft(2, "0");
     final dd = d.day.toString().padLeft(2, "0");
     return "${d.year}-$mm-$dd";
+  }
+
+  String _monthName(int month) {
+    const names = [
+      "January", 
+      "February", 
+      "March", 
+      "April", 
+      "May", 
+      "June",
+      "July", 
+      "August", 
+      "September", 
+      "October", 
+      "November", 
+      "December"
+    ];
+
+    return names[month - 1];
   }
   
 
