@@ -390,5 +390,25 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   //static const yellow = Color(0xFFFFC567);
   //static const blue = Color(0xFF058CD7);
 
+  DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month);
+
+  final Map<String, String> moodByDay = {
+    "2026-01-01": "😊",
+    "2026-01-02": "😌",
+    "2026-01-03": "😐",
+    "2026-01-04": "🥲",
+    "2026-01-05": "😍",
+    "2026-01-06": "😤",
+    "2026-01-07": "😴",
+    "2026-01-08": "🤯",
+    "2026-01-09": "🥺",
+  };
+  String _keyFor(DateTime d) {
+    final mm = d.month.toString().padLeft(2, "0");
+    final dd = d.day.toString().padLeft(2, "0");
+    return "${d.year}-$mm-$dd";
+  }
+  
+
 
 }
