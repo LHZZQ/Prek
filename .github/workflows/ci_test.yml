@@ -47,7 +47,6 @@ jobs:
             exit 1
           )
 
-
       # Static Analysis
       - name: Static Analysis (flutter analyze)
         working-directory: ./prek-app
