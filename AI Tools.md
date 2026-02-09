@@ -132,7 +132,8 @@ I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to review and clarify so
 - This is a section from PR's of our team. Could you please explain in detail what this section is specifically about?
 
 #### Why?
-
+When I write my own code, I often don't know how to improve and enhance it. I would like to hear some suggestions from AI. If the suggestions are reasonable, I will consider making the necessary modifications.
+For the code of my team members, there are some parts that I might not understand. I will ask the AI to provide me with detailed explanations so that I can grasp the content of the PR and be able to offer suggestions on my own, thereby helping our project to be better.
 
 ## Kylan:
 I, Kylan, declare that this document is accurate to my AI usage throughout the course of SEP.
