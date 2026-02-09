@@ -124,7 +124,7 @@ I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to fixing bugs and under
 - The compiler has reported an error. Why did this happen? Please provide a detailed explanation.
 - The CI test on Github failed. Could you please take a look and tell me where it didn't meet the requirements?
 #### Why?
-
+Most of the time, errors are not noticed by the programmer. I need to use the AI to assist me in identifying the errors and providing explanations, so that my code can run properly and not encounter the same issues again in the future.
 ### Reviewing
 
 #### Prompts examples
