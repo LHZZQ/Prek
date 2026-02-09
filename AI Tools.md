@@ -128,6 +128,9 @@ Most of the time, errors are not noticed by the programmer. I need to use the AI
 ### Reviewing
 
 #### Prompts examples
+- Is there anything wrong with this way I wrote my code? Can it be made more concise or how can it be improved? Please elaborate.
+- This is a section from PR's of our team. Could you please explain in detail what this section is specifically about?
+
 #### Why?
 
 
