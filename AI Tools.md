@@ -120,6 +120,9 @@ I, Ziqian, declare that this document is accurate to my AI usage throughout the 
 I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to fixing bugs and understanding unexpected errors during development.
 
 #### Prompts examples
+
+- The compiler has reported an error. Why did this happen? Please provide a detailed explanation.
+- The CI test on Github failed. Could you please take a look and tell me where it didn't meet the requirements?
 #### Why?
 
 ### Reviewing
