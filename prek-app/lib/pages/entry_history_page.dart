@@ -39,7 +39,6 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
 
