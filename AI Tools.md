@@ -108,6 +108,11 @@ I, Ziqian, declare that this document is accurate to my AI usage throughout the 
 ### Development
 - I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to learn the Dart language, comparing it to the languages I had learned before such as C and Java. And also learned how to design an attractive user interface.
 #### Prompts examples
+- I have already learned other programming languages such as C and Java. How should I focus on learning Dart, this new language, so that I can design an app?
+- What are some basic UI design principles for mobile wellbeing apps? How can layout, spacing, and color choices improve user experience?
+- Can you explain how Flutter’s widget-based UI system works, especially layout widgets like Column, Row, and Expanded?
+- I currently have a simple Flutter project with a text input box and a button. Regarding how to optimize the visual hierarchy and readability without rewriting the entire code.
+
 #### Why?
 
 ### Debugging
