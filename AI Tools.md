@@ -106,7 +106,7 @@ I, Carol, declare that this document is accurate to my AI usage throughout the c
 I, Ziqian, declare that this document is accurate to my AI usage throughout the course of SEP.
 
 ### Development
-
+- I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to learn the Dart language, comparing it to the languages I had learned before such as C and Java. And also learned how to design an attractive user interface.
 #### Prompts examples
 #### Why?
 
