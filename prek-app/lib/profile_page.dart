@@ -593,6 +593,34 @@ class _MoodBoardHeader extends StatelessWidget {
 
 }
 
+class _WeekdayRow extends StatelessWidget {
+  const _WeekdayRow();
+
+  @override
+  Widget build(BuildContext context) {
+    const textColor = Color(0xFF94697E);
+    const labels = ["M", "T", "W", "T", "F", "S", "S"];
+
+    return Row(
+      children: [
+        for (final l in labels)
+        Expanded(
+          child: Center(
+            child: Text(
+              l,
+              style: TextStyle(
+                color: textColor.withValues(alpha: 0.65),
+                fontWeight: FontWeight.w800,
+                fontSize: 12,
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+}
+
 class _MoodCell extends StatelessWidget {
   final int? day;
   final IconData? icon;
