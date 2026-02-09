@@ -556,4 +556,39 @@ class _MoodBoardHeader extends StatelessWidget {
     required this.onNext,
   });
 
+  @override
+  Widget build(BuildContext context) {
+    const textColor = Color(0xFF94697E);
+
+    return Row(
+      children: [
+        IconButton(
+          onPressed: 
+          onPrev, 
+          icon: 
+          const Icon(Icons.chevron_left_rounded, color: textColor),
+          splashRadius: 22,
+          ),
+          Expanded(
+            child: Text(
+              title,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                color: textColor,
+                fontSize: 18,
+                fontWeight: FontWeight.w900,
+              ),
+
+            ),
+          ),
+          IconButton(
+            onPressed: onNext,
+            icon: const Icon(Icons.chevron_right_rounded, color: textColor),
+            splashRadius: 22,
+          ),
+      ],
+    );
+
+  }
+
 }
