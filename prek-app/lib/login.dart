@@ -1,9 +1,9 @@
-// import 'package:_2025_prek/forgotpw.dart';
+//import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/home_page.dart';
-// import 'package:_2025_prek/mood_page.dart';
-//import 'package:_2025_prek/services/auth_service.dart';
+//import 'package:_2025_prek/mood_page.dart';
+import 'package:_2025_prek/services/auth_service.dart';
 
 class Login extends StatefulWidget {
   const Login({super.key});
@@ -24,7 +24,7 @@ class _LoginState extends State<Login> {
     emailController.addListener(() => setState(() {}));
   }
 
-  /*Future<void> _login() async {
+  Future<void> _login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
       setState(() => authError = 'Please enter email and password.');
       return;
@@ -52,7 +52,7 @@ class _LoginState extends State<Login> {
       }
     }
   }
-  */
+  
 
   @override
   Widget build(BuildContext context) {
@@ -220,14 +220,7 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      },
+                      onPressed: isLoading ? null: _login,
 
                       child: const Text(
                         "Login",

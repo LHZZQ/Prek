@@ -1,3 +1,4 @@
+import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/services/gratitude_service.dart';
 import 'package:flutter/material.dart';
 
@@ -141,7 +142,20 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                 if (text.isEmpty) return;
 
                                 try {
-                                  await saveGratitudeEntry(text);
+                                  await saveGratitudeEntry(
+                                    text: text,
+                                    mood: widget.selectedMood,
+                                  );
+
+                                  if (!mounted) return;
+
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => const HomePage(),
+                                    ),
+                                    (route) => false,
+                                  );
 
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(

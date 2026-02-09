@@ -1,7 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-class ProfilePage extends StatelessWidget {
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
+
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage>{
+  final supabase = Supabase.instance.client;
+  int reflectionsCount = 0;
+  bool loading = true;
+
+  @override
+  void initState(){
+    super.initState();
+    _loadReflectionsCount();
+  }
+
+  Future<void> _loadReflectionsCount() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    try{
+      final response = await supabase 
+        .from('Gratitude Entries')
+        .select('id')
+        .eq('user_id', user.id);
+
+      setState(() {
+        reflectionsCount = response.length;
+        loading = false;
+      });
+    }catch (e){
+      debugPrint('Error loading reflections count: $e');
+      setState(() => loading = false);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -86,8 +123,8 @@ class ProfilePage extends StatelessWidget {
                     _SectionRow(
                       icon: Icons.auto_awesome_rounded,
                       iconBg: pink.withValues(alpha: 0.55),
-                      title: "Affirmations saved",
-                      badgeText: "14",
+                      title: "Reflections saved",
+                      badgeText: reflectionsCount.toString(),
                       badgeBg: pink.withValues(alpha: 0.18),
                       onTap: () {},
                     ),

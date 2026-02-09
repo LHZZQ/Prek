@@ -1,15 +1,44 @@
 import 'package:flutter/material.dart';
-import '../data/mock_entries.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../models/gratitude_entry.dart';
 import '../utils/time_utils.dart';
 import '../widgets/gratitude_tile.dart';
 
-class EntryHistoryPage extends StatelessWidget {
+class EntryHistoryPage extends StatefulWidget {
   const EntryHistoryPage({super.key});
 
   @override
+  State<EntryHistoryPage> createState() => _EntryHistoryPageState();
+}
+
+class _EntryHistoryPageState extends State<EntryHistoryPage> {
+  final supabase = Supabase.instance.client;
+
+  List<GratitudeEntry> items = [];
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEntries();
+  }
+
+  Future<void> _loadEntries() async {
+    final response = await supabase
+        .from('Gratitude Entries')
+        .select()
+        .order('created_at', ascending: false);
+
+    setState(() {
+      items = response
+          .map<GratitudeEntry>((e) => GratitudeEntry.fromMap(e))
+          .toList();
+      loading = false;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final items = [...mockEntries]
-      ..sort((a, b) => b.createdAt.compareTo(a.createdAt));
 
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
