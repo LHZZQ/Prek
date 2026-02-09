@@ -115,7 +115,7 @@ I, Ziqian, declare that this document is accurate to my AI usage throughout the 
 
 #### Why?
 Dart is a completely new language for me and there are no lectures to teach me. I think we can use AI to facilitate the learning process, similar to how we learn other programming languages.
-- I have absolutely no experience in designing UI and user interfaces. I'm not sure what a comfortable interface looks like. After creating the initial draft, I need to use AI for reference to design a user interface that is comfortable for people.
+I have absolutely no experience in designing UI and user interfaces. I'm not sure what a comfortable interface looks like. After creating the initial draft, I need to use AI for reference to design a user interface that is comfortable for people.
 ### Debugging
 I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to fixing bugs and understanding unexpected errors during development.
 
