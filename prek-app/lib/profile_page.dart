@@ -519,7 +519,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
               return _MoodCell(
                 day: dayNumber,
                 icon: icon,
-                accent: _accentForEmoji(label),
+                accent: _accentForLabel(label),
               );
 
             },
@@ -591,4 +591,48 @@ class _MoodBoardHeader extends StatelessWidget {
 
   }
 
+}
+
+class _MoodCell extends StatelessWidget {
+  final int? day;
+  final IconData? icon;
+  final Color? accent;
+
+  const _MoodCell({
+    this.day,
+    this.icon,
+    this.accent,
+  });
+
+  factory _MoodCell.empty() => const _MoodCell();
+
+  @override
+  Widget build(BuildContext context) {
+    const textColor = Color(0xFF94697E);
+    const softWhite = Color(0xFFFFFFFF);
+
+    final isEmpty = day == null;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isEmpty
+        ? textColor.withValues(alpha: 0.06)
+        : (accent ?? textColor.withValues(alpha: 0.10)),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(
+          color: isEmpty ? Colors.transparent : softWhite.withValues(alpha: 0.60),
+
+        ),
+      ),
+      child: Center(
+        child: isEmpty
+        ? const SizedBox.shrink()
+        : Icon(
+          icon,
+          size: 30,
+          color: textColor,
+        ),
+      ),
+    );
+  }
 }
