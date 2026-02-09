@@ -126,7 +126,7 @@ I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to fixing bugs and under
 #### Why?
 Most of the time, errors are not noticed by the programmer. I need to use the AI to assist me in identifying the errors and providing explanations, so that my code can run properly and not encounter the same issues again in the future.
 ### Reviewing
-
+I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to review and clarify some of my own code and others' PR.
 #### Prompts examples
 - Is there anything wrong with this way I wrote my code? Can it be made more concise or how can it be improved? Please elaborate.
 - This is a section from PR's of our team. Could you please explain in detail what this section is specifically about?
