@@ -1,3 +1,4 @@
+import 'package:_2025_prek/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -54,6 +55,11 @@ class _SignUpState extends State<SignUp> {
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Account created successfully')),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
       );
     } on AuthException catch (e) {
       ScaffoldMessenger.of(
@@ -130,7 +136,7 @@ class _SignUpState extends State<SignUp> {
                       onFieldSubmitted: (value) =>
                           setState(() => password = value),
                       controller: firstPasswordController,
-                      validator: (value){
+                      validator: (value) {
                         final error = validator.validatePassword(value);
                         if (error != null) return error;
                         if (!passwordsMatch()) return 'Passwords do not match';
@@ -203,7 +209,7 @@ class _SignUpState extends State<SignUp> {
                           borderSide: BorderSide(color: Colors.black87),
                         ),
                       ),
-                      obscureText: isPasswordVisible,
+                      obscureText: !isPasswordVisible,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.done,
                     ),
@@ -274,7 +280,9 @@ class SignUpValidator {
       return 'Email is required';
     }
 
-    if (!value.contains('@')) {
+    final email = value.trim();
+
+    if (!email.contains('@')) {
       return 'Enter a valid email';
     }
     return null;
