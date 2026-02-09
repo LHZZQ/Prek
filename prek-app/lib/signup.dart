@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart'
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -22,6 +23,34 @@ class _SignUpState extends State<SignUp> {
     super.initState();
 
     emailController.addListener(() => setState(() {}));
+  }
+  Future<void> signUp() async {
+    final supabase = Supabase.instance.client;
+
+  try {
+    final res = await supabase.auth.signUp(
+      email :emailController.text.trim(),
+      password: firstPasswordController.text.trim());
+
+    final user = res.user;
+
+    if (user == null){
+      throw Exception('Signup failed');
+    }
+    
+    //Create profiles row 
+    await supabase.from('Profiles').insert({
+      'id':user.id,
+      'email': emailController.text.trim()
+    });
+
+    if(!mounted) return;
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Account created successfully 🎉')),
+    );
+  } 
+
   }
 
   @override
