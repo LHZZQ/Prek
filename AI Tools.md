@@ -114,7 +114,8 @@ I, Ziqian, declare that this document is accurate to my AI usage throughout the 
 - I currently have a simple Flutter project with a text input box and a button. Regarding how to optimize the visual hierarchy and readability without rewriting the entire code.
 
 #### Why?
-
+- Dart is a completely new language for me and there are no lectures to teach me. I think we can use AI to facilitate the learning process, similar to how we learn other programming languages.
+- I have absolutely no experience in designing UI and user interfaces. I'm not sure what a comfortable interface looks like. After creating the initial draft, I need to use AI for reference to design a user interface that is comfortable for people.
 ### Debugging
 
 #### Prompts examples
