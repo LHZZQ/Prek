@@ -47,9 +47,17 @@ class _SignUpState extends State<SignUp> {
     if(!mounted) return;
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Account created successfully 🎉')),
+      const SnackBar(content: Text('Account created successfully')),
     );
-  } 
+  } on AuthException catch (e) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text(e.message)),
+    );
+  } catch (e){
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Error')),
+    );
+  }
 
   }
 
@@ -225,7 +233,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print("Success!");
+                          signUp();
                         }
                       },
 
