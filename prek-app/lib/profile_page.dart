@@ -384,24 +384,39 @@ class _MoodBoardSection extends StatefulWidget {
 }
 
 class _MoodBoardSectionState extends State<_MoodBoardSection> {
-  //static const textColor = Color(0xFF94697E);
+  static const textColor = Color(0xFF94697E);
   static const softWhite = Color(0xFFFFFFFF);
-  //static const pink = Color(0xFFFB7DA8);
-  //static const yellow = Color(0xFFFFC567);
-  //static const blue = Color(0xFF058CD7);
+  static const pink = Color(0xFFFB7DA8);
+  static const yellow = Color(0xFFFFC567);
+  static const blue = Color(0xFF058CD7);
 
-  DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month);
+  static const moods = [
+    (Icons.sentiment_very_satisfied_rounded, 'Happy'),
+    (Icons.sentiment_satisfied_rounded, 'Good'),
+    (Icons.sentiment_neutral_rounded, 'Neutral'),
+    (Icons.psychology_alt_rounded, 'Confused'),
+    (Icons.sentiment_dissatisfied_rounded, 'Sad'),
+    (Icons.warning_amber_rounded, 'Overwhelmed'),
+    (Icons.whatshot_rounded, 'Frustrated'),
+    (Icons.mood_bad_rounded, 'Angry'),
+  ];
+
+  static final Map<String, IconData> _iconForLabel = {
+    for (final m in moods) m.$2: m.$1,
+  };
+
+  DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month); 
 
   final Map<String, String> moodByDay = {
-    "2026-01-01": "😊",
-    "2026-01-02": "😌",
-    "2026-01-03": "😐",
-    "2026-01-04": "🥲",
-    "2026-01-05": "😍",
-    "2026-01-06": "😤",
-    "2026-01-07": "😴",
-    "2026-01-08": "🤯",
-    "2026-01-09": "🥺",
+    "2026-01-01": "Happy",
+    "2026-01-02": "Good",
+    "2026-01-03": "Neutral",
+    "2026-01-04": "Sad",
+    "2026-01-05": "Happy",
+    "2026-01-06": "Frustrated",
+    "2026-01-07": "Overwhelmed",
+    "2026-01-08": "Confused",
+    "2026-01-09": "Angry",
   };
 
   String _keyFor(DateTime d) {
@@ -498,12 +513,13 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
               }
 
               final date = DateTime(shownMonth.year, shownMonth.month, dayNumber);
-              final emoji = moodByDay[_keyFor(date)];
+              final label = moodByDay[_keyFor(date)];
+              final icon = label == null ? null : _iconForLabel[label];
 
               return _MoodCell(
                 day: dayNumber,
-                emoji: emoji,
-                accent: _accentForEmoji(emoji),
+                icon: icon,
+                accent: _accentForEmoji(label),
               );
 
             },
@@ -512,7 +528,32 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
       ),
     );
   }
+  Color _accentForLabel(String? label) {
+    if (label == null) return textColor.withValues(alpha: 0.10);
+    if (label == "Happy" || label == "Good") {
+      return yellow.withValues(alpha: 0.18);
+    }
+    if (label == "Neutral" || label == "Confused") {
+      return blue.withValues(alpha: 0.16);
+    }
+
+    return pink.withValues(alpha: 0.16);
+
+
+  }
   
 
+
+}
+class _MoodBoardHeader extends StatelessWidget {
+  final String title;
+  final VoidCallback onPrev;
+  final VoidCallback onNext;
+
+  const _MoodBoardHeader({
+    required this.title,
+    required this.onPrev,
+    required this.onNext,
+  });
 
 }
