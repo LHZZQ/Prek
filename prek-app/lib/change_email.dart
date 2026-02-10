@@ -11,7 +11,6 @@ class ChangeEmail extends StatefulWidget {
 class _ChangeEmailState extends State<ChangeEmail> {
   final supabase = Supabase.instance.client;
   final TextEditingController emailController = TextEditingController();
-  String profileEmail = "";
   bool loading = true;
 
   @override
