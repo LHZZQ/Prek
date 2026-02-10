@@ -112,11 +112,22 @@ class ProfilePage extends StatelessWidget{
                       _SectionRow(
                         icon: Icons.emoji_emotions_rounded,
                         iconBg: pink.withValues(alpha: 0.35),
-                        title: "Mood Calander",
+                        title: "Mood Calender",
                         onTap: () {},
                       ),
                     ],
                   ),
+                  const SizedBox(height: 18),
+                  const Text(
+                    "Mood board",
+                    style: TextStyle(
+                      color: textColor,
+                      fontSize: 22,
+                      fontWeight: FontWeight.w800,
+                    ),
+                  ),
+                  const SizedBox(height: 12),
+                  const _MoodBoardSection(),
                   const SizedBox(height: 18),                 
               ],
             ),
@@ -408,11 +419,11 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month); 
 
   final Map<String, String> moodByDay = {
-    "2026-01-01": "Happy",
-    "2026-01-02": "Good",
-    "2026-01-03": "Neutral",
-    "2026-01-04": "Sad",
-    "2026-01-05": "Happy",
+    "2026-02-01": "Happy",
+    "2026-02-02": "Good",
+    "2026-02-03": "Neutral",
+    "2026-02-04": "Sad",
+    "2026-02-05": "Happy",
     "2026-01-06": "Frustrated",
     "2026-01-07": "Overwhelmed",
     "2026-01-08": "Confused",
@@ -528,6 +539,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
       ),
     );
   }
+
   Color _accentForLabel(String? label) {
     if (label == null) return textColor.withValues(alpha: 0.10);
     if (label == "Happy" || label == "Good") {
@@ -643,8 +655,8 @@ class _MoodCell extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: isEmpty
-        ? textColor.withValues(alpha: 0.06)
+        color: isEmpty 
+        ? textColor.withValues(alpha: 0.06) 
         : (accent ?? textColor.withValues(alpha: 0.10)),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
@@ -652,15 +664,33 @@ class _MoodCell extends StatelessWidget {
 
         ),
       ),
-      child: Center(
-        child: isEmpty
+      child: isEmpty
         ? const SizedBox.shrink()
-        : Icon(
-          icon,
-          size: 30,
-          color: textColor,
+        : Stack(
+          children: [
+            Positioned(
+              top: 8,
+              left: 8,
+              child: Text(
+                "$day",
+                style: TextStyle(
+                  fontSize: 12,
+                  fontWeight: FontWeight.w900,
+                  color: textColor.withValues(alpha: 0.70),
+                ),
+              ),
+            ),
+            Center(
+              child: Icon(
+                icon,
+                size: 37,
+                color: textColor,
+              ),
+            ),
+          ],
+          
         ),
-      ),
+      
     );
   }
 }
