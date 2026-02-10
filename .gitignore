@@ -48,3 +48,5 @@ app.*.map.json
 
 # Ignore IntelliJ project files for specific modules
 _2025_prek.iml
+
+node_modules/

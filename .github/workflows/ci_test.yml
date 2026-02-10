@@ -68,3 +68,27 @@ jobs:
         with:
           name: coverage-lcov
           path: ./prek-app/coverage/lcov.info
+
+      - name: Supabase CLI
+        run: npx supabase --version
+
+  backend_migrations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+
+      - name: Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: latest
+
+      - name: Start local Supabase
+        run: supabase start
+
+      - name: Apply migrations (validate)
+        run: supabase db reset
+      
+      - name: Stop local Supabase
+        if: always()
+        run: supabase stop
