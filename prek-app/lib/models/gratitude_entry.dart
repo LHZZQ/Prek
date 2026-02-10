@@ -1,5 +1,5 @@
 class GratitudeEntry {
-  final String id;  // unique identifier for entry
+  final String id; // unique identifier for entry
   final String userId; //profile
   final String text; //text content
   final DateTime createdAt; // timestamp
@@ -22,7 +22,7 @@ class GratitudeEntry {
       text: map['text'],
       createdAt: DateTime.parse(map['created_at']),
       mood: map['mood'],
-      audioAssetPath: map['audio_url']
+      audioAssetPath: map['audio_url'],
     );
   }
 }

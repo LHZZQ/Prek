@@ -52,7 +52,6 @@ class _LoginState extends State<Login> {
       }
     }
   }
-  
 
   @override
   Widget build(BuildContext context) {
@@ -220,7 +219,7 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: isLoading ? null: _login,
+                      onPressed: isLoading ? null : _login,
 
                       child: const Text(
                         "Login",
