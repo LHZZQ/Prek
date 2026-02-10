@@ -112,7 +112,19 @@ jobs:
 
       - name: Check schema drift
         if: steps.filter.outputs.supabase == 'true'
-        run: supabase db diff --check --use-migra
+        shell: bash
+        run: |
+          set -euo pipefail
+          supabase db diff --use-migra -f /tmp/schema_diff.sql
+          # generate the temp file
+          if [ -s /tmp/schema_diff.sql ]; then
+            echo "::error title=Schema drift detected::Database schema differs from migrations. Run 'supabase db diff -f supabase/migrations/<timestamp>_drift.sql' and commit the migration."
+            echo "----- diff preview (first 200 lines) -----"
+            sed -n '1,200p' /tmp/schema_diff.sql || true
+            exit 1
+          fi
+
+          echo "No schema drift detected."
       
       - name: Stop local Supabase
         if: always() && steps.filter.outputs.supabase == 'true'
