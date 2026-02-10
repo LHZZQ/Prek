@@ -17,30 +17,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
   @override
   void initState() {
     super.initState();
-    _loadEmail();
     _updateEmail();
-  }
-
-  Future<void> _loadEmail() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
-    try {
-      final response = await supabase
-          .from('Profiles')
-          .select('email')
-          .eq('id', user.id);
-
-      if (response.isNotEmpty) {
-        setState(() {
-          profileEmail = response[0]['email'] as String;
-          loading = false;
-        });
-      }
-    } catch (e) {
-      profileEmail = "error";
-      debugPrint('Error loading email: $e');
-      setState(() => loading = false);
-    }
   }
 
   Future<void> _updateEmail() async {

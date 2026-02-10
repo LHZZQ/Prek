@@ -17,30 +17,7 @@ class _ChangeNameState extends State<ChangeName> {
   @override
   void initState() {
     super.initState();
-    _loadUsername();
     _updateUsername();
-  }
-
-  Future<void> _loadUsername() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
-    try {
-      final response = await supabase
-          .from('Profiles')
-          .select('username')
-          .eq('id', user.id);
-
-      if (response.isNotEmpty) {
-        setState(() {
-          profileName = response[0]['username'] as String;
-          loading = false;
-        });
-      }
-    } catch (e) {
-      profileName = "error";
-      debugPrint('Error loading username: $e');
-      setState(() => loading = false);
-    }
   }
 
   Future<void> _updateUsername() async {
