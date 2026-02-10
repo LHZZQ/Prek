@@ -7,21 +7,6 @@ on:
       - dev
 
 jobs:
-  changes:
-    runs-on: ubuntu-latest
-    outputs:
-      supabase: ${{ steps.filter.outputs.supabase }}
-    steps:
-      - name: Checkout Repo
-        uses: actions/checkout@v4
-      - name: Detect changed paths
-        id: filter
-        uses: dorny/paths-filter@v3
-        with:
-          filters: |
-            supabase:
-              - 'supabase/**'
-
   test:
     runs-on: ubuntu-latest
     steps:
@@ -89,23 +74,37 @@ jobs:
 
   backend_migrations:
     runs-on: ubuntu-latest
-    needs: changes
-    if: ${{ needs.changes.outputs.supabase == 'true' }}
     steps:
+      - name: Detect changed paths
+        id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            supabase:
+              - 'supabase/**'
+
       - name: Checkout Repo
+        if: steps.filter.outputs.supabase == 'true'
         uses: actions/checkout@v4
 
       - name: Supabase CLI
+        if: steps.filter.outputs.supabase == 'true'
         uses: supabase/setup-cli@v1
         with:
           version: latest
 
       - name: Start local Supabase
+        if: steps.filter.outputs.supabase == 'true'
         run: supabase start
 
       - name: Apply migrations (validate)
+        if: steps.filter.outputs.supabase == 'true'
         run: supabase db reset
       
       - name: Stop local Supabase
-        if: always()
+        if: steps.filter.outputs.supabase == 'true'
         run: supabase stop
+
+      - name: Skip note
+        if: steps.filter.outputs.supabase != 'true'
+        run: echo "No supabase/** changes detected. Skipping backend_migrations."
