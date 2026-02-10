@@ -88,10 +88,6 @@ jobs:
             supabase:
               - 'supabase/**'
 
-      - name: Checkout Repo
-        if: steps.filter.outputs.supabase == 'true'
-        uses: actions/checkout@v4
-
       - name: Supabase CLI
         if: steps.filter.outputs.supabase == 'true'
         uses: supabase/setup-cli@v1
