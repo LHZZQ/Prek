@@ -10,6 +10,7 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final supabase = Supabase.instance.client;
+  String profileName = "";
   int reflectionsCount = 0;
   bool loading = true;
 
@@ -17,6 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _loadReflectionsCount();
+    _loadUsername();
   }
 
   Future<void> _loadReflectionsCount() async {
@@ -35,6 +37,28 @@ class _ProfilePageState extends State<ProfilePage> {
       });
     } catch (e) {
       debugPrint('Error loading reflections count: $e');
+      setState(() => loading = false);
+    }
+  }
+
+  Future<void> _loadUsername() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+    try {
+      final response = await supabase
+          .from('Profiles')
+          .select('username')
+          .eq('id', user.id);
+
+      if (response.isNotEmpty) {
+        setState(() {
+          profileName = response[0]['username'] as String;
+          loading = false;
+        });
+      }
+    } catch (e) {
+      profileName = "error";
+      debugPrint('Error loading username: $e');
       setState(() => loading = false);
     }
   }
@@ -93,8 +117,8 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 const SizedBox(height: kToolbarHeight - 12),
 
-                const _ProfileTopCard(
-                  displayName: "Username",
+                _ProfileTopCard(
+                  displayName: profileName,
                   email: "user@email.com",
                   reflections: "14",
                   streak: "06",
