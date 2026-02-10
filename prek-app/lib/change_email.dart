@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class ChangeEmail extends StatefulWidget {
   const ChangeEmail({super.key});
@@ -7,7 +9,62 @@ class ChangeEmail extends StatefulWidget {
 }
 
 class _ChangeEmailState extends State<ChangeEmail> {
+  final supabase = Supabase.instance.client;
   final TextEditingController emailController = TextEditingController();
+  String profileEmail = "";
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadEmail();
+    _updateEmail();
+  }
+
+  Future<void> _loadEmail() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+    try {
+      final response = await supabase
+          .from('Profiles')
+          .select('email')
+          .eq('id', user.id);
+
+      if (response.isNotEmpty) {
+        setState(() {
+          profileEmail = response[0]['email'] as String;
+          loading = false;
+        });
+      }
+    } catch (e) {
+      profileEmail = "error";
+      debugPrint('Error loading email: $e');
+      setState(() => loading = false);
+    }
+  }
+
+  Future<void> _updateEmail() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final newEmail = emailController.text.trim();
+    if (newEmail.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
+      return;
+    }
+
+    try {
+      await supabase
+          .from('Profiles')
+          .update({'email': newEmail})
+          .eq('id', user.id);
+    } catch (e) {
+      debugPrint('Error updating email: $e');
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +156,15 @@ class _ChangeEmailState extends State<ChangeEmail> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await _updateEmail();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
 
                       child: const Text(
                         "Save",
