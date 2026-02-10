@@ -60,6 +60,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
           .from('Profiles')
           .update({'email': newEmail})
           .eq('id', user.id);
+
+      await supabase.auth.updateUser(UserAttributes(email: newEmail));
     } catch (e) {
       debugPrint('Error updating email: $e');
       setState(() => loading = false);
