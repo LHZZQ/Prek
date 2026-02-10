@@ -75,6 +75,11 @@ jobs:
   backend_migrations:
     runs-on: ubuntu-latest
     steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
       - name: Detect changed paths
         id: filter
         uses: dorny/paths-filter@v3
@@ -91,18 +96,22 @@ jobs:
         if: steps.filter.outputs.supabase == 'true'
         uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 2.76.7
 
       - name: Start local Supabase
         if: steps.filter.outputs.supabase == 'true'
         run: supabase start
 
-      - name: Apply migrations (validate)
+      - name: Apply migrations
         if: steps.filter.outputs.supabase == 'true'
         run: supabase db reset
+
+      - name: Check schema drift
+        if: steps.filter.outputs.supabase == 'true'
+        run: supabase db diff --check
       
       - name: Stop local Supabase
-        if: steps.filter.outputs.supabase == 'true'
+        if: always() && steps.filter.outputs.supabase == 'true'
         run: supabase stop
 
       - name: Skip note
