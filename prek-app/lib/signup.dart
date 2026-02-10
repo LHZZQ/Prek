@@ -10,7 +10,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  final TextEditingController username = TextEditingController();
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController firstPasswordController = TextEditingController();
   final TextEditingController secondPasswordController =
@@ -49,6 +49,7 @@ class _SignUpState extends State<SignUp> {
       //Create profiles row
       await supabase.from('Profiles').insert({
         'id': user.id,
+        'username': usernameController.text.trim(),
         'email': emailController.text.trim(),
       });
 
@@ -102,7 +103,7 @@ class _SignUpState extends State<SignUp> {
                     SizedBox(
                       width: 400,
                       child: TextFormField(
-                        controller: username,
+                        controller: usernameController,
                         decoration: InputDecoration(
                           labelText: 'Username',
                           icon: Icon(
@@ -111,11 +112,11 @@ class _SignUpState extends State<SignUp> {
                             size: 40,
                           ),
 
-                          suffixIcon: username.text.isEmpty
+                          suffixIcon: usernameController.text.isEmpty
                               ? Container(width: 0)
                               : IconButton(
                                   icon: Icon(Icons.close),
-                                  onPressed: () => username.clear(),
+                                  onPressed: () => usernameController.clear(),
                                 ),
 
                           border: OutlineInputBorder(
