@@ -1,3 +1,4 @@
+import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/login.dart';
@@ -17,14 +18,15 @@ class _ChangePWState extends State<ChangePW> {
   bool isPasswordVisible2 = true;
   bool isPasswordVisible3 = true;
   bool loading = true;
+  final validator = SignUpValidator();
 
   @override
   void initState() {
     super.initState();
-    _checkCurrentPW();
+    _updatePW();
   }
 
-  Future<void> _checkCurrentPW() async {
+  Future<void> _updatePW() async {
     final user = supabase.auth.currentUser;
     if (user == null) return;
 
@@ -238,20 +240,33 @@ class _ChangePWState extends State<ChangePW> {
                         ),
                       ),
                       onPressed: () async {
-                        if (newPWController.text.trim() ==
-                            confirmPWController.text.trim()) {
-                          await _checkCurrentPW();
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Login(),
-                            ),
-                          );
+                        final checkNewPW = validator.validatePassword(
+                          newPWController.text.trim(),
+                        );
+                        final checkConfirmPW = validator.validatePassword(
+                          confirmPWController.text.trim(),
+                        );
+
+                        if (checkNewPW == null && checkConfirmPW == null) {
+                          if (newPWController.text.trim() ==
+                              confirmPWController.text.trim()) {
+                            await _updatePW();
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Login(),
+                              ),
+                            );
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("New password doesn't match"),
+                              ),
+                            );
+                          }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("New password doesn't match"),
-                            ),
+                            SnackBar(content: Text("Error: $checkNewPW")),
                           );
                         }
                       },
@@ -274,5 +289,23 @@ class _ChangePWState extends State<ChangePW> {
         ),
       ),
     );
+  }
+}
+
+class SignUpValidator {
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+
+    final regex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#%^&*()-_+={}[]|:"<>,./?]).+$',
+    );
+
+    if (value.length < 10 || !regex.hasMatch(value)) {
+      return 'Password must have a minimum of 1 lower case letter [a-z], a minimum of 1 upper case letter [A-Z], a minimum of 1 numeric character [0-9], a minimum of 1 special character: ~`!@#%^&*()-_+={}[]|:"<>,./?, and must be at least 10 characters';
+    }
+
+    return null;
   }
 }
