@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/login.dart';
 
 class ChangePW extends StatefulWidget {
   const ChangePW({super.key});
@@ -7,12 +9,49 @@ class ChangePW extends StatefulWidget {
 }
 
 class _ChangePWState extends State<ChangePW> {
+  final supabase = Supabase.instance.client;
   final TextEditingController currentPWController = TextEditingController();
   final TextEditingController newPWController = TextEditingController();
   final TextEditingController confirmPWController = TextEditingController();
   bool isPasswordVisible1 = true;
   bool isPasswordVisible2 = true;
   bool isPasswordVisible3 = true;
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _checkCurrentPW();
+  }
+
+  Future<void> _checkCurrentPW() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      await supabase.auth.signInWithPassword(
+        email: user.email,
+        password: currentPWController.text.trim(),
+      );
+      await supabase.auth.updateUser(
+        UserAttributes(password: newPWController.text.trim()),
+      );
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Password updated!")));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Error changing password")));
+      debugPrint('Error changing password: $e');
+      if (mounted) {
+        setState(() => loading = false);
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -198,7 +237,24 @@ class _ChangePWState extends State<ChangePW> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        if (newPWController.text.trim() ==
+                            confirmPWController.text.trim()) {
+                          await _checkCurrentPW();
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const Login(),
+                            ),
+                          );
+                        } else {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text("New password doesn't match"),
+                            ),
+                          );
+                        }
+                      },
 
                       child: const Text(
                         "Save",
