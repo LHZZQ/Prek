@@ -78,7 +78,6 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
-      
 
       body: Container(
         width: double.infinity,
@@ -195,7 +194,6 @@ class _ProfileTopCard extends StatelessWidget {
     required this.streak,
     required this.daysActive,
   });
-
 
   @override
   Widget build(BuildContext context) {
