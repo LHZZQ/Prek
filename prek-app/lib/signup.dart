@@ -27,10 +27,6 @@ class _SignUpState extends State<SignUp> {
     emailController.addListener(() => setState(() {}));
   }
 
-  bool passwordsMatch() {
-    return firstPasswordController.text == secondPasswordController.text;
-  }
-
   Future<void> signUp() async {
     final supabase = Supabase.instance.client;
 
@@ -172,17 +168,12 @@ class _SignUpState extends State<SignUp> {
                         onFieldSubmitted: (value) =>
                             setState(() => password = value),
                         controller: firstPasswordController,
-                        validator: (value) {
-                          final error = validator.validatePassword(value);
-                          if (error != null) return error;
-                          if (!passwordsMatch())
-                            return 'Passwords do not match';
-                          return null;
-                        },
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => validator.validatePassword(value),
                         decoration: InputDecoration(
                           hintText: 'Your Password',
                           labelText: 'Password',
-                          //errorText: 'Password entered is wrong',
+                          errorMaxLines: 10,
                           icon: Icon(
                             Icons.lock,
                             color: Colors.pink[200],
@@ -223,11 +214,12 @@ class _SignUpState extends State<SignUp> {
                         onFieldSubmitted: (value) =>
                             setState(() => password = value),
                         controller: secondPasswordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) => validator.validatePassword(value),
                         decoration: InputDecoration(
                           hintText: 'Your Password',
                           labelText: 'Password',
-                          //errorText: 'Password entered is wrong',
+                          errorMaxLines: 10,
                           icon: Icon(
                             Icons.lock,
                             color: Colors.pink[200],
@@ -291,8 +283,17 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                         onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            signUp();
+                          if (firstPasswordController.text.trim() ==
+                              secondPasswordController.text.trim()) {
+                            if (_formKey.currentState!.validate()) {
+                              signUp();
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("New password doesn't match"),
+                              ),
+                            );
                           }
                         },
 
