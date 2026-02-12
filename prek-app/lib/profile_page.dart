@@ -502,9 +502,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   };
 
   String _keyFor(DateTime d) {
-    final mm = d.month.toString().padLeft(2, "0");
-    final dd = d.day.toString().padLeft(2, "0");
-    return "${d.year}-$mm-$dd";
+return d.toUtc().toIso8601String().split('T').first;
   }
 
   String _monthName(int month) {
