@@ -52,7 +52,7 @@ _2025_prek.iml
 node_modules/
 
 # Ignore all coverage outputs
-coverage/*
+prek-app/coverage/*
 
 # But keep the lcov file
-!coverage/lcov.info
+!prek-app/coverage/lcov.info
