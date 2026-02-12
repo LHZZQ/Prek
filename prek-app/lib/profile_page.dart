@@ -26,6 +26,7 @@ class ProfilePage extends StatelessWidget{
         Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
         onPressed: () => Navigator.pop(context),
         ),
+
         title: const Text(
           "Profile",
           style: TextStyle(
@@ -33,6 +34,7 @@ class ProfilePage extends StatelessWidget{
             fontWeight: FontWeight.w600,
           ),
         ),
+        
         actions: [
           IconButton(
             onPressed: () {
@@ -44,6 +46,7 @@ class ProfilePage extends StatelessWidget{
           ),
         ],
      ),
+
      body: Container(
       width: double.infinity,
       decoration: BoxDecoration(
@@ -62,6 +65,7 @@ class ProfilePage extends StatelessWidget{
                 const SizedBox(height: kToolbarHeight - 12),
 
                 const _ProfileTopCard(
+
                   displayName: "Username",
                   email: "user@email.com",
                   reflections: "14",
@@ -84,7 +88,9 @@ class ProfilePage extends StatelessWidget{
                     fontWeight: FontWeight.w800,
                   ),
                 ),
+
                 const SizedBox(height: 12),
+
                 _SectionCard(
                   children:[
                     _SectionRow(
@@ -95,6 +101,7 @@ class ProfilePage extends StatelessWidget{
                       badgeBg: pink.withValues(alpha: 0.18),
                       onTap: () {},
                       ),
+
                       _SectionRow(
                         icon: Icons.local_fire_department_rounded,
                         iconBg: yellow.withValues(alpha: 0.55),
@@ -103,12 +110,14 @@ class ProfilePage extends StatelessWidget{
                         badgeBg: yellow.withValues(alpha: 0.20),
                         onTap: () {},
                       ),
+
                       _SectionRow(
                         icon: Icons.flag_rounded,
                         iconBg: blue.withValues(alpha: 0.45),
                         title: "Reflection goals",
                         onTap: () {},
                       ),
+
                       _SectionRow(
                         icon: Icons.emoji_emotions_rounded,
                         iconBg: pink.withValues(alpha: 0.35),
@@ -117,7 +126,9 @@ class ProfilePage extends StatelessWidget{
                       ),
                     ],
                   ),
+
                   const SizedBox(height: 18),
+
                   const Text(
                     "Mood board",
                     style: TextStyle(
@@ -137,6 +148,7 @@ class ProfilePage extends StatelessWidget{
     );
   }
 }
+
 class _ProfileTopCard extends StatelessWidget {
   final String displayName;
   final String email;
@@ -154,6 +166,7 @@ class _ProfileTopCard extends StatelessWidget {
   }
   );
 
+
   @override
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
@@ -162,7 +175,6 @@ class _ProfileTopCard extends StatelessWidget {
     //const peach = Color(0xFFFFE4B5);
     const blue = Color(0xFF058CD7);
     const yellow = Color(0xFFFFC567);
-
     
 
     return Container(
@@ -250,6 +262,7 @@ class _ProfileTopCard extends StatelessWidget {
                     _MiniChip(label: "Reflections", value: reflections, accent: pink),
                     _MiniChip(label: "Streak", value: streak, accent: yellow),
                     _MiniChip(label: "Days", value: daysActive, accent: blue),
+
                   ],
                 )
               ],
@@ -270,7 +283,9 @@ class _MiniChip extends StatelessWidget {
     required this.label,
     required this.value,
     required this.accent,
-  });
+  }
+  );
+
   @override
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
@@ -283,6 +298,7 @@ class _MiniChip extends StatelessWidget {
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: accent.withValues(alpha: 0.35)),
     ),
+
     child: Row(
       mainAxisSize: MainAxisSize.min,
         children: [
@@ -312,6 +328,7 @@ class _FunInfoPill extends StatelessWidget {
         gradient: LinearGradient(colors: [yellow, pink, blue]),
         borderRadius: BorderRadius.circular(999),
       ),
+
       child: Row(
         children: [
           Text(leftText, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
@@ -339,6 +356,7 @@ class _SectionCard extends StatelessWidget {
     );
   }
 }
+
 class _SectionRow extends StatelessWidget {
    final IconData icon;
    final Color iconBg;
@@ -354,7 +372,9 @@ class _SectionRow extends StatelessWidget {
     required this.onTap,
     this.badgeText,
     this.badgeBg,
-  });
+  }
+  );
+
   @override
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
@@ -387,12 +407,15 @@ class _SectionRow extends StatelessWidget {
   }
 }
 
+
 class _MoodBoardSection extends StatefulWidget {
   const _MoodBoardSection();
+
 
   @override 
   State<_MoodBoardSection> createState() => _MoodBoardSectionState();
 }
+
 
 class _MoodBoardSectionState extends State<_MoodBoardSection> {
   static const textColor = Color(0xFF94697E);
@@ -412,11 +435,14 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     (Icons.mood_bad_rounded, 'Angry'),
   ];
 
+
   static final Map<String, IconData> _iconForLabel = {
     for (final m in moods) m.$2: m.$1,
   };
 
+
   DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month); 
+
 
   final Map<String, String> moodByDay = {
     "2026-02-01": "Happy",
@@ -430,11 +456,13 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     "2026-01-09": "Angry",
   };
 
+
   String _keyFor(DateTime d) {
     final mm = d.month.toString().padLeft(2, "0");
     final dd = d.day.toString().padLeft(2, "0");
     return "${d.year}-$mm-$dd";
   }
+
 
   String _monthName(int month) {
     const names = [
@@ -452,9 +480,11 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
       "December"
     ];
 
+
     return names[month - 1];
 
   }
+
 
   void _prevMonth() {
     setState(() {
@@ -463,11 +493,13 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     });
   }
 
+
   void _nextMonth() {
     setState(() {
       shownMonth = DateTime(shownMonth.year, shownMonth.month + 1);
     });
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -479,6 +511,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     final totalCells = leadingEmpty + daysInMonth;
     final rows = (totalCells / 7).ceil();
     final gridCount = rows * 7;
+
 
     return Container(
       decoration: BoxDecoration(
@@ -505,6 +538,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
           const SizedBox(height: 10),
 
           const _WeekdayRow(), 
+
           const SizedBox(height: 10),
 
           GridView.builder(
