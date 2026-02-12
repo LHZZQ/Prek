@@ -5,11 +5,13 @@ import 'package:_2025_prek/forgotpw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
-void main() { // avoid overflowed
+void main() {
+  // avoid overflowed
   void useLargeViewport(WidgetTester tester) {
     tester.view.physicalSize = const Size(1200, 2200);
     tester.view.devicePixelRatio = 1.0;
-    addTearDown(() { // reset to default after test
+    addTearDown(() {
+      // reset to default after test
       tester.view.resetPhysicalSize();
       tester.view.resetDevicePixelRatio();
     });
@@ -27,7 +29,7 @@ void main() { // avoid overflowed
     expect(find.text('Ziqian'), findsOneWidget);
   });
 
-  testWidgets('change email page', (tester,) async {
+  testWidgets('change email page', (tester) async {
     useLargeViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: ChangeEmail()));
     await tester.pumpAndSettle();
@@ -39,7 +41,7 @@ void main() { // avoid overflowed
     expect(find.text('test54321@gmail.com'), findsOneWidget);
   });
 
-  testWidgets('change password page', (tester,) async {
+  testWidgets('change password page', (tester) async {
     useLargeViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: ChangePW()));
     await tester.pumpAndSettle();
@@ -56,7 +58,7 @@ void main() { // avoid overflowed
     expect(find.byIcon(Icons.visibility), findsOneWidget);
   });
 
-  testWidgets('forgot password page', (tester,) async {
+  testWidgets('forgot password page', (tester) async {
     useLargeViewport(tester);
     await tester.pumpWidget(const MaterialApp(home: ForgotPW()));
     await tester.pumpAndSettle();
