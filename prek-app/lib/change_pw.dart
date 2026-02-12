@@ -22,35 +22,41 @@ class _ChangePWState extends State<ChangePW> {
   @override
   void initState() {
     super.initState();
+    _checkPW();
     _updatePW();
   }
 
-  Future<void> _updatePW() async {
+  Future<String?> _checkPW() async {
     final user = supabase.auth.currentUser;
-    if (user == null) return;
+    if (user == null) return 'User not logged in';
 
     try {
       await supabase.auth.signInWithPassword(
         email: user.email,
         password: currentPWController.text.trim(),
       );
+
+      return null;
+    } catch (e) {
+      debugPrint('Wrong current password: $e');
+      setState(() => loading = false);
+      return 'Current password is wrong';
+    }
+  }
+
+  Future<String?> _updatePW() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return 'User not logged in';
+
+    try {
       await supabase.auth.updateUser(
         UserAttributes(password: newPWController.text.trim()),
       );
-
-      if (!mounted) return;
-
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Password updated!")));
+      return null;
     } catch (e) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Error changing password")));
       debugPrint('Error changing password: $e');
-      if (mounted) {
-        setState(() => loading = false);
-      }
+      setState(() => loading = false);
+      return 'Error changing password';
     }
   }
 
@@ -246,17 +252,44 @@ class _ChangePWState extends State<ChangePW> {
                           confirmPWController.text.trim(),
                         );
 
-                        if (checkNewPW == null && checkConfirmPW == null) {
+                        //check if checkPW fails
+                        final checkError = await _checkPW();
+                        if (checkError == null) {
                           if (newPWController.text.trim() ==
                               confirmPWController.text.trim()) {
-                            await _updatePW();
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const Login(),
-                              ),
-                            );
+                            if (checkNewPW == null && checkConfirmPW == null) {
+                              //check if updatePW fails
+                              final updateError = await _updatePW();
+                              if (updateError != null) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text("Error changing password"),
+                                  ),
+                                );
+                              } else {
+                                //update successful
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      "Password updated successfully!",
+                                    ),
+                                  ),
+                                );
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => const Login(),
+                                  ),
+                                );
+                              }
+                            } else {
+                              //one of the two new password fields doesn't follow the password requirement
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(content: Text("Error: $checkNewPW")),
+                              );
+                            }
                           } else {
+                            //the two new password fields doesn't match
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
                                 content: Text("New password doesn't match"),
@@ -265,7 +298,9 @@ class _ChangePWState extends State<ChangePW> {
                           }
                         } else {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Error: $checkNewPW")),
+                            SnackBar(
+                              content: Text("Current password is wrong"),
+                            ),
                           );
                         }
                       },
