@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'reflection_page.dart'; 
+import 'reflection_page.dart';
 
 class TaskSelectionPage extends StatelessWidget {
   final String selectedMood;
 
   const TaskSelectionPage({super.key, required this.selectedMood});
-
 
   static const textColor = Color(0xFF94697E);
   static const softWhite = Color(0xFFFFFFFF);
@@ -68,7 +67,8 @@ class TaskSelectionPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => ReflectionPage(selectedMood: selectedMood),
+                        builder: (_) =>
+                            ReflectionPage(selectedMood: selectedMood),
                       ),
                     );
                   },
@@ -82,22 +82,18 @@ class TaskSelectionPage extends StatelessWidget {
                   iconBg: blue.withValues(alpha: 0.2),
                   title: "Voice Reflection",
                   subtitle: "Record your thoughts with audio",
-                  onTap: () {
-              
-                  },
+                  onTap: () {},
                 ),
 
                 const SizedBox(height: 20),
 
-     
                 _buildTaskCard(
                   context,
                   icon: Icons.photo_library_rounded,
                   iconBg: pink.withValues(alpha: 0.2),
                   title: "Lookbook",
                   subtitle: "Visualize your journey through photos",
-                  onTap: () {
-                  },
+                  onTap: () {},
                 ),
               ],
             ),
@@ -106,7 +102,6 @@ class TaskSelectionPage extends StatelessWidget {
       ),
     );
   }
-
 
   Widget _buildTaskCard(
     BuildContext context, {
@@ -135,10 +130,7 @@ class TaskSelectionPage extends StatelessWidget {
           children: [
             Container(
               padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                color: iconBg,
-                shape: BoxShape.circle,
-              ),
+              decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
               child: Icon(icon, color: textColor, size: 30),
             ),
             const SizedBox(width: 20),
@@ -165,7 +157,11 @@ class TaskSelectionPage extends StatelessWidget {
                 ],
               ),
             ),
-            const Icon(Icons.arrow_forward_ios_rounded, color: textColor, size: 18),
+            const Icon(
+              Icons.arrow_forward_ios_rounded,
+              color: textColor,
+              size: 18,
+            ),
           ],
         ),
       ),

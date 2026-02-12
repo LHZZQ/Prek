@@ -1,38 +1,70 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-
-class ProfilePage extends StatelessWidget{
+class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
 
-  @override 
-  Widget build(BuildContext context){
-  const pink = Color(0xFFFB7DA8);
+  @override
+  State<ProfilePage> createState() => _ProfilePageState();
+}
+
+class _ProfilePageState extends State<ProfilePage> {
+  final supabase = Supabase.instance.client;
+  int reflectionsCount = 0;
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadReflectionsCount();
+  }
+
+  Future<void> _loadReflectionsCount() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final response = await supabase
+          .from('Gratitude Entries')
+          .select('id')
+          .eq('user_id', user.id);
+
+      setState(() {
+        reflectionsCount = response.length;
+        loading = false;
+      });
+    } catch (e) {
+      debugPrint('Error loading reflections count: $e');
+      setState(() => loading = false);
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    const pink = Color(0xFFFB7DA8);
     const yellow = Color(0xFFFFC567);
     const blue = Color(0xFF058CD7);
-   // const softWhite = Color(0xFFFFFFFF); 
-    const textColor = Color(0xFF94697E); 
+    // const softWhite = Color(0xFFFFFFFF);
+    const textColor = Color(0xFF94697E);
     const bgTop = Color(0xFFFFF1F5);
     const bgBottom = Color(0xFFFFF8EE);
-    
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
-      appBar: AppBar( 
+      appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: textColor),
         centerTitle: true,
-        leading: IconButton(icon: const
-        Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
-        onPressed: () => Navigator.pop(context),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
 
         title: const Text(
           "Profile",
-          style: TextStyle(
-            color: textColor,
-            fontWeight: FontWeight.w600,
-          ),
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
         
         actions: [
@@ -56,9 +88,18 @@ class ProfilePage extends StatelessWidget{
           colors: const [bgTop, bgBottom],
         ),
       ),
-      child: SafeArea(
-        child: SingleChildScrollView(
-          padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+      body: Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: const [bgTop, bgBottom],
+          ),
+        ),
+        child: SafeArea(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -71,16 +112,16 @@ class ProfilePage extends StatelessWidget{
                   reflections: "14",
                   streak: "06",
                   daysActive: "12",
-                 ),
-                 const SizedBox(height: 14),
+                ),
+                const SizedBox(height: 14),
 
-                 const _FunInfoPill(
+                const _FunInfoPill(
                   leftText: "PREK",
                   rightText: "Member since 2025",
                 ),
-                 const SizedBox(height: 18),
+                const SizedBox(height: 18),
 
-                 const Text(
+                const Text(
                   "Your wellness",
                   style: TextStyle(
                     color: textColor,
@@ -92,12 +133,12 @@ class ProfilePage extends StatelessWidget{
                 const SizedBox(height: 12),
 
                 _SectionCard(
-                  children:[
+                  children: [
                     _SectionRow(
-                      icon:Icons.auto_awesome_rounded,
+                      icon: Icons.auto_awesome_rounded,
                       iconBg: pink.withValues(alpha: 0.55),
-                      title: "Affirmations saved",
-                      badgeText: "14",
+                      title: "Reflections saved",
+                      badgeText: reflectionsCount.toString(),
                       badgeBg: pink.withValues(alpha: 0.18),
                       onTap: () {},
                       ),
@@ -162,9 +203,7 @@ class _ProfileTopCard extends StatelessWidget {
     required this.reflections,
     required this.streak,
     required this.daysActive,
-
-  }
-  );
+  });
 
 
   @override
@@ -229,7 +268,11 @@ class _ProfileTopCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  child: const Icon(Icons.auto_awesome_rounded, size: 16, color: Colors.white),
+                  child: const Icon(
+                    Icons.auto_awesome_rounded,
+                    size: 16,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ],
@@ -259,12 +302,16 @@ class _ProfileTopCard extends StatelessWidget {
                 Wrap(
                   spacing: 8,
                   children: [
-                    _MiniChip(label: "Reflections", value: reflections, accent: pink),
+                    _MiniChip(
+                      label: "Reflections",
+                      value: reflections,
+                      accent: pink,
+                    ),
                     _MiniChip(label: "Streak", value: streak, accent: yellow),
                     _MiniChip(label: "Days", value: daysActive, accent: blue),
 
                   ],
-                )
+                ),
               ],
             ),
           ),
@@ -302,21 +349,31 @@ class _MiniChip extends StatelessWidget {
     child: Row(
       mainAxisSize: MainAxisSize.min,
         children: [
-          Text(value, style: const TextStyle(fontWeight: FontWeight.w900, color: textColor)),
+          Text(
+            value,
+            style: const TextStyle(
+              fontWeight: FontWeight.w900,
+              color: textColor,
+            ),
+          ),
           const SizedBox(width: 6),
-          Text(label, style: TextStyle(color: textColor.withValues(alpha: 0.75))),
+          Text(
+            label,
+            style: TextStyle(color: textColor.withValues(alpha: 0.75)),
+          ),
         ],
       ),
     );
   }
 }
+
 class _FunInfoPill extends StatelessWidget {
   final String leftText;
   final String rightText;
 
   const _FunInfoPill({required this.leftText, required this.rightText});
 
-  @override 
+  @override
   Widget build(BuildContext context) {
     const yellow = Color(0xFFFFC567);
     const pink = Color(0xFFFB7DA8);
@@ -331,7 +388,13 @@ class _FunInfoPill extends StatelessWidget {
 
       child: Row(
         children: [
-          Text(leftText, style: const TextStyle(color: Colors.white, fontWeight: FontWeight.w900)),
+          Text(
+            leftText,
+            style: const TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
           const Spacer(),
           Text(rightText, style: const TextStyle(color: Colors.white)),
         ],
@@ -358,14 +421,14 @@ class _SectionCard extends StatelessWidget {
 }
 
 class _SectionRow extends StatelessWidget {
-   final IconData icon;
-   final Color iconBg;
-   final String title;
-   final String? badgeText;
-   final Color? badgeBg;
-   final VoidCallback onTap;
+  final IconData icon;
+  final Color iconBg;
+  final String title;
+  final String? badgeText;
+  final Color? badgeBg;
+  final VoidCallback onTap;
 
-   const _SectionRow({
+  const _SectionRow({
     required this.icon,
     required this.iconBg,
     required this.title,
@@ -381,28 +444,31 @@ class _SectionRow extends StatelessWidget {
 
     return ListTile(
       onTap: onTap,
-      contentPadding: const EdgeInsets.symmetric(
-        horizontal: 18,
-        vertical: 10,
-      ),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       minVerticalPadding: 16,
       leading: Container(
         width: 44,
         height: 44,
-        decoration: BoxDecoration(color: iconBg, borderRadius: BorderRadius.circular(14)),
+        decoration: BoxDecoration(
+          color: iconBg,
+          borderRadius: BorderRadius.circular(14),
+        ),
         child: Icon(icon, color: textColor),
       ),
-      title: Text(title, style: const TextStyle(color: textColor, fontWeight: FontWeight.w800)),
+      title: Text(
+        title,
+        style: const TextStyle(color: textColor, fontWeight: FontWeight.w800),
+      ),
       trailing: badgeText != null
-      ? Container(
-        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
-        decoration: BoxDecoration(
-          color: badgeBg ?? textColor.withValues(alpha: 0.12),
-          borderRadius: BorderRadius.circular(999),
-        ),
-        child: Text(badgeText!, style: const TextStyle(color: textColor)),
-      )
-      : const Icon(Icons.chevron_right_rounded, color: textColor),
+          ? Container(
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: badgeBg ?? textColor.withValues(alpha: 0.12),
+                borderRadius: BorderRadius.circular(999),
+              ),
+              child: Text(badgeText!, style: const TextStyle(color: textColor)),
+            )
+          : const Icon(Icons.chevron_right_rounded, color: textColor),
     );
   }
 }

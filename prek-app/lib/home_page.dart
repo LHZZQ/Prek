@@ -42,8 +42,6 @@ class HomePageState extends State<HomePage> {
     "I'm allowed to change my mind.",
     "I can pause without falling behind.",
     "I can handle what comes next.",
-
-
   ];
 
   late String dailyAffirmation;
@@ -219,9 +217,9 @@ class HomePageState extends State<HomePage> {
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
                       colors: [
-                       Color(0xFFFFC567), 
-                       Color(0xFFFB7DA8), 
-                       Color(0xFF058CD7), 
+                        Color(0xFFFFC567),
+                        Color(0xFFFB7DA8),
+                        Color(0xFF058CD7),
                       ],
                     ),
                     boxShadow: [
@@ -251,7 +249,6 @@ class HomePageState extends State<HomePage> {
                           builder: (context) => const MoodPage(),
                         ),
                       );
-                      
                     },
                     child: const Text(
                       "Start Reflection",

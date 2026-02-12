@@ -1,0 +1,52 @@
+name: CI_backend
+
+on:
+  pull_request:
+    branches: [main, dev]
+    paths:
+      - "supabase/**"
+      - ".github/workflows/ci_backend.yml"
+
+jobs:
+  backend_migrations:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Supabase CLI
+        uses: supabase/setup-cli@v1
+        with:
+          version: 2.76.7
+
+      - name: Docker sanity check
+        run: |
+          docker version
+          docker ps
+
+      - name: Start local Supabase
+        run: supabase start
+
+      - name: Apply migrations
+        run: supabase db reset
+
+      - name: Check schema drift
+        shell: bash
+        run: |
+          set -euo pipefail
+          supabase db diff --use-migra -f /tmp/schema_diff.sql
+          if [ -s /tmp/schema_diff.sql ]; then
+            echo "::error title=Schema drift detected::Database schema differs from migrations. Run 'supabase db diff -f supabase/migrations/<timestamp>_drift.sql' and commit the migration."
+            echo "----- diff preview (first 200 lines) -----"
+            sed -n '1,200p' /tmp/schema_diff.sql || true
+            exit 1
+          fi
+          echo "No schema drift detected."
+
+      - name: Stop local Supabase
+        if: always()
+        run: supabase stop

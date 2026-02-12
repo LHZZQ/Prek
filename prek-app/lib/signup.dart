@@ -1,5 +1,7 @@
+import 'package:_2025_prek/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -22,6 +24,52 @@ class _SignUpState extends State<SignUp> {
     super.initState();
 
     emailController.addListener(() => setState(() {}));
+  }
+
+  bool passwordsMatch() {
+    return firstPasswordController.text == secondPasswordController.text;
+  }
+
+  Future<void> signUp() async {
+    final supabase = Supabase.instance.client;
+
+    try {
+      final res = await supabase.auth.signUp(
+        email: emailController.text.trim(),
+        password: firstPasswordController.text.trim(),
+      );
+
+      final user = res.user;
+
+      if (user == null) {
+        throw Exception('Signup failed');
+      }
+
+      //Create profiles row
+      await supabase.from('Profiles').insert({
+        'id': user.id,
+        'email': emailController.text.trim(),
+      });
+
+      if (!mounted) return;
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Account created successfully')),
+      );
+
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text(e.message)));
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Error')));
+    }
   }
 
   @override
@@ -88,7 +136,12 @@ class _SignUpState extends State<SignUp> {
                       onFieldSubmitted: (value) =>
                           setState(() => password = value),
                       controller: firstPasswordController,
-                      validator: (value) => validator.validatePassword(value),
+                      validator: (value) {
+                        final error = validator.validatePassword(value);
+                        if (error != null) return error;
+                        if (!passwordsMatch()) return 'Passwords do not match';
+                        return null;
+                      },
                       decoration: InputDecoration(
                         hintText: 'Your Password',
                         labelText: 'Password',
@@ -114,7 +167,7 @@ class _SignUpState extends State<SignUp> {
                           borderSide: BorderSide(color: Colors.black87),
                         ),
                       ),
-                      obscureText: isPasswordVisible,
+                      obscureText: !isPasswordVisible,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.done,
                     ),
@@ -156,7 +209,7 @@ class _SignUpState extends State<SignUp> {
                           borderSide: BorderSide(color: Colors.black87),
                         ),
                       ),
-                      obscureText: isPasswordVisible,
+                      obscureText: !isPasswordVisible,
                       keyboardType: TextInputType.emailAddress,
                       textInputAction: TextInputAction.done,
                     ),
@@ -196,7 +249,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       onPressed: () {
                         if (_formKey.currentState!.validate()) {
-                          print("Success!");
+                          signUp();
                         }
                       },
 
@@ -227,7 +280,9 @@ class SignUpValidator {
       return 'Email is required';
     }
 
-    if (!value.contains('@')) {
+    final email = value.trim();
+
+    if (!email.contains('@')) {
       return 'Enter a valid email';
     }
     return null;

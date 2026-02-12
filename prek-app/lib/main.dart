@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   bool envLoaded = false;
@@ -18,17 +17,16 @@ Future<void> main() async {
   final supabaseUrl = envLoaded ? dotenv.env['SUPABASE_URL'] : null;
   final supabaseAnonKey = envLoaded ? dotenv.env['SUPABASE_ANON_KEY'] : null;
 
-
-   if (supabaseUrl == null || supabaseUrl.isEmpty || supabaseAnonKey == null || supabaseAnonKey.isEmpty) {
+  if (supabaseUrl == null ||
+      supabaseUrl.isEmpty ||
+      supabaseAnonKey == null ||
+      supabaseAnonKey.isEmpty) {
     //throw Exception('Supabase URL or Anon Key is not set in environment variables.');
     runApp(const MyApp());
     return;
   }
 
-  await Supabase.initialize(
-    url: supabaseUrl,
-    anonKey: supabaseAnonKey,
-  );
+  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   runApp(const MyApp());
 }
@@ -36,13 +34,12 @@ Future<void> main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
-      home: const Login(),  // Start on login
+      home: const Login(), // Start on login
     );
   }
 }

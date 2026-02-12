@@ -148,20 +148,49 @@ class _GratitudeTileState extends State<GratitudeTile> {
 
   Widget _moodChip(String mood) {
     IconData icon;
+    Color bgColor;
     switch (mood) {
-      case 'happy':
-        icon = Icons.sentiment_satisfied_alt;
+      case 'Happy':
+        icon = Icons.sentiment_very_satisfied_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
         break;
-      case 'calm':
-        icon = Icons.self_improvement;
+      case 'Good':
+        icon = Icons.sentiment_satisfied_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
         break;
-      case 'warm':
-        icon = Icons.favorite;
+      case 'Neutral':
+        icon = Icons.sentiment_neutral_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
+        break;
+      case 'Confused':
+        icon = Icons.psychology_alt_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
+        break;
+      case 'Sad':
+        icon = Icons.sentiment_dissatisfied_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        break;
+      case 'Overwhelmed':
+        icon = Icons.warning_amber_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        break;
+      case 'Frustrated':
+        icon = Icons.whatshot_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        break;
+      case 'Angry':
+        icon = Icons.mood_bad_rounded;
+        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       default:
         icon = Icons.emoji_emotions_outlined;
+        bgColor = Colors.grey.shade300;
     }
-    return Chip(label: Text(mood), avatar: Icon(icon, size: 16));
+    return Chip(
+      label: Text(mood),
+      avatar: Icon(icon, size: 16),
+      backgroundColor: bgColor,
+    );
   }
 
   @override
