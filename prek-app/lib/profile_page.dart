@@ -112,7 +112,7 @@ class ProfilePage extends StatelessWidget{
                       _SectionRow(
                         icon: Icons.emoji_emotions_rounded,
                         iconBg: pink.withValues(alpha: 0.35),
-                        title: "Mood Calender",
+                        title: "Memory Highlights",
                         onTap: () {},
                       ),
                     ],
