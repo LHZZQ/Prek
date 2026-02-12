@@ -78,8 +78,8 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+      
 
-     
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
