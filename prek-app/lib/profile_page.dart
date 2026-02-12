@@ -502,7 +502,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   };
 
   String _keyFor(DateTime d) {
-return d.toUtc().toIso8601String().split('T').first;
+    return d.toUtc().toIso8601String().split('T').first;
   }
 
   String _monthName(int month) {
