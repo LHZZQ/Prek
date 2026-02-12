@@ -29,6 +29,7 @@ We declare that any and all AI usage within the project has been recorded and no
 # Personal AI
 
 ## Layan:
+
 I, Layan, declare that this document is accurate to my AI usage throughout the course of SEP.
 
 
@@ -82,23 +83,61 @@ To understand the cause of bugs and error messages and to apply correct fixes ra
 I used AI in this way to support understanding of flutter conventions while I am learning the framework.
 
 
+
 ## Daud:
+
 I, Daud, declare that this document is accurate to my AI usage throughout the course of SEP.
+
 
 ### Development
 
+I used ChatGPT (OpenAI GPT4 / GPT5) to research suitable architecture patterns, suggest appropriate tech stacks, and understand how to integrate supabase with flutter.
+
+
 #### Prompts examples
+
+- "How do I connect a Flutter app to supabase?"
+- "How should I structure authentication flow in flutter?"
+
+
 #### Why?
+
+Since we had to make decisions about backend integration and app structure early on, I used AI to explore different options and understand them. I also needed help understanding how supabase works with flutter, especially around authentication. AI helped me grasp the concepts more quickly so I could implement them properly rather than relying on guesswork.
+
 
 ### Debugging
 
+I used ChatGPT (OpenAI GPT4 / GPT5) to debug authentication issues and resolve problems related to supabase and Row Level Security (RLS).
+
+
 #### Prompts examples
+
+- "Why is my Supabase authentication failing?"
+- "What causes this RLS policy error?"
+- "How do I configure Supabase RLS policies correctly?"
+
+  
 #### Why?
+
+Backend errors can be difficult to interpret, especially when dealing with authentication and database permissions. I used AI to understand what the error messages meant and what might be causing them. This helped me properly fix configuration issues instead of randomly changing policies or settings.
+
 
 ### Reviewing
 
+I used ChatGPT (OpenAI GPT4 / GPT5) to review architecture decisions and confirm whether my implementation approach made sense.
+
+
 #### Prompts examples
+
+- "Is this a secure way to structure user data access?"
+- "Am I handling async calls correctly in this function?"
+
+  
 #### Why?
+
+When working on backend logic and authentication, small mistakes can cause larger issues later. I used AI to double check that my approach was reasonable while still making the final decisions myself.
+
+
 
 ## Carol:
 I, Carol, declare that this document is accurate to my AI usage throughout the course of SEP.
