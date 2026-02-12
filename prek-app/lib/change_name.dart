@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class ChangeName extends StatefulWidget {
   const ChangeName({super.key});
@@ -7,7 +9,39 @@ class ChangeName extends StatefulWidget {
 }
 
 class _ChangeNameState extends State<ChangeName> {
+  final supabase = Supabase.instance.client;
   final TextEditingController nameController = TextEditingController();
+  String profileName = "";
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateUsername();
+  }
+
+  Future<void> _updateUsername() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final newUsername = nameController.text.trim();
+    if (newUsername.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Username cannot be empty")));
+      return;
+    }
+
+    try {
+      await supabase
+          .from('Profiles')
+          .update({'username': newUsername})
+          .eq('id', user.id);
+    } catch (e) {
+      debugPrint('Error updating username: $e');
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -58,7 +92,6 @@ class _ChangeNameState extends State<ChangeName> {
                     ),
                     child: TextField(
                       controller: nameController,
-
                       decoration: const InputDecoration(
                         hintText: "Enter your new name",
                         contentPadding: EdgeInsets.all(20),
@@ -99,8 +132,15 @@ class _ChangeNameState extends State<ChangeName> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {},
-
+                      onPressed: () async {
+                        await _updateUsername();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         "Save",
                         style: TextStyle(

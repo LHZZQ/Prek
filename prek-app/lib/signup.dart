@@ -10,6 +10,7 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
+  final TextEditingController usernameController = TextEditingController();
   final TextEditingController emailController = TextEditingController();
   final TextEditingController firstPasswordController = TextEditingController();
   final TextEditingController secondPasswordController =
@@ -24,10 +25,6 @@ class _SignUpState extends State<SignUp> {
     super.initState();
 
     emailController.addListener(() => setState(() {}));
-  }
-
-  bool passwordsMatch() {
-    return firstPasswordController.text == secondPasswordController.text;
   }
 
   Future<void> signUp() async {
@@ -48,6 +45,7 @@ class _SignUpState extends State<SignUp> {
       //Create profiles row
       await supabase.from('Profiles').insert({
         'id': user.id,
+        'username': usernameController.text.trim(),
         'email': emailController.text.trim(),
       });
 
@@ -88,183 +86,230 @@ class _SignUpState extends State<SignUp> {
           ),
           child: Center(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
-              child: Column(
-                children: [
-                  //image
-                  Image(image: AssetImage('images/prek_logo.png')),
+              padding: EdgeInsets.symmetric(horizontal: 32),
+              child: SingleChildScrollView(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    //image
+                    Image(image: AssetImage('images/prek_logo.png')),
 
-                  //email
-                  SizedBox(
-                    width: 400,
-                    child: TextFormField(
-                      controller: emailController,
-                      validator: (value) => validator.validateEmail(value),
-                      decoration: InputDecoration(
-                        hintText: 'hello@example.com',
-                        labelText: 'Email',
-                        icon: Icon(
-                          CupertinoIcons.envelope,
-                          color: Colors.pink[200],
-                          size: 40,
-                        ),
+                    //username
+                    SizedBox(
+                      width: 400,
+                      child: TextFormField(
+                        controller: usernameController,
+                        decoration: InputDecoration(
+                          labelText: 'Username',
+                          icon: Icon(
+                            Icons.person,
+                            color: Colors.pink[200],
+                            size: 40,
+                          ),
 
-                        suffixIcon: emailController.text.isEmpty
-                            ? Container(width: 0)
-                            : IconButton(
-                                icon: Icon(Icons.close),
-                                onPressed: () => emailController.clear(),
-                              ),
+                          suffixIcon: usernameController.text.isEmpty
+                              ? Container(width: 0)
+                              : IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () => usernameController.clear(),
+                                ),
 
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color: Colors.black87),
-                        ),
-                      ),
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.done,
-                    ),
-                  ),
-
-                  SizedBox(height: 20),
-
-                  //password
-                  SizedBox(
-                    width: 400,
-                    child: TextFormField(
-                      onChanged: (value) => setState(() => password = value),
-                      onFieldSubmitted: (value) =>
-                          setState(() => password = value),
-                      controller: firstPasswordController,
-                      validator: (value) {
-                        final error = validator.validatePassword(value);
-                        if (error != null) return error;
-                        if (!passwordsMatch()) return 'Passwords do not match';
-                        return null;
-                      },
-                      decoration: InputDecoration(
-                        hintText: 'Your Password',
-                        labelText: 'Password',
-                        //errorText: 'Password entered is wrong',
-                        icon: Icon(
-                          Icons.lock,
-                          color: Colors.pink[200],
-                          size: 40,
-                        ),
-                        suffixIcon: IconButton(
-                          icon: isPasswordVisible
-                              ? Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.pink[200],
-                                )
-                              : Icon(Icons.visibility, color: Colors.pink[200]),
-                          onPressed: () => setState(
-                            () => isPasswordVisible = !isPasswordVisible,
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.black87),
                           ),
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color: Colors.black87),
-                        ),
+                        textInputAction: TextInputAction.done,
                       ),
-                      obscureText: !isPasswordVisible,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.done,
                     ),
-                  ),
 
-                  SizedBox(height: 20),
+                    SizedBox(height: 20),
 
-                  //password
-                  SizedBox(
-                    width: 400,
-                    child: TextFormField(
-                      onChanged: (value) => setState(() => password = value),
-                      onFieldSubmitted: (value) =>
-                          setState(() => password = value),
-                      controller: secondPasswordController,
-                      validator: (value) => validator.validatePassword(value),
-                      decoration: InputDecoration(
-                        hintText: 'Your Password',
-                        labelText: 'Password',
-                        //errorText: 'Password entered is wrong',
-                        icon: Icon(
-                          Icons.lock,
-                          color: Colors.pink[200],
-                          size: 40,
-                        ),
-                        suffixIcon: IconButton(
-                          icon: isPasswordVisible
-                              ? Icon(
-                                  Icons.visibility_off,
-                                  color: Colors.pink[200],
-                                )
-                              : Icon(Icons.visibility, color: Colors.pink[200]),
-                          onPressed: () => setState(
-                            () => isPasswordVisible = !isPasswordVisible,
+                    //email
+                    SizedBox(
+                      width: 400,
+                      child: TextFormField(
+                        controller: emailController,
+                        validator: (value) => validator.validateEmail(value),
+                        decoration: InputDecoration(
+                          hintText: 'hello@example.com',
+                          labelText: 'Email',
+                          icon: Icon(
+                            CupertinoIcons.envelope,
+                            color: Colors.pink[200],
+                            size: 40,
+                          ),
+
+                          suffixIcon: emailController.text.isEmpty
+                              ? Container(width: 0)
+                              : IconButton(
+                                  icon: Icon(Icons.close),
+                                  onPressed: () => emailController.clear(),
+                                ),
+
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.black87),
                           ),
                         ),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color: Colors.black87),
-                        ),
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.done,
                       ),
-                      obscureText: !isPasswordVisible,
-                      keyboardType: TextInputType.emailAddress,
-                      textInputAction: TextInputAction.done,
                     ),
-                  ),
 
-                  SizedBox(height: 30),
+                    SizedBox(height: 20),
 
-                  //login button
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      gradient: const LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Color(0xFFFFC567),
-                          Color(0xFFFB7DA8),
-                          Color(0xFF058CD7),
+                    //password
+                    SizedBox(
+                      width: 400,
+                      child: TextFormField(
+                        onChanged: (value) => setState(() => password = value),
+                        onFieldSubmitted: (value) =>
+                            setState(() => password = value),
+                        controller: firstPasswordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => validator.validatePassword(value),
+                        decoration: InputDecoration(
+                          hintText: 'Your Password',
+                          labelText: 'Password',
+                          errorMaxLines: 10,
+                          icon: Icon(
+                            Icons.lock,
+                            color: Colors.pink[200],
+                            size: 40,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: isPasswordVisible
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    color: Colors.pink[200],
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    color: Colors.pink[200],
+                                  ),
+                            onPressed: () => setState(
+                              () => isPasswordVisible = !isPasswordVisible,
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.black87),
+                          ),
+                        ),
+                        obscureText: !isPasswordVisible,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+
+                    SizedBox(height: 20),
+
+                    //password
+                    SizedBox(
+                      width: 400,
+                      child: TextFormField(
+                        onChanged: (value) => setState(() => password = value),
+                        onFieldSubmitted: (value) =>
+                            setState(() => password = value),
+                        controller: secondPasswordController,
+                        autovalidateMode: AutovalidateMode.onUserInteraction,
+                        validator: (value) => validator.validatePassword(value),
+                        decoration: InputDecoration(
+                          hintText: 'Your Password',
+                          labelText: 'Password',
+                          errorMaxLines: 10,
+                          icon: Icon(
+                            Icons.lock,
+                            color: Colors.pink[200],
+                            size: 40,
+                          ),
+                          suffixIcon: IconButton(
+                            icon: isPasswordVisible
+                                ? Icon(
+                                    Icons.visibility_off,
+                                    color: Colors.pink[200],
+                                  )
+                                : Icon(
+                                    Icons.visibility,
+                                    color: Colors.pink[200],
+                                  ),
+                            onPressed: () => setState(
+                              () => isPasswordVisible = !isPasswordVisible,
+                            ),
+                          ),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            borderSide: BorderSide(color: Colors.black87),
+                          ),
+                        ),
+                        obscureText: !isPasswordVisible,
+                        keyboardType: TextInputType.emailAddress,
+                        textInputAction: TextInputAction.done,
+                      ),
+                    ),
+
+                    SizedBox(height: 30),
+
+                    //login button
+                    Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        gradient: const LinearGradient(
+                          begin: Alignment.centerLeft,
+                          end: Alignment.centerRight,
+                          colors: [
+                            Color(0xFFFFC567),
+                            Color(0xFFFB7DA8),
+                            Color(0xFF058CD7),
+                          ],
+                        ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.pinkAccent.withValues(alpha: 0.25),
+                            blurRadius: 15,
+                            offset: const Offset(0, 6),
+                          ),
                         ],
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.25),
-                          blurRadius: 15,
-                          offset: const Offset(0, 6),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.transparent,
+                          shadowColor: Colors.transparent,
+                          minimumSize: const Size(420, 55),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(30),
+                          ),
                         ),
-                      ],
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        minimumSize: const Size(420, 55),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          signUp();
-                        }
-                      },
+                        onPressed: () {
+                          if (firstPasswordController.text.trim() ==
+                              secondPasswordController.text.trim()) {
+                            if (_formKey.currentState!.validate()) {
+                              signUp();
+                            }
+                          } else {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("New password doesn't match"),
+                              ),
+                            );
+                          }
+                        },
 
-                      child: const Text(
-                        "Sign Up",
-                        style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                          letterSpacing: 0.3,
+                        child: const Text(
+                          "Sign Up",
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            letterSpacing: 0.3,
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
             ),
           ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class ChangeEmail extends StatefulWidget {
   const ChangeEmail({super.key});
@@ -7,7 +9,40 @@ class ChangeEmail extends StatefulWidget {
 }
 
 class _ChangeEmailState extends State<ChangeEmail> {
+  final supabase = Supabase.instance.client;
   final TextEditingController emailController = TextEditingController();
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateEmail();
+  }
+
+  Future<void> _updateEmail() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final newEmail = emailController.text.trim();
+    if (newEmail.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
+      return;
+    }
+
+    try {
+      await supabase
+          .from('Profiles')
+          .update({'email': newEmail})
+          .eq('id', user.id);
+
+      await supabase.auth.updateUser(UserAttributes(email: newEmail));
+    } catch (e) {
+      debugPrint('Error updating email: $e');
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +134,15 @@ class _ChangeEmailState extends State<ChangeEmail> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await _updateEmail();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
 
                       child: const Text(
                         "Save",
