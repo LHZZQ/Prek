@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
           "Profile",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
-        
+
         actions: [
           IconButton(
             onPressed: () {
@@ -77,7 +77,7 @@ class _ProfilePageState extends State<ProfilePage> {
             icon: const Icon(Icons.logout_rounded, color: textColor),
           ),
         ],
-     ),
+      ),
 
      body: Container(
       width: double.infinity,
@@ -106,7 +106,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SizedBox(height: kToolbarHeight - 12),
 
                 const _ProfileTopCard(
-
                   displayName: "Username",
                   email: "user@email.com",
                   reflections: "14",
@@ -141,46 +140,46 @@ class _ProfilePageState extends State<ProfilePage> {
                       badgeText: reflectionsCount.toString(),
                       badgeBg: pink.withValues(alpha: 0.18),
                       onTap: () {},
-                      ),
-
-                      _SectionRow(
-                        icon: Icons.local_fire_department_rounded,
-                        iconBg: yellow.withValues(alpha: 0.55),
-                        title: "Reflection streak",
-                        badgeText: "6",
-                        badgeBg: yellow.withValues(alpha: 0.20),
-                        onTap: () {},
-                      ),
-
-                      _SectionRow(
-                        icon: Icons.flag_rounded,
-                        iconBg: blue.withValues(alpha: 0.45),
-                        title: "Reflection goals",
-                        onTap: () {},
-                      ),
-
-                      _SectionRow(
-                        icon: Icons.emoji_emotions_rounded,
-                        iconBg: pink.withValues(alpha: 0.35),
-                        title: "Memory Highlights",
-                        onTap: () {},
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 18),
-
-                  const Text(
-                    "Mood board",
-                    style: TextStyle(
-                      color: textColor,
-                      fontSize: 22,
-                      fontWeight: FontWeight.w800,
                     ),
+
+                    _SectionRow(
+                      icon: Icons.local_fire_department_rounded,
+                      iconBg: yellow.withValues(alpha: 0.55),
+                      title: "Reflection streak",
+                      badgeText: "6",
+                      badgeBg: yellow.withValues(alpha: 0.20),
+                      onTap: () {},
+                    ),
+
+                    _SectionRow(
+                      icon: Icons.flag_rounded,
+                      iconBg: blue.withValues(alpha: 0.45),
+                      title: "Reflection goals",
+                      onTap: () {},
+                    ),
+
+                    _SectionRow(
+                      icon: Icons.emoji_emotions_rounded,
+                      iconBg: pink.withValues(alpha: 0.35),
+                      title: "Memory Highlights",
+                      onTap: () {},
+                    ),
+                  ],
+                ),
+
+                const SizedBox(height: 18),
+
+                const Text(
+                  "Mood board",
+                  style: TextStyle(
+                    color: textColor,
+                    fontSize: 22,
+                    fontWeight: FontWeight.w800,
                   ),
-                  const SizedBox(height: 12),
-                  const _MoodBoardSection(),
-                  const SizedBox(height: 18),                 
+                ),
+                const SizedBox(height: 12),
+                const _MoodBoardSection(),
+                const SizedBox(height: 18),
               ],
             ),
           ),
@@ -214,7 +213,6 @@ class _ProfileTopCard extends StatelessWidget {
     //const peach = Color(0xFFFFE4B5);
     const blue = Color(0xFF058CD7);
     const yellow = Color(0xFFFFC567);
-    
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -309,7 +307,6 @@ class _ProfileTopCard extends StatelessWidget {
                     ),
                     _MiniChip(label: "Streak", value: streak, accent: yellow),
                     _MiniChip(label: "Days", value: daysActive, accent: blue),
-
                   ],
                 ),
               ],
@@ -330,8 +327,7 @@ class _MiniChip extends StatelessWidget {
     required this.label,
     required this.value,
     required this.accent,
-  }
-  );
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -344,10 +340,10 @@ class _MiniChip extends StatelessWidget {
         color: softWhite.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: accent.withValues(alpha: 0.35)),
-    ),
+      ),
 
-    child: Row(
-      mainAxisSize: MainAxisSize.min,
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
         children: [
           Text(
             value,
@@ -435,8 +431,7 @@ class _SectionRow extends StatelessWidget {
     required this.onTap,
     this.badgeText,
     this.badgeBg,
-  }
-  );
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -473,15 +468,12 @@ class _SectionRow extends StatelessWidget {
   }
 }
 
-
 class _MoodBoardSection extends StatefulWidget {
   const _MoodBoardSection();
 
-
-  @override 
+  @override
   State<_MoodBoardSection> createState() => _MoodBoardSectionState();
 }
-
 
 class _MoodBoardSectionState extends State<_MoodBoardSection> {
   static const textColor = Color(0xFF94697E);
@@ -501,14 +493,11 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     (Icons.mood_bad_rounded, 'Angry'),
   ];
 
-
   static final Map<String, IconData> _iconForLabel = {
     for (final m in moods) m.$2: m.$1,
   };
 
-
-  DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month); 
-
+  DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
   final Map<String, String> moodByDay = {
     "2026-02-01": "Happy",
@@ -522,43 +511,36 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     "2026-01-09": "Angry",
   };
 
-
   String _keyFor(DateTime d) {
     final mm = d.month.toString().padLeft(2, "0");
     final dd = d.day.toString().padLeft(2, "0");
     return "${d.year}-$mm-$dd";
   }
 
-
   String _monthName(int month) {
     const names = [
-      "January", 
-      "February", 
-      "March", 
-      "April", 
-      "May", 
+      "January",
+      "February",
+      "March",
+      "April",
+      "May",
       "June",
-      "July", 
-      "August", 
-      "September", 
-      "October", 
-      "November", 
-      "December"
+      "July",
+      "August",
+      "September",
+      "October",
+      "November",
+      "December",
     ];
 
-
     return names[month - 1];
-
   }
-
 
   void _prevMonth() {
     setState(() {
       shownMonth = DateTime(shownMonth.year, shownMonth.month - 1);
-
     });
   }
-
 
   void _nextMonth() {
     setState(() {
@@ -566,18 +548,21 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
-    final daysInMonth = DateUtils.getDaysInMonth(shownMonth.year, shownMonth.month);
+    final daysInMonth = DateUtils.getDaysInMonth(
+      shownMonth.year,
+      shownMonth.month,
+    );
     final firstDay = DateTime(shownMonth.year, shownMonth.month, 1);
 
-    final leadingEmpty = (firstDay.weekday - DateTime.monday) % 7; //bcs monday is the start of the week so im going based off it
+    final leadingEmpty =
+        (firstDay.weekday - DateTime.monday) %
+        7; //bcs monday is the start of the week so im going based off it
 
     final totalCells = leadingEmpty + daysInMonth;
     final rows = (totalCells / 7).ceil();
     final gridCount = rows * 7;
-
 
     return Container(
       decoration: BoxDecoration(
@@ -603,7 +588,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
           ),
           const SizedBox(height: 10),
 
-          const _WeekdayRow(), 
+          const _WeekdayRow(),
 
           const SizedBox(height: 10),
 
@@ -623,7 +608,11 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
                 return _MoodCell.empty();
               }
 
-              final date = DateTime(shownMonth.year, shownMonth.month, dayNumber);
+              final date = DateTime(
+                shownMonth.year,
+                shownMonth.month,
+                dayNumber,
+              );
               final label = moodByDay[_keyFor(date)];
               final icon = label == null ? null : _iconForLabel[label];
 
@@ -632,7 +621,6 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
                 icon: icon,
                 accent: _accentForLabel(label),
               );
-
             },
           ),
         ],
@@ -650,13 +638,9 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     }
 
     return pink.withValues(alpha: 0.16);
-
-
   }
-  
-
-
 }
+
 class _MoodBoardHeader extends StatelessWidget {
   final String title;
   final VoidCallback onPrev;
@@ -675,34 +659,29 @@ class _MoodBoardHeader extends StatelessWidget {
     return Row(
       children: [
         IconButton(
-          onPressed: 
-          onPrev, 
-          icon: 
-          const Icon(Icons.chevron_left_rounded, color: textColor),
+          onPressed: onPrev,
+          icon: const Icon(Icons.chevron_left_rounded, color: textColor),
           splashRadius: 22,
-          ),
-          Expanded(
-            child: Text(
-              title,
-              textAlign: TextAlign.center,
-              style: const TextStyle(
-                color: textColor,
-                fontSize: 18,
-                fontWeight: FontWeight.w900,
-              ),
-
+        ),
+        Expanded(
+          child: Text(
+            title,
+            textAlign: TextAlign.center,
+            style: const TextStyle(
+              color: textColor,
+              fontSize: 18,
+              fontWeight: FontWeight.w900,
             ),
           ),
-          IconButton(
-            onPressed: onNext,
-            icon: const Icon(Icons.chevron_right_rounded, color: textColor),
-            splashRadius: 22,
-          ),
+        ),
+        IconButton(
+          onPressed: onNext,
+          icon: const Icon(Icons.chevron_right_rounded, color: textColor),
+          splashRadius: 22,
+        ),
       ],
     );
-
   }
-
 }
 
 class _WeekdayRow extends StatelessWidget {
@@ -716,18 +695,18 @@ class _WeekdayRow extends StatelessWidget {
     return Row(
       children: [
         for (final l in labels)
-        Expanded(
-          child: Center(
-            child: Text(
-              l,
-              style: TextStyle(
-                color: textColor.withValues(alpha: 0.65),
-                fontWeight: FontWeight.w800,
-                fontSize: 12,
+          Expanded(
+            child: Center(
+              child: Text(
+                l,
+                style: TextStyle(
+                  color: textColor.withValues(alpha: 0.65),
+                  fontWeight: FontWeight.w800,
+                  fontSize: 12,
+                ),
               ),
             ),
           ),
-        ),
       ],
     );
   }
@@ -738,11 +717,7 @@ class _MoodCell extends StatelessWidget {
   final IconData? icon;
   final Color? accent;
 
-  const _MoodCell({
-    this.day,
-    this.icon,
-    this.accent,
-  });
+  const _MoodCell({this.day, this.icon, this.accent});
 
   factory _MoodCell.empty() => const _MoodCell();
 
@@ -755,42 +730,35 @@ class _MoodCell extends StatelessWidget {
 
     return Container(
       decoration: BoxDecoration(
-        color: isEmpty 
-        ? textColor.withValues(alpha: 0.06) 
-        : (accent ?? textColor.withValues(alpha: 0.10)),
+        color: isEmpty
+            ? textColor.withValues(alpha: 0.06)
+            : (accent ?? textColor.withValues(alpha: 0.10)),
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
-          color: isEmpty ? Colors.transparent : softWhite.withValues(alpha: 0.60),
-
+          color: isEmpty
+              ? Colors.transparent
+              : softWhite.withValues(alpha: 0.60),
         ),
       ),
       child: isEmpty
-        ? const SizedBox.shrink()
-        : Stack(
-          children: [
-            Positioned(
-              top: 8,
-              left: 8,
-              child: Text(
-                "$day",
-                style: TextStyle(
-                  fontSize: 12,
-                  fontWeight: FontWeight.w900,
-                  color: textColor.withValues(alpha: 0.70),
+          ? const SizedBox.shrink()
+          : Stack(
+              children: [
+                Positioned(
+                  top: 8,
+                  left: 8,
+                  child: Text(
+                    "$day",
+                    style: TextStyle(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w900,
+                      color: textColor.withValues(alpha: 0.70),
+                    ),
+                  ),
                 ),
-              ),
+                Center(child: Icon(icon, size: 37, color: textColor)),
+              ],
             ),
-            Center(
-              child: Icon(
-                icon,
-                size: 37,
-                color: textColor,
-              ),
-            ),
-          ],
-          
-        ),
-      
     );
   }
 }
