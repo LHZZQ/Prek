@@ -79,15 +79,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ],
       ),
 
-     body: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        gradient: LinearGradient(
-          begin:Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: const [bgTop, bgBottom],
-        ),
-      ),
+     
       body: Container(
         width: double.infinity,
         decoration: BoxDecoration(
@@ -185,6 +177,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
+     
     );
   }
 }
