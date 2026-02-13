@@ -230,16 +230,46 @@ For the code of my team members, there are some parts that I might not understan
 I, Kylan, declare that this document is accurate to my AI usage throughout the course of SEP.
 
 ### Development
+I used ChatGPT (OpenAI GPT4 / GPT5) as a reference and learning tool while building UI pages in Flutter, including implementing structured layouts, reusable card components, and navigation between screens.
 
 #### Prompts examples
+I used ChatGPT (OpenAI GPT4 / GPT5) as a reference and learning tool while building UI pages in Flutter, including implementing structured layouts, reusable card components, and navigation between screens.
+Prompt examples
+"How can I structure a Flutter page with a gradient background and SafeArea?"
+"What is a clean way to build reusable card-style components in Flutter?"
+"How does Navigator.push work when passing parameters between pages?"
+"How can I create soft shadows and rounded containers for a modern UI?"
+
 #### Why?
+While implementing pages such as the task selection interface, I used AI to understand common Flutter layout patterns, including Scaffold structure, gradient backgrounds, widget hierarchy, and reusable components.
+The responses served as structural references, which I then adapted and integrated into our existing project. I modified layout spacing, styling, navigation logic, and parameter passing to ensure the implementation aligned with our design system and overall application architecture.
+AI was used to support understanding of widget composition and layout behaviour, but the integration, refinement, and final implementation decisions were made by me.
 
 ### Debugging
+I used ChatGPT (OpenAI GPT4 / GPT5) to help interpret layout behaviour and resolve runtime issues related to navigation and widget constraints.
 
 #### Prompts examples
+"Why is my Column not filling the full height?"
+"Why does Navigator cause issues after async operations?"
+"How can I prevent layout overflow in Flutter?"
+
 #### Why?
+Rather than relying solely on trial and error, I used AI to understand how layout constraints and navigation context work in Flutter. This improved my understanding of widget lifecycle and layout rendering.
 
 ### Reviewing
+I occasionally used ChatGPT (OpenAI GPT4 / GPT5) to validate whether my widget structure and navigation approach followed common Flutter conventions.
 
 #### Prompts examples
+"Is this a good pattern for building reusable UI components?"
+"Is this navigation pattern considered safe practice in Flutter?"
+
 #### Why?
+To ensure that the code structure was maintainable and aligned with standard Flutter practices, while still making final implementation decisions independently.
+
+import 'package:flutter/material.dart';
+import 'reflection_page.dart'; 
+
+class TaskSelectionPage extends StatelessWidget {
+  final String selectedMood;
+
+  const TaskSelectionPage({super.key, required this.selectedMood});
