@@ -12,7 +12,8 @@ class _ForgotPWState extends State<ForgotPW> {
   final TextEditingController firstPasswordController = TextEditingController();
   final TextEditingController secondPasswordController =
       TextEditingController();
-  bool isPasswordVisible = false;
+  bool isPasswordVisible1 = true;
+  bool isPasswordVisible2 = true;
   String password = '';
 
   @override
@@ -85,19 +86,18 @@ class _ForgotPWState extends State<ForgotPW> {
                         setState(() => password = value),
                     controller: firstPasswordController,
                     decoration: InputDecoration(
-                      hintText: 'Your Password',
-                      labelText: 'Password',
+                      labelText: 'New Password',
                       //errorText: 'Password entered is wrong',
                       icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
                       suffixIcon: IconButton(
-                        icon: isPasswordVisible
-                            ? Icon(
+                        icon: isPasswordVisible1
+                            ? const Icon(
                                 Icons.visibility_off,
-                                color: Colors.pink[200],
+                                color: Colors.pink,
                               )
-                            : Icon(Icons.visibility, color: Colors.pink[200]),
+                            : const Icon(Icons.visibility, color: Colors.pink),
                         onPressed: () => setState(
-                          () => isPasswordVisible = !isPasswordVisible,
+                          () => isPasswordVisible1 = !isPasswordVisible1,
                         ),
                       ),
                       border: OutlineInputBorder(
@@ -105,7 +105,7 @@ class _ForgotPWState extends State<ForgotPW> {
                         borderSide: BorderSide(color: Colors.black87),
                       ),
                     ),
-                    obscureText: isPasswordVisible,
+                    obscureText: isPasswordVisible1,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.done,
                   ),
@@ -122,19 +122,18 @@ class _ForgotPWState extends State<ForgotPW> {
                         setState(() => password = value),
                     controller: secondPasswordController,
                     decoration: InputDecoration(
-                      hintText: 'Your Password',
-                      labelText: 'Password',
+                      labelText: 'Confirm New Password',
                       //errorText: 'Password entered is wrong',
                       icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
                       suffixIcon: IconButton(
-                        icon: isPasswordVisible
-                            ? Icon(
+                        icon: isPasswordVisible2
+                            ? const Icon(
                                 Icons.visibility_off,
-                                color: Colors.pink[200],
+                                color: Colors.pink,
                               )
-                            : Icon(Icons.visibility, color: Colors.pink[200]),
+                            : const Icon(Icons.visibility, color: Colors.pink),
                         onPressed: () => setState(
-                          () => isPasswordVisible = !isPasswordVisible,
+                          () => isPasswordVisible2 = !isPasswordVisible2,
                         ),
                       ),
                       border: OutlineInputBorder(
@@ -142,7 +141,7 @@ class _ForgotPWState extends State<ForgotPW> {
                         borderSide: BorderSide(color: Colors.black87),
                       ),
                     ),
-                    obscureText: isPasswordVisible,
+                    obscureText: isPasswordVisible2,
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.done,
                   ),
