@@ -4,8 +4,25 @@ import 'package:_2025_prek/change_pw.dart';
 import 'package:_2025_prek/forgotpw.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences.setMockInitialValues({});
+    await Supabase.initialize(
+      url: const String.fromEnvironment(
+        'SUPABASE_URL',
+        defaultValue: 'http://localhost',
+      ),
+      anonKey: const String.fromEnvironment(
+        'SUPABASE_ANON_KEY',
+        defaultValue: 'test-anon-key',
+      ),
+    );
+  });
+
   // avoid overflowed
   void useLargeViewport(WidgetTester tester) {
     tester.view.physicalSize = const Size(1200, 2200);
