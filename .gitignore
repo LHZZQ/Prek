@@ -50,3 +50,9 @@ app.*.map.json
 _2025_prek.iml
 
 node_modules/
+
+# Ignore all coverage outputs
+prek-app/coverage/*
+
+# But keep the lcov file
+!prek-app/coverage/lcov.info
