@@ -8,7 +8,9 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: MediaQuery(
-          data: MediaQueryData(textScaler: TextScaler.linear(0.85)),//Reduce the size of the text to reduce the overflow
+          data: MediaQueryData(
+            textScaler: TextScaler.linear(0.85),
+          ), //Reduce the size of the text to reduce the overflow
           child: HomePage(),
         ),
       ),
@@ -35,7 +37,10 @@ void main() {
       find.text('Your next affirmation will appear tomorrow'),
       findsOneWidget,
     );
-    expect(find.widgetWithText(ElevatedButton, 'Start Reflection'), findsOneWidget);
+    expect(
+      find.widgetWithText(ElevatedButton, 'Start Reflection'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('tapping Start Reflection navigates to mood page', (
