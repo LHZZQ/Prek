@@ -20,9 +20,11 @@ jobs:
       
       - name: Install dependencies
         run: flutter pub get
+        working-directory: prek-app
 
       - name: Build Web (release)
         run: flutter build web --release
+        working-directory: prek-app
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
@@ -33,7 +35,7 @@ jobs:
 
       - name: Deploy to S3
         run: |
-          aws s3 sync build/web s3://${{ secrets.S3_BUCKET_NAME }} --delete
+          aws s3 sync prek-app/build/web s3://${{ secrets.S3_BUCKET_NAME }} --delete
 
       - name: Invalidate CloudFront Cache
         run: |
