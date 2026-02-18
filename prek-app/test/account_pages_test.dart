@@ -7,7 +7,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-
 void main() {
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
