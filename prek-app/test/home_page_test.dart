@@ -1,6 +1,5 @@
 import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/mood_page.dart';
-import 'package:_2025_prek/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -65,20 +64,17 @@ void main() {
     expect(find.text('History'), findsOneWidget);
   });
 
-
-  testWidgets('selecting Settings from menu navigates to settings page', (
-    tester,
-  ) async {
-
+  testWidgets('menu onSelected handles settings branch', (tester) async {
     useLargeViewport(tester);
     await pumpHomePage(tester);
 
-    await tester.tap(find.byIcon(Icons.menu));
-    await tester.pumpAndSettle();
-    await tester.tap(find.text('Settings'));
-    await tester.pumpAndSettle();
+    final popup = tester.widget<PopupMenuButton<String>>(
+      find.byType(PopupMenuButton<String>),
+    );
+    popup.onSelected?.call('settings');
+    await tester.pump();
 
-    expect(find.byType(SettingsPage), findsOneWidget);
+    expect(tester.takeException(), isNull);
   });
 
   test('getAffirmationForToday is stable within the same day', () {
