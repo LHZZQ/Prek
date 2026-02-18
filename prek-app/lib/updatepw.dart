@@ -1,14 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:_2025_prek/updatepw.dart';
 
-class ForgotPW extends StatefulWidget {
-  const ForgotPW({super.key});
+class UpdatePW extends StatefulWidget {
+  const UpdatePW({super.key});
   @override
-  State<ForgotPW> createState() => _ForgotPWState();
+  State<UpdatePW> createState() => _UpdatePWState();
 }
 
-class _ForgotPWState extends State<ForgotPW> {
+class _UpdatePWState extends State<UpdatePW> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController firstPasswordController = TextEditingController();
   final TextEditingController secondPasswordController =
@@ -76,6 +75,78 @@ class _ForgotPWState extends State<ForgotPW> {
                   ),
                 ),
 
+                SizedBox(height: 20),
+
+                //password
+                SizedBox(
+                  width: 400,
+                  child: TextFormField(
+                    onChanged: (value) => setState(() => password = value),
+                    onFieldSubmitted: (value) =>
+                        setState(() => password = value),
+                    controller: firstPasswordController,
+                    decoration: InputDecoration(
+                      labelText: 'New Password',
+                      //errorText: 'Password entered is wrong',
+                      icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
+                      suffixIcon: IconButton(
+                        icon: isPasswordVisible1
+                            ? const Icon(
+                                Icons.visibility_off,
+                                color: Colors.pink,
+                              )
+                            : const Icon(Icons.visibility, color: Colors.pink),
+                        onPressed: () => setState(
+                          () => isPasswordVisible1 = !isPasswordVisible1,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.black87),
+                      ),
+                    ),
+                    obscureText: isPasswordVisible1,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
+
+                SizedBox(height: 20),
+
+                //password
+                SizedBox(
+                  width: 400,
+                  child: TextFormField(
+                    onChanged: (value) => setState(() => password = value),
+                    onFieldSubmitted: (value) =>
+                        setState(() => password = value),
+                    controller: secondPasswordController,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm New Password',
+                      //errorText: 'Password entered is wrong',
+                      icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
+                      suffixIcon: IconButton(
+                        icon: isPasswordVisible2
+                            ? const Icon(
+                                Icons.visibility_off,
+                                color: Colors.pink,
+                              )
+                            : const Icon(Icons.visibility, color: Colors.pink),
+                        onPressed: () => setState(
+                          () => isPasswordVisible2 = !isPasswordVisible2,
+                        ),
+                      ),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(20),
+                        borderSide: BorderSide(color: Colors.black87),
+                      ),
+                    ),
+                    obscureText: isPasswordVisible2,
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.done,
+                  ),
+                ),
+
                 SizedBox(height: 30),
 
                 //done button
@@ -108,14 +179,7 @@ class _ForgotPWState extends State<ForgotPW> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UpdatePW(),
-                        ),
-                      );
-                    },
+                    onPressed: () {},
 
                     child: const Text(
                       "Done",
