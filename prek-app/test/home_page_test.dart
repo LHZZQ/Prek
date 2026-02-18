@@ -8,7 +8,7 @@ void main() {
     await tester.pumpWidget(
       const MaterialApp(
         home: MediaQuery(
-          data: MediaQueryData(textScaler: TextScaler.linear(0.85)),
+          data: MediaQueryData(textScaler: TextScaler.linear(0.85)),//Reduce the size of the text to reduce the overflow
           child: HomePage(),
         ),
       ),
@@ -25,7 +25,7 @@ void main() {
     });
   }
 
-  testWidgets('renders homepage core content', (tester) async {
+  testWidgets('homepage core content', (tester) async {
     useLargeViewport(tester);
     await pumpHomePage(tester);
 
@@ -35,7 +35,7 @@ void main() {
       find.text('Your next affirmation will appear tomorrow'),
       findsOneWidget,
     );
-    expect(find.widgetWithText(ElevatedButton, 'Start Reflection'), findsOne);
+    expect(find.widgetWithText(ElevatedButton, 'Start Reflection'), findsOneWidget);
   });
 
   testWidgets('tapping Start Reflection navigates to mood page', (
@@ -52,7 +52,7 @@ void main() {
     expect(find.byType(MoodPage), findsOneWidget);
   });
 
-  testWidgets('menu shows all expected items', (tester) async {
+  testWidgets('menu shows all items', (tester) async {
     useLargeViewport(tester);
     await pumpHomePage(tester);
 
@@ -77,7 +77,7 @@ void main() {
     expect(tester.takeException(), isNull);
   });
 
-  test('getAffirmationForToday is stable within the same day', () {
+  test('Affirmation is stable within the same day', () {
     final state = HomePageState();
 
     final first = state.getAffirmationForToday();
