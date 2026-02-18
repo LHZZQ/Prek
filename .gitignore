@@ -28,9 +28,10 @@ migrate_working_dir/
 **/ios/Flutter/.last_build_id
 .dart_tool/
 .flutter-plugins-dependencies
+.flutter-plugins-dependencies 2
 .pub-cache/
 .pub/
-/build/
+build/
 /coverage/
 
 # Symbolication related
@@ -44,3 +45,14 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 .env
+
+# Ignore IntelliJ project files for specific modules
+_2025_prek.iml
+
+node_modules/
+
+# Ignore all coverage outputs
+prek-app/coverage/*
+
+# But keep the lcov file
+!prek-app/coverage/lcov.info

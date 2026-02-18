@@ -1,14 +1,23 @@
-# 2025-Prek
+
+<p align="center">
+  <img width="300" height="200" alt="image" src="https://github.com/user-attachments/assets/69f9251c-1c12-4b86-a194-aef5576b58aa" />
+</p>
+
+<h1 align="center">2025-Prek</h1>
+
+<div align="center">
+  
 [![Flutter](https://img.shields.io/badge/Flutter-02569B?style=for-the-badge&logo=flutter&logoColor=white)](https://flutter.dev/)
 [![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
-[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.com)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.io)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+
+</div>
+
 ## Contents
 - [Project description](#project-description)
 - [Stakeholders](#stakeholders)
 - [User Stories](#user-stories)
-- [Features](#features)
-- [Basic Flow](#basic-flow)
 - [Project Structure](#project-structure)
 - [Tech Stack](#tech-stack)
 - [Architecture Diagram](#architecture-diagram)
@@ -23,6 +32,11 @@ The application encourages users to focus on gratitude and intentional living by
 
 The **goal** of Prek is to create a simple, reflective, and uplifting digital space that helps users cultivate gratitude, mindfulness, and intentional living. By providing structured prompts and seamless journaling features, the project aims to empower users to recognise positive moments, manage stress, and enhance their sense of wellbeing over time. 
 
+**Main functionality**:
+- Providing different affirmations every day
+- Write daily reflections
+- View past entries
+
 ## Stakeholders
 - **Individual Client**: The project owner who will oversee the general direction of the app and receive the final deliverables.
 
@@ -31,83 +45,124 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 - **Student Team**: The group of programmers and designers responsible for designing and developing the application.
 
 ## User Stories
-- As a **university student**, I want an outlet to record what I am grateful for after lectures, so that I am able to keep a positive mindset even when facing harder days, improve my mental health, and feel more at ease at university.
+**As a University Student,**
+
+- I want a quick way to record what I’m grateful for after lectures so that I can keep a positive mindset and handle academic stress better.
   
-- As a **busy professional**, I want to get simple daily prompts that guide my gratitude reflections, so I can include mindfulness in my routine, establish a positive work-life balance, and enhance my concentration as well as mood at work.
+- I want my gratitude entries linked to specific days or classes so that I can see which parts of my routine affect my well-being.
 
-- As **someone trying to improve my mental health**, I want to review my past entries, so I can reflect on the improvement of my mental state, identify trends in my growth, maintain motivation when faced with disappointments, and get a deeper grasp of the factors that influence my happiness.
+**As a Busy Professional,**
 
+- I want short daily prompts that guide my gratitude reflections so that I can practice mindfulness without adding extra effort to my schedule.
+  
+- I want to log my mood alongside my gratitude entries so that I can notice patterns that influence my focus and work-life balance.
+
+**As Someone Working on Their Mental Health,**
+
+- I want to review my past gratitude entries so that I can see how far I’ve come and stay motivated on harder days.
+
+- I want to see simple trends or highlights from my entries so that I can better understand what contributes to my happiness.
+
+  
 ## Releases
 
 | Release        | Description                                               | Target Date | Status  |
 |----------------|-----------------------------------------------------------|--------------|----------|
-| **MVP**         | Core functionality for initial launch.                    | 20/11/2025   | Pending  |
+| **MVP**         | Core functionality for initial launch.                    | 20/11/2025   | Completed  |
 | **Beta**        | Majority of functionality implemented.                    | 19/02/2026   | Pending  |
 | **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Pending  |
 
-## Features
-### Feature 1: Help users identify and reflect on things they're grateful for
-#### User Interface  
-- **Prompt**: *"What are you grateful for today?"*  
-- **Input**: Multi-line text area (3 rows) with optional **voice input**  
-- **Suggestion**: Up to 3 entries recommended (optional)  
-- **Examples**:  
-  - "Grateful for the community at the library"
-  - "Thankful for my morning coffee ritual"
-    
-#### User Functionality  
-- Add gratitude entries (text or voice)  
-- View all past entries with timestamps  
-- Share individual reflections  
-- Delete entries if needed  
-- Navigate to the next section when ready  
-
-### Feature 2: Allow users to make requests to "God or the Universe" based on their beliefs
-#### User Interface
-- Prompt: "What would you like to request from God or the Universe?"
-- Title: "Requests of God or the Universe: You Choose!"
-- Description: "Make requests to whatever you believe in"
-
-### User Functionality
-- Write personal requests/prayers/intentions
-- Review past requests to see what manifested
-- Share universal intentions for collective good
-- Track personal spiritual/intention practice
-
-## Basic Flow 
-- Open the Prek App
-- Log in or create account
-- View home screen
-- Read prompts such as 'What are you grateful for'
-- Enter response using text or voice input
-- Review, edit or share entry
-- View previous entries with timestamps
-- Save progress
-
 ## Project Structure
-- to be added
+```
+2025-Prek
+├─ .github/
+│  ├─ workflows/     # CI / CD pipelines (Flutter checks, tests, etc.)
+│  └─ PULL_REQUEST_TEMPLATE.md
+├─ docs/minutes      # Documentation and meeting minutes
+├─ prek-app          # Project root with all source code
+├─ AI Tools.md       # AI usage disclosure and coverage
+├─ CONTRIBUTING.md   # Contribution guidelines and development workflow
+├─ ETHICS.md         # Ethical considerations and responsible design
+├─ LICENSE           # Project license (MIT)
+└─ README.md         # Project overview and setup instructions
+```
 
 ## Tech Stack  
 - **Frontend** : Flutter
 - **Backend**  : Supabase
 - **Database** : PostgreSQL
-- **Voice Input** :
-- **Data Sync** :
   
 ## Architecture Diagram
-- to be added
+<img width="1587" height="2245" alt="tech stack (1)" src="https://github.com/user-attachments/assets/f3dd7db0-8aab-4600-8634-5b9c3c9f9be9" />
 
 ## User Instructions
-- to be added
+1. Login
+    - Enter your email and password then click Login.
+    - You can sign in with Google by clicking the button.
+    
+2. Sign Up
+   - Click the Sign Up button if you are a new user.
+   - Enter your email.
+   - Enter your password twice for verification process.
+   - Click the Sign Up button and your account will be created.
+
+3. Forgot Password
+   - Click the Forgot Password button if you have forgotten your password.
+   - Enter your email.
+   - Enter your new password twice and click done.
+   - It will be saved and you can now login with your new password.
+  
+4. Home Page
+   - Once logged in, you will see a new affirmation everyday.
+   - Click the Start Reflection button to write your reflection.
+   - Click on the top left menu button to go to Profile, Settings and History Page.
+
+5. Reflection Page
+   - Enter your reflection in the reflection box.
+   - Click the Save Reflection button to save it.
+  
+6. History Page
+   - Your past entries will show up here with timestamps.
 
 ## Developer Instructions
-- to be added
+1. Install [Flutter](https://docs.flutter.dev/install/manual)
+2. In the terminal, clone this repository:
+   
+   ```
+   git clone https://github.com/spe-uob/2025-Prek.git
+   ```
+3. In the terminal, install dependencies at the project root:
 
+    ```
+     flutter pub get
+    ```
+4. In the terminal, create .env file at the project root:
+    ```
+     touch .env
+    ```
+5. In the .env file, type in:
+   
+   ```
+   SUPABASE_URL="YOUR_SECRET_KEY"
+   SUPABASE_ANON_KEY="YOUR_ENCRYPTION_KEY"
+   ```
+6. In the .gitignore file, type in:
+
+   ```
+   .env
+   ```
+7. In the terminal, run the application:
+   
+   ```
+   flutter run
+   ```
+   
 ## Internal Links
 - [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
-- [AI document]
 - [License](https://github.com/spe-uob/2025-Prek/blob/a588db8ce4e40b9cb71dcd3317db70c8fcda09c1/LICENSE)
-- [Ethics](https://github.com/spe-uob/2025-Prek/blob/dev/docs/meeting%20minutes/Ethics.md)
+- [Ethics](https://github.com/spe-uob/2025-Prek/blob/dev/ETHICS.md)
+- [AI document](https://github.com/spe-uob/2025-Prek/blob/dev/AI%20Tools.md)
+- [Contributing](https://github.com/spe-uob/2025-Prek/blob/dev/CONTRIBUTING.md)
   
 ## Team Members 
 
@@ -115,6 +170,13 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 |----------------|----------------------|
 | Carol Tan      |pn24594@bristol.ac.uk |
 | Daud Ismail    |kk24104@bristol.ac.uk |
-| Layan Alaskar  |pk23085@bristol.ac.uk |
+| Layan Alaskar (Client Liaison)  |pk23085@bristol.ac.uk |
 | Ziqian Zhang   |ni24790@bristol.ac.uk |
+| Kylan Zou      |gn23627@bristol.ac.uk |
 
+| Week        | Project Manager      |
+|-------------|----------------------|
+| 2-7         |Layan Alaskar         |
+| 8-12        |Daud Ismail           |
+|13-18        |Carol Tan             |
+|19-24        |Ziqian Zhang          |
