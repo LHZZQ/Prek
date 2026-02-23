@@ -38,9 +38,7 @@ void main() {
     expect(find.text('Sign up'), findsOneWidget);
   });
 
-  testWidgets('display error when login clicked with empty', (
-    tester,
-  ) async {
+  testWidgets('display error when login clicked with empty', (tester) async {
     useLargeViewport(tester);
     await pumpLoginPage(tester);
 
@@ -81,12 +79,10 @@ void main() {
     expect(find.byIcon(Icons.visibility_off), findsOneWidget);
   });
 
-// This test assumes that tapping the "Forgot Password" button navigates to the HomePage
-// When these two bottons are implemented to navigate to the correct pages
-// I will update the tests to reflect the correct navigation targets
-  testWidgets('forgot password button navigates to //Homepage', (
-    tester,
-  ) async {
+  // This test assumes that tapping the "Forgot Password" button navigates to the HomePage
+  // When these two bottons are implemented to navigate to the correct pages
+  // I will update the tests to reflect the correct navigation targets
+  testWidgets('forgot password button navigates to //Homepage', (tester) async {
     useLargeViewport(tester);
     await pumpLoginPage(tester);
 
