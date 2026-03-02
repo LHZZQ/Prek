@@ -15,7 +15,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  int _selectedIndex = 1;
+  int _selectedIndex = 0;
 
   final affirmations = [
     "I am super grateful for all the small joys that today brings.",
@@ -62,13 +62,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void _onItemTapped(int index) {
-    if (_selectedIndex == index) return;
-
-    setState(() {
-      _selectedIndex = index;
-    });
-
-    if (index == 0) {
+    if (index == 1) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
@@ -160,30 +154,31 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 12),
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.local_florist_outlined,
                       color: textColor,
-                      size: 18,
+                      size: 16,
                     ),
                     SizedBox(width: 8),
                     Text(
                       "Your next affirmation will appear tomorrow",
-                      style: TextStyle(color: textColor, fontSize: 15),
+                      style: TextStyle(color: textColor, fontSize: 14),
                     ),
                     SizedBox(width: 8),
                     Icon(
                       Icons.local_florist_outlined,
                       color: textColor,
-                      size: 18,
+                      size: 16,
                     ),
                   ],
                 ),
-                const SizedBox(height: 100),
+                const SizedBox(height: 32),
                 Container(
+                  width: 220,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     gradient: const LinearGradient(
@@ -197,9 +192,9 @@ class HomePageState extends State<HomePage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pinkAccent.withValues(alpha: 0.25),
-                        blurRadius: 15,
-                        offset: const Offset(0, 6),
+                        color: Colors.pinkAccent.withValues(alpha: 0.2),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
                       ),
                     ],
                   ),
@@ -207,10 +202,7 @@ class HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 50,
-                        vertical: 16,
-                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
@@ -229,7 +221,7 @@ class HomePageState extends State<HomePage> {
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
                         color: Colors.white,
-                        letterSpacing: 0.3,
+                        letterSpacing: 0.5,
                       ),
                     ),
                   ),
@@ -262,12 +254,12 @@ class HomePageState extends State<HomePage> {
           unselectedFontSize: 12,
           items: const [
             BottomNavigationBarItem(
-              icon: Icon(Icons.history_rounded),
-              label: 'History',
-            ),
-            BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
               label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
