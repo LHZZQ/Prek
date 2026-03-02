@@ -25,10 +25,8 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-// Will update the mood when we add more mood options
-  testWidgets('render mood and greeting', (
-    tester,
-  ) async {
+  // Will update the mood when we add more mood options
+  testWidgets('render mood and greeting', (tester) async {
     useLargeViewport(tester);
     await pumpMoodPage(tester);
 
@@ -44,7 +42,7 @@ void main() {
     expect(find.text('Frustrated'), findsOneWidget);
     expect(find.text('Angry'), findsOneWidget);
 
-// For now, we have 3 greetings
+    // For now, we have 3 greetings
     final greetingCount = <String>[
       'Good morning',
       'Good afternoon',
@@ -75,9 +73,7 @@ void main() {
     expect(tester.widget<ElevatedButton>(nextButton).onPressed, isNotNull);
   });
 
-  testWidgets('navigates with the latest selected mood', (
-    tester,
-  ) async {
+  testWidgets('navigates with the latest selected mood', (tester) async {
     useLargeViewport(tester);
     await pumpMoodPage(tester);
 
