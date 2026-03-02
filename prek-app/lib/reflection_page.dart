@@ -157,17 +157,6 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                     (route) => false,
                                   );
 
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        "🌸 Reflection saved (will link to history later)!",
-                                      ),
-                                      backgroundColor: pink.withValues(
-                                        alpha: 0.9,
-                                      ),
-                                    ),
-                                  );
-
                                   _controller.clear(); //clears input
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
