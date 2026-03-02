@@ -6,7 +6,7 @@ import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage();
+  const HomePage({super.key});
 
   @override
   State<HomePage> createState() {
@@ -15,6 +15,8 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  int _selectedIndex = 1;
+
   final affirmations = [
     "I am super grateful for all the small joys that today brings.",
     "I am worthy of love, peace, and happiness.",
@@ -54,58 +56,41 @@ class HomePageState extends State<HomePage> {
 
   String getAffirmationForToday() {
     final today = DateTime.now();
-    final seed =
-        today.year * 10000 +
-        today.month * 100 +
-        today.day; //picks a new one each day based on date
+    final seed = today.year * 10000 + today.month * 100 + today.day;
     final random = Random(seed);
     return affirmations[random.nextInt(affirmations.length)];
   }
 
+  void _onItemTapped(int index) {
+    setState(() {
+      _selectedIndex = index;
+    });
+
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    // const pink = Color(0xFFFFC7E0);
-    // const peach = Color(0xFFFFE4B5);
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
+    const activeColor = Color(0xFFFB7DA8);
 
     return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: PopupMenuButton<String>(
-          icon: const Icon(Icons.menu, color: textColor, size: 30),
-          color: Colors.white,
-          onSelected: (value) {
-            if (value == 'profile') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const ProfilePage()),
-              );
-            } else if (value == 'history') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const EntryHistoryPage(),
-                ),
-              );
-            } else if (value == 'settings') {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SettingsPage()),
-              );
-            }
-          },
-
-          itemBuilder: (context) {
-            return const [
-              PopupMenuItem(value: 'profile', child: Text('Profile')),
-              PopupMenuItem(value: 'settings', child: Text('Settings')),
-              PopupMenuItem(value: 'history', child: Text('History')),
-            ];
-          },
-        ),
-      ),
       body: Container(
         decoration: const BoxDecoration(
           gradient: LinearGradient(
@@ -116,29 +101,23 @@ class HomePageState extends State<HomePage> {
         ),
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 40),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
             child: Column(
               children: [
-                //logo
                 Container(
                   height: 140,
                   width: 140,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     image: const DecorationImage(
-                      image: AssetImage(
-                        'images/prek-logo2.png',
-                      ), //showing logo and i added rounded corners so it would reflect the app icon look
+                      image: AssetImage('images/prek-logo2.png'),
                       fit: BoxFit.cover,
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 50),
-
-                //welcome text when you open homepage
                 const Text(
-                  "Welcome Back 🌞", //emoji to match our style
+                  "Welcome Back 🌞",
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
@@ -146,8 +125,7 @@ class HomePageState extends State<HomePage> {
                     letterSpacing: 0.5,
                   ),
                 ),
-
-                //affirmation box
+                const SizedBox(height: 25),
                 Container(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 35,
@@ -155,15 +133,15 @@ class HomePageState extends State<HomePage> {
                   ),
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                    color: softWhite.withValues(alpha: 0.7),
+                    color: softWhite.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: Colors.white.withOpacity(0.5),
                       width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pink.withValues(alpha: 0.1),
+                        color: Colors.pink.withOpacity(0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -180,10 +158,7 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 30),
-
-                //info row
                 const Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -205,11 +180,7 @@ class HomePageState extends State<HomePage> {
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 50),
-
-                //start reflection button on homepage
-                //now flow is home->mood->reflection
+                const SizedBox(height: 100),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
@@ -224,7 +195,7 @@ class HomePageState extends State<HomePage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pinkAccent.withValues(alpha: 0.25),
+                        color: Colors.pinkAccent.withOpacity(0.25),
                         blurRadius: 15,
                         offset: const Offset(0, 6),
                       ),
@@ -261,9 +232,50 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
+                const SizedBox(height: 40),
               ],
             ),
           ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withOpacity(0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white,
+          selectedItemColor: activeColor,
+          unselectedItemColor: Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_outlined),
+              label: 'Settings',
+            ),
+          ],
         ),
       ),
     );
