@@ -4,7 +4,6 @@ import 'dart:math';
 import 'package:_2025_prek/mood_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
-//test
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
