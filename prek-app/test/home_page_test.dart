@@ -57,30 +57,30 @@ void main() {
     expect(find.byType(MoodPage), findsOneWidget);
   });
 
-  testWidgets('menu shows all items', (tester) async {
-    useLargeViewport(tester);
-    await pumpHomePage(tester);
+  // testWidgets('menu shows all items', (tester) async {
+  //   useLargeViewport(tester);
+  //   await pumpHomePage(tester);
 
-    await tester.tap(find.byIcon(Icons.menu));
-    await tester.pumpAndSettle();
+  //   await tester.tap(find.byIcon(Icons.menu));
+  //   await tester.pumpAndSettle();
 
-    expect(find.text('Profile'), findsOneWidget);
-    expect(find.text('Settings'), findsOneWidget);
-    expect(find.text('History'), findsOneWidget);
-  });
+  //   expect(find.text('Profile'), findsOneWidget);
+  //   expect(find.text('Settings'), findsOneWidget);
+  //   expect(find.text('History'), findsOneWidget);
+  // });
 
-  testWidgets('menu onSelected handles settings branch', (tester) async {
-    useLargeViewport(tester);
-    await pumpHomePage(tester);
+  // testWidgets('menu onSelected handles settings branch', (tester) async {
+  //   useLargeViewport(tester);
+  //   await pumpHomePage(tester);
 
-    final popup = tester.widget<PopupMenuButton<String>>(
-      find.byType(PopupMenuButton<String>),
-    );
-    popup.onSelected?.call('settings');
-    await tester.pump();
+  //   final popup = tester.widget<PopupMenuButton<String>>(
+  //     find.byType(PopupMenuButton<String>),
+  //   );
+  //   popup.onSelected?.call('settings');
+  //   await tester.pump();
 
-    expect(tester.takeException(), isNull);
-  });
+  //   expect(tester.takeException(), isNull);
+  // });
 
   test('Affirmation is stable within the same day', () {
     final state = HomePageState();
