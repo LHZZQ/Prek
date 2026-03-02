@@ -16,7 +16,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
   @override
   Widget build(BuildContext context) {
     //colors
-    const pink = Color(0xFFFFC7E0);
+
     // const peach = Color(0xFFFFE4B5);
     const textColor = Color(0xFF94697E);
 
