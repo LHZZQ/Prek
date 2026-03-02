@@ -62,6 +62,8 @@ class HomePageState extends State<HomePage> {
   }
 
   void _onItemTapped(int index) {
+    if (_selectedIndex == index) return;
+
     setState(() {
       _selectedIndex = index;
     });
@@ -133,15 +135,15 @@ class HomePageState extends State<HomePage> {
                   ),
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                    color: softWhite.withOpacity(0.7),
+                    color: softWhite.withValues(alpha: 0.7),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.5),
+                      color: Colors.white.withValues(alpha: 0.5),
                       width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pink.withOpacity(0.1),
+                        color: Colors.pink.withValues(alpha: 0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -195,7 +197,7 @@ class HomePageState extends State<HomePage> {
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pinkAccent.withOpacity(0.25),
+                        color: Colors.pinkAccent.withValues(alpha: 0.25),
                         blurRadius: 15,
                         offset: const Offset(0, 6),
                       ),
@@ -242,7 +244,7 @@ class HomePageState extends State<HomePage> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: Colors.black.withValues(alpha: 0.05),
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -268,11 +270,11 @@ class HomePageState extends State<HomePage> {
               label: 'Home',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.person_outline_rounded),
+              icon: Icon(Icons.person_rounded),
               label: 'Profile',
             ),
             BottomNavigationBarItem(
-              icon: Icon(Icons.settings_outlined),
+              icon: Icon(Icons.settings_rounded),
               label: 'Settings',
             ),
           ],
