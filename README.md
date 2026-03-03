@@ -69,7 +69,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 | Release        | Description                                               | Target Date | Status  |
 |----------------|-----------------------------------------------------------|--------------|----------|
 | **MVP**         | Core functionality for initial launch.                    | 20/11/2025   | Completed  |
-| **Beta**        | Majority of functionality implemented.                    | 19/02/2026   | Pending  |
+| **Beta**        | Majority of functionality implemented.                    | 19/02/2026   | Completed  |
 | **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Pending  |
 
 ## Project Structure
