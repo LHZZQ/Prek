@@ -233,13 +233,13 @@ I, Kylan, declare that this document is accurate to my AI usage throughout the c
 I use ChatGPT4/5, Claude 3.5 and Gemini to assist me in learning dart and to help me complete complex UI designs
 
 #### Prompts examples
--When using the developed web page, how can I ensure that the font size and button size ratio will scale proportionally even if I change the web page size at will
+-When using the developed web page, how can I ensure that the font size and button size ratio will scale proportionally even if I change the web page size
 
 #### Why?
-The design of the front end is of great significance to user experience. If we fail to provide customers with a good sensory and usage experience, they may abandon this software. Therefore, I need ai to help me better learn dart and Flutter UI so that I can complete the functions and styles I need. In absolutely necessary circumstances, I will use ai to help me resolve functional conflicts.
+The design of the front end is of great significance to user experience. If we fail to provide customers with a good sensory and usage experience, they may abandon this software. Therefore, I need "AI" to help me better learn dart and Flutter UI so that I can complete the functions and styles I need. 
 
 ### Debugging
-I use Gemini to fix the error after flutter run
+I use Gemini to fix runtime exceptions and rendering issues (e.g., layout overflows) that occur after flutter run.
 
 #### Prompts examples
 -Why did I get an error saying that after setState () was called, dispose () was on my record page?
@@ -248,7 +248,7 @@ I use Gemini to fix the error after flutter run
 
 #### Why?
 
-In the recording reflection interface, it is essential to manage the status of the recording well, such as recording, stopping or canceling. There must be strong logic to ensure that it operates normally when users are using it. ai enables me to solve problems correctly by understanding Flutter's lifecycle and gesture system
+In the recording reflection interface, the status of the recording is well managed, such as recording, stopping or canceling. There must be strong logic to ensure that it operates properly when used by users. AI can assist me and help me understand the correct code logic used in the gesture system
 
 ### Reviewing
 I use ChatGPT (OpenAI GPT-4 / GPT-5) to check the code I write and identify any areas that might cause problems for users
@@ -259,4 +259,4 @@ I use ChatGPT (OpenAI GPT-4 / GPT-5) to check the code I write and identify any 
 -I have already implemented the function of saving and jumping back to the home page. Is there any way to prevent users from clicking the back button on their phones and then going back to the recording page?
 
 #### Why?
-As a student developing software for the first time, I often worry that my writing style is too clumsy. Therefore, I will use ai to review the logic of my code and make my program logic more rigorous and less prone to problems
+As a student developing software for the first time, I often worry that my writing style is too clumsy. Therefore, I will use AI to review the logic of my code and make my program logic more rigorous and less prone to problems
