@@ -93,7 +93,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 - **Database** : PostgreSQL
   
 ## Architecture Diagram
-<img width="1587" height="2245" alt="tech stack (1)" src="https://github.com/user-attachments/assets/f3dd7db0-8aab-4600-8634-5b9c3c9f9be9" />
+<img width="1587" height="2245" alt="tech stack" src="https://github.com/user-attachments/assets/ea47d27b-f34a-4d9a-9f07-6dcd33e7e41f" />
 
 ## User Instructions
 1. Login
