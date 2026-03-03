@@ -98,7 +98,6 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 ## User Instructions
 1. Login
     - Enter your email and password then click Login.
-    - You can sign in with Google by clicking the button.
     
 2. Sign Up
    - Click the Sign Up button if you are a new user.
