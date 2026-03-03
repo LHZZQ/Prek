@@ -300,7 +300,6 @@ class _LoginState extends State<Login> {
                   //     ),
                   //   ),
                   // ),
-
                   SizedBox(height: 20),
 
                   //Dont have an account
