@@ -102,6 +102,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
     
 2. Sign Up
    - Click the Sign Up button if you are a new user.
+   - Enter your username
    - Enter your email.
    - Enter your password twice for verification process.
    - Click the Sign Up button and your account will be created.
@@ -115,14 +116,19 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 4. Home Page
    - Once logged in, you will see a new affirmation everyday.
    - Click the Start Reflection button to write your reflection.
-   - Click on the top left menu button to go to Profile, Settings and History Page.
+   - Access the History Page, Profile Page and Settings Page by clicking the icon in the menu bar at the bottom.
 
 5. Reflection Page
-   - Enter your reflection in the reflection box.
-   - Click the Save Reflection button to save it.
-  
+   - Choose an emoji on how you feel today.
+   - Choose to write a reflection, record a reflection or view your lookbook.
+   - Click Save Reflection to link it to the History Page.
+     
 6. History Page
    - Your past entries will show up here with timestamps.
+  
+7. Settings Page
+   - Can change name, email and password in this page.
+   - Click save and your information will be updated.
 
 ## Developer Instructions
 1. Install [Flutter](https://docs.flutter.dev/install/manual)
