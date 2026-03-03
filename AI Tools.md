@@ -230,46 +230,33 @@ For the code of my team members, there are some parts that I might not understan
 I, Kylan, declare that this document is accurate to my AI usage throughout the course of SEP.
 
 ### Development
-I used ChatGPT (OpenAI GPT4 / GPT5) as a reference and learning tool while building UI pages in Flutter, including implementing structured layouts, reusable card components, and navigation between screens.
+I use ChatGPT4/5, Claude 3.5 and Gemini to assist me in learning dart and to help me complete complex UI designs
 
 #### Prompts examples
-I used ChatGPT (OpenAI GPT4 / GPT5) as a reference and learning tool while building UI pages in Flutter, including implementing structured layouts, reusable card components, and navigation between screens.
-Prompt examples
-"How can I structure a Flutter page with a gradient background and SafeArea?"
-"What is a clean way to build reusable card-style components in Flutter?"
-"How does Navigator.push work when passing parameters between pages?"
-"How can I create soft shadows and rounded containers for a modern UI?"
+-When using the developed web page, how can I ensure that the font size and button size ratio will scale proportionally even if I change the web page size at will
 
 #### Why?
-While implementing pages such as the task selection interface, I used AI to understand common Flutter layout patterns, including Scaffold structure, gradient backgrounds, widget hierarchy, and reusable components.
-The responses served as structural references, which I then adapted and integrated into our existing project. I modified layout spacing, styling, navigation logic, and parameter passing to ensure the implementation aligned with our design system and overall application architecture.
-AI was used to support understanding of widget composition and layout behaviour, but the integration, refinement, and final implementation decisions were made by me.
+The design of the front end is of great significance to user experience. If we fail to provide customers with a good sensory and usage experience, they may abandon this software. Therefore, I need ai to help me better learn dart and Flutter UI so that I can complete the functions and styles I need. In absolutely necessary circumstances, I will use ai to help me resolve functional conflicts.
 
 ### Debugging
-I used ChatGPT (OpenAI GPT4 / GPT5) to help interpret layout behaviour and resolve runtime issues related to navigation and widget constraints.
+I use Gemini to fix the error after flutter run
 
 #### Prompts examples
-"Why is my Column not filling the full height?"
-"Why does Navigator cause issues after async operations?"
-"How can I prevent layout overflow in Flutter?"
+-Why did I get an error saying that after setState () was called, dispose () was on my record page?
+
+-The long press and click gestures of my gesture detector conflict. How can I ensure their smooth cooperation?"
 
 #### Why?
-Rather than relying solely on trial and error, I used AI to understand how layout constraints and navigation context work in Flutter. This improved my understanding of widget lifecycle and layout rendering.
+
+In the recording reflection interface, it is essential to manage the status of the recording well, such as recording, stopping or canceling. There must be strong logic to ensure that it operates normally when users are using it. ai enables me to solve problems correctly by understanding Flutter's lifecycle and gesture system
 
 ### Reviewing
-I occasionally used ChatGPT (OpenAI GPT4 / GPT5) to validate whether my widget structure and navigation approach followed common Flutter conventions.
+I use ChatGPT (OpenAI GPT-4 / GPT-5) to check the code I write and identify any areas that might cause problems for users
 
 #### Prompts examples
-"Is this a good pattern for building reusable UI components?"
-"Is this navigation pattern considered safe practice in Flutter?"
+-Is there any potential risk in the code I wrote? Or due to the lack of professionalism in the written program, significant changes are needed later on.
+
+-I have already implemented the function of saving and jumping back to the home page. Is there any way to prevent users from clicking the back button on their phones and then going back to the recording page?
 
 #### Why?
-To ensure that the code structure was maintainable and aligned with standard Flutter practices, while still making final implementation decisions independently.
-
-import 'package:flutter/material.dart';
-import 'reflection_page.dart'; 
-
-class TaskSelectionPage extends StatelessWidget {
-  final String selectedMood;
-
-  const TaskSelectionPage({super.key, required this.selectedMood});
+As a student developing software for the first time, I often worry that my writing style is too clumsy. Therefore, I will use ai to review the logic of my code and make my program logic more rigorous and less prone to problems
