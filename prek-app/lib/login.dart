@@ -1,4 +1,5 @@
 //import 'package:_2025_prek/forgotpw.dart';
+import 'package:_2025_prek/forgotpw.dart';
 import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/home_page.dart';
@@ -181,7 +182,7 @@ class _LoginState extends State<Login> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => const HomePage(),
+                          builder: (context) => const ForgotPW(),
                         ),
                       );
                     },
@@ -236,70 +237,69 @@ class _LoginState extends State<Login> {
                   SizedBox(height: 15),
 
                   ///sign in with google button
-                  Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(40),
-                      gradient: const LinearGradient(
-                        begin: Alignment.centerLeft,
-                        end: Alignment.centerRight,
-                        colors: [
-                          Color(0xFFFFC567),
-                          Color(0xFFFB7DA8),
-                          Color(0xFF058CD7),
-                        ],
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.25),
-                          blurRadius: 15,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
-                    child: ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.transparent,
-                        shadowColor: Colors.transparent,
-                        minimumSize: const Size(400, 50),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const HomePage(),
-                          ),
-                        );
-                      },
+                  // Container(
+                  //   decoration: BoxDecoration(
+                  //     borderRadius: BorderRadius.circular(40),
+                  //     gradient: const LinearGradient(
+                  //       begin: Alignment.centerLeft,
+                  //       end: Alignment.centerRight,
+                  //       colors: [
+                  //         Color(0xFFFFC567),
+                  //         Color(0xFFFB7DA8),
+                  //         Color(0xFF058CD7),
+                  //       ],
+                  //     ),
+                  //     boxShadow: [
+                  //       BoxShadow(
+                  //         color: Colors.pinkAccent.withValues(alpha: 0.25),
+                  //         blurRadius: 15,
+                  //         offset: const Offset(0, 6),
+                  //       ),
+                  //     ],
+                  //   ),
+                  //   child: ElevatedButton(
+                  //     style: ElevatedButton.styleFrom(
+                  //       backgroundColor: Colors.transparent,
+                  //       shadowColor: Colors.transparent,
+                  //       minimumSize: const Size(400, 50),
+                  //       shape: RoundedRectangleBorder(
+                  //         borderRadius: BorderRadius.circular(30),
+                  //       ),
+                  //     ),
+                  //     onPressed: () {
+                  //       Navigator.push(
+                  //         context,
+                  //         MaterialPageRoute(
+                  //           builder: (context) => const HomePage(),
+                  //         ),
+                  //       );
+                  //     },
 
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset(
-                            'images/google_logo.png',
-                            height: 24,
-                            width: 24,
-                          ),
+                  //     child: Row(
+                  //       mainAxisSize: MainAxisSize.min,
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Image.asset(
+                  //           'images/google_logo.png',
+                  //           height: 24,
+                  //           width: 24,
+                  //         ),
 
-                          const SizedBox(width: 20),
+                  //         const SizedBox(width: 20),
 
-                          const Text(
-                            "Sign in with google",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.white,
-                              letterSpacing: 0.3,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
+                  //         const Text(
+                  //           "Sign in with google",
+                  //           style: TextStyle(
+                  //             fontSize: 20,
+                  //             fontWeight: FontWeight.bold,
+                  //             color: Colors.white,
+                  //             letterSpacing: 0.3,
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
                   SizedBox(height: 20),
 
                   //Dont have an account
