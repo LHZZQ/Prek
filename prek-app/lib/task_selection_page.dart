@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'reflection_page.dart';
+import 'voice_reflection_page.dart';
 
 class TaskSelectionPage extends StatelessWidget {
   final String selectedMood;
@@ -82,7 +83,15 @@ class TaskSelectionPage extends StatelessWidget {
                   iconBg: blue.withValues(alpha: 0.2),
                   title: "Voice Reflection",
                   subtitle: "Record your thoughts with audio",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            VoiceReflectionPage(selectedMood: selectedMood),
+                      ),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 20),

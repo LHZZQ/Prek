@@ -16,7 +16,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
   @override
   Widget build(BuildContext context) {
     //colors
-    const pink = Color(0xFFFFC7E0);
+
     // const peach = Color(0xFFFFE4B5);
     const textColor = Color(0xFF94697E);
 
@@ -155,17 +155,6 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                       builder: (_) => const HomePage(),
                                     ),
                                     (route) => false,
-                                  );
-
-                                  ScaffoldMessenger.of(context).showSnackBar(
-                                    SnackBar(
-                                      content: Text(
-                                        "🌸 Reflection saved (will link to history later)!",
-                                      ),
-                                      backgroundColor: pink.withValues(
-                                        alpha: 0.9,
-                                      ),
-                                    ),
                                   );
 
                                   _controller.clear(); //clears input
