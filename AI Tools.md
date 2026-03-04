@@ -236,7 +236,7 @@ I use ChatGPT4/5, Claude 3.5 and Gemini to assist me in learning dart and to hel
 -When using the developed web page, how can I ensure that the font size and button size ratio will scale proportionally even if I change the web page size
 
 #### Why?
-The design of the front end is of great significance to user experience. If we fail to provide customers with a good sensory and usage experience, they may abandon this software. Therefore, I need "AI" to help me better learn dart and Flutter UI so that I can complete the functions and styles I need. 
+The design of the front end is of great significance to user experience. If we fail to provide customers with a good sensory and usage experience, they may abandon this software. Therefore, I need AI to help me better learn dart and Flutter UI so that I can complete the functions and styles I need. 
 
 ### Debugging
 I use Gemini to fix runtime exceptions and rendering issues (e.g., layout overflows) that occur after flutter run.
