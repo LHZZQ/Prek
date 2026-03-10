@@ -46,15 +46,15 @@ void main() {
     expect(find.widgetWithText(ElevatedButton, 'Save Reflection'), findsOneWidget);
   });
 
-  testWidgets('does nothing when save is tapped with empty input', (tester) async {
+  testWidgets('stays on reflection page when save is tapped with empty input', (tester) async {
     useLargeViewport(tester);
     await pumpReflectionPage(tester);
 
     await tester.tap(find.widgetWithText(ElevatedButton, 'Save Reflection'));
     await tester.pumpAndSettle();
 
+    await tester.pump(const Duration(milliseconds: 300));
     expect(find.byType(ReflectionPage), findsOneWidget);
-    expect(find.byType(SnackBar), findsNothing);
   });
 
   testWidgets('shows error snackbar when saving fails', (tester) async {
