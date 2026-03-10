@@ -8,9 +8,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   setUpAll(() async {
-    SharedPreferences.setMockInitialValues({
-
-    });
+    SharedPreferences.setMockInitialValues({});
 
     await Supabase.initialize(
       url: 'https://example.supabase.co',
@@ -51,11 +49,16 @@ void main() {
     );
     expect(find.byType(TextField), findsOneWidget);
     expect(find.text('Write your reflection here...'), findsOneWidget);
-    expect(find.widgetWithText(ElevatedButton, 'Save Reflection'), findsOneWidget);
+    expect(
+      find.widgetWithText(ElevatedButton, 'Save Reflection'),
+      findsOneWidget,
+    );
   });
 
   // stay for now but maybe change later to show the error message
-  testWidgets('stays on reflection page when save is tapped with empty input', (tester) async {
+  testWidgets('stays on reflection page when save is tapped with empty input', (
+    tester,
+  ) async {
     useLargeViewport(tester);
     await pumpReflectionPage(tester);
 
@@ -69,7 +72,10 @@ void main() {
     useLargeViewport(tester);
     await pumpReflectionPage(tester);
 
-    await tester.enterText(find.byType(TextField), 'I am grateful for sunshine');
+    await tester.enterText(
+      find.byType(TextField),
+      'I am grateful for sunshine',
+    );
     await tester.tap(find.widgetWithText(ElevatedButton, 'Save Reflection'));
     await tester.pump();
     await tester.pump(const Duration(seconds: 1));
