@@ -16,7 +16,9 @@ void main() {
       url: 'https://example.supabase.co',
       anonKey:
           'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRlc3QiLCJyb2xlIjoiYW5vbiIsImlhdCI6MTUxNjIzOTAyMn0.signature',
-      localStorage: const EmptyLocalStorage(),
+      authOptions: const FlutterAuthClientOptions(
+        localStorage: const EmptyLocalStorage(),
+      ),
     );
   });
 
@@ -52,6 +54,7 @@ void main() {
     expect(find.widgetWithText(ElevatedButton, 'Save Reflection'), findsOneWidget);
   });
 
+  // stay for now but maybe change later to show the error message
   testWidgets('stays on reflection page when save is tapped with empty input', (tester) async {
     useLargeViewport(tester);
     await pumpReflectionPage(tester);
