@@ -1,8 +1,10 @@
 import 'dart:async';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:_2025_prek/home_page.dart';
 import 'package:flutter/material.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -47,15 +49,21 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       return;
     }
 
-    final dir = await getTemporaryDirectory();
-    _localFilePath =
-        '${dir.path}/reflection_${DateTime.now().millisecondsSinceEpoch}.m4a';
+    if (kIsWeb) {
+      await _recorder.start(
+        const RecordConfig(encoder: AudioEncoder.opus),
+        path: '',
+      );
+    } else {
+      final dir = await getTemporaryDirectory();
+      _localFilePath =
+          '${dir.path}/reflection_${DateTime.now().millisecondsSinceEpoch}.m4a';
 
-    await _recorder.start(
-      const RecordConfig(encoder: AudioEncoder.aacLc),
-      path: _localFilePath!,
-    );
-
+      await _recorder.start(
+        const RecordConfig(encoder: AudioEncoder.aacLc),
+        path: _localFilePath!,
+      );
+    }
     setState(() {
       _isRecording = true;
       _isTappedMode = isTapped;
@@ -70,7 +78,12 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
 
   Future<void> _stopAndSaveRecording() async {
     _timer?.cancel();
-    await _recorder.stop();
+    final path = await _recorder.stop();
+
+    if (kIsWeb && path != null) {
+      _localFilePath = path;
+    }
+
     setState(() {
       _isRecording = false;
       _isTappedMode = false;
@@ -81,7 +94,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     _timer?.cancel();
     await _recorder.stop();
     // Delete local file if exists
-    if (_localFilePath != null) {
+    if ( !kIsWeb && _localFilePath != null) {
       final f = File(_localFilePath!);
       if (await f.exists()) f.delete();
       _localFilePath = null;
@@ -102,7 +115,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       setState(() => _isPreviewing = false);
     } else {
       setState(() => _isPreviewing = true);
-      await _previewPlayer.play(DeviceFileSource(_localFilePath!));
+      await _previewPlayer.play(UrlSource(_localFilePath!));
       _previewPlayer.onPlayerComplete.listen((_) {
         if (mounted) setState(() => _isPreviewing = false);
       });
@@ -119,15 +132,25 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       if (user == null) throw Exception('User not logged in');
 
       final fileName =
-          '${user.id}/${DateTime.now().millisecondsSinceEpoch}.m4a';
-      final fileBytes = await File(_localFilePath!).readAsBytes();
+          '${user.id}/${DateTime.now().millisecondsSinceEpoch}.webm';
+
+      late Uint8List fileBytes;
+
+      if (kIsWeb) {
+        final response = await http.get(Uri.parse(_localFilePath!));
+        fileBytes = response.bodyBytes;
+      } else {
+        fileBytes = await File(_localFilePath!).readAsBytes();
+      }
 
       await client.storage
           .from('gratitude-audio')
           .uploadBinary(
             fileName,
             fileBytes,
-            fileOptions: const FileOptions(contentType: 'audio/mp4'),
+            fileOptions: FileOptions(
+              contentType: kIsWeb ? 'audio/webm' : 'audio/mp4',
+            ),
           );
 
       await client.from('Gratitude Entries').insert({
@@ -245,25 +268,26 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                   Positioned(
                     top: constraints.maxHeight * 0.30,
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (!_isRecording)
-                          _startRecording(isTapped: true);
+                          await _startRecording(isTapped: true);
                         else if (_isTappedMode)
-                          _stopAndSaveRecording();
+                          await _stopAndSaveRecording();
                       },
-                      onLongPressStart: (_) => _startRecording(isTapped: false),
+                      onLongPressStart: (_) async =>
+                          await _startRecording(isTapped: false),
                       onLongPressMoveUpdate: (details) {
                         setState(
                           () => _isCancelling =
                               details.localOffsetFromOrigin.dy < -60,
                         );
                       },
-                      onLongPressEnd: (_) {
+                      onLongPressEnd: (_) async {
                         if (!_isTappedMode) {
                           if (_isCancelling)
-                            _cancelRecording();
+                            await _cancelRecording();
                           else
-                            _stopAndSaveRecording();
+                            await _stopAndSaveRecording();
                         }
                       },
                       child: AnimatedContainer(
@@ -397,20 +421,24 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               ),
                             ),
                             onPressed:
-                                (_recordDuration.inSeconds > 0 && !_isRecording && !_isSaving)
+                                (_recordDuration.inSeconds > 0 &&
+                                    !_isRecording &&
+                                    !_isSaving)
                                 ? _saveReflection
                                 : null,
-                            child: _isSaving 
-                                ? const CircularProgressIndicator(color: Colors.white,)
-                            :Text(
-                              "SAVE REFLECTION",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16 * hUnit,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1,
-                              ),
-                            ),
+                            child: _isSaving
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    "SAVE REFLECTION",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16 * hUnit,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
                           ),
                         ),
                       ],
