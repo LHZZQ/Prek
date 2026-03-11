@@ -147,12 +147,11 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       }
     } catch (e) {
       setState(() => _isSaving = false);
-      if (mounted){
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save: $e')),
-        );
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save: $e')));
       }
-
     }
   }
 
@@ -337,16 +336,16 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               ActionChip(
                                 backgroundColor: Colors.white,
                                 side: BorderSide.none,
-                                label: const Text(
-                                  "Preview",
-                                  style: TextStyle(color: blue),
+                                label: Text(
+                                  _isPreviewing ? "Stop" : "Preview",
+                                  style: const TextStyle(color: blue),
                                 ),
-                                avatar: const Icon(
-                                  Icons.play_arrow,
+                                avatar: Icon(
+                                  _isPreviewing ? Icons.stop : Icons.play_arrow,
                                   color: blue,
                                   size: 18,
                                 ),
-                                onPressed: () {},
+                                onPressed: _togglePreview,
                               ),
                               const SizedBox(width: 12),
                               ActionChip(
@@ -361,9 +360,12 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                                   color: pink,
                                   size: 18,
                                 ),
-                                onPressed: () => setState(
-                                  () => _recordDuration = Duration.zero,
-                                ),
+                                onPressed: () {
+                                  _localFilePath = null;
+                                  setState(
+                                    () => _recordDuration = Duration.zero,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -395,16 +397,12 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               ),
                             ),
                             onPressed:
-                                (_recordDuration.inSeconds > 0 && !_isRecording)
-                                ? () => Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const HomePage(),
-                                    ),
-                                    (route) => false,
-                                  )
+                                (_recordDuration.inSeconds > 0 && !_isRecording && !_isSaving)
+                                ? _saveReflection
                                 : null,
-                            child: Text(
+                            child: _isSaving 
+                                ? const CircularProgressIndicator(color: Colors.white,)
+                            :Text(
                               "SAVE REFLECTION",
                               style: TextStyle(
                                 color: Colors.white,
