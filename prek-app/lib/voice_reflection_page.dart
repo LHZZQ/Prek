@@ -66,7 +66,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     });
   }
 
-  Future <void> _stopAndSaveRecording() async {
+  Future<void> _stopAndSaveRecording() async {
     _timer?.cancel();
     await _recorder.stop();
     setState(() {
@@ -75,8 +75,16 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     });
   }
 
-  void _cancelRecording() {
+  Future<void> _cancelRecording() async {
     _timer?.cancel();
+    await _recorder.stop();
+    // Delete local file if exists
+    if (_localFilePath != null) {
+      final f = File(_localFilePath!);
+      if (await f.exists()) f.delete();
+      _localFilePath = null;
+    }
+
     setState(() {
       _isRecording = false;
       _isCancelling = false;
