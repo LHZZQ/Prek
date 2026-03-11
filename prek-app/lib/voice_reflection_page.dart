@@ -66,8 +66,9 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     });
   }
 
-  void _stopAndSaveRecording() {
+  Future <void> _stopAndSaveRecording() async {
     _timer?.cancel();
+    await _recorder.stop();
     setState(() {
       _isRecording = false;
       _isTappedMode = false;
