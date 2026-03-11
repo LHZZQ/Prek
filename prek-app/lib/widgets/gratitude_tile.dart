@@ -115,7 +115,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
       debugPrint('src(clean)="$cleanSrc"');
       final list = await client.storage
           .from('gratitude-audio')
-          .list(path: user!.id); // user123 for mock data
+          .list(path: user!.id);
       final names = list.map((e) => e.name).toList();
       debugPrint('files under user123 = $names');
 
