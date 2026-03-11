@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:record/record.dart';
 import 'package:audioplayers/audioplayers.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class VoiceReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -18,6 +19,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   bool _isRecording = false;
   bool _isCancelling = false;
   bool _isTappedMode = false;
+  bool _isSaving = false;
   Duration _recordDuration = Duration.zero;
   Timer? _timer;
 
@@ -104,6 +106,53 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       _previewPlayer.onPlayerComplete.listen((_) {
         if (mounted) setState(() => _isPreviewing = false);
       });
+    }
+  }
+
+  Future<void> _saveReflection() async {
+    if (_localFilePath == null) return;
+    setState(() => _isSaving = true);
+
+    try {
+      final client = Supabase.instance.client;
+      final user = client.auth.currentUser;
+      if (user == null) throw Exception('User not logged in');
+
+      final fileName =
+          '${user.id}/${DateTime.now().millisecondsSinceEpoch}.m4a';
+      final fileBytes = await File(_localFilePath!).readAsBytes();
+
+      await client.storage
+          .from('gratitude-audio')
+          .uploadBinary(
+            fileName,
+            fileBytes,
+            fileOptions: const FileOptions(contentType: 'audio/mp4'),
+          );
+
+      await client.from('Gratitude Entries').insert({
+        'user_id': user.id,
+        'text': '',
+        'mood': widget.selectedMood,
+        'audio_path': fileName,
+        'created_at': DateTime.now().toUtc().toIso8601String(),
+      });
+
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      setState(() => _isSaving = false);
+      if (mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Failed to save: $e')),
+        );
+      }
+
     }
   }
 
