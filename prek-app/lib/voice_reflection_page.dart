@@ -93,6 +93,20 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     });
   }
 
+  Future<void> _togglePreview() async {
+    if (_localFilePath == null) return;
+    if (_isPreviewing) {
+      await _previewPlayer.stop();
+      setState(() => _isPreviewing = false);
+    } else {
+      setState(() => _isPreviewing = true);
+      await _previewPlayer.play(DeviceFileSource(_localFilePath!));
+      _previewPlayer.onPlayerComplete.listen((_) {
+        if (mounted) setState(() => _isPreviewing = false);
+      });
+    }
+  }
+
   String _formatDuration(Duration duration) {
     String twoDigits(int n) => n.toString().padLeft(2, "0");
     return "${twoDigits(duration.inMinutes.remainder(60))}:${twoDigits(duration.inSeconds.remainder(60))}";
