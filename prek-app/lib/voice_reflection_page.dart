@@ -1,6 +1,10 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:_2025_prek/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:record/record.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class VoiceReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -17,20 +21,46 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   Duration _recordDuration = Duration.zero;
   Timer? _timer;
 
+  final AudioRecorder _recorder = AudioRecorder();
+  final AudioPlayer _previewPlayer = AudioPlayer();
+  String? _localFilePath;
+  bool _isPreviewing = false;
+
   @override
   void dispose() {
     _timer?.cancel();
+    _recorder.dispose();
+    _previewPlayer.dispose();
     super.dispose();
   }
 
-  void _startRecording({bool isTapped = false}) {
+  Future<void> _startRecording({bool isTapped = false}) async {
     if (_isRecording) return;
+    if (!await _recorder.hasPermission()) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Microphone permission denied')),
+        );
+      }
+      return;
+    }
+
+    final dir = await getTemporaryDirectory();
+    _localFilePath =
+        '${dir.path}/reflection_${DateTime.now().millisecondsSinceEpoch}.m4a';
+
+    await _recorder.start(
+      const RecordConfig(encoder: AudioEncoder.aacLc),
+      path: _localFilePath!,
+    );
+
     setState(() {
       _isRecording = true;
       _isTappedMode = isTapped;
       _isCancelling = false;
       _recordDuration = Duration.zero;
     });
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       setState(() => _recordDuration += const Duration(seconds: 1));
     });
