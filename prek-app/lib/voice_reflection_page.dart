@@ -72,6 +72,10 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     });
 
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       setState(() => _recordDuration += const Duration(seconds: 1));
     });
   }
@@ -94,7 +98,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     _timer?.cancel();
     await _recorder.stop();
     // Delete local file if exists
-    if ( !kIsWeb && _localFilePath != null) {
+    if (!kIsWeb && _localFilePath != null) {
       final f = File(_localFilePath!);
       if (await f.exists()) f.delete();
       _localFilePath = null;
