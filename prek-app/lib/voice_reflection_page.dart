@@ -95,7 +95,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   }
 
   Future<void> _cancelRecording() async {
-      if (!_isRecording) return;
+    if (!_isRecording) return;
     _timer?.cancel();
     await _recorder.stop();
     // Delete local file if exists
