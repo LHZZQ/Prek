@@ -113,26 +113,15 @@ class _GratitudeTileState extends State<GratitudeTile> {
       debugPrint('bucket=gratitude-audio');
       debugPrint('src(raw)="$src"');
       debugPrint('src(clean)="$cleanSrc"');
-      final list = await client.storage
-          .from('gratitude-audio')
-          .list(path: user!.id);
-      final names = list.map((e) => e.name).toList();
-      debugPrint('files under user123 = $names');
-
-      final fileName = cleanSrc.split('/').last;
-      if (!names.contains(fileName)) {
-        debugPrint('file not found in folder yet, skip createSignedUrl');
-        return;
-      }
 
       try {
-        final signedUrl = await client.storage
+        final publicUrl = client.storage
             .from('gratitude-audio')
-            .createSignedUrl(cleanSrc, 60);
-        print('signedUrl=$signedUrl');
-        await _player.play(UrlSource(signedUrl));
+            .getPublicUrl(cleanSrc);
+        print('publicUrl=$publicUrl');
+        await _player.play(UrlSource(publicUrl));
       } catch (e) {
-        debugPrint('createSignedUrl failed: $e');
+        debugPrint('getPublicUrl failed: $e');
         if (mounted) {
           ScaffoldMessenger.of(
             context,
