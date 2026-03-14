@@ -89,7 +89,6 @@ void main() {
     expect(find.byType(ChangePW), findsOneWidget);
   });
 
-  // will change in the future
   testWidgets('Logout navigates to Login page', (tester) async {
     useLargeViewport(tester);
     await pumpSettingsPage(tester);
