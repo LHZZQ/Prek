@@ -59,7 +59,7 @@ void main() {
     expect(find.widgetWithText(ElevatedButton, 'Logout'), findsOneWidget);
   });
 
-  testWidgets('tap Change Name navigates to ChangeName page', (tester) async {
+  testWidgets('Change Name navigates to ChangeName page', (tester) async {
     useLargeViewport(tester);
     await pumpSettingsPage(tester);
 
@@ -69,7 +69,7 @@ void main() {
     expect(find.byType(ChangeName), findsOneWidget);
   });
 
-  testWidgets('tap Change Email navigates to ChangeEmail page', (tester) async {
+  testWidgets('Change Email navigates to ChangeEmail page', (tester) async {
     useLargeViewport(tester);
     await pumpSettingsPage(tester);
 
@@ -79,7 +79,7 @@ void main() {
     expect(find.byType(ChangeEmail), findsOneWidget);
   });
 
-  testWidgets('tap Change Password navigates to ChangePW page', (tester) async {
+  testWidgets('Change Password navigates to ChangePW page', (tester) async {
     useLargeViewport(tester);
     await pumpSettingsPage(tester);
 
@@ -89,7 +89,8 @@ void main() {
     expect(find.byType(ChangePW), findsOneWidget);
   });
 
-  testWidgets('tap Logout navigates to Login page', (tester) async {
+  // will change in the future
+  testWidgets('Logout navigates to Login page', (tester) async {
     useLargeViewport(tester);
     await pumpSettingsPage(tester);
 
