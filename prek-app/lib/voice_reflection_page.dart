@@ -1,6 +1,13 @@
 import 'dart:async';
+import 'dart:io';
+import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+import 'package:path_provider/path_provider.dart';
 import 'package:_2025_prek/home_page.dart';
 import 'package:flutter/material.dart';
+import 'package:record/record.dart';
+import 'package:audioplayers/audioplayers.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class VoiceReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -14,44 +21,166 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   bool _isRecording = false;
   bool _isCancelling = false;
   bool _isTappedMode = false;
+  bool _isSaving = false;
   Duration _recordDuration = Duration.zero;
   Timer? _timer;
+
+  final AudioRecorder _recorder = AudioRecorder();
+  final AudioPlayer _previewPlayer = AudioPlayer();
+  String? _localFilePath;
+  bool _isPreviewing = false;
 
   @override
   void dispose() {
     _timer?.cancel();
+    _recorder.dispose();
+    _previewPlayer.dispose();
     super.dispose();
   }
 
-  void _startRecording({bool isTapped = false}) {
+  Future<void> _startRecording({bool isTapped = false}) async {
     if (_isRecording) return;
+    if (!await _recorder.hasPermission()) {
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Microphone permission denied')),
+        );
+      }
+      return;
+    }
+
+    if (kIsWeb) {
+      await _recorder.start(
+        const RecordConfig(encoder: AudioEncoder.opus),
+        path: '',
+      );
+    } else {
+      final dir = await getTemporaryDirectory();
+      _localFilePath =
+          '${dir.path}/reflection_${DateTime.now().millisecondsSinceEpoch}.m4a';
+
+      await _recorder.start(
+        const RecordConfig(encoder: AudioEncoder.aacLc),
+        path: _localFilePath!,
+      );
+    }
     setState(() {
       _isRecording = true;
       _isTappedMode = isTapped;
       _isCancelling = false;
       _recordDuration = Duration.zero;
     });
+
     _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      if (!mounted) {
+        timer.cancel();
+        return;
+      }
       setState(() => _recordDuration += const Duration(seconds: 1));
     });
   }
 
-  void _stopAndSaveRecording() {
+  Future<void> _stopAndSaveRecording() async {
     _timer?.cancel();
+    final path = await _recorder.stop();
+
+    if (kIsWeb && path != null) {
+      _localFilePath = path;
+    }
+
     setState(() {
       _isRecording = false;
       _isTappedMode = false;
     });
   }
 
-  void _cancelRecording() {
+  Future<void> _cancelRecording() async {
+    if (!_isRecording) return;
     _timer?.cancel();
+    await _recorder.stop();
+    // Delete local file if exists
+    if (!kIsWeb && _localFilePath != null) {
+      final f = File(_localFilePath!);
+      if (await f.exists()) f.delete();
+      _localFilePath = null;
+    }
+
     setState(() {
       _isRecording = false;
       _isCancelling = false;
       _isTappedMode = false;
       _recordDuration = Duration.zero;
     });
+  }
+
+  Future<void> _togglePreview() async {
+    if (_localFilePath == null) return;
+    if (_isPreviewing) {
+      await _previewPlayer.stop();
+      setState(() => _isPreviewing = false);
+    } else {
+      setState(() => _isPreviewing = true);
+      await _previewPlayer.play(UrlSource(_localFilePath!));
+      _previewPlayer.onPlayerComplete.listen((_) {
+        if (mounted) setState(() => _isPreviewing = false);
+      });
+    }
+  }
+
+  Future<void> _saveReflection() async {
+    if (_localFilePath == null) return;
+    setState(() => _isSaving = true);
+
+    try {
+      final client = Supabase.instance.client;
+      final user = client.auth.currentUser;
+      if (user == null) throw Exception('User not logged in');
+
+      final fileName =
+          '${user.id}/${DateTime.now().millisecondsSinceEpoch}.webm';
+
+      late Uint8List fileBytes;
+
+      if (kIsWeb) {
+        final response = await http.get(Uri.parse(_localFilePath!));
+        fileBytes = response.bodyBytes;
+      } else {
+        fileBytes = await File(_localFilePath!).readAsBytes();
+      }
+
+      await client.storage
+          .from('gratitude-audio')
+          .uploadBinary(
+            fileName,
+            fileBytes,
+            fileOptions: FileOptions(
+              contentType: kIsWeb ? 'audio/webm' : 'audio/mp4',
+            ),
+          );
+
+      await client.from('Gratitude Entries').insert({
+        'user_id': user.id,
+        'text': '',
+        'mood': widget.selectedMood,
+        'audio_path': fileName,
+        'created_at': DateTime.now().toUtc().toIso8601String(),
+      });
+
+      if (mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+          (route) => false,
+        );
+      }
+    } catch (e) {
+      setState(() => _isSaving = false);
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save: $e')));
+      }
+    }
   }
 
   String _formatDuration(Duration duration) {
@@ -144,25 +273,26 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                   Positioned(
                     top: constraints.maxHeight * 0.30,
                     child: GestureDetector(
-                      onTap: () {
+                      onTap: () async {
                         if (!_isRecording)
-                          _startRecording(isTapped: true);
+                          await _startRecording(isTapped: true);
                         else if (_isTappedMode)
-                          _stopAndSaveRecording();
+                          await _stopAndSaveRecording();
                       },
-                      onLongPressStart: (_) => _startRecording(isTapped: false),
+                      onLongPressStart: (_) async =>
+                          await _startRecording(isTapped: false),
                       onLongPressMoveUpdate: (details) {
                         setState(
                           () => _isCancelling =
                               details.localOffsetFromOrigin.dy < -60,
                         );
                       },
-                      onLongPressEnd: (_) {
+                      onLongPressEnd: (_) async {
                         if (!_isTappedMode) {
                           if (_isCancelling)
-                            _cancelRecording();
+                            await _cancelRecording();
                           else
-                            _stopAndSaveRecording();
+                            await _stopAndSaveRecording();
                         }
                       },
                       child: AnimatedContainer(
@@ -235,16 +365,16 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               ActionChip(
                                 backgroundColor: Colors.white,
                                 side: BorderSide.none,
-                                label: const Text(
-                                  "Preview",
-                                  style: TextStyle(color: blue),
+                                label: Text(
+                                  _isPreviewing ? "Stop" : "Preview",
+                                  style: const TextStyle(color: blue),
                                 ),
-                                avatar: const Icon(
-                                  Icons.play_arrow,
+                                avatar: Icon(
+                                  _isPreviewing ? Icons.stop : Icons.play_arrow,
                                   color: blue,
                                   size: 18,
                                 ),
-                                onPressed: () {},
+                                onPressed: _togglePreview,
                               ),
                               const SizedBox(width: 12),
                               ActionChip(
@@ -259,9 +389,12 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                                   color: pink,
                                   size: 18,
                                 ),
-                                onPressed: () => setState(
-                                  () => _recordDuration = Duration.zero,
-                                ),
+                                onPressed: () {
+                                  _localFilePath = null;
+                                  setState(
+                                    () => _recordDuration = Duration.zero,
+                                  );
+                                },
                               ),
                             ],
                           ),
@@ -293,24 +426,24 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               ),
                             ),
                             onPressed:
-                                (_recordDuration.inSeconds > 0 && !_isRecording)
-                                ? () => Navigator.pushAndRemoveUntil(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (_) => const HomePage(),
-                                    ),
-                                    (route) => false,
-                                  )
+                                (_recordDuration.inSeconds > 0 &&
+                                    !_isRecording &&
+                                    !_isSaving)
+                                ? _saveReflection
                                 : null,
-                            child: Text(
-                              "SAVE REFLECTION",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 16 * hUnit,
-                                fontWeight: FontWeight.bold,
-                                letterSpacing: 1,
-                              ),
-                            ),
+                            child: _isSaving
+                                ? const CircularProgressIndicator(
+                                    color: Colors.white,
+                                  )
+                                : Text(
+                                    "SAVE REFLECTION",
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 16 * hUnit,
+                                      fontWeight: FontWeight.bold,
+                                      letterSpacing: 1,
+                                    ),
+                                  ),
                           ),
                         ),
                       ],
