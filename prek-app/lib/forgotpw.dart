@@ -132,7 +132,8 @@ class _ForgotPWState extends State<ForgotPW> {
                             actions: <Widget>[
                               TextButton(
                                 child: const Text('OK'),
-                                onPressed: () {
+                                onPressed: () async {
+                                  await _updatePW();
                                   Navigator.of(context).pop();
                                   Navigator.push(
                                     context,
