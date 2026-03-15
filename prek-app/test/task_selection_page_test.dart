@@ -33,9 +33,7 @@ void main() {
     expect(find.byIcon(Icons.arrow_forward_ios_rounded), findsNWidgets(3));
   });
 
-  testWidgets('navigates to reflection page', (
-    tester,
-  ) async {
+  testWidgets('navigates to reflection page', (tester) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
 
@@ -46,24 +44,20 @@ void main() {
     expect(find.text('Reflection 🌸'), findsOneWidget);
   });
 
-  testWidgets('navigates to voice reflection page',
-    (tester) async {
-      useLargeViewport(tester);
-      await pumpTaskSelectionPage(tester);
+  testWidgets('navigates to voice reflection page', (tester) async {
+    useLargeViewport(tester);
+    await pumpTaskSelectionPage(tester);
 
-      await tester.tap(find.text('Voice Reflection'));
-      await tester.pumpAndSettle();
+    await tester.tap(find.text('Voice Reflection'));
+    await tester.pumpAndSettle();
 
-      expect(find.byType(VoiceReflectionPage), findsOneWidget);
-      expect(find.text('Voice Reflection'), findsOneWidget);
-    },
-  );
+    expect(find.byType(VoiceReflectionPage), findsOneWidget);
+    expect(find.text('Voice Reflection'), findsOneWidget);
+  });
 
   // For now, the lookbook option doesn't navigate anywhere
   // will update this test when we add lookbook
-  testWidgets('lookbook keeps user on task selection page', (
-    tester,
-  ) async {
+  testWidgets('lookbook keeps user on task selection page', (tester) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
 
@@ -89,7 +83,7 @@ void main() {
                       context,
                       MaterialPageRoute(
                         builder: (context) =>
-                          const TaskSelectionPage(selectedMood: 'Happy'),
+                            const TaskSelectionPage(selectedMood: 'Happy'),
                       ),
                     );
                   },
