@@ -1,6 +1,7 @@
 import 'package:_2025_prek/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ForgotPW extends StatefulWidget {
   const ForgotPW({super.key});
@@ -9,19 +10,29 @@ class ForgotPW extends StatefulWidget {
 }
 
 class _ForgotPWState extends State<ForgotPW> {
+  final supabase = Supabase.instance.client;
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController firstPasswordController = TextEditingController();
-  final TextEditingController secondPasswordController =
-      TextEditingController();
-  bool isPasswordVisible1 = true;
-  bool isPasswordVisible2 = true;
-  String password = '';
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
-
+    _updatePW();
     emailController.addListener(() => setState(() {}));
+  }
+
+  Future<String?> _updatePW() async {
+    try {
+      Supabase.instance.client.auth.resetPasswordForEmail(
+        emailController.text.trim(),
+      );
+
+      return null;
+    } catch (e) {
+      debugPrint('Error sending reset password link: $e');
+      setState(() => loading = false);
+      return 'Error sending reset passsword link';
+    }
   }
 
   @override
@@ -115,7 +126,7 @@ class _ForgotPWState extends State<ForgotPW> {
                           return AlertDialog(
                             title: const Text("Email Confirmation"),
                             content: const Text(
-                              'A password reset link is sent to the email address.',
+                              'A password reset link is sent to the email address if it is registered.',
                             ),
 
                             actions: <Widget>[
