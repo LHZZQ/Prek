@@ -1,6 +1,6 @@
+import 'package:_2025_prek/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:_2025_prek/updatepw.dart';
 
 class ForgotPW extends StatefulWidget {
   const ForgotPW({super.key});
@@ -109,11 +109,31 @@ class _ForgotPWState extends State<ForgotPW> {
                       ),
                     ),
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const UpdatePW(),
-                        ),
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Email Confirmation"),
+                            content: const Text(
+                              'A password reset link is sent to the email address.',
+                            ),
+
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Login(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
                       );
                     },
 
