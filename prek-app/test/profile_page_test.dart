@@ -31,8 +31,12 @@ void main() {
 
   Future<void> pumpProfilePage(WidgetTester tester) async {
     await tester.pumpWidget(
-      const MaterialApp(
-        home: MediaQuery(
+      MaterialApp(
+        theme: ThemeData(
+          useMaterial3: false,
+          splashFactory: InkRipple.splashFactory,
+        ),
+        home: const MediaQuery(
           data: MediaQueryData(textScaler: TextScaler.linear(0.85)),
           child: ProfilePage(),
         ),
