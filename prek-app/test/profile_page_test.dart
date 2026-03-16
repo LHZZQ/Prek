@@ -75,6 +75,10 @@ void main() {
     useLargeViewport(tester);
     await tester.pumpWidget(
       MaterialApp(
+        theme: ThemeData(
+          useMaterial3: false,
+          splashFactory: InkRipple.splashFactory,
+        ),
         home: Builder(
           builder: (context) {
             return Scaffold(
