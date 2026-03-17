@@ -133,7 +133,6 @@ class _GratitudeTileState extends State<GratitudeTile> {
 
   Future<void> _deleteEntry() async {
     final supabase = Supabase.instance.client;
-
     try {
       if (widget.entry.audioAssetPath != null) {
         await supabase.storage.from('gratitude-audio').remove([
@@ -228,6 +227,29 @@ class _GratitudeTileState extends State<GratitudeTile> {
                 Text(
                   friendlyTime(e.createdAt),
                   style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const Spacer(),
+                IconButton(icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 20,),
+                onPressed: () async {
+                  final confirm = await showDialog<bool>(
+                    context: context, 
+                    builder: (_) => AlertDialog(
+                      title: const Text('Delete reflection?'),
+                      content: const Text ('THis cannot be undone'),
+                      actions: [
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, false), 
+                          child: const Text ('Cancel')
+                        ),
+                        TextButton(
+                          onPressed: () => Navigator.pop(context, true), 
+                          child: const Text ('Delete', style: TextStyle(color: Colors.redAccent),)
+                        ),
+                      ],
+                    ),
+                  );
+                  if (confirm == true) await _deleteEntry();
+                },
                 ),
               ],
             ),
