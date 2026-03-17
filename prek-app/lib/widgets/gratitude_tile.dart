@@ -8,7 +8,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 //Single gratitude record card: Text + Timestamp + (Optional) Voice Playback
 class GratitudeTile extends StatefulWidget {
   final GratitudeEntry entry;
-  const GratitudeTile({super.key, required this.entry});
+  final VoidCallback onDeleted;
+  const GratitudeTile({
+    super.key,
+    required this.entry,
+    required this.onDeleted,
+  });
 
   @override
   State<GratitudeTile> createState() => _GratitudeTileState();
@@ -143,12 +148,12 @@ class _GratitudeTileState extends State<GratitudeTile> {
           .from('Gratitude Entries')
           .delete()
           .eq('id', widget.entry.id);
+      
+      widget.onDeleted;
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(
-        SnackBar(content: Text('Failed to delete: $e'))
-      );
+      ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
     }
   }
 
@@ -229,27 +234,35 @@ class _GratitudeTileState extends State<GratitudeTile> {
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
                 const Spacer(),
-                IconButton(icon: const Icon(Icons.delete_outline, color: Colors.redAccent, size: 20,),
-                onPressed: () async {
-                  final confirm = await showDialog<bool>(
-                    context: context, 
-                    builder: (_) => AlertDialog(
-                      title: const Text('Delete reflection?'),
-                      content: const Text ('THis cannot be undone'),
-                      actions: [
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, false), 
-                          child: const Text ('Cancel')
-                        ),
-                        TextButton(
-                          onPressed: () => Navigator.pop(context, true), 
-                          child: const Text ('Delete', style: TextStyle(color: Colors.redAccent),)
-                        ),
-                      ],
-                    ),
-                  );
-                  if (confirm == true) await _deleteEntry();
-                },
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.redAccent,
+                    size: 20,
+                  ),
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Delete reflection?'),
+                        content: const Text('THis cannot be undone'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) await _deleteEntry();
+                  },
                 ),
               ],
             ),
