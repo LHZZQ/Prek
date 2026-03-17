@@ -131,6 +131,28 @@ class _GratitudeTileState extends State<GratitudeTile> {
     }
   }
 
+  Future<void> _deleteEntry() async {
+    final supabase = Supabase.instance.client;
+
+    try {
+      if (widget.entry.audioAssetPath != null) {
+        await supabase.storage.from('gratitude-audio').remove([
+          widget.entry.audioAssetPath!,
+        ]);
+      }
+      await supabase
+          .from('Gratitude Entries')
+          .delete()
+          .eq('id', widget.entry.id);
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(
+        SnackBar(content: Text('Failed to delete: $e'))
+      );
+    }
+  }
+
   String _mmss(Duration d) {
     return formatMmSs(d);
   }
