@@ -116,10 +116,10 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
                   entry: e,
                   onDeleted: () {
                     setState(() {
-                      items.removeWhere((item) => item.id == e.id );
+                      items.removeWhere((item) => item.id == e.id);
                     });
                   },
-                  ),
+                ),
               ],
             );
           },

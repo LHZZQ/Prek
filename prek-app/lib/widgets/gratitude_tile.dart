@@ -148,7 +148,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
           .from('Gratitude Entries')
           .delete()
           .eq('id', widget.entry.id);
-      
+
       widget.onDeleted();
     } catch (e) {
       ScaffoldMessenger.of(
