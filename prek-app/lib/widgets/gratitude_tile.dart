@@ -245,7 +245,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
                       context: context,
                       builder: (_) => AlertDialog(
                         title: const Text('Delete reflection?'),
-                        content: const Text('THis cannot be undone'),
+                        content: const Text('This cannot be undone'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
