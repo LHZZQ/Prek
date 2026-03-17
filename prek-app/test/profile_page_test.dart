@@ -144,11 +144,11 @@ void main() {
     await tester.pumpAndSettle();
     expect(find.text(prevTitle), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.chevron_right_rounded));
+    await tester.tap(find.byIcon(Icons.chevron_right_rounded).last);
     await tester.pumpAndSettle();
     expect(find.text(currentTitle), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.chevron_right_rounded));
+    await tester.tap(find.byIcon(Icons.chevron_right_rounded).last);
     await tester.pumpAndSettle();
     expect(find.text(nextTitle), findsOneWidget);
   });
