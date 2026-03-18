@@ -87,9 +87,7 @@ void main() {
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (_) => const ProfilePage(),
-                      ),
+                      MaterialPageRoute(builder: (_) => const ProfilePage()),
                     );
                   },
                   child: const Text('Open Profile'),
