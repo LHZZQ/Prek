@@ -37,6 +37,10 @@ dependencies:
   supabase_flutter: ^2.10.3
   flutter_dotenv: ^6.0.0
   audioplayers: ^6.5.1
+  dotted_border: ^2.1.0
+  record: ^5.0.0
+  path_provider: ^2.1.5
+  http: ^1.6.0
 
 dev_dependencies:
   flutter_test:
@@ -58,7 +62,6 @@ flutter:
   # the material Icons class.
   uses-material-design: true
   assets:
-    - .env
     - images/
     - images/prek_logo.png
     - images/google_logo.png
