@@ -40,12 +40,40 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
-      initialRoute: '/',
+      home: const AuthGate(), // <-- use home instead of initialRoute
       routes: {
-        '/': (context) => const Login(),
         '/update-password': (context) => const UpdatePW(),
+        '/login': (context) => const Login(),
       },
     );
+  }
+}
+
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  @override
+  void initState() {
+    super.initState();
+
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      debugPrint('Auth event: ${data.event}');
+      if (data.event == AuthChangeEvent.passwordRecovery) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, '/update-password');
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Login();
   }
 }
 

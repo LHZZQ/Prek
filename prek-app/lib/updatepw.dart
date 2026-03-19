@@ -1,5 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/login.dart';
 
 class UpdatePW extends StatefulWidget {
   const UpdatePW({super.key});
@@ -8,6 +10,7 @@ class UpdatePW extends StatefulWidget {
 }
 
 class _UpdatePWState extends State<UpdatePW> {
+  final supabase = Supabase.instance.client;
   final TextEditingController emailController = TextEditingController();
   final TextEditingController firstPasswordController = TextEditingController();
   final TextEditingController secondPasswordController =
@@ -15,12 +18,32 @@ class _UpdatePWState extends State<UpdatePW> {
   bool isPasswordVisible1 = true;
   bool isPasswordVisible2 = true;
   String password = '';
+  bool loading = true;
+  final validator = SignUpValidator();
 
   @override
   void initState() {
     super.initState();
 
-    emailController.addListener(() => setState(() {}));
+    setState(() => loading = false);
+  }
+
+  Future<String?> _updatePW() async {
+    final user = supabase.auth.currentUser;
+
+    if (user == null) {
+      return 'Session expired. Please request reset again.';
+    }
+    try {
+      await supabase.auth.updateUser(
+        UserAttributes(password: firstPasswordController.text.trim()),
+      );
+
+      return null;
+    } catch (e) {
+      debugPrint('Error changing password: $e');
+      return 'Error changing password, $e';
+    }
   }
 
   @override
@@ -179,7 +202,54 @@ class _UpdatePWState extends State<UpdatePW> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () async {
+                      final checkNewPW = validator.validatePassword(
+                        firstPasswordController.text.trim(),
+                      );
+                      final checkConfirmPW = validator.validatePassword(
+                        secondPasswordController.text.trim(),
+                      );
+
+                      if (firstPasswordController.text.trim() ==
+                          secondPasswordController.text.trim()) {
+                        if (checkNewPW == null && checkConfirmPW == null) {
+                          //check if updatePW fails
+                          final updateError = await _updatePW();
+                          if (updateError != null) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text(
+                                  "Error changing password, $updateError",
+                                ),
+                              ),
+                            );
+                          } else {
+                            //update successful
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(
+                                content: Text("Password updated successfully!"),
+                              ),
+                            );
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Login(),
+                              ),
+                            );
+                          }
+                        } else {
+                          //one of the two new password fields doesn't follow the password requirement
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Error: $checkNewPW")),
+                          );
+                        }
+                      } else {
+                        //the two new password fields doesn't match
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("New password doesn't match")),
+                        );
+                      }
+                    },
 
                     child: const Text(
                       "Done",
@@ -198,5 +268,23 @@ class _UpdatePWState extends State<UpdatePW> {
         ),
       ),
     );
+  }
+}
+
+class SignUpValidator {
+  String? validatePassword(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'Password is required';
+    }
+
+    final regex = RegExp(
+      r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#%^&*()-_+={}[]|:"<>,./?]).+$',
+    );
+
+    if (value.length < 10 || !regex.hasMatch(value)) {
+      return 'Password must have a minimum of 1 lower case letter [a-z], a minimum of 1 upper case letter [A-Z], a minimum of 1 numeric character [0-9], a minimum of 1 special character: ~`!@#%^&*()-_+={}[]|:"<>,./?, and must be at least 10 characters';
+    }
+
+    return null;
   }
 }

@@ -17,7 +17,6 @@ class _ForgotPWState extends State<ForgotPW> {
   @override
   void initState() {
     super.initState();
-    _updatePW();
     emailController.addListener(() => setState(() {}));
   }
 
