@@ -81,9 +81,10 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.text('Done'), findsOneWidget);
-    expect(find.byType(TextFormField), findsNWidgets(3));
+    expect(find.byType(TextFormField), findsOneWidget);
+    expect(find.text('Email'), findsOneWidget);
 
-    final emailFieldFinder = find.byType(TextFormField).first;
+    final emailFieldFinder = find.byType(TextFormField);
     await tester.enterText(emailFieldFinder, 'test233@gmail.com');
     await tester.pump();
     expect(find.byIcon(Icons.close), findsOneWidget);
@@ -93,13 +94,16 @@ void main() {
     final emailField = tester.widget<TextFormField>(emailFieldFinder);
     expect(emailField.controller!.text, isEmpty);
 
-    expect(find.byIcon(Icons.visibility), findsNWidgets(2));
-    expect(find.byIcon(Icons.visibility_off), findsNothing);
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Done'));
+    await tester.pumpAndSettle();
 
-    await tester.tap(find.byIcon(Icons.visibility).first);
-    await tester.pump();
-
-    expect(find.byIcon(Icons.visibility_off), findsNWidgets(2));
-    expect(find.byIcon(Icons.visibility), findsNothing);
+    expect(find.text('Email Confirmation'), findsOneWidget);
+    expect(
+      find.text(
+        'A password reset link is sent to the email address if it is registered.',
+      ),
+      findsOneWidget,
+    );
+    expect(find.widgetWithText(TextButton, 'OK'), findsOneWidget);
   });
 }
