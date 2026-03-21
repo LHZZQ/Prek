@@ -16,17 +16,38 @@ class MemoryCard {
 class PictureReflectionPage extends StatelessWidget {
   const PictureReflectionPage({super.key});
 
-
   @override
-  Widget build(BuildContext context) {
-    //const pink = Color(0xFFFB7DA8);
-    //const yellow = Color(0xFFFFC567);
-    //const blue = Color(0xFF058CD7);
-    //const softWhite = Color(0xFFFFFFFF);
-    //const textColor = Color(0xFF94697E);
-    //const bgTop = Color(0xFFFFF1F5);
-    //const bgBottom = Color(0xFFFFF8EE);
+  State<PictureReflectionPage> createState() => _PictureReflectionPageState();
+}
 
+class _PictureReflectionPageState extends State<PictureReflectionPage>
+    with TickerProviderStateMixin {
+  static const Color pink = Color(0xFFFB7DA8);
+  static const Color yellow = Color(0xFFFFC567);
+  static const Color blue = Color(0xFF058CD7);
+  static const Color softWhite = Color(0xFFFFFFFF);
+  static const Color textColor = Color(0xFF94697E);
+  static const Color bgTop = Color(0xFFFFF1F5);
+  static const Color bgBottom = Color(0xFFFFF8EE);
+  static const Color cardBg = Color(0xFFFFFFFF);
+  static const Color pinkLight = Color(0xFFFFE4EF);
+
+  final List<MemoryCard> _memories = [
+  MemoryCard(
+    imagePath: 'placeholder',
+    caption: 'N/A',
+    date: DateTime(2025, 1, 1),
+  ),
+  MemoryCard(
+    imagePath: 'placeholder',
+    caption: 'N/A',
+    date: DateTime(2025, 2, 2),
+  ),
+  MemoryCard(
+    imagePath: 'placeholder',
+    caption: 'N/a',
+    date: DateTime(2025, 3, 3),
+  ),
+  ];
   }
 
-}
