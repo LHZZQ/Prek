@@ -177,6 +177,56 @@ class _PictureReflectionPageState extends State<PictureReflectionPage>
             ],
         ),
 
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: ScaleTransition(
+            scale: _fabScale,
+            child: GestureDetector(
+                onTapDown: (_) => _fabController.forward(),
+                onTapUp: (_) {
+                  _fabController.reverse();
+                  _openAddMemorySheet();
+                },
+                onTapCancel: () => _fabController.reverse(),
+                child: Container(
+                    height: 56,
+                    padding: const EdgeInsets.symmetric(horizontal: 28),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [pink, Color(0xFFFF9BC0)],
+                      ),
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: pink.withOpacity(0.4),
+                          blurRadius: 16,
+                          offset: const Offset(0, 6),
+                        ),
+                      ],
+                    ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      const Icon(Icons.add_photo_alternate_rounded,
+                          color: softWhite, size: 22),
+                      const SizedBox(width: 10),
+                      const Text(
+                        'Add a memory',
+                        style: TextStyle(
+                          color: softWhite,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 15,
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+            ),
+        ),
+    );
+  }
+}
+
 
 
 
