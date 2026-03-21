@@ -139,8 +139,46 @@ class _PictureReflectionPageState extends State<PictureReflectionPage>
                     color: textColor,
                   ),
                 ),
+                    const Spacer(),
+                    Text(
+                      '${_memories.length} memories',
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: textColor.withOpacity(0.55),
+                      ),
+                    ),
+                  ],
+                ),
+            ),
+        ),
+
+        _memories.isEmpty
+            ? SliverFillRemaining(child: _EmptyState())
+            : SliverPadding(
+            padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
+            sliver: SliverGrid(
+                gridDelegate:
+                const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  mainAxisSpacing: 14,
+                  crossAxisSpacing: 14,
+                  childAspectRatio: 0.72,
+                ),
+              delegate: SliverChildBuilderDelegate(
+                    (context, index) => _MemoryTile(
+                  memory: _memories[index],
+                  index: index,
+                  onTap: () => _openMemory(_memories[index]),
+                ),
+                childCount: _memories.length,
+              ),
+            ),
+        ),
+            ],
+        ),
 
 
 
-}
+
+        }
 
