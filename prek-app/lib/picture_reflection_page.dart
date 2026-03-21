@@ -104,5 +104,43 @@ class _PictureReflectionPageState extends State<PictureReflectionPage>
     );
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        backgroundColor: bgTop,
+        body: CustomScrollView(
+            slivers: [
+          SliverAppBar(
+          expandedHeight: 180,
+          pinned: true,
+          backgroundColor: bgTop,
+          elevation: 0,
+          flexibleSpace: FlexibleSpaceBar(
+            background: _Header(),
+          ),
+          leading: const SizedBox.shrink(),
+          actions: const [SizedBox.shrink()],
+        ),
+
+        SliverToBoxAdapter(child: _SparkBanner(memories: _memories)),
+
+        SliverToBoxAdapter(
+            child: Padding(
+                padding:
+                const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
+                child: Row(
+                  children: [
+                  Text(
+                  'Your happy moments',
+                  style: TextStyle(
+                    fontFamily: 'Georgia',
+                    fontSize: 18,
+                    fontWeight: FontWeight.w700,
+                    color: textColor,
+                  ),
+                ),
+
+
+
 }
 
