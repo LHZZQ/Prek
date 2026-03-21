@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+
+class MemoryCard {
+  final String imagePath;
+  final String caption;
+  final DateTime date;
+
+  const MemoryCard({
+  required this.imagePath,
+  required this.caption,
+  required this.date,
+  });
+}
 
 class PictureReflectionPage extends StatelessWidget {
   const PictureReflectionPage({super.key});
+
 
   @override
   Widget build(BuildContext context) {
