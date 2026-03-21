@@ -13,7 +13,7 @@ class MemoryCard {
   });
 }
 
-class PictureReflectionPage extends StatelessWidget {
+class PictureReflectionPage extends StatefulWidget {
   const PictureReflectionPage({super.key});
 
   @override
@@ -49,5 +49,26 @@ class _PictureReflectionPageState extends State<PictureReflectionPage>
     date: DateTime(2025, 3, 3),
   ),
   ];
+
+  late final AnimationController _fabController;
+  late final Animation<double> _fabScale;
+
+  @override
+  void initState() {
+    super.initState();
+    _fabController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 200),
+    );
+    _fabScale = Tween<double>(begin: 1.0, end: 0.9).animate(
+      CurvedAnimation(parent: _fabController, curve: Curves.easeInOut),
+    );
+  }
+
+  @override
+  void dispose() {
+    _fabController.dispose();
+    super.dispose();
+  }
   }
 
