@@ -70,5 +70,39 @@ class _PictureReflectionPageState extends State<PictureReflectionPage>
     _fabController.dispose();
     super.dispose();
   }
+  void _openAddMemorySheet() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _AddMemorySheet(
+        onAdd: (caption, imagePath) {
+          setState(() {
+            _memories.insert(
+              0,
+              MemoryCard(
+                imagePath: imagePath,
+                caption: caption,
+                date: DateTime.now(),
+              ),
+            );
+          });
+        },
+      ),
+    );
   }
+
+  void _openMemory(MemoryCard memory) {
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        transitionDuration: const Duration(milliseconds: 400),
+        pageBuilder: (_, animation, __) => FadeTransition(
+          opacity: animation,
+          child: _MemoryFullScreen(memory: memory),
+        ),
+      ),
+    );
+  }
+
+}
 
