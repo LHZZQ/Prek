@@ -304,8 +304,41 @@ class _Header extends StatelessWidget {
   }
 }
 
+class _SparkBanner extends StatelessWidget {
+  final List<MemoryCard> memories;
+
+  static const Color pink = Color(0xFFFB7DA8);
+  static const Color yellow = Color(0xFFFFC567);
+  static const Color textColor = Color(0xFF94697E);
+  static const Color softWhite = Color(0xFFFFFFFF);
+
+  const _SparkBanner({required this.memories});
+
+  @override
+  Widget build(BuildContext context) {
+    if (memories.isEmpty) return const SizedBox.shrink();
+
+    final pick = memories[DateTime.now().millisecondsSinceEpoch % memories.length];
+    return Container(
+      margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        gradient: const LinearGradient(
+          colors: [Color(0xFFFFC567), Color(0xFFFFD98C)],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: yellow.withOpacity(0.35),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
 
 
 
 
-
+        }
