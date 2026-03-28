@@ -386,5 +386,43 @@ class _SparkBanner extends StatelessWidget {
   }
 }
 
+class _MemoryTile extends StatefulWidget {
+  final MemoryCard memory;
+  final int index;
+  final VoidCallback onTap;
+
+  const _MemoryTile({
+    required this.memory,
+    required this.index,
+    required this.onTap,
+  });
+
+  @override
+  State<_MemoryTile> createState() => _MemoryTileState();
+}
+class _MemoryTileState extends State<_MemoryTile>
+    with SingleTickerProviderStateMixin {
+  static const Color pink = Color(0xFFFB7DA8);
+  static const Color textColor = Color(0xFF94697E);
+  static const Color cardBg = Color(0xFFFFFFFF);
+
+  late final AnimationController _ctrl;
+  late final Animation<double> _fadeSlide;
+
+  @override
+  void initState() {
+    super.initState();
+    _ctrl = AnimationController(
+      vsync: this,
+      duration: Duration(milliseconds: 400 + widget.index * 80),
+    )..forward();
+    _fadeSlide = CurvedAnimation(parent: _ctrl, curve: Curves.easeOut);
+  }
+  @override
+  void dispose() {
+    _ctrl.dispose();
+    super.dispose();
+  }
+
 
 
