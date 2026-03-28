@@ -418,11 +418,55 @@ class _MemoryTileState extends State<_MemoryTile>
     )..forward();
     _fadeSlide = CurvedAnimation(parent: _ctrl, curve: Curves.easeOut);
   }
+
   @override
   void dispose() {
     _ctrl.dispose();
     super.dispose();
   }
+
+  String _formatDate(DateTime d) {
+    const months = [
+      'Jan','Feb','Mar','Apr','May','Jun',
+      'Jul','Aug','Sep','Oct','Nov','Dec',
+    ];
+    return '${months[d.month - 1]} ${d.day}, ${d.year}';
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FadeTransition(
+        opacity: _fadeSlide,
+        child: SlideTransition(
+            position: Tween<Offset>(
+              begin: const Offset(0, 0.12),
+              end: Offset.zero,
+            ).animate(_fadeSlide),
+            child: GestureDetector(
+                onTap: widget.onTap,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: cardBg,
+                    borderRadius: BorderRadius.circular(20),
+                    boxShadow: [
+                      BoxShadow(
+                        color: pink.withOpacity(0.10),
+                        blurRadius: 12,
+                        offset: const Offset(0, 4),
+                      ),
+                    ],
+                  ),
+                    child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                    Expanded(
+                    child: ClipRRect(
+                    borderRadius: const BorderRadius.vertical(
+                    top: Radius.circular(20),
+                ),
+              child: _buildImage(),
+            ),
+        ),
 
 
 
