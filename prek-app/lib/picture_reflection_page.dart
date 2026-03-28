@@ -544,6 +544,43 @@ class _MemoryTileState extends State<_MemoryTile>
   }
 }
 
+class _EmptyState extends StatelessWidget {
+  static const Color pink = Color(0xFFFB7DA8);
+  static const Color textColor = Color(0xFF94697E);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+          Text('📷', style: const TextStyle(fontSize: 52)),
+      const SizedBox(height: 16),
+      Text(
+        'No memories yet',
+        style: TextStyle(
+          fontFamily: 'Georgia',
+          fontSize: 20,
+          fontWeight: FontWeight.w700,
+          color: textColor,
+        ),
+      ),
+
+            const SizedBox(height: 8),
+            Text(
+              'Tap the button below to add your\nfirst happy moment!',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 14,
+                color: textColor.withOpacity(0.55),
+                height: 1.5,
+              ),
+            ),
+          ],
+      ),
+    );
+  }
+}
 
 
 
