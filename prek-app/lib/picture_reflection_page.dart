@@ -337,8 +337,54 @@ class _SparkBanner extends StatelessWidget {
           ),
         ],
       ),
+        child: Row(
+          children: [
+          // sparkle icon
+          Container(
+          width: 46,
+          height: 46,
+          decoration: BoxDecoration(
+            color: softWhite.withOpacity(0.45),
+            borderRadius: BorderRadius.circular(14),
+          ),
+          child: const Center(
+            child: Text('✨', style: TextStyle(fontSize: 22)),
+          ),
+        ),
+
+        const SizedBox(width: 14),
+        Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              const Text(
+              'A moment to smile about',
+              style: TextStyle(
+                fontFamily: 'Georgia',
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+                color: softWhite,
+              ),
+            ),
+                const SizedBox(height: 3),
+                Text(
+                  '"${pick.caption}"',
+                  style: const TextStyle(
+                    fontSize: 13,
+                    fontWeight: FontWeight.w600,
+                    color: Color(0xFF7A4F00),
+                  ),
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ],
+            ),
+        ),
+          ],
+        ),
+    );
+  }
+}
 
 
 
-
-        }
