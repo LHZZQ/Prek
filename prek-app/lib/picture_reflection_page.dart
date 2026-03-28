@@ -622,6 +622,53 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     super.dispose();
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: bgTop,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+      ),
+      padding: EdgeInsets.only(
+        left: 22,
+        right: 22,
+        top: 20,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+      // drag handle
+      Center(
+      child: Container(
+      width: 38,
+        height: 4,
+        decoration: BoxDecoration(
+          color: pink.withOpacity(0.3),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+    ),
+    const SizedBox(height: 20),
+
+    Text(
+    'Capture a happy moment',
+    style: const TextStyle(
+    fontFamily: 'Georgia',
+    fontSize: 20,
+    fontWeight: FontWeight.w700,
+    color: textColor,
+    ),
+    ),
+    const SizedBox(height: 4),
+    Text(
+    'Pick a photo that makes you smile',
+    style: TextStyle(
+    fontSize: 13, color: textColor.withOpacity(0.55)),
+    ),
+    const SizedBox(height: 20),
+
 
 
 
