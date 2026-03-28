@@ -582,6 +582,45 @@ class _EmptyState extends StatelessWidget {
   }
 }
 
+class _AddMemorySheet extends StatefulWidget {
+  final void Function(String caption, String imagePath) onAdd;
+
+  const _AddMemorySheet({required this.onAdd});
+
+  @override
+  State<_AddMemorySheet> createState() => _AddMemorySheetState();
+}
+
+class _AddMemorySheetState extends State<_AddMemorySheet> {
+  static const Color pink = Color(0xFFFB7DA8);
+  static const Color yellow = Color(0xFFFFC567);
+  static const Color textColor = Color(0xFF94697E);
+  static const Color bgTop = Color(0xFFFFF1F5);
+  static const Color pinkLight = Color(0xFFFFE4EF);
+
+  String? _pickedPath;
+  final TextEditingController _captionCtrl = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+
+  Future<void> _pickImage(ImageSource source) async {
+    final XFile? file = await _picker.pickImage(source: source);
+    if (file != null) {
+      setState(() => _pickedPath = file.path);
+    }
+  }
+
+  void _submit() {
+    final caption = _captionCtrl.text.trim();
+    if (caption.isEmpty) return;
+    widget.onAdd(caption, _pickedPath ?? 'placeholder');
+    Navigator.of(context).pop();
+  }
+
+  @override
+  void dispose() {
+    _captionCtrl.dispose();
+    super.dispose();
+  }
 
 
 
