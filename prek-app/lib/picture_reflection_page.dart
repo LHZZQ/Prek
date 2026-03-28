@@ -379,7 +379,7 @@ class _SparkBanner extends StatelessWidget {
                 ),
               ],
             ),
-        ),
+           ),
           ],
         ),
     );
@@ -467,6 +467,54 @@ class _MemoryTileState extends State<_MemoryTile>
               child: _buildImage(),
             ),
         ),
+        Padding(
+            padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+              Text(
+              widget.memory.caption,
+              style: const TextStyle(
+                fontFamily: 'Georgia',
+                fontSize: 13,
+                fontWeight: FontWeight.w600,
+                color: textColor,
+                height: 1.35,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+            ),
+            const SizedBox(height: 6),
+            Row(
+                children: [
+                Icon(Icons.calendar_today_rounded,
+                size: 10,
+                color: textColor.withOpacity(0.45)),
+            const SizedBox(width: 4),
+            Text(
+                _formatDate(widget.memory.date),
+                style: TextStyle(
+                  fontSize: 10.5,
+                  color: textColor.withOpacity(0.5),
+                ),
+            ),
+                ],
+            ),
+              ],
+            ),
+        ),
+                        ],
+                    ),
+                ),
+            ),
+        ),
+    );
+  }
+
+
+
+
+
 
 
 
