@@ -511,6 +511,38 @@ class _MemoryTileState extends State<_MemoryTile>
     );
   }
 
+  Widget _buildImage() {
+    if (widget.memory.imagePath == 'placeholder') {
+      // Warm gradient placeholder until real images are picked
+      final List<List<Color>> palettes = [
+        [const Color(0xFFFFD6E8), const Color(0xFFFFA8CC)],
+        [const Color(0xFFFFEAB0), const Color(0xFFFFC567)],
+        [const Color(0xFFB3DEFF), const Color(0xFF6BB8F7)],
+        [const Color(0xFFD7F5D0), const Color(0xFF8ADBA0)],
+      ];
+      final p = palettes[widget.index % palettes.length];
+      return Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: p,
+            begin: Alignment.topLeft,
+            end: Alignment.bottomRight,
+          ),
+        ),
+        child: const Center(
+          child: Text('🌸', style: TextStyle(fontSize: 36)),
+        ),
+      );
+    }
+
+    return Image.file(
+      File(widget.memory.imagePath),
+      fit: BoxFit.cover,
+      width: double.infinity,
+      height: double.infinity,
+    );
+  }
+}
 
 
 
