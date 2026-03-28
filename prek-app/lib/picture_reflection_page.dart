@@ -227,8 +227,85 @@ class _PictureReflectionPageState extends State<PictureReflectionPage>
   }
 }
 
+class _Header extends StatelessWidget {
+  static const Color pink = Color(0xFFFB7DA8);
+  static const Color yellow = Color(0xFFFFC567);
+  static const Color bgTop = Color(0xFFFFF1F5);
+  static const Color textColor = Color(0xFF94697E);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            colors: [bgTop, Color(0xFFFFF8EE)],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+        child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(22, 12, 22, 0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+              // decorative dots row
+              Row(
+              children: List.generate(
+              5,
+                    (i) => Container(
+                  margin: const EdgeInsets.only(right: 5),
+                  width: 8,
+                  height: 8,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: i % 2 == 0
+                        ? pink.withOpacity(0.35)
+                        : yellow.withOpacity(0.5),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 10),
+            RichText(
+                text: TextSpan(
+                    style: const TextStyle(
+                      fontFamily: 'Georgia',
+                      fontSize: 28,
+                      height: 1.25,
+                      color: textColor,
+                      fontWeight: FontWeight.w700,
+                    ),
+                  children: [
+                    const TextSpan(text: 'Your smile\n'),
+                    TextSpan(
+                      text: 'album',
+                      style: TextStyle(
+                        color: pink,
+                        fontWeight: FontWeight.w900,
+                      ),
+                    ),
+                  ],
+                ),
+            ),
+                  const SizedBox(height: 6),
+                  Text(
+                    'Peek back at moments that made you glow',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: textColor.withOpacity(0.65),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+        ),
+    );
+  }
+}
 
 
 
-        }
+
+
 
