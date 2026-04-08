@@ -618,6 +618,9 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     final daysInMonth = DateUtils.getDaysInMonth(
       shownMonth.year,
       shownMonth.month,
