@@ -217,7 +217,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const _MoodBoardSection(),
+                _MoodBoardSection(userId: supabase.auth.currentUser?.id ?? ''),
                 const SizedBox(height: 18),
               ],
             ),
