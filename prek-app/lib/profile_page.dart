@@ -551,7 +551,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     final user = Supabase.instance.client.auth.currentUser;
     if (user == null) return;
 
-    try{
+    try {
       final response = await Supabase.instance.client
           .from('Gratitude Entries')
           .select('mood,created_at')
@@ -560,15 +560,24 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
           .order('created_at', ascending: true);
 
       final Map<String, String> fetched = {};
-      for (final row in response){
+      for (final row in response) {
         final date = DateTime.parse(row['created_at']).toLocal();
-        final key = '${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2, '0')}';
+        final key =
+            '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
 
         if (!fetched.containsKey(key)) {
-          
+          fetched[key] = row['mood'] as String;
         }
       }
 
+      setState(() {
+        moodByDay.clear();
+        moodByDay.addAll(fetched);
+        _loading = false;
+      });
+    } catch (e) {
+      debugPrint('Error loading moods: $e');
+      setState(() => _loading = false);
     }
   }
 
