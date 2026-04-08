@@ -507,7 +507,8 @@ class _SectionRow extends StatelessWidget {
 }
 
 class _MoodBoardSection extends StatefulWidget {
-  const _MoodBoardSection();
+  final String userId;
+  const _MoodBoardSection({required this.userId});
 
   @override
   State<_MoodBoardSection> createState() => _MoodBoardSectionState();
@@ -537,17 +538,39 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
   DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
-  final Map<String, String> moodByDay = {
-    "2026-02-01": "Happy",
-    "2026-02-02": "Good",
-    "2026-02-03": "Neutral",
-    "2026-02-04": "Sad",
-    "2026-02-05": "Happy",
-    "2026-01-06": "Frustrated",
-    "2026-01-07": "Overwhelmed",
-    "2026-01-08": "Confused",
-    "2026-01-09": "Angry",
-  };
+  final Map<String, String> moodByDay = {};
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMoods();
+  }
+
+  Future<void> _loadMoods() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    try{
+      final response = await Supabase.instance.client
+          .from('Gratitude Entries')
+          .select('mood,created_at')
+          .eq('user_id', user.id)
+          .not('mood', 'is', null)
+          .order('created_at', ascending: true);
+
+      final Map<String, String> fetched = {};
+      for (final row in response){
+        final date = DateTime.parse(row['created_at']).toLocal();
+        final key = '${date.year}-${date.month.toString().padLeft(2,'0')}-${date.day.toString().padLeft(2, '0')}';
+
+        if (!fetched.containsKey(key)) {
+          
+        }
+      }
+
+    }
+  }
 
   String _keyFor(DateTime d) {
     return d.toUtc().toIso8601String().split('T').first;
