@@ -1,4 +1,5 @@
 import 'package:_2025_prek/login.dart';
+import 'package:_2025_prek/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -22,7 +23,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
-      home: const Login(), // Start on login
+      home: const Login(),
+      theme: lightMode,
+      darkTheme: darkMode,
     );
   }
 }
