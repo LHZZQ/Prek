@@ -124,11 +124,13 @@ class HomePageState extends State<HomePage> {
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? Colors.white
+                        ? Colors.black87
                         : softWhite.withValues(alpha: 0.7),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: isDark
+                          ? Colors.black
+                          : Colors.white.withValues(alpha: 0.5),
                       width: 1.5,
                     ),
                     boxShadow: [
@@ -142,11 +144,11 @@ class HomePageState extends State<HomePage> {
                   child: Text(
                     '"$dailyAffirmation"',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontStyle: FontStyle.italic,
                       height: 1.6,
-                      color: textColor,
+                      color: isDark ? Colors.white : textColor,
                     ),
                   ),
                 ),
@@ -177,7 +179,8 @@ class HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 20),
                 Container(
-                  width: 350,
+                  height: 45,
+                  width: 400,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     gradient: const LinearGradient(
