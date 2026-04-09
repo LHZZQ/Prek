@@ -1,12 +1,6 @@
 name: CI_backend
 
 on:
-  push:
-    branches:
-      - "**"
-    paths:
-      - "supabase/**"
-      - ".github/workflows/ci_backend.yml"
   pull_request:
     branches: [main, dev]
     paths:
