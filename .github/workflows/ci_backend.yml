@@ -1,6 +1,12 @@
 name: CI_backend
 
 on:
+  push:
+    branches:
+      - "**"
+    paths:
+      - "supabase/**"
+      - ".github/workflows/ci_backend.yml"
   pull_request:
     branches: [main, dev]
     paths:
@@ -10,7 +16,7 @@ on:
 jobs:
   backend_migrations:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 10
 
     steps:
       - name: Checkout Repo
@@ -34,6 +40,10 @@ jobs:
       - name: Apply migrations
         run: supabase db reset
 
+      - name: Run database tests
+        run: supabase test db
+
+# not allowed to change the schema without writing a migration
       - name: Check schema drift
         shell: bash
         run: |
