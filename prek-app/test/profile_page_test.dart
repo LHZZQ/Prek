@@ -1,17 +1,18 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:io';
 
 import 'package:_2025_prek/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:http/http.dart' as http;
+import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
-  late HttpServer mockServer;
+  late MockClient mockHttpClient;
   const userId = '4d2583da-8de4-49d3-9cd1-37a9a74f55bd';
-
+  // build fake session
   String buildSessionString() {
     final expiresAt = DateTime.now().add(const Duration(hours: 1));
     final expiresAtSeconds = expiresAt.millisecondsSinceEpoch ~/ 1000;
@@ -52,70 +53,88 @@ void main() {
     });
   }
 
-  Future<void> handleRequest(HttpRequest request) async {
-    final path = Uri.decodeComponent(request.uri.path);
-    request.response.headers.contentType = ContentType.json;
-    request.response.statusCode = HttpStatus.ok;
+  Future<http.Response> handleRequest(http.Request request) async {
+    final path = Uri.decodeComponent(request.url.path);
+    final headers = {'content-type': 'application/json'};
 
     if (path == '/rest/v1/Profiles') {
-      final select = request.uri.queryParameters['select'];
+      final select = request.url.queryParameters['select'];
       if (select == 'username') {
-        request.response.write(jsonEncode([
-          {'username': 'Test User'},
-        ]));
-      } else if (select == 'email') {
-        request.response.write(jsonEncode([
-          {'email': 'test@example.com'},
-        ]));
-      } else {
-        request.response.write('[]');
+        return http.Response(
+          jsonEncode([
+            {'username': 'Test User'},
+          ]),
+          200,
+          headers: headers,
+          request: request,
+        );
       }
-      await request.response.close();
-      return;
+      if (select == 'email') {
+        return http.Response(
+          jsonEncode([
+            {'email': 'test@example.com'},
+          ]),
+          200,
+          headers: headers,
+          request: request,
+        );
+      }
     }
 
     if (path == '/rest/v1/Gratitude Entries') {
-      final select = request.uri.queryParameters['select'];
+      final select = request.url.queryParameters['select'];
       if (select == 'id') {
-        request.response.write(jsonEncode([
-          {'id': 1},
-          {'id': 2},
-          {'id': 3},
-        ]));
-      } else if (select == 'mood,created_at') {
-        request.response.write(jsonEncode([
-          {'mood': 'Frustrated', 'created_at': '2026-01-03T12:00:00Z'},
-          {'mood': 'Overwhelmed', 'created_at': '2026-01-09T12:00:00Z'},
-          {'mood': 'Confused', 'created_at': '2026-01-18T12:00:00Z'},
-          {'mood': 'Angry', 'created_at': '2026-01-27T12:00:00Z'},
-        ]));
-      } else {
-        request.response.write('[]');
+        return http.Response(
+          jsonEncode([
+            {'id': 1},
+            {'id': 2},
+            {'id': 3},
+          ]),
+          200,
+          headers: headers,
+          request: request,
+        );
       }
-      await request.response.close();
-      return;
+      if (select == 'mood,created_at') {
+        return http.Response(
+          jsonEncode([
+            {'mood': 'Frustrated', 'created_at': '2026-01-03T12:00:00Z'},
+            {'mood': 'Overwhelmed', 'created_at': '2026-01-09T12:00:00Z'},
+            {'mood': 'Confused', 'created_at': '2026-01-18T12:00:00Z'},
+            {'mood': 'Angry', 'created_at': '2026-01-27T12:00:00Z'},
+          ]),
+          200,
+          headers: headers,
+          request: request,
+        );
+      }
     }
 
-    request.response.write('[]');
-    await request.response.close();
+    return http.Response('[]', 200, headers: headers, request: request);
   }
 
   setUpAll(() async {
     TestWidgetsFlutterBinding.ensureInitialized();
     SharedPreferences.setMockInitialValues({});
-    mockServer = await HttpServer.bind('127.0.0.1', 0);
-    unawaited(mockServer.forEach(handleRequest));
+    try {
+      if (Supabase.instance.isInitialized) {
+        await Supabase.instance.dispose();
+      }
+    } catch (_) {}
+    //Intercept HTTP requests
+    mockHttpClient = MockClient(handleRequest);
     await Supabase.initialize(
-      url: 'http://${mockServer.address.host}:${mockServer.port}',
+      url: 'http://localhost',
       anonKey: const String.fromEnvironment(
         'SUPABASE_ANON_KEY',
         defaultValue: 'test-anon-key',
       ),
+      httpClient: mockHttpClient,
     );
   });
 
   tearDownAll(() async {
-    await mockServer.close(force: true);
+    mockHttpClient.close();
   });
 
   setUp(() async {
