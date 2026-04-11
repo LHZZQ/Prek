@@ -750,7 +750,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
           ),
          ),
         child: const Text(
-          'Save to my album ✨',
+          'Save to my album',
           style: TextStyle(
             fontSize: 15,
             fontWeight: FontWeight.w700,
@@ -763,6 +763,43 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     ),
   );
 }
+  void _showImageSourceDialog() {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (_) => SafeArea(
+        child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+        ListTile(
+        leading:
+        const Icon(Icons.camera_alt_rounded, color: Color(0xFFFB7DA8)),
+        title: const Text('Take a photo'),
+        onTap: () {
+          Navigator.pop(context);
+          _pickImage(ImageSource.camera);
+        },
+      ),
+              ListTile(
+                leading: const Icon(Icons.photo_library_rounded,
+                    color: Color(0xFFFB7DA8)),
+                title: const Text('Choose from gallery'),
+                onTap: () {
+                  Navigator.pop(context);
+                  _pickImage(ImageSource.gallery);
+                },
+              ),
+              const SizedBox(height: 8),
+            ],
+        ),
+      ),
+    );
+  }
+}
+
 
 
 
