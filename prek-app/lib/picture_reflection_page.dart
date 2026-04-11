@@ -735,6 +735,35 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     ),
     const SizedBox(height: 20),
 
+    SizedBox(
+      width: double.infinity,
+      height: 52,
+      child: ElevatedButton(
+        onPressed: _submit,
+        style: ElevatedButton.styleFrom(
+          backgroundColor: pink,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shadowColor: Colors.transparent,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+         ),
+        child: const Text(
+          'Save to my album ✨',
+          style: TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w700,
+            letterSpacing: 0.3,
+          ),
+        ),
+      ),
+    ),
+      ],
+    ),
+  );
+}
+
 
 
 
