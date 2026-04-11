@@ -22,10 +22,10 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadReflectionsCount();
     _loadUsername();
     _loadEmail();
-    _loadStreak()
+    _loadStreak();
   }
 
-  Future<void> _loadStreak() aync {
+  Future<void> _loadStreak() async {
     final user = supabase.auth.currentUser;
     if (user == null) return;
 
@@ -193,7 +193,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   displayName: profileName,
                   email: profileEmail,
                   reflections: reflectionsCount.toString(),
-                  streak: "06",
+                  streak: streakCount.toString(),
                   daysActive: "12",
                 ),
                 const SizedBox(height: 14),
@@ -230,7 +230,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       icon: Icons.local_fire_department_rounded,
                       iconBg: yellow.withValues(alpha: 0.55),
                       title: "Reflection streak",
-                      badgeText: "6",
+                      badgeText: streakCount.toString(),
                       badgeBg: yellow.withValues(alpha: 0.20),
                       onTap: () {},
                     ),
