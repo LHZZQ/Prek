@@ -800,6 +800,23 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
   }
 }
 
+class _MemoryFullScreen extends StatelessWidget {
+  final MemoryCard memory;
+
+  static const Color pink = Color(0xFFFB7DA8);
+  static const Color textColor = Color(0xFF94697E);
+  static const Color bgBottom = Color(0xFFFFF8EE);
+
+  const _MemoryFullScreen({required this.memory});
+
+  String _formatDate(DateTime d) {
+    const months = [
+      'January','February','March','April','May','June',
+      'July','August','September','October','November','December',
+    ];
+    return '${months[d.month - 1]} ${d.day}, ${d.year}';
+  }
+
 
 
 
