@@ -30,42 +30,41 @@ class _ProfilePageState extends State<ProfilePage> {
     if (user == null) return;
 
     try {
-      final response = await supabase 
+      final response = await supabase
           .from('Gratitude Entries')
           .select('created_at')
           .eq('user_id', user.id)
           .order('created_at', ascending: false);
 
       final Set<String> entryDays = {};
-      for (final row in response){
+      for (final row in response) {
         final date = DateTime.parse(row['created_at']).toLocal();
         entryDays.add(
-          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}'
-          );
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
+        );
       }
       final now = DateTime.now();
-      String keyFor(DateTime d) => '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+      String keyFor(DateTime d) =>
+          '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
 
       final todayKey = keyFor(now);
       final yesterdayKey = keyFor(now.subtract(const Duration(days: 1)));
 
       int streak = 0;
-      if (entryDays.contains(todayKey) || entryDays.contains(yesterdayKey)){
+      if (entryDays.contains(todayKey) || entryDays.contains(yesterdayKey)) {
         DateTime cursor = entryDays.contains(todayKey)
-          ? now
-          :now.subtract(const Duration(days : 1));
+            ? now
+            : now.subtract(const Duration(days: 1));
         while (entryDays.contains(keyFor(cursor))) {
           streak++;
-          cursor = cursor.subtract(const Duration(days :1));
+          cursor = cursor.subtract(const Duration(days: 1));
         }
       }
 
-      setState(() => streakCount = streak,);
-      
-    } catch(e){
+      setState(() => streakCount = streak);
+    } catch (e) {
       debugPrint('Error loading streak: $e');
     }
-
   }
 
   Future<void> _loadReflectionsCount() async {
