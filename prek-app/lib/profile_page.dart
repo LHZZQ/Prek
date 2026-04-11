@@ -14,6 +14,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String profileEmail = "";
   int reflectionsCount = 0;
   bool loading = true;
+  int streakCount = 0;
 
   @override
   void initState() {
@@ -21,6 +22,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadReflectionsCount();
     _loadUsername();
     _loadEmail();
+    _loadStreak()
   }
 
   Future<void> _loadStreak() aync {
