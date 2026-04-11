@@ -1,7 +1,8 @@
 import 'package:_2025_prek/login.dart';
-import 'package:_2025_prek/theme/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -12,7 +13,12 @@ Future<void> main() async {
         'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppcXJicWJzb2RwZ2NnbXduaWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA0NjQ2NDEsImV4cCI6MjA3NjA0MDY0MX0.kNB3KNjyGAMXL1x6nN-U_veW0MD_y_d9gE5RDMKY8Uo',
   );
 
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -24,8 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
       home: const Login(),
-      theme: lightMode,
-      darkTheme: darkMode,
+      theme: Provider.of<ThemeProvider>(context).themeData,
     );
   }
 }

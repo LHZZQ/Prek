@@ -2,28 +2,57 @@ import 'package:_2025_prek/change_pw.dart';
 import 'package:_2025_prek/change_name.dart';
 import 'package:_2025_prek/login.dart';
 import 'package:_2025_prek/change_email.dart';
+import 'package:_2025_prek/theme/theme_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
-class SettingsPage extends StatelessWidget {
+class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
 
+  @override
+  State<SettingsPage> createState() => _SettingsPageState();
+}
+
+class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    var isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: topBarColor,
       appBar: AppBar(
+        elevation: 0,
+        foregroundColor: textColor,
+        iconTheme: const IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+
         title: const Text(
           'Settings',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
 
-        elevation: 0,
-        foregroundColor: textColor,
+        actions: [
+          IconButton(
+            onPressed: () {
+              Provider.of<ThemeProvider>(context, listen: false).toggleTheme();
+              setState(() {
+                isDark = !isDark;
+              });
+            },
+            icon: Icon(
+              isDark ? Icons.light_mode : Icons.dark_mode,
+              color: textColor,
+            ),
+          ),
+        ],
       ),
+
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
