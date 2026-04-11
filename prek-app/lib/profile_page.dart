@@ -23,6 +23,29 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadEmail();
   }
 
+  Future<void> _loadStreak() aync {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final response = await supabase 
+          .from('Gratitude Entries')
+          .select('created_at')
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false);
+
+      final Set<String> entryDays = {};
+      for (final row in response){
+        final date = DateTime.parse(row['created_at']).toLocal();
+        entryDays.add(
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}'
+          );
+      }
+      
+    }
+
+  }
+
   Future<void> _loadReflectionsCount() async {
     final user = supabase.auth.currentUser;
     if (user == null) return;
