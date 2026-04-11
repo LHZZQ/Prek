@@ -863,6 +863,70 @@ class _MemoryFullScreen extends StatelessWidget {
       ),
     ),
 
+    Positioned(
+      top: MediaQuery.of(context).padding.top + 12,
+      left: 16,
+      child: GestureDetector(
+        onTap: () => Navigator.of(context).pop(),
+        child: Container(
+          width: 40,
+          height: 40,
+          decoration: BoxDecoration(
+            color: Colors.white.withOpacity(0.2),
+            borderRadius: BorderRadius.circular(12),
+          ),
+          child: const Icon(Icons.arrow_back_rounded,
+            color: Colors.white, size: 20),
+          ),
+        ),
+      ),
+            Positioned(
+              left: 22,
+              right: 22,
+              bottom: MediaQuery.of(context).padding.bottom + 36,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+
+                  const Text('💛', style: TextStyle(fontSize: 22)),
+                  const SizedBox(height: 10),
+                  Text(
+                    memory.caption,
+                    style: const TextStyle(
+                      fontFamily: 'Georgia',
+                      fontSize: 22,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.white,
+                      height: 1.3,
+                    ),
+                  ),
+                  const SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Icon(Icons.calendar_today_rounded,
+                          size: 13,
+                          color: Colors.white.withOpacity(0.65)),
+                      const SizedBox(width: 6),
+                      Text(
+                        _formatDate(memory.date),
+                        style: TextStyle(
+                          fontSize: 13,
+                          color: Colors.white.withOpacity(0.65),
+                          letterSpacing: 0.3,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ],
+      ),
+    );
+  }
+}
+
+
 
 
 
