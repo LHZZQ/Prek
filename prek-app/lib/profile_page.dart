@@ -683,15 +683,16 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   }
 
   Color _accentForLabel(String? label) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     if (label == null) return textColor.withValues(alpha: 0.10);
     if (label == "Happy" || label == "Good") {
-      return yellow.withValues(alpha: 0.18);
+      return isDark ? yellow : yellow.withValues(alpha: 0.18);
     }
     if (label == "Neutral" || label == "Confused") {
-      return blue.withValues(alpha: 0.16);
+      return isDark ? blue : blue.withValues(alpha: 0.16);
     }
 
-    return pink.withValues(alpha: 0.16);
+    return isDark ? pink : pink.withValues(alpha: 0.16);
   }
 }
 
@@ -781,6 +782,7 @@ class _MoodCell extends StatelessWidget {
     const softWhite = Color(0xFFFFFFFF);
 
     final isEmpty = day == null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
@@ -810,7 +812,13 @@ class _MoodCell extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(child: Icon(icon, size: 37, color: textColor)),
+                Center(
+                  child: Icon(
+                    icon,
+                    size: 37,
+                    color: isDark ? Colors.white : textColor,
+                  ),
+                ),
               ],
             ),
     );
