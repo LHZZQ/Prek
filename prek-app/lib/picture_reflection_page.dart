@@ -668,6 +668,44 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     fontSize: 13, color: textColor.withOpacity(0.55)),
     ),
     const SizedBox(height: 20),
+    GestureDetector(
+    onTap: () => _showImageSourceDialog(),
+    child: Container(
+      height: 160,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: pinkLight,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(color: pink.withOpacity(0.25), width: 1.5),
+      ),
+      child: _pickedPath != null
+        ? ClipRRect(
+          borderRadius: BorderRadius.circular(17),
+          child: Image.file(
+        File(_pickedPath!),
+        fit: BoxFit.cover,
+        ),
+      )
+        : Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(Icons.add_photo_alternate_outlined,
+              color: pink, size: 36),
+          const SizedBox(height: 8),
+          Text(
+            'Tap to add a photo',
+            style: TextStyle(
+              color: pink,
+              fontWeight: FontWeight.w600,
+              fontSize: 14,
+            ),
+          ),
+        ],
+      ),
+    ),
+    ),
+        const SizedBox(height: 18),
+
 
 
 
