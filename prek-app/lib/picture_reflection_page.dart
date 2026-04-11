@@ -705,6 +705,35 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     ),
     ),
         const SizedBox(height: 18),
+    Container(
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border:
+          Border.all(color: pink.withOpacity(0.2), width: 1.5),
+    ),
+    child: TextField(
+      controller: _captionCtrl,
+      maxLines: 3,
+      maxLength: 140,
+      style: const TextStyle(
+        color: textColor,
+        fontSize: 14,
+        fontFamily: 'Georgia',
+    ),
+    decoration: InputDecoration(
+    hintText:
+    'What made this moment special?',
+      hintStyle: TextStyle(
+        color: textColor.withOpacity(0.4), fontSize: 13),
+      contentPadding: const EdgeInsets.all(14),
+      border: InputBorder.none,
+      counterStyle:
+        TextStyle(color: textColor.withOpacity(0.35)),
+        ),
+      ),
+    ),
+    const SizedBox(height: 20),
 
 
 
