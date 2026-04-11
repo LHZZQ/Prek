@@ -817,6 +817,56 @@ class _MemoryFullScreen extends StatelessWidget {
     return '${months[d.month - 1]} ${d.day}, ${d.year}';
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Stack(
+          children: [
+      // ── full-bleed image ───────────────
+      Positioned.fill(
+      child: memory.imagePath != 'placeholder'
+      ? Image.file(
+      File(memory.imagePath),
+      fit: BoxFit.cover,
+    )
+        : Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Color(0xFFFFD6E8), Color(0xFFFFA8CC)],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
+          ),
+          child: const Center(
+            child: Text('🌸', style: TextStyle(fontSize: 80)),
+          ),
+        ),
+    ),
+
+    Positioned(
+      left: 0,
+      right: 0,
+      bottom: 0,
+      height: 280,
+      child: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            colors: [
+              Colors.transparent,
+              Colors.black.withOpacity(0.7),
+            ],
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+          ),
+        ),
+      ),
+    ),
+
+
+
+
+
 
 
 
