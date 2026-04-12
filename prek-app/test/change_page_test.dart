@@ -62,10 +62,7 @@ void main() {
   }
 
   Widget buildTestApp(Widget home) {
-    return MaterialApp(
-      theme: ThemeData(useMaterial3: false),
-      home: home,
-    );
+    return MaterialApp(theme: ThemeData(useMaterial3: false), home: home);
   }
 
   testWidgets('change name page renders and can navigate after save', (
@@ -129,9 +126,7 @@ void main() {
     expect(find.text('Current password is wrong'), findsOneWidget);
   });
 
-  testWidgets('change password page eyes buttons', (
-    tester,
-  ) async {
+  testWidgets('change password page eyes buttons', (tester) async {
     useLargeViewport(tester);
     await setLoggedInSession();
 
