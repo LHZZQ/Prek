@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:_2025_prek/change_email.dart';
 import 'package:_2025_prek/change_name.dart';
 import 'package:_2025_prek/change_pw.dart';
@@ -23,6 +24,34 @@ void main() {
     );
   });
 
+  Future<void> setLoggedInSession() async {
+    await Supabase.instance.client.auth.setInitialSession(
+      jsonEncode({
+        'access_token': 'test-token',
+        'refresh_token': 'test-refresh-token',
+        'token_type': 'bearer',
+        'user': {
+          'id': '00000000-0000-0000-0000-000000000001',
+          'aud': 'authenticated',
+          'app_metadata': {'provider': 'email'},
+          'user_metadata': {},
+          'email': 'zzq@gmail.com',
+          'created_at': '2026-01-01T00:00:00.000000Z',
+        },
+      }),
+    );
+  }
+
+  Future<void> clearSession() async {
+    try {
+      await Supabase.instance.client.auth.signOut(scope: SignOutScope.local);
+    } catch (_) {}
+  }
+
+  tearDown(() async {
+    await clearSession();
+  });
+
   void useLargeViewport(WidgetTester tester) {
     tester.view.physicalSize = const Size(1200, 2200);
     tester.view.devicePixelRatio = 1.0;
@@ -32,17 +61,25 @@ void main() {
     });
   }
 
+  Widget buildTestApp(Widget home) {
+    return MaterialApp(
+      theme: ThemeData(useMaterial3: false),
+      home: home,
+    );
+  }
+
   testWidgets('change name page renders and can navigate after save', (
     tester,
   ) async {
     useLargeViewport(tester);
 
-    await tester.pumpWidget(const MaterialApp(home: ChangeName()));
+    await tester.pumpWidget(buildTestApp(const ChangeName()));
     await tester.pumpAndSettle();
 
     expect(find.text('Enter your new name'), findsOneWidget);
     expect(find.widgetWithText(ElevatedButton, 'Save'), findsOneWidget);
 
+    await setLoggedInSession();
     await tester.enterText(find.byType(TextField), 'New Name');
     await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
     await tester.pumpAndSettle();
@@ -55,12 +92,13 @@ void main() {
   ) async {
     useLargeViewport(tester);
 
-    await tester.pumpWidget(const MaterialApp(home: ChangeEmail()));
+    await tester.pumpWidget(buildTestApp(const ChangeEmail()));
     await tester.pumpAndSettle();
 
     expect(find.text('Enter your new email'), findsOneWidget);
     expect(find.widgetWithText(ElevatedButton, 'Save'), findsOneWidget);
 
+    await setLoggedInSession();
     await tester.enterText(find.byType(TextField), 'test@example.com');
     await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
     await tester.pumpAndSettle();
@@ -72,8 +110,9 @@ void main() {
     tester,
   ) async {
     useLargeViewport(tester);
+    await setLoggedInSession();
 
-    await tester.pumpWidget(const MaterialApp(home: ChangePW()));
+    await tester.pumpWidget(buildTestApp(const ChangePW()));
     await tester.pumpAndSettle();
 
     expect(find.text('Current password'), findsOneWidget);
@@ -90,9 +129,44 @@ void main() {
     expect(find.text('Current password is wrong'), findsOneWidget);
   });
 
+  testWidgets('change password page eyes buttons', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await setLoggedInSession();
+
+    await tester.pumpWidget(buildTestApp(const ChangePW()));
+    await tester.pumpAndSettle();
+
+    final visibilityToggles = find.byIcon(Icons.visibility_off);
+    expect(visibilityToggles, findsNWidgets(3));
+
+    await tester.tap(visibilityToggles.at(0));
+    await tester.tap(visibilityToggles.at(1));
+    await tester.tap(visibilityToggles.at(2));
+    await tester.pumpAndSettle();
+
+    expect(find.byIcon(Icons.visibility), findsNWidgets(3));
+  });
+
   test('password validator returns error for empty', () {
     final validator = SignUpValidator();
 
     expect(validator.validatePassword(''), 'Password is required');
+  });
+
+  test('password validator returns error for weak password', () {
+    final validator = SignUpValidator();
+
+    expect(
+      validator.validatePassword('abcdefg123'),
+      startsWith('Password must have a minimum of 1 lower case letter'),
+    );
+  });
+
+  test('password validator returns null for valid password', () {
+    final validator = SignUpValidator();
+
+    expect(validator.validatePassword('Zzqzzq123!'), isNull);
   });
 }
