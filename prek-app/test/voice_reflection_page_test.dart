@@ -1,11 +1,14 @@
 import 'package:_2025_prek/voice_reflection_page.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+  const recordChannel = MethodChannel('com.llfbandit.record/messages');
+  const pathProviderChannel = MethodChannel('plugins.flutter.io/path_provider');
 
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
@@ -18,6 +21,37 @@ void main() {
         localStorage: EmptyLocalStorage(),
       ),
     );
+  });
+
+  setUp(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProviderChannel, (call) async {
+          if (call.method == 'getTemporaryDirectory') return '/tmp';
+          return null;
+        });
+
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(recordChannel, (call) async {
+          switch (call.method) {
+            case 'create':
+            case 'start':
+            case 'dispose':
+              return null;
+            case 'hasPermission':
+              return true;
+            case 'stop':
+              return '/tmp/fake_recording.m4a';
+            default:
+              return null;
+          }
+        });
+  });
+
+  tearDown(() {
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(recordChannel, null);
+    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
+        .setMockMethodCallHandler(pathProviderChannel, null);
   });
 
   void useLargeViewport(WidgetTester tester) {
@@ -63,5 +97,62 @@ void main() {
     useLargeViewport(tester);
     await pumpVoicePage(tester, mood: 'Calm');
     expect(find.text('Reflecting on: Calm'), findsOneWidget);
+  });
+
+  testWidgets('tap start/stop enables preview and redo can reset duration', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await pumpVoicePage(tester);
+
+    await tester.tap(find.byIcon(Icons.mic_rounded));
+    await tester.pump();
+    expect(find.byIcon(Icons.stop_rounded), findsOneWidget);
+
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('01:00'), findsNothing);
+    expect(find.text('00:01'), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.stop_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Preview'), findsOneWidget);
+    expect(find.text('Redo'), findsOneWidget);
+
+    final saveEnabledButton = tester.widget<ElevatedButton>(
+      find.widgetWithText(ElevatedButton, 'SAVE REFLECTION'),
+    );
+    expect(saveEnabledButton.onPressed, isNotNull);
+
+    await tester.tap(find.text('Redo'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('00:00'), findsOneWidget);
+    final saveDisabledButton = tester.widget<ElevatedButton>(
+      find.widgetWithText(ElevatedButton, 'SAVE REFLECTION'),
+    );
+    expect(saveDisabledButton.onPressed, isNull);
+  });
+
+  testWidgets('long press and slide up cancels recording', (tester) async {
+    useLargeViewport(tester);
+    await pumpVoicePage(tester);
+
+    final gesture = await tester.startGesture(
+      tester.getCenter(find.byIcon(Icons.mic_rounded)),
+    );
+    await tester.pump(const Duration(milliseconds: 700));
+    await gesture.moveBy(const Offset(0, -100));
+    await tester.pump();
+
+    expect(find.text('Release to cancel 🗑️'), findsOneWidget);
+    expect(find.byIcon(Icons.delete_forever_rounded), findsOneWidget);
+
+    await gesture.up();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tap or Hold to record'), findsOneWidget);
+    expect(find.text('00:00'), findsOneWidget);
+    expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
   });
 }
