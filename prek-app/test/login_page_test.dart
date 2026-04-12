@@ -4,8 +4,31 @@ import 'package:_2025_prek/signup.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:_2025_prek/forgotpw.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
+  setUpAll(() async {
+    TestWidgetsFlutterBinding.ensureInitialized();
+    SharedPreferences.setMockInitialValues({});
+
+    try {
+      // If already initialized by another test context, this is a no-op path.
+      Supabase.instance.client;
+    } catch (_) {
+      await Supabase.initialize(
+        url: const String.fromEnvironment(
+          'SUPABASE_URL',
+          defaultValue: 'http://localhost',
+        ),
+        anonKey: const String.fromEnvironment(
+          'SUPABASE_ANON_KEY',
+          defaultValue: 'test-anon-key',
+        ),
+      );
+    }
+  });
+
   void useLargeViewport(WidgetTester tester) {
     tester.view.physicalSize = const Size(1200, 2400);
     tester.view.devicePixelRatio = 1.0;

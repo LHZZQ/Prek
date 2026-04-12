@@ -1,6 +1,7 @@
 import 'package:_2025_prek/login.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/updatepw.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -22,8 +23,40 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
-      home: const Login(), // Start on login
+      home: const AuthGate(), // <-- use home instead of initialRoute
+      routes: {
+        '/update-password': (context) => const UpdatePW(),
+        '/login': (context) => const Login(),
+      },
     );
+  }
+}
+
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  @override
+  void initState() {
+    super.initState();
+
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      debugPrint('Auth event: ${data.event}');
+      if (data.event == AuthChangeEvent.passwordRecovery) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, '/update-password');
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Login();
   }
 }
 
