@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:_2025_prek/updatepw.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -32,6 +33,34 @@ class MyApp extends StatelessWidget {
       home: const Login(),
       theme: Provider.of<ThemeProvider>(context).themeData,
     );
+  }
+}
+
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  @override
+  void initState() {
+    super.initState();
+
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      debugPrint('Auth event: ${data.event}');
+      if (data.event == AuthChangeEvent.passwordRecovery) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, '/update-password');
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Login();
   }
 }
 
