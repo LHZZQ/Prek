@@ -62,7 +62,6 @@ void main() {
   testWidgets('shows selected mood text', (tester) async {
     useLargeViewport(tester);
     await pumpVoicePage(tester, mood: 'Calm');
-
     expect(find.text('Reflecting on: Calm'), findsOneWidget);
   });
 }
