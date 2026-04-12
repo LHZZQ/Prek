@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:_2025_prek/updatepw.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
