@@ -181,22 +181,23 @@ void main() {
     expect(find.byIcon(Icons.delete_forever_rounded), findsOneWidget);
   });
 
-  testWidgets('shows permission denied snackbar when do not have mic permission', (
-    tester,
-  ) async {
-    mockHasPermission = false;
-    useLargeViewport(tester);
-    await pumpVoicePage(tester);
+  testWidgets(
+    'shows permission denied snackbar when do not have mic permission',
+    (tester) async {
+      mockHasPermission = false;
+      useLargeViewport(tester);
+      await pumpVoicePage(tester);
 
-    final detector = tester.widget<GestureDetector>(recordButtonFinder());
-    detector.onTap!.call();
-    await tester.idle();
-    await tester.pumpAndSettle();
+      final detector = tester.widget<GestureDetector>(recordButtonFinder());
+      detector.onTap!.call();
+      await tester.idle();
+      await tester.pumpAndSettle();
 
-    expect(find.text('Microphone permission denied'), findsOneWidget);
-    expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
-    expect(find.byIcon(Icons.stop_rounded), findsNothing);
-  });
+      expect(find.text('Microphone permission denied'), findsOneWidget);
+      expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
+      expect(find.byIcon(Icons.stop_rounded), findsNothing);
+    },
+  );
 
   testWidgets('long press end without cancel stops and keeps recording', (
     tester,
