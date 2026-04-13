@@ -8,7 +8,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 //Single gratitude record card: Text + Timestamp + (Optional) Voice Playback
 class GratitudeTile extends StatefulWidget {
   final GratitudeEntry entry;
-  const GratitudeTile({super.key, required this.entry});
+  final VoidCallback onDeleted;
+  const GratitudeTile({
+    super.key,
+    required this.entry,
+    required this.onDeleted,
+  });
 
   @override
   State<GratitudeTile> createState() => _GratitudeTileState();
@@ -131,6 +136,27 @@ class _GratitudeTileState extends State<GratitudeTile> {
     }
   }
 
+  Future<void> _deleteEntry() async {
+    final supabase = Supabase.instance.client;
+    try {
+      if (widget.entry.audioAssetPath != null) {
+        await supabase.storage.from('gratitude-audio').remove([
+          widget.entry.audioAssetPath!,
+        ]);
+      }
+      await supabase
+          .from('Gratitude Entries')
+          .delete()
+          .eq('id', widget.entry.id);
+
+      widget.onDeleted();
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
+    }
+  }
+
   String _mmss(Duration d) {
     return formatMmSs(d);
   }
@@ -207,6 +233,37 @@ class _GratitudeTileState extends State<GratitudeTile> {
                 Text(
                   friendlyTime(e.createdAt),
                   style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.redAccent,
+                    size: 20,
+                  ),
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Delete reflection?'),
+                        content: const Text('This cannot be undone'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) await _deleteEntry();
+                  },
                 ),
               ],
             ),

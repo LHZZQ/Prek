@@ -115,7 +115,14 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
                       ),
                     ),
                   ),
-                GratitudeTile(entry: e),
+                GratitudeTile(
+                  entry: e,
+                  onDeleted: () {
+                    setState(() {
+                      items.removeWhere((item) => item.id == e.id);
+                    });
+                  },
+                ),
               ],
             );
           },
