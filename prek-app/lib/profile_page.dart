@@ -140,12 +140,12 @@ class _ProfilePageState extends State<ProfilePage> {
     const textColor = Color(0xFF94697E);
     const bgTop = Color(0xFFFFF1F5);
     const bgBottom = Color(0xFFFFF8EE);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: textColor),
         centerTitle: true,
@@ -177,7 +177,9 @@ class _ProfilePageState extends State<ProfilePage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: const [bgTop, bgBottom],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : [bgTop, bgBottom],
           ),
         ),
         child: SafeArea(
@@ -218,16 +220,16 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     _SectionRow(
                       icon: Icons.auto_awesome_rounded,
-                      iconBg: pink.withValues(alpha: 0.55),
+                      iconBg: isDark ? pink : pink.withValues(alpha: 0.55),
                       title: "Reflections saved",
                       badgeText: reflectionsCount.toString(),
-                      badgeBg: pink.withValues(alpha: 0.18),
+                      badgeBg: isDark ? pink : pink.withValues(alpha: 0.18),
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.local_fire_department_rounded,
-                      iconBg: yellow.withValues(alpha: 0.55),
+                      iconBg: isDark ? yellow : yellow.withValues(alpha: 0.55),
                       title: "Reflection streak",
                       badgeText: streakCount.toString(),
                       badgeBg: yellow.withValues(alpha: 0.20),
@@ -236,14 +238,14 @@ class _ProfilePageState extends State<ProfilePage> {
 
                     _SectionRow(
                       icon: Icons.flag_rounded,
-                      iconBg: blue.withValues(alpha: 0.45),
+                      iconBg: isDark ? blue : blue.withValues(alpha: 0.45),
                       title: "Reflection goals",
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.emoji_emotions_rounded,
-                      iconBg: pink.withValues(alpha: 0.35),
+                      iconBg: isDark ? pink : pink.withValues(alpha: 0.35),
                       title: "Memory Highlights",
                       onTap: () {},
                     ),
@@ -295,13 +297,16 @@ class _ProfileTopCard extends StatelessWidget {
     //const peach = Color(0xFFFFE4B5);
     const blue = Color(0xFF058CD7);
     const yellow = Color(0xFFFFC567);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: softWhite.withOpacity(0.78),
+        color: isDark ? Colors.black : softWhite.withOpacity(0.78),
         borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: softWhite.withOpacity(0.8)),
+        border: Border.all(
+          color: isDark ? Colors.black : softWhite.withOpacity(0.8),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.06),
@@ -415,11 +420,12 @@ class _MiniChip extends StatelessWidget {
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: softWhite.withValues(alpha: 0.6),
+        color: isDark ? Colors.grey.shade900 : softWhite.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: accent.withValues(alpha: 0.35)),
       ),
@@ -488,9 +494,13 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: softWhite.withValues(alpha: 0.72),
+        color: isDark
+            ? Colors.black.withValues(alpha: 1)
+            : softWhite.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(children: children),
@@ -518,6 +528,7 @@ class _SectionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return ListTile(
       onTap: onTap,
@@ -530,7 +541,7 @@ class _SectionRow extends StatelessWidget {
           color: iconBg,
           borderRadius: BorderRadius.circular(14),
         ),
-        child: Icon(icon, color: textColor),
+        child: Icon(icon, color: isDark ? Colors.white : textColor),
       ),
       title: Text(
         title,
@@ -543,9 +554,15 @@ class _SectionRow extends StatelessWidget {
                 color: badgeBg ?? textColor.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(999),
               ),
-              child: Text(badgeText!, style: const TextStyle(color: textColor)),
+              child: Text(
+                badgeText!,
+                style: TextStyle(color: isDark ? Colors.white : textColor),
+              ),
             )
-          : const Icon(Icons.chevron_right_rounded, color: textColor),
+          : Icon(
+              Icons.chevron_right_rounded,
+              color: isDark ? Colors.white : textColor,
+            ),
     );
   }
 }
@@ -678,10 +695,11 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     final totalCells = leadingEmpty + daysInMonth;
     final rows = (totalCells / 7).ceil();
     final gridCount = rows * 7;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: softWhite.withValues(alpha: 0.72),
+        color: isDark ? Colors.black : softWhite.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: softWhite.withValues(alpha: 0.65)),
         boxShadow: [
@@ -744,15 +762,16 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   }
 
   Color _accentForLabel(String? label) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     if (label == null) return textColor.withValues(alpha: 0.10);
     if (label == "Happy" || label == "Good") {
-      return yellow.withValues(alpha: 0.18);
+      return isDark ? yellow : yellow.withValues(alpha: 0.18);
     }
     if (label == "Neutral" || label == "Confused") {
-      return blue.withValues(alpha: 0.16);
+      return isDark ? blue : blue.withValues(alpha: 0.16);
     }
 
-    return pink.withValues(alpha: 0.16);
+    return isDark ? pink : pink.withValues(alpha: 0.16);
   }
 }
 
@@ -842,6 +861,7 @@ class _MoodCell extends StatelessWidget {
     const softWhite = Color(0xFFFFFFFF);
 
     final isEmpty = day == null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
@@ -871,7 +891,13 @@ class _MoodCell extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(child: Icon(icon, size: 37, color: textColor)),
+                Center(
+                  child: Icon(
+                    icon,
+                    size: 37,
+                    color: isDark ? Colors.white : textColor,
+                  ),
+                ),
               ],
             ),
     );

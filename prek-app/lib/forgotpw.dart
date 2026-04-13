@@ -1,5 +1,7 @@
+import 'package:_2025_prek/login.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ForgotPW extends StatefulWidget {
   const ForgotPW({super.key});
@@ -8,30 +10,44 @@ class ForgotPW extends StatefulWidget {
 }
 
 class _ForgotPWState extends State<ForgotPW> {
+  final supabase = Supabase.instance.client;
   final TextEditingController emailController = TextEditingController();
-  final TextEditingController firstPasswordController = TextEditingController();
-  final TextEditingController secondPasswordController =
-      TextEditingController();
-  bool isPasswordVisible = false;
-  String password = '';
+  bool loading = true;
 
   @override
   void initState() {
     super.initState();
-
     emailController.addListener(() => setState(() {}));
+  }
+
+  Future<String?> _updatePW() async {
+    try {
+      await supabase.auth.resetPasswordForEmail(
+        emailController.text.trim(),
+        redirectTo: 'http://localhost:3000/#/update-password',
+      );
+
+      return null;
+    } catch (e) {
+      debugPrint('Error sending reset password link: $e');
+      setState(() => loading = false);
+      return 'Error sending reset passsword link';
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       appBar: AppBar(backgroundColor: Colors.transparent),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
 
@@ -74,80 +90,6 @@ class _ForgotPWState extends State<ForgotPW> {
                   ),
                 ),
 
-                SizedBox(height: 20),
-
-                //password
-                SizedBox(
-                  width: 400,
-                  child: TextFormField(
-                    onChanged: (value) => setState(() => password = value),
-                    onFieldSubmitted: (value) =>
-                        setState(() => password = value),
-                    controller: firstPasswordController,
-                    decoration: InputDecoration(
-                      hintText: 'Your Password',
-                      labelText: 'Password',
-                      //errorText: 'Password entered is wrong',
-                      icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
-                      suffixIcon: IconButton(
-                        icon: isPasswordVisible
-                            ? Icon(
-                                Icons.visibility_off,
-                                color: Colors.pink[200],
-                              )
-                            : Icon(Icons.visibility, color: Colors.pink[200]),
-                        onPressed: () => setState(
-                          () => isPasswordVisible = !isPasswordVisible,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: Colors.black87),
-                      ),
-                    ),
-                    obscureText: isPasswordVisible,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-                //password
-                SizedBox(
-                  width: 400,
-                  child: TextFormField(
-                    onChanged: (value) => setState(() => password = value),
-                    onFieldSubmitted: (value) =>
-                        setState(() => password = value),
-                    controller: secondPasswordController,
-                    decoration: InputDecoration(
-                      hintText: 'Your Password',
-                      labelText: 'Password',
-                      //errorText: 'Password entered is wrong',
-                      icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
-                      suffixIcon: IconButton(
-                        icon: isPasswordVisible
-                            ? Icon(
-                                Icons.visibility_off,
-                                color: Colors.pink[200],
-                              )
-                            : Icon(Icons.visibility, color: Colors.pink[200]),
-                        onPressed: () => setState(
-                          () => isPasswordVisible = !isPasswordVisible,
-                        ),
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(20),
-                        borderSide: BorderSide(color: Colors.black87),
-                      ),
-                    ),
-                    obscureText: isPasswordVisible,
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.done,
-                  ),
-                ),
-
                 SizedBox(height: 30),
 
                 //done button
@@ -180,7 +122,35 @@ class _ForgotPWState extends State<ForgotPW> {
                         borderRadius: BorderRadius.circular(30),
                       ),
                     ),
-                    onPressed: () {},
+                    onPressed: () {
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return AlertDialog(
+                            title: const Text("Email Confirmation"),
+                            content: const Text(
+                              'A password reset link is sent to the email address if it is registered.',
+                            ),
+
+                            actions: <Widget>[
+                              TextButton(
+                                child: const Text('OK'),
+                                onPressed: () async {
+                                  await _updatePW();
+                                  Navigator.of(context).pop();
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => const Login(),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    },
 
                     child: const Text(
                       "Done",
