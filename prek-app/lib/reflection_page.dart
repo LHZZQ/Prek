@@ -15,11 +15,8 @@ class _ReflectionPageState extends State<ReflectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    //colors
-
-    // const peach = Color(0xFFFFE4B5);
     const textColor = Color(0xFF94697E);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       extendBodyBehindAppBar: true,
 
@@ -35,12 +32,13 @@ class _ReflectionPageState extends State<ReflectionPage> {
       ),
 
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            // background gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
         child: SafeArea(
@@ -58,11 +56,11 @@ class _ReflectionPageState extends State<ReflectionPage> {
 
                         children: [
                           const SizedBox(height: 30),
-                          const Text(
+                          Text(
                             "Take a moment to reflect on something you're grateful for today 💭", //header text
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: textColor,
+                              color: isDark ? Colors.white : textColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                               height: 1.5,

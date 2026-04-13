@@ -193,8 +193,8 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     const textColor = Color(0xFF94697E);
     const pink = Color(0xFFFB7DA8);
     const blue = Color(0xFF058CD7);
-    const yellow = Color(0xFFFFC567);
-
+    //const yellow = Color(0xFFFFC567);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -215,11 +215,13 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
           return Container(
             width: double.infinity,
             height: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topCenter,
                 end: Alignment.bottomCenter,
-                colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+                colors: isDark
+                    ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                    : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
               ),
             ),
             child: SafeArea(
@@ -402,27 +404,38 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                         SizedBox(height: 10 * hUnit),
                         Container(
                           width: double.infinity,
-                          height: 54 * hUnit,
+                          height: 62,
+                          //gradient wrapper for button
                           decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(20),
-                            gradient: LinearGradient(
-                              colors:
-                                  (_recordDuration.inSeconds > 0 &&
-                                      !_isRecording)
-                                  ? [yellow, pink, blue]
-                                  : [
-                                      Colors.grey.shade300,
-                                      Colors.grey.shade400,
-                                    ],
+                            borderRadius: BorderRadius.circular(40),
+                            gradient: const LinearGradient(
+                              begin: Alignment.centerLeft,
+                              end: Alignment.centerRight,
+                              colors: [
+                                Color(0xFFFFC567), // yellow
+                                Color(0xFFFB7DA8), // pink
+                                Color(0xFF058CD7), // blue
+                              ],
                             ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.pinkAccent.withValues(
+                                  alpha: 0.25,
+                                ),
+                                blurRadius: 15,
+                                offset: const Offset(0, 6),
+                              ),
+                            ],
                           ),
+
                           child: ElevatedButton(
+                            //save button
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,
-                              splashFactory: NoSplash.splashFactory,
+                              padding: EdgeInsets.zero,
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20),
+                                borderRadius: BorderRadius.circular(40),
                               ),
                             ),
                             onPressed:
@@ -436,12 +449,11 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                                     color: Colors.white,
                                   )
                                 : Text(
-                                    "SAVE REFLECTION",
+                                    "Save Reflection",
                                     style: TextStyle(
                                       color: Colors.white,
-                                      fontSize: 16 * hUnit,
                                       fontWeight: FontWeight.bold,
-                                      letterSpacing: 1,
+                                      fontSize: 18,
                                     ),
                                   ),
                           ),
