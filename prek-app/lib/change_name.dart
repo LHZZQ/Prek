@@ -47,6 +47,7 @@ class _ChangeNameState extends State<ChangeName> {
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: topBarColor,
@@ -55,16 +56,18 @@ class _ChangeNameState extends State<ChangeName> {
           'Settings',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: topBarColor,
+
         elevation: 0,
         foregroundColor: textColor,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
 
@@ -80,7 +83,7 @@ class _ChangeNameState extends State<ChangeName> {
                   //new name
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: isDark ? Colors.black : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(

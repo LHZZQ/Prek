@@ -33,11 +33,11 @@ class _MoodPageState extends State<MoodPage> {
   Widget build(BuildContext context) {
     final bgTop = Color.lerp(softWhite, pink, 0.12)!;
     final bgBottom = Color.lerp(softWhite, yellow, 0.14)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: bgTop,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: textColor),
       ),
@@ -49,7 +49,9 @@ class _MoodPageState extends State<MoodPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
 
-            colors: [bgTop, bgBottom],
+            colors: isDark
+                ? [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : [bgTop, bgBottom],
           ),
         ),
 
