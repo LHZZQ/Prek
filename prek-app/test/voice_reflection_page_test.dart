@@ -14,6 +14,8 @@ class _FakePathProviderPlatform extends PathProviderPlatform {
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const recordChannel = MethodChannel('com.llfbandit.record/messages');
+  bool mockHasPermission = true;
+  String? mockStopPath = '/tmp/fake_recording.m4a';
 
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
@@ -28,6 +30,8 @@ void main() {
   });
 
   setUp(() {
+    mockHasPermission = true;
+    mockStopPath = '/tmp/fake_recording.m4a';
     PathProviderPlatform.instance = _FakePathProviderPlatform();
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
@@ -38,9 +42,9 @@ void main() {
             case 'dispose':
               return null;
             case 'hasPermission':
-              return true;
+              return mockHasPermission;
             case 'stop':
-              return '/tmp/fake_recording.m4a';
+              return mockStopPath;
             default:
               return null;
           }
@@ -175,5 +179,75 @@ void main() {
 
     expect(find.text('Release to cancel 🗑️'), findsOneWidget);
     expect(find.byIcon(Icons.delete_forever_rounded), findsOneWidget);
+  });
+
+  testWidgets('shows permission denied snackbar when do not have mic permission', (
+    tester,
+  ) async {
+    mockHasPermission = false;
+    useLargeViewport(tester);
+    await pumpVoicePage(tester);
+
+    final detector = tester.widget<GestureDetector>(recordButtonFinder());
+    detector.onTap!.call();
+    await tester.idle();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Microphone permission denied'), findsOneWidget);
+    expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.stop_rounded), findsNothing);
+  });
+
+  testWidgets('long press end without cancel stops and keeps recording', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await pumpVoicePage(tester);
+
+    final detector = tester.widget<GestureDetector>(recordButtonFinder());
+    detector.onLongPressStart!.call(const LongPressStartDetails());
+    await tester.idle();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+    expect(find.text('00:01'), findsOneWidget);
+
+    detector.onLongPressEnd!.call(const LongPressEndDetails());
+    await tester.idle();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Preview'), findsOneWidget);
+    expect(find.text('Redo'), findsOneWidget);
+  });
+
+  testWidgets('save reflection failure shows snackbar and exit', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await pumpVoicePage(tester);
+
+    final detector = tester.widget<GestureDetector>(recordButtonFinder());
+    detector.onTap!.call();
+    await tester.idle();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    final detectorAfterStart = tester.widget<GestureDetector>(
+      recordButtonFinder(),
+    );
+    detectorAfterStart.onTap!.call();
+    await tester.idle();
+    await tester.pumpAndSettle();
+
+    final saveButton = tester.widget<ElevatedButton>(
+      find.widgetWithText(ElevatedButton, 'Save Reflection'),
+    );
+    expect(saveButton.onPressed, isNotNull);
+
+    saveButton.onPressed!.call();
+    await tester.idle();
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Failed to save:'), findsOneWidget);
+    expect(find.byType(SnackBar), findsOneWidget);
   });
 }
