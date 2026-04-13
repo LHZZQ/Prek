@@ -2,13 +2,18 @@ import 'package:_2025_prek/voice_reflection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:path_provider_platform_interface/path_provider_platform_interface.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+
+class _FakePathProviderPlatform extends PathProviderPlatform {
+  @override
+  Future<String?> getTemporaryPath() async => '/tmp';
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
   const recordChannel = MethodChannel('com.llfbandit.record/messages');
-  const pathProviderChannel = MethodChannel('plugins.flutter.io/path_provider');
 
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
@@ -24,11 +29,7 @@ void main() {
   });
 
   setUp(() {
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(pathProviderChannel, (call) async {
-          if (call.method == 'getTemporaryDirectory') return '/tmp';
-          return null;
-        });
+    PathProviderPlatform.instance = _FakePathProviderPlatform();
 
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(recordChannel, (call) async {
@@ -50,8 +51,6 @@ void main() {
   tearDown(() {
     TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
         .setMockMethodCallHandler(recordChannel, null);
-    TestDefaultBinaryMessengerBinding.instance.defaultBinaryMessenger
-        .setMockMethodCallHandler(pathProviderChannel, null);
   });
 
   void useLargeViewport(WidgetTester tester) {
@@ -68,6 +67,17 @@ void main() {
       MaterialApp(home: VoiceReflectionPage(selectedMood: mood)),
     );
     await tester.pumpAndSettle();
+  }
+
+  Finder recordButtonFinder() {
+    return find.byWidgetPredicate(
+      (widget) =>
+          widget is GestureDetector &&
+          widget.onTap != null &&
+          widget.onLongPressStart != null &&
+          widget.onLongPressMoveUpdate != null &&
+          widget.onLongPressEnd != null,
+    );
   }
 
   testWidgets('renders basic UI', (tester) async {
@@ -99,22 +109,28 @@ void main() {
     expect(find.text('Reflecting on: Calm'), findsOneWidget);
   });
 
-  testWidgets('tap start/stop enables preview and redo can reset duration', (
+  testWidgets('tap start/stop enables preview and redo can reset', (
     tester,
   ) async {
     useLargeViewport(tester);
     await pumpVoicePage(tester);
 
-    await tester.tap(find.byIcon(Icons.mic_rounded));
+    final detector = tester.widget<GestureDetector>(recordButtonFinder());
+    detector.onTap!.call();
+    await tester.idle();
     await tester.pump();
+    expect(tester.takeException(), isNull);
     expect(find.byIcon(Icons.stop_rounded), findsOneWidget);
 
     await tester.pump(const Duration(seconds: 1));
     expect(find.text('01:00'), findsNothing);
     expect(find.text('00:01'), findsOneWidget);
 
-    await tester.tap(find.byIcon(Icons.stop_rounded));
+    final detectorAfterStart = tester.widget<GestureDetector>(recordButtonFinder());
+    detectorAfterStart.onTap!.call();
+    await tester.idle();
     await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
 
     expect(find.text('Preview'), findsOneWidget);
     expect(find.text('Redo'), findsOneWidget);
@@ -138,18 +154,24 @@ void main() {
     useLargeViewport(tester);
     await pumpVoicePage(tester);
 
-    final gesture = await tester.startGesture(
-      tester.getCenter(find.byIcon(Icons.mic_rounded)),
+    final detector = tester.widget<GestureDetector>(recordButtonFinder());
+    detector.onLongPressStart!.call(const LongPressStartDetails());
+    await tester.idle();
+    await tester.pump();
+    expect(tester.takeException(), isNull);
+
+    detector.onLongPressMoveUpdate!.call(
+      const LongPressMoveUpdateDetails(localOffsetFromOrigin: Offset(0, -100)),
     );
-    await tester.pump(const Duration(milliseconds: 700));
-    await gesture.moveBy(const Offset(0, -100));
     await tester.pump();
 
     expect(find.text('Release to cancel 🗑️'), findsOneWidget);
     expect(find.byIcon(Icons.delete_forever_rounded), findsOneWidget);
 
-    await gesture.up();
+    detector.onLongPressEnd!.call(const LongPressEndDetails());
+    await tester.idle();
     await tester.pumpAndSettle();
+    expect(tester.takeException(), isNull);
 
     expect(find.text('Tap or Hold to record'), findsOneWidget);
     expect(find.text('00:00'), findsOneWidget);
