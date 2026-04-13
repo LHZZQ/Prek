@@ -90,7 +90,7 @@ void main() {
     expect(find.text('Reflecting on: Happy'), findsOneWidget);
     expect(find.text('Tap or Hold to record'), findsOneWidget);
     expect(find.text('00:00'), findsOneWidget);
-    expect(find.text('SAVE REFLECTION'), findsOneWidget);
+    expect(find.text('Save Reflection'), findsOneWidget);
     expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
   });
 
@@ -99,7 +99,7 @@ void main() {
     await pumpVoicePage(tester);
 
     final saveButton = tester.widget<ElevatedButton>(
-      find.widgetWithText(ElevatedButton, 'SAVE REFLECTION'),
+      find.widgetWithText(ElevatedButton, 'Save Reflection'),
     );
 
     expect(saveButton.onPressed, isNull);
@@ -140,7 +140,7 @@ void main() {
     expect(find.text('Redo'), findsOneWidget);
 
     final saveEnabledButton = tester.widget<ElevatedButton>(
-      find.widgetWithText(ElevatedButton, 'SAVE REFLECTION'),
+      find.widgetWithText(ElevatedButton, 'Save Reflection'),
     );
     expect(saveEnabledButton.onPressed, isNotNull);
 
@@ -152,7 +152,7 @@ void main() {
 
     expect(find.text('00:00'), findsOneWidget);
     final saveDisabledButton = tester.widget<ElevatedButton>(
-      find.widgetWithText(ElevatedButton, 'SAVE REFLECTION'),
+      find.widgetWithText(ElevatedButton, 'Save Reflection'),
     );
     expect(saveDisabledButton.onPressed, isNull);
   });
