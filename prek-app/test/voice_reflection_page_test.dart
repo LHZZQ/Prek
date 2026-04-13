@@ -20,8 +20,7 @@ void main() {
 
     await Supabase.initialize(
       url: 'https://example.supabase.co',
-      anonKey:
-          'sample',
+      anonKey: 'sample',
       authOptions: const FlutterAuthClientOptions(
         localStorage: EmptyLocalStorage(),
       ),
@@ -62,7 +61,10 @@ void main() {
     });
   }
 
-  Future<void> pumpVoicePage(WidgetTester tester, {String mood = 'Happy'}) async {
+  Future<void> pumpVoicePage(
+    WidgetTester tester, {
+    String mood = 'Happy',
+  }) async {
     await tester.pumpWidget(
       MaterialApp(home: VoiceReflectionPage(selectedMood: mood)),
     );
@@ -126,7 +128,9 @@ void main() {
     expect(find.text('01:00'), findsNothing);
     expect(find.text('00:01'), findsOneWidget);
 
-    final detectorAfterStart = tester.widget<GestureDetector>(recordButtonFinder());
+    final detectorAfterStart = tester.widget<GestureDetector>(
+      recordButtonFinder(),
+    );
     detectorAfterStart.onTap!.call();
     await tester.idle();
     await tester.pumpAndSettle();
