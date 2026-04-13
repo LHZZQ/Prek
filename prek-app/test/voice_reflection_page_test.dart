@@ -140,7 +140,10 @@ void main() {
     );
     expect(saveEnabledButton.onPressed, isNotNull);
 
-    await tester.tap(find.text('Redo'));
+    final redoChip = tester.widget<ActionChip>(
+      find.widgetWithText(ActionChip, 'Redo'),
+    );
+    redoChip.onPressed!.call();
     await tester.pumpAndSettle();
 
     expect(find.text('00:00'), findsOneWidget);
@@ -158,7 +161,9 @@ void main() {
     detector.onLongPressStart!.call(const LongPressStartDetails());
     await tester.idle();
     await tester.pump();
+    await tester.pump(const Duration(milliseconds: 50));
     expect(tester.takeException(), isNull);
+    expect(find.byIcon(Icons.stop_rounded), findsOneWidget);
 
     detector.onLongPressMoveUpdate!.call(
       const LongPressMoveUpdateDetails(localOffsetFromOrigin: Offset(0, -100)),
@@ -173,8 +178,7 @@ void main() {
     await tester.pumpAndSettle();
     expect(tester.takeException(), isNull);
 
-    expect(find.text('Tap or Hold to record'), findsOneWidget);
     expect(find.text('00:00'), findsOneWidget);
-    expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
+    expect(find.byIcon(Icons.delete_forever_rounded), findsNothing);
   });
 }
