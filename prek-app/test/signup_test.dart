@@ -54,8 +54,8 @@ void main() {
       expect(result, null);
     });
 
-    test('validatePassword returns error when do not haveuppercase', () {
-      var result = validator.validatePassword('Zzq@0616123');
+    test('validatePassword returns error when no uppercase letter', () {
+      var result = validator.validatePassword('zzq@0616123');
       expect(
         result,
         'Password must have a minimum of 1 lower case letter [a-z], a minimum of 1 upper case letter [A-Z], a minimum of 1 numeric character [0-9], a minimum of 1 special character: ~`!@#%^&*()-_+={}[]|:"<>,./?, and must be at least 10 characters',
@@ -95,7 +95,7 @@ void main() {
       final fields = find.byType(TextFormField);
       await tester.enterText(fields.at(1), 'zzq@example.com');
       await tester.enterText(fields.at(2), 'Zzq@0616123');
-      await tester.enterText(fields.at(3), 'Zzq@0616123');
+      await tester.enterText(fields.at(3), 'Zzq@0616124');
       await tester.tap(find.widgetWithText(ElevatedButton, 'Sign Up'));
       await tester.pumpAndSettle();
 
@@ -110,8 +110,8 @@ void main() {
 
       final fields = find.byType(TextFormField);
       await tester.enterText(fields.at(1), 'zzqemail123321');
-      await tester.enterText(fields.at(2), 'Zzq@0616123');
-      await tester.enterText(fields.at(3), 'Zzq@0616123');
+      await tester.enterText(fields.at(2), '123');
+      await tester.enterText(fields.at(3), '123');
       await tester.tap(find.widgetWithText(ElevatedButton, 'Sign Up'));
       await tester.pumpAndSettle();
 
