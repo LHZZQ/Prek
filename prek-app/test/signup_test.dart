@@ -124,40 +124,39 @@ void main() {
       );
     });
 
-    testWidgets(
-      'shows icons after input and toggles password visibility',
-      (tester) async {
-        useLargeViewport(tester);
-        await pumpSignUp(tester);
+    testWidgets('shows icons after input and toggles password visibility', (
+      tester,
+    ) async {
+      useLargeViewport(tester);
+      await pumpSignUp(tester);
 
-        final fields = find.byType(TextFormField);
-        final usernameField = fields.at(0);
-        final emailField = fields.at(1);
-        final firstPasswordField = fields.at(2);
+      final fields = find.byType(TextFormField);
+      final usernameField = fields.at(0);
+      final emailField = fields.at(1);
+      final firstPasswordField = fields.at(2);
 
-        await tester.enterText(usernameField, 'zzq');
-        await tester.enterText(emailField, 'zzq@example.com');
-        await tester.pumpAndSettle();
+      await tester.enterText(usernameField, 'zzq');
+      await tester.enterText(emailField, 'zzq@example.com');
+      await tester.pumpAndSettle();
 
-        expect(find.byIcon(Icons.close), findsNWidgets(2));
+      expect(find.byIcon(Icons.close), findsNWidgets(2));
 
-        await tester.tap(find.byIcon(Icons.close).first);
-        await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.close).first);
+      await tester.pumpAndSettle();
 
-        expect(tester.widget<TextFormField>(usernameField).controller!.text, '');
+      expect(tester.widget<TextFormField>(usernameField).controller!.text, '');
 
-        expect(find.byIcon(Icons.visibility), findsNWidgets(2));
-        expect(find.byIcon(Icons.visibility_off), findsNothing);
+      expect(find.byIcon(Icons.visibility), findsNWidgets(2));
+      expect(find.byIcon(Icons.visibility_off), findsNothing);
 
-        await tester.tap(find.byIcon(Icons.visibility).first);
-        await tester.pumpAndSettle();
+      await tester.tap(find.byIcon(Icons.visibility).first);
+      await tester.pumpAndSettle();
 
-        expect(find.byIcon(Icons.visibility_off), findsNWidgets(2));
+      expect(find.byIcon(Icons.visibility_off), findsNWidgets(2));
 
-        await tester.enterText(firstPasswordField, 'Zzq@0616123');
-        await tester.testTextInput.receiveAction(TextInputAction.done);
-        await tester.pumpAndSettle();
-      },
-    );
+      await tester.enterText(firstPasswordField, 'Zzq@0616123');
+      await tester.testTextInput.receiveAction(TextInputAction.done);
+      await tester.pumpAndSettle();
+    });
   });
 }
