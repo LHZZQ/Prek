@@ -93,8 +93,6 @@ class _LoginState extends State<Login> {
                     child: TextFormField(
                       controller: emailController,
                       decoration: InputDecoration(
-                        hintText: 'hello@example.com',
-
                         labelText: 'Email',
                         icon: Icon(
                           Icons.mail_outline,
@@ -111,7 +109,7 @@ class _LoginState extends State<Login> {
 
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(20),
-                          borderSide: BorderSide(color: textColor),
+                          borderSide: BorderSide(color: Colors.black),
                         ),
                       ),
                       keyboardType: TextInputType.emailAddress,
@@ -127,7 +125,6 @@ class _LoginState extends State<Login> {
                     child: TextFormField(
                       controller: passwordController,
                       decoration: InputDecoration(
-                        hintText: 'Your Password',
                         labelText: 'Password',
                         //errorText: 'Password entered is wrong',
                         icon: Icon(
