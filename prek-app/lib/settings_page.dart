@@ -43,16 +43,18 @@ class _SettingsPageState extends State<SettingsPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    
+
     final textColor = isDark ? Colors.white : const Color(0xFF94697E);
-    final topBarColor = isDark ? const Color(0xFF1E1E2C) : const Color(0xFFFFF1F5);
+    final topBarColor = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
     final bgColor1 = isDark ? const Color(0xFF1E1E2C) : const Color(0xFFFFF1F5);
     final bgColor2 = isDark ? const Color(0xFF2A2A3D) : const Color(0xFFFFF8EE);
     final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
     const activeColor = Color(0xFFFB7DA8);
 
     return Scaffold(
-      backgroundColor: bgColor1, 
+      backgroundColor: bgColor1,
       appBar: AppBar(
         title: const Text(
           'Settings',
@@ -74,7 +76,7 @@ class _SettingsPageState extends State<SettingsPage> {
         ],
       ),
       body: Container(
-        decoration: BoxDecoration( 
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
@@ -293,7 +295,10 @@ class _SettingsPageState extends State<SettingsPage> {
                     height: 55,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(40),
-                      border: Border.all(color: isDark ? Colors.redAccent : Colors.pink, width: 2.5),
+                      border: Border.all(
+                        color: isDark ? Colors.redAccent : Colors.pink,
+                        width: 2.5,
+                      ),
                     ),
                     child: ElevatedButton(
                       onPressed: () {
@@ -302,7 +307,9 @@ class _SettingsPageState extends State<SettingsPage> {
                           context: context,
                           builder: (context) => AlertDialog(
                             title: const Text("Logout"),
-                            content: const Text("Are you sure you want to log out?"),
+                            content: const Text(
+                              "Are you sure you want to log out?",
+                            ),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
@@ -312,11 +319,16 @@ class _SettingsPageState extends State<SettingsPage> {
                                 onPressed: () {
                                   Navigator.pushAndRemoveUntil(
                                     context,
-                                    MaterialPageRoute(builder: (context) => const Login()),
+                                    MaterialPageRoute(
+                                      builder: (context) => const Login(),
+                                    ),
                                     (route) => false,
                                   );
                                 },
-                                child: const Text("Logout", style: TextStyle(color: Colors.red)),
+                                child: const Text(
+                                  "Logout",
+                                  style: TextStyle(color: Colors.red),
+                                ),
                               ),
                             ],
                           ),
