@@ -230,16 +230,33 @@ For the code of my team members, there are some parts that I might not understan
 I, Kylan, declare that this document is accurate to my AI usage throughout the course of SEP.
 
 ### Development
+I use ChatGPT4/5, Claude 3.5 and Gemini to assist me in learning dart and to help me complete complex UI designs
 
 #### Prompts examples
+-When using the developed web page, how can I ensure that the font size and button size ratio will scale proportionally even if I change the web page size
+
 #### Why?
+The design of the front end is of great significance to user experience. If we fail to provide customers with a good sensory and usage experience, they may abandon this software. Therefore, I need AI to help me better learn dart and Flutter UI so that I can complete the functions and styles I need. 
 
 ### Debugging
+I use Gemini to fix runtime exceptions and rendering issues (e.g., layout overflows) that occur after flutter run.
 
 #### Prompts examples
+-Why did I get an error saying that after setState () was called, dispose () was on my record page?
+
+-The long press and click gestures of my gesture detector conflict. How can I ensure their smooth cooperation?"
+
 #### Why?
+
+In the recording reflection interface, the status of the recording is well managed, such as recording, stopping or canceling. There must be strong logic to ensure that it operates properly when used by users. AI can assist me and help me understand the correct code logic used in the gesture system
 
 ### Reviewing
+I use ChatGPT (OpenAI GPT-4 / GPT-5) to check the code I write and identify any areas that might cause problems for users
 
 #### Prompts examples
+-Is there any potential risk in the code I wrote? Or due to the lack of professionalism in the written program, significant changes are needed later on.
+
+-I have already implemented the function of saving and jumping back to the home page. Is there any way to prevent users from clicking the back button on their phones and then going back to the recording page?
+
 #### Why?
+As a student developing software for the first time, I often worry that my writing style is too clumsy. Therefore, I will use AI to review the logic of my code and make my program logic more rigorous and less prone to problems

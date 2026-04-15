@@ -41,26 +41,29 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     Widget buildBackground(Widget child) {
       return Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
+
         child: child,
       );
     }
 
     if (items.isEmpty) {
       return Scaffold(
-        backgroundColor: topBarColor,
+        backgroundColor: isDark ? Color(0xFF2A2A3D) : topBarColor,
         appBar: AppBar(
           title: const Text('Gratitude History'),
-          backgroundColor: topBarColor,
+
           elevation: 0,
           foregroundColor: textColor,
         ),
@@ -79,10 +82,10 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
     }
 
     return Scaffold(
-      backgroundColor: topBarColor,
+      backgroundColor: isDark ? Color(0xFF2A2A3D) : topBarColor,
       appBar: AppBar(
         title: const Text('Gratitude History'),
-        backgroundColor: topBarColor,
+
         elevation: 0,
         foregroundColor: textColor,
       ),
@@ -112,7 +115,14 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
                       ),
                     ),
                   ),
-                GratitudeTile(entry: e),
+                GratitudeTile(
+                  entry: e,
+                  onDeleted: () {
+                    setState(() {
+                      items.removeWhere((item) => item.id == e.id);
+                    });
+                  },
+                ),
               ],
             );
           },

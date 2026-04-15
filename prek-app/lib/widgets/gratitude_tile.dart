@@ -8,7 +8,12 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 //Single gratitude record card: Text + Timestamp + (Optional) Voice Playback
 class GratitudeTile extends StatefulWidget {
   final GratitudeEntry entry;
-  const GratitudeTile({super.key, required this.entry});
+  final VoidCallback onDeleted;
+  const GratitudeTile({
+    super.key,
+    required this.entry,
+    required this.onDeleted,
+  });
 
   @override
   State<GratitudeTile> createState() => _GratitudeTileState();
@@ -113,32 +118,42 @@ class _GratitudeTileState extends State<GratitudeTile> {
       debugPrint('bucket=gratitude-audio');
       debugPrint('src(raw)="$src"');
       debugPrint('src(clean)="$cleanSrc"');
-      final list = await client.storage
-          .from('gratitude-audio')
-          .list(path: 'user123'); // user123 for mock data
-      final names = list.map((e) => e.name).toList();
-      debugPrint('files under user123 = $names');
-
-      final fileName = cleanSrc.split('/').last;
-      if (!names.contains(fileName)) {
-        debugPrint('file not found in folder yet, skip createSignedUrl');
-        return;
-      }
 
       try {
-        final signedUrl = await client.storage
+        final publicUrl = client.storage
             .from('gratitude-audio')
-            .createSignedUrl(cleanSrc, 60);
-        print('signedUrl=$signedUrl');
-        await _player.play(UrlSource(signedUrl));
+            .getPublicUrl(cleanSrc);
+        print('publicUrl=$publicUrl');
+        await _player.play(UrlSource(publicUrl));
       } catch (e) {
-        debugPrint('createSignedUrl failed: $e');
+        debugPrint('getPublicUrl failed: $e');
         if (mounted) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('Could not play audio')));
         }
       }
+    }
+  }
+
+  Future<void> _deleteEntry() async {
+    final supabase = Supabase.instance.client;
+    try {
+      if (widget.entry.audioAssetPath != null) {
+        await supabase.storage.from('gratitude-audio').remove([
+          widget.entry.audioAssetPath!,
+        ]);
+      }
+      await supabase
+          .from('Gratitude Entries')
+          .delete()
+          .eq('id', widget.entry.id);
+
+      widget.onDeleted();
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
     }
   }
 
@@ -196,11 +211,12 @@ class _GratitudeTileState extends State<GratitudeTile> {
   @override
   Widget build(BuildContext context) {
     final e = widget.entry;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       //color: Colors.white.withOpacity(0.96),
-      color: const Color.fromRGBO(255, 255, 255, 0.96),
+      color: isDark ? Colors.black : Color.fromRGBO(255, 255, 255, 0.96),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
@@ -217,6 +233,37 @@ class _GratitudeTileState extends State<GratitudeTile> {
                 Text(
                   friendlyTime(e.createdAt),
                   style: Theme.of(context).textTheme.bodySmall,
+                ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.redAccent,
+                    size: 20,
+                  ),
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Delete reflection?'),
+                        content: const Text('This cannot be undone'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) await _deleteEntry();
+                  },
                 ),
               ],
             ),

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class ChangeEmail extends StatefulWidget {
   const ChangeEmail({super.key});
@@ -7,12 +9,46 @@ class ChangeEmail extends StatefulWidget {
 }
 
 class _ChangeEmailState extends State<ChangeEmail> {
+  final supabase = Supabase.instance.client;
   final TextEditingController emailController = TextEditingController();
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateEmail();
+  }
+
+  Future<void> _updateEmail() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final newEmail = emailController.text.trim();
+    if (newEmail.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
+      return;
+    }
+
+    try {
+      await supabase
+          .from('Profiles')
+          .update({'email': newEmail})
+          .eq('id', user.id);
+
+      await supabase.auth.updateUser(UserAttributes(email: newEmail));
+    } catch (e) {
+      debugPrint('Error updating email: $e');
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: topBarColor,
@@ -21,19 +57,20 @@ class _ChangeEmailState extends State<ChangeEmail> {
           'Settings',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: topBarColor,
+
         elevation: 0,
         foregroundColor: textColor,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
-
         child: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
@@ -46,7 +83,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   //new email
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: isDark ? Colors.black : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
@@ -99,7 +136,15 @@ class _ChangeEmailState extends State<ChangeEmail> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        await _updateEmail();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
 
                       child: const Text(
                         "Save",

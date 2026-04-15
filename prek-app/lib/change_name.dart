@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class ChangeName extends StatefulWidget {
   const ChangeName({super.key});
@@ -7,12 +9,45 @@ class ChangeName extends StatefulWidget {
 }
 
 class _ChangeNameState extends State<ChangeName> {
+  final supabase = Supabase.instance.client;
   final TextEditingController nameController = TextEditingController();
+  String profileName = "";
+  bool loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _updateUsername();
+  }
+
+  Future<void> _updateUsername() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final newUsername = nameController.text.trim();
+    if (newUsername.isEmpty) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text("Username cannot be empty")));
+      return;
+    }
+
+    try {
+      await supabase
+          .from('Profiles')
+          .update({'username': newUsername})
+          .eq('id', user.id);
+    } catch (e) {
+      debugPrint('Error updating username: $e');
+      setState(() => loading = false);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: topBarColor,
@@ -21,16 +56,18 @@ class _ChangeNameState extends State<ChangeName> {
           'Settings',
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
-        backgroundColor: topBarColor,
+
         elevation: 0,
         foregroundColor: textColor,
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
 
@@ -46,7 +83,7 @@ class _ChangeNameState extends State<ChangeName> {
                   //new name
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: isDark ? Colors.black : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
@@ -58,7 +95,6 @@ class _ChangeNameState extends State<ChangeName> {
                     ),
                     child: TextField(
                       controller: nameController,
-
                       decoration: const InputDecoration(
                         hintText: "Enter your new name",
                         contentPadding: EdgeInsets.all(20),
@@ -99,8 +135,15 @@ class _ChangeNameState extends State<ChangeName> {
                           borderRadius: BorderRadius.circular(30),
                         ),
                       ),
-                      onPressed: () {},
-
+                      onPressed: () async {
+                        await _updateUsername();
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const HomePage(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         "Save",
                         style: TextStyle(

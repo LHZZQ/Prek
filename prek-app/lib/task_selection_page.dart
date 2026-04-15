@@ -1,6 +1,7 @@
 import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:flutter/material.dart';
 import 'reflection_page.dart';
+import 'voice_reflection_page.dart';
 
 class TaskSelectionPage extends StatelessWidget {
   final String selectedMood;
@@ -15,6 +16,7 @@ class TaskSelectionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -24,11 +26,13 @@ class TaskSelectionPage extends StatelessWidget {
       ),
       body: Container(
         width: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
         child: SafeArea(
@@ -62,6 +66,7 @@ class TaskSelectionPage extends StatelessWidget {
                   context,
                   icon: Icons.edit_note_rounded,
                   iconBg: yellow.withValues(alpha: 0.3),
+
                   title: "Write a Reflection",
                   subtitle: "Express your thoughts in words",
                   onTap: () {
@@ -83,7 +88,15 @@ class TaskSelectionPage extends StatelessWidget {
                   iconBg: blue.withValues(alpha: 0.2),
                   title: "Voice Reflection",
                   subtitle: "Record your thoughts with audio",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            VoiceReflectionPage(selectedMood: selectedMood),
+                      ),
+                    );
+                  },
                 ),
 
                 const SizedBox(height: 20),

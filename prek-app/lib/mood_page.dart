@@ -33,11 +33,11 @@ class _MoodPageState extends State<MoodPage> {
   Widget build(BuildContext context) {
     final bgTop = Color.lerp(softWhite, pink, 0.12)!;
     final bgBottom = Color.lerp(softWhite, yellow, 0.14)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       backgroundColor: bgTop,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: textColor),
       ),
@@ -49,161 +49,160 @@ class _MoodPageState extends State<MoodPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
 
-            colors: [bgTop, bgBottom],
+            colors: isDark
+                ? [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : [bgTop, bgBottom],
           ),
         ),
 
-        child: SafeArea(
+        child: Center(
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 22),
+            padding: EdgeInsets.symmetric(horizontal: 32),
+            child: SingleChildScrollView(
+              child: Column(
+                children: [
+                  const SizedBox(height: 18),
 
-            child: Column(
-              children: [
-                const SizedBox(height: 18),
+                  Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 14,
+                      vertical: 8,
+                    ),
+                    decoration: BoxDecoration(
+                      color: softWhite.withValues(alpha: 0.75),
+                      borderRadius: BorderRadius.circular(999),
+                    ),
 
-                Container(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 14,
-                    vertical: 8,
-                  ),
-                  decoration: BoxDecoration(
-                    color: softWhite.withValues(alpha: 0.75),
-                    borderRadius: BorderRadius.circular(999),
-                  ),
-
-                  child: Text(
-                    _greeting(),
-                    style: const TextStyle(
-                      color: textColor,
-                      fontWeight: FontWeight.w700,
+                    child: Text(
+                      _greeting(),
+                      style: const TextStyle(
+                        color: textColor,
+                        fontWeight: FontWeight.w700,
+                      ),
                     ),
                   ),
-                ),
 
-                const SizedBox(height: 18),
+                  const SizedBox(height: 18),
 
-                const Text(
-                  "How are you feeling\ntoday?",
+                  const Text(
+                    "How are you feeling\ntoday?",
 
-                  textAlign: TextAlign.center,
-                  style: TextStyle(
-                    fontSize: 33,
-                    fontWeight: FontWeight.w900,
-                    color: textColor,
-                    height: 1.1,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 33,
+                      fontWeight: FontWeight.w900,
+                      color: textColor,
+                      height: 1.1,
+                    ),
                   ),
-                ),
 
-                const SizedBox(height: 22),
+                  const SizedBox(height: 22),
 
-                Expanded(
-                  child: Center(
-                    child: Wrap(
-                      spacing: 22,
-                      runSpacing: 22,
-                      alignment: WrapAlignment.center,
-                      children: moods.map((m) {
-                        final icon = m.$1;
-                        final label = m.$2;
+                  Wrap(
+                    spacing: 22,
+                    runSpacing: 22,
+                    alignment: WrapAlignment.center,
+                    children: moods.map((m) {
+                      final icon = m.$1;
+                      final label = m.$2;
 
-                        final isSelected = selectedLabel == label;
+                      final isSelected = selectedLabel == label;
 
-                        return GestureDetector(
-                          onTap: () => setState(() => selectedLabel = label),
-                          child: AnimatedContainer(
-                            duration: const Duration(milliseconds: 180),
-                            padding: const EdgeInsets.all(14),
-                            decoration: BoxDecoration(
-                              color: softWhite.withValues(
-                                alpha: isSelected ? 0.95 : 0.78,
-                              ),
-                              borderRadius: BorderRadius.circular(999),
+                      return GestureDetector(
+                        onTap: () => setState(() => selectedLabel = label),
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 180),
+                          padding: const EdgeInsets.all(14),
+                          decoration: BoxDecoration(
+                            color: softWhite.withValues(
+                              alpha: isSelected ? 0.95 : 0.78,
+                            ),
+                            borderRadius: BorderRadius.circular(999),
 
-                              border: Border.all(
-                                color: isSelected
-                                    ? pink.withValues(alpha: 0.6)
-                                    : Colors.transparent,
+                            border: Border.all(
+                              color: isSelected
+                                  ? pink.withValues(alpha: 0.6)
+                                  : Colors.transparent,
 
-                                width: 2,
-                              ),
-
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.07),
-                                  blurRadius: 18,
-                                  offset: const Offset(0, 10),
-                                ),
-                              ],
+                              width: 2,
                             ),
 
-                            child: Column(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                CircleAvatar(
-                                  radius: 40,
-                                  backgroundColor: _moodBg(label),
-                                  child: Icon(icon, size: 38, color: textColor),
-                                ),
-                                const SizedBox(height: 8),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.07),
+                                blurRadius: 18,
+                                offset: const Offset(0, 10),
+                              ),
+                            ],
+                          ),
 
-                                Text(
-                                  label,
-                                  style: TextStyle(
-                                    color: textColor,
-                                    fontWeight: isSelected
-                                        ? FontWeight.w900
-                                        : FontWeight.w700,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              CircleAvatar(
+                                radius: 40,
+                                backgroundColor: _moodBg(label),
+                                child: Icon(icon, size: 38, color: textColor),
+                              ),
+                              const SizedBox(height: 8),
+
+                              Text(
+                                label,
+                                style: TextStyle(
+                                  color: textColor,
+                                  fontWeight: isSelected
+                                      ? FontWeight.w900
+                                      : FontWeight.w700,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+                    }).toList(),
+                  ),
+
+                  const SizedBox(height: 50),
+                  SizedBox(
+                    width: double.infinity,
+                    height: 56,
+                    child: ElevatedButton(
+                      onPressed: selectedLabel == null
+                          ? null
+                          : () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => TaskSelectionPage(
+                                    selectedMood: selectedLabel!,
                                   ),
                                 ),
-                              ],
-                            ),
-                          ),
-                        );
-                      }).toList(),
-                    ),
-                  ),
-                ),
+                              );
+                            },
 
-                const SizedBox(height: 14),
-                SizedBox(
-                  width: double.infinity,
-                  height: 56,
-                  child: ElevatedButton(
-                    onPressed: selectedLabel == null
-                        ? null
-                        : () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (_) => TaskSelectionPage(
-                                  selectedMood: selectedLabel!,
-                                ),
-                              ),
-                            );
-                          },
-
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: pink,
-                      disabledBackgroundColor: pink.withValues(alpha: 0.25),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(999),
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: pink,
+                        disabledBackgroundColor: pink.withValues(alpha: 0.25),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(999),
+                        ),
+                        elevation: 0,
                       ),
-                      elevation: 0,
-                    ),
 
-                    child: const Text(
-                      "Next",
+                      child: const Text(
+                        "Next",
 
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 16,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.w900,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
                   ),
-                ),
-                const SizedBox(height: 18),
-              ],
+                  const SizedBox(height: 18),
+                ],
+              ),
             ),
           ),
         ),
