@@ -1,6 +1,7 @@
 import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:_2025_prek/reflection_page.dart';
 import 'package:_2025_prek/task_selection_page.dart';
+import 'package:_2025_prek/voice_reflection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -44,16 +45,13 @@ void main() {
     expect(find.text('Reflection 🌸'), findsOneWidget);
   });
 
-  testWidgets('voice reflection keeps user on task selection page', (
-    tester,
-  ) async {
+  testWidgets('navigates to voice reflection page', (tester) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
     await tester.tap(find.text('Voice Reflection'));
     await tester.pumpAndSettle();
-    expect(find.byType(TaskSelectionPage), findsOneWidget);
-    expect(find.byType(ReflectionPage), findsNothing);
-    expect(find.byType(PictureReflectionPage), findsNothing);
+    expect(find.byType(VoiceReflectionPage), findsOneWidget);
+    expect(find.byType(TaskSelectionPage), findsNothing);
   });
 
   testWidgets('lookbook opens picture reflection page', (tester) async {
