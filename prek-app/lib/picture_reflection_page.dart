@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+
 
 const Color pink = Color(0xFFFB7DA8);
 const Color textColor = Color(0xFF94697E);
@@ -219,7 +219,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
 }
 
 
-class _MemoryTile extends StatefulWidget {
+class _MemoryTile extends StatelessWidget {
   final MemoryCard memory;
   final int index;
   final VoidCallback onTap;
@@ -367,7 +367,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
-        color: bgTop,
+        color: bgColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
 
@@ -622,8 +622,7 @@ class _MemoryFullScreen extends StatelessWidget {
                           fontSize: 13,
                           color: Colors.white.withOpacity(0.55),
 
-                        ),
-                      ),
+                        )),
                     ],
                   ),
                 ],
@@ -634,7 +633,6 @@ class _MemoryFullScreen extends StatelessWidget {
     );
   }
 }
-
 
 
 
