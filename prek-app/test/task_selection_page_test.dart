@@ -44,9 +44,7 @@ void main() {
     expect(find.text('Reflection 🌸'), findsOneWidget);
   });
 
-  testWidgets('voice reflection keeps user on task selection page', (
-    tester,
-  ) async {
+  testWidgets('navigates to voice reflection page', (tester) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
     await tester.tap(find.text('Voice Reflection'));

@@ -10,6 +10,8 @@ class ProfilePage extends StatefulWidget {
 
 class _ProfilePageState extends State<ProfilePage> {
   final supabase = Supabase.instance.client;
+  String profileName = "";
+  String profileEmail = "";
   int reflectionsCount = 0;
   bool loading = true;
 
@@ -17,6 +19,8 @@ class _ProfilePageState extends State<ProfilePage> {
   void initState() {
     super.initState();
     _loadReflectionsCount();
+    _loadUsername();
+    _loadEmail();
   }
 
   Future<void> _loadReflectionsCount() async {
@@ -39,6 +43,50 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> _loadUsername() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+    try {
+      final response = await supabase
+          .from('Profiles')
+          .select('username')
+          .eq('id', user.id);
+
+      if (response.isNotEmpty) {
+        setState(() {
+          profileName = response[0]['username'] as String;
+          loading = false;
+        });
+      }
+    } catch (e) {
+      profileName = "error";
+      debugPrint('Error loading username: $e');
+      setState(() => loading = false);
+    }
+  }
+
+  Future<void> _loadEmail() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+    try {
+      final response = await supabase
+          .from('Profiles')
+          .select('email')
+          .eq('id', user.id);
+
+      if (response.isNotEmpty) {
+        setState(() {
+          profileEmail = response[0]['email'] as String;
+          loading = false;
+        });
+      }
+    } catch (e) {
+      profileEmail = "error";
+      debugPrint('Error loading email: $e');
+      setState(() => loading = false);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     const pink = Color(0xFFFB7DA8);
@@ -48,12 +96,12 @@ class _ProfilePageState extends State<ProfilePage> {
     const textColor = Color(0xFF94697E);
     const bgTop = Color(0xFFFFF1F5);
     const bgBottom = Color(0xFFFFF8EE);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         elevation: 0,
         iconTheme: const IconThemeData(color: textColor),
         centerTitle: true,
@@ -85,7 +133,9 @@ class _ProfilePageState extends State<ProfilePage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: const [bgTop, bgBottom],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : [bgTop, bgBottom],
           ),
         ),
         child: SafeArea(
@@ -96,10 +146,10 @@ class _ProfilePageState extends State<ProfilePage> {
               children: [
                 const SizedBox(height: kToolbarHeight - 12),
 
-                const _ProfileTopCard(
-                  displayName: "Username",
-                  email: "user@email.com",
-                  reflections: "14",
+                _ProfileTopCard(
+                  displayName: profileName,
+                  email: profileEmail,
+                  reflections: reflectionsCount.toString(),
                   streak: "06",
                   daysActive: "12",
                 ),
@@ -126,32 +176,32 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     _SectionRow(
                       icon: Icons.auto_awesome_rounded,
-                      iconBg: pink.withValues(alpha: 0.55),
+                      iconBg: isDark ? pink : pink.withValues(alpha: 0.55),
                       title: "Reflections saved",
                       badgeText: reflectionsCount.toString(),
-                      badgeBg: pink.withValues(alpha: 0.18),
+                      badgeBg: isDark ? pink : pink.withValues(alpha: 0.18),
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.local_fire_department_rounded,
-                      iconBg: yellow.withValues(alpha: 0.55),
+                      iconBg: isDark ? yellow : yellow.withValues(alpha: 0.55),
                       title: "Reflection streak",
                       badgeText: "6",
-                      badgeBg: yellow.withValues(alpha: 0.20),
+                      badgeBg: isDark ? yellow : yellow.withValues(alpha: 0.20),
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.flag_rounded,
-                      iconBg: blue.withValues(alpha: 0.45),
+                      iconBg: isDark ? blue : blue.withValues(alpha: 0.45),
                       title: "Reflection goals",
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.emoji_emotions_rounded,
-                      iconBg: pink.withValues(alpha: 0.35),
+                      iconBg: isDark ? pink : pink.withValues(alpha: 0.35),
                       title: "Memory Highlights",
                       onTap: () {},
                     ),
@@ -169,7 +219,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 12),
-                const _MoodBoardSection(),
+                _MoodBoardSection(userId: supabase.auth.currentUser?.id ?? ''),
                 const SizedBox(height: 18),
               ],
             ),
@@ -203,13 +253,16 @@ class _ProfileTopCard extends StatelessWidget {
     //const peach = Color(0xFFFFE4B5);
     const blue = Color(0xFF058CD7);
     const yellow = Color(0xFFFFC567);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: softWhite.withOpacity(0.78),
+        color: isDark ? Colors.black : softWhite.withOpacity(0.78),
         borderRadius: BorderRadius.circular(26),
-        border: Border.all(color: softWhite.withOpacity(0.8)),
+        border: Border.all(
+          color: isDark ? Colors.black : softWhite.withOpacity(0.8),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.06),
@@ -323,11 +376,12 @@ class _MiniChip extends StatelessWidget {
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: softWhite.withValues(alpha: 0.6),
+        color: isDark ? Colors.grey.shade900 : softWhite.withValues(alpha: 0.6),
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: accent.withValues(alpha: 0.35)),
       ),
@@ -396,9 +450,13 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Container(
       decoration: BoxDecoration(
-        color: softWhite.withValues(alpha: 0.72),
+        color: isDark
+            ? Colors.black.withValues(alpha: 1)
+            : softWhite.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(24),
       ),
       child: Column(children: children),
@@ -426,6 +484,7 @@ class _SectionRow extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return ListTile(
       onTap: onTap,
@@ -438,7 +497,7 @@ class _SectionRow extends StatelessWidget {
           color: iconBg,
           borderRadius: BorderRadius.circular(14),
         ),
-        child: Icon(icon, color: textColor),
+        child: Icon(icon, color: isDark ? Colors.white : textColor),
       ),
       title: Text(
         title,
@@ -451,15 +510,22 @@ class _SectionRow extends StatelessWidget {
                 color: badgeBg ?? textColor.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(999),
               ),
-              child: Text(badgeText!, style: const TextStyle(color: textColor)),
+              child: Text(
+                badgeText!,
+                style: TextStyle(color: isDark ? Colors.white : textColor),
+              ),
             )
-          : const Icon(Icons.chevron_right_rounded, color: textColor),
+          : Icon(
+              Icons.chevron_right_rounded,
+              color: isDark ? Colors.white : textColor,
+            ),
     );
   }
 }
 
 class _MoodBoardSection extends StatefulWidget {
-  const _MoodBoardSection();
+  final String userId;
+  const _MoodBoardSection({required this.userId});
 
   @override
   State<_MoodBoardSection> createState() => _MoodBoardSectionState();
@@ -489,20 +555,51 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
   DateTime shownMonth = DateTime(DateTime.now().year, DateTime.now().month);
 
-  final Map<String, String> moodByDay = {
-    "2026-02-01": "Happy",
-    "2026-02-02": "Good",
-    "2026-02-03": "Neutral",
-    "2026-02-04": "Sad",
-    "2026-02-05": "Happy",
-    "2026-01-06": "Frustrated",
-    "2026-01-07": "Overwhelmed",
-    "2026-01-08": "Confused",
-    "2026-01-09": "Angry",
-  };
+  final Map<String, String> moodByDay = {};
+  bool _loading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadMoods();
+  }
+
+  Future<void> _loadMoods() async {
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final response = await Supabase.instance.client
+          .from('Gratitude Entries')
+          .select('mood,created_at')
+          .eq('user_id', user.id)
+          .not('mood', 'is', null)
+          .order('created_at', ascending: true);
+
+      final Map<String, String> fetched = {};
+      for (final row in response) {
+        final date = DateTime.parse(row['created_at']).toLocal();
+        final key =
+            '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}';
+
+        if (!fetched.containsKey(key)) {
+          fetched[key] = row['mood'] as String;
+        }
+      }
+
+      setState(() {
+        moodByDay.clear();
+        moodByDay.addAll(fetched);
+        _loading = false;
+      });
+    } catch (e) {
+      debugPrint('Error loading moods: $e');
+      setState(() => _loading = false);
+    }
+  }
 
   String _keyFor(DateTime d) {
-    return d.toUtc().toIso8601String().split('T').first;
+    return '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
   }
 
   String _monthName(int month) {
@@ -538,6 +635,9 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
   @override
   Widget build(BuildContext context) {
+    if (_loading) {
+      return const Center(child: CircularProgressIndicator());
+    }
     final daysInMonth = DateUtils.getDaysInMonth(
       shownMonth.year,
       shownMonth.month,
@@ -551,10 +651,11 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     final totalCells = leadingEmpty + daysInMonth;
     final rows = (totalCells / 7).ceil();
     final gridCount = rows * 7;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
-        color: softWhite.withValues(alpha: 0.72),
+        color: isDark ? Colors.black : softWhite.withValues(alpha: 0.72),
         borderRadius: BorderRadius.circular(24),
         border: Border.all(color: softWhite.withValues(alpha: 0.65)),
         boxShadow: [
@@ -617,15 +718,16 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   }
 
   Color _accentForLabel(String? label) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     if (label == null) return textColor.withValues(alpha: 0.10);
     if (label == "Happy" || label == "Good") {
-      return yellow.withValues(alpha: 0.18);
+      return isDark ? yellow : yellow.withValues(alpha: 0.18);
     }
     if (label == "Neutral" || label == "Confused") {
-      return blue.withValues(alpha: 0.16);
+      return isDark ? blue : blue.withValues(alpha: 0.16);
     }
 
-    return pink.withValues(alpha: 0.16);
+    return isDark ? pink : pink.withValues(alpha: 0.16);
   }
 }
 
@@ -715,6 +817,7 @@ class _MoodCell extends StatelessWidget {
     const softWhite = Color(0xFFFFFFFF);
 
     final isEmpty = day == null;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
@@ -744,7 +847,13 @@ class _MoodCell extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(child: Icon(icon, size: 37, color: textColor)),
+                Center(
+                  child: Icon(
+                    icon,
+                    size: 37,
+                    color: isDark ? Colors.white : textColor,
+                  ),
+                ),
               ],
             ),
     );

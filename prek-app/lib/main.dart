@@ -1,34 +1,24 @@
 import 'package:_2025_prek/login.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:_2025_prek/theme/theme_provider.dart';
+import 'package:provider/provider.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  bool envLoaded = false;
-  try {
-    await dotenv.load(fileName: ".env");
-    //debugPrint('dotenv keys: ${dotenv.env.keys.toList()}');
-    //debugPrint('SUPABASE_URL: ${dotenv.env['SUPABASE_URL']}');
-    envLoaded = true;
-  } catch (_) {
-    envLoaded = false;
-  }
-  final supabaseUrl = envLoaded ? dotenv.env['SUPABASE_URL'] : null;
-  final supabaseAnonKey = envLoaded ? dotenv.env['SUPABASE_ANON_KEY'] : null;
 
-  if (supabaseUrl == null ||
-      supabaseUrl.isEmpty ||
-      supabaseAnonKey == null ||
-      supabaseAnonKey.isEmpty) {
-    //throw Exception('Supabase URL or Anon Key is not set in environment variables.');
-    runApp(const MyApp());
-    return;
-  }
+  await Supabase.initialize(
+    url: 'https://jiqrbqbsodpgcgmwnieb.supabase.co',
+    anonKey:
+        'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImppcXJicWJzb2RwZ2NnbXduaWViIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjA0NjQ2NDEsImV4cCI6MjA3NjA0MDY0MX0.kNB3KNjyGAMXL1x6nN-U_veW0MD_y_d9gE5RDMKY8Uo',
+  );
 
-  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
-
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => ThemeProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -39,8 +29,37 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
-      home: const Login(), // Start on login
+      home: const Login(),
+      theme: Provider.of<ThemeProvider>(context).themeData,
     );
+  }
+}
+
+class AuthGate extends StatefulWidget {
+  const AuthGate({super.key});
+
+  @override
+  State<AuthGate> createState() => _AuthGateState();
+}
+
+class _AuthGateState extends State<AuthGate> {
+  @override
+  void initState() {
+    super.initState();
+
+    Supabase.instance.client.auth.onAuthStateChange.listen((data) {
+      debugPrint('Auth event: ${data.event}');
+      if (data.event == AuthChangeEvent.passwordRecovery) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          Navigator.pushReplacementNamed(context, '/update-password');
+        });
+      }
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return const Login();
   }
 }
 
