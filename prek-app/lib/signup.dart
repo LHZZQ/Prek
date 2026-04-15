@@ -136,7 +136,6 @@ class _SignUpState extends State<SignUp> {
                         controller: emailController,
                         validator: (value) => validator.validateEmail(value),
                         decoration: InputDecoration(
-                          hintText: 'hello@example.com',
                           labelText: 'Email',
                           icon: Icon(
                             CupertinoIcons.envelope,
@@ -174,7 +173,6 @@ class _SignUpState extends State<SignUp> {
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) => validator.validatePassword(value),
                         decoration: InputDecoration(
-                          hintText: 'Your Password',
                           labelText: 'Password',
                           errorMaxLines: 10,
                           icon: Icon(
@@ -220,7 +218,6 @@ class _SignUpState extends State<SignUp> {
                         autovalidateMode: AutovalidateMode.onUserInteraction,
                         validator: (value) => validator.validatePassword(value),
                         decoration: InputDecoration(
-                          hintText: 'Your Password',
                           labelText: 'Password',
                           errorMaxLines: 10,
                           icon: Icon(
