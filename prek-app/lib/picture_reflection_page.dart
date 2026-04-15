@@ -513,16 +513,26 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
 class _MemoryFullScreen extends StatelessWidget {
   final MemoryCard memory;
 
-  static const Color pink = Color(0xFFFB7DA8);
-  static const Color textColor = Color(0xFF94697E);
-  static const Color bgBottom = Color(0xFFFFF8EE);
+  //static const Color pink = Color(0xFFFB7DA8);
+  //static const Color textColor = Color(0xFF94697E);
+  //static const Color bgBottom = Color(0xFFFFF8EE);
 
   const _MemoryFullScreen({required this.memory});
 
   String _formatDate(DateTime d) {
     const months = [
-      'January','February','March','April','May','June',
-      'July','August','September','October','November','December',
+      'January',
+      'February',
+      'March',
+      'April',
+      'May',
+      'June',
+      'July',
+      'August',
+      'September',
+      'October',
+      'November',
+      'December',
     ];
     return '${months[d.month - 1]} ${d.day}, ${d.year}';
   }
@@ -533,73 +543,61 @@ class _MemoryFullScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
           children: [
-
-      Positioned.fill(
-      child: memory.imagePath != 'placeholder'
-      ? Image.file(
-      File(memory.imagePath),
-      fit: BoxFit.cover,
-    )
-        : Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              colors: [Color(0xFFFFD6E8), Color(0xFFFFA8CC)],
-              begin: Alignment.topLeft,
-              end: Alignment.bottomRight,
+            Container(
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                ),
+              ),
             ),
-          ),
-          child: const Center(
-            child: Text('🌸', style: TextStyle(fontSize: 80)),
-          ),
-        ),
-    ),
 
-    Positioned(
-      left: 0,
-      right: 0,
-      bottom: 0,
-      height: 280,
-      child: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: [
-              Colors.transparent,
-              Colors.black.withOpacity(0.7),
-            ],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-          ),
-        ),
-      ),
-    ),
-
-    Positioned(
-      top: MediaQuery.of(context).padding.top + 12,
-      left: 16,
-      child: GestureDetector(
-        onTap: () => Navigator.of(context).pop(),
-        child: Container(
-          width: 40,
-          height: 40,
-          decoration: BoxDecoration(
-            color: Colors.white.withOpacity(0.2),
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: const Icon(Icons.arrow_back_rounded,
-            color: Colors.white, size: 20),
-          ),
-        ),
-      ),
             Positioned(
-              left: 22,
-              right: 22,
-              bottom: MediaQuery.of(context).padding.bottom + 36,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              height: 260,
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: [
+                      Colors.transparent,
+                      Colors.black.withOpacity(0.65),
+                    ],
+                    begin: Alignment.topCenter,
+                    end: Alignment.bottomCenter,
+                  ),
+                ),
+              ),
+            ),
+
+            Positioned(
+              top: MediaQuery.of(context).padding.top + 10,
+              left: 14,
+              child: GestureDetector(
+                onTap: () => Navigator.of(context).pop(),
+                child: Container(
+                  width: 38,
+                  height: 38,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.18),
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: const Icon(Icons.arrow_back_rounded, color: Colors.white, size: 20),
+                ),
+              ),
+            ),
+
+
+            Positioned(
+              left: 20,
+              right: 20,
+              bottom: MediaQuery.of(context).padding.bottom + 32,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
 
-                  const Text('💛', style: TextStyle(fontSize: 22)),
-                  const SizedBox(height: 10),
                   Text(
                     memory.caption,
                     style: const TextStyle(
@@ -613,16 +611,17 @@ class _MemoryFullScreen extends StatelessWidget {
                   const SizedBox(height: 10),
                   Row(
                     children: [
-                      Icon(Icons.calendar_today_rounded,
-                          size: 13,
-                          color: Colors.white.withOpacity(0.65)),
+                      Icon(
+                          Icons.calendar_today_rounded,
+                          size: 12,
+                          color: Colors.white.withOpacity(0.55)),
                       const SizedBox(width: 6),
                       Text(
                         _formatDate(memory.date),
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.white.withOpacity(0.65),
-                          letterSpacing: 0.3,
+                          color: Colors.white.withOpacity(0.55),
+
                         ),
                       ),
                     ],
