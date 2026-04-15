@@ -1,5 +1,9 @@
+import 'package:_2025_prek/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/mood_page.dart';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -14,7 +18,30 @@ class _ProfilePageState extends State<ProfilePage> {
   String profileEmail = "";
   int reflectionsCount = 0;
   bool loading = true;
-  int streakCount = 0;
+
+  // 这里插入导航键需要的变量和逻辑
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
+    } else if (index == 2) {
+      // 已经在 Profile
+    } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -22,49 +49,6 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadReflectionsCount();
     _loadUsername();
     _loadEmail();
-    _loadStreak();
-  }
-
-  Future<void> _loadStreak() async {
-    final user = supabase.auth.currentUser;
-    if (user == null) return;
-
-    try {
-      final response = await supabase
-          .from('Gratitude Entries')
-          .select('created_at')
-          .eq('user_id', user.id)
-          .order('created_at', ascending: false);
-
-      final Set<String> entryDays = {};
-      for (final row in response) {
-        final date = DateTime.parse(row['created_at']).toLocal();
-        entryDays.add(
-          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
-        );
-      }
-      final now = DateTime.now();
-      String keyFor(DateTime d) =>
-          '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
-
-      final todayKey = keyFor(now);
-      final yesterdayKey = keyFor(now.subtract(const Duration(days: 1)));
-
-      int streak = 0;
-      if (entryDays.contains(todayKey) || entryDays.contains(yesterdayKey)) {
-        DateTime cursor = entryDays.contains(todayKey)
-            ? now
-            : now.subtract(const Duration(days: 1));
-        while (entryDays.contains(keyFor(cursor))) {
-          streak++;
-          cursor = cursor.subtract(const Duration(days: 1));
-        }
-      }
-
-      setState(() => streakCount = streak);
-    } catch (e) {
-      debugPrint('Error loading streak: $e');
-    }
   }
 
   Future<void> _loadReflectionsCount() async {
@@ -136,25 +120,32 @@ class _ProfilePageState extends State<ProfilePage> {
     const pink = Color(0xFFFB7DA8);
     const yellow = Color(0xFFFFC567);
     const blue = Color(0xFF058CD7);
-    // const softWhite = Color(0xFFFFFFFF);
-    const textColor = Color(0xFF94697E);
-    const bgTop = Color(0xFFFFF1F5);
-    const bgBottom = Color(0xFFFFF8EE);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    const softWhite = Color(0xFFFFFFFF);
+    const textColorOriginal = Color(0xFF94697E);
+    const activeColor = Color(0xFFFB7DA8);
+
+    // 新增：同步 HomePage 的暗黑模式逻辑与颜色
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
+    
+    // 同步 HomePage 的背景渐变色
+    final Color bgTop = isDark ? const Color(0xFF1E1E2C) : const Color(0xFFFFF1F5);
+    final Color bgBottom = isDark ? const Color(0xFF2A2A3D) : const Color(0xFFFFF8EE);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
       appBar: AppBar(
+        backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: textColor),
+        iconTheme: IconThemeData(color: textColor),
         centerTitle: true,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
           onPressed: () => Navigator.pop(context),
         ),
 
-        title: const Text(
+        title: Text(
           "Profile",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
@@ -166,7 +157,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 const SnackBar(content: Text("not available right now")),
               );
             },
-            icon: const Icon(Icons.logout_rounded, color: textColor),
+            icon: Icon(Icons.logout_rounded, color: textColor),
           ),
         ],
       ),
@@ -177,9 +168,7 @@ class _ProfilePageState extends State<ProfilePage> {
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: isDark
-                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
-                : [bgTop, bgBottom],
+            colors: [bgTop, bgBottom],
           ),
         ),
         child: SafeArea(
@@ -194,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   displayName: profileName,
                   email: profileEmail,
                   reflections: reflectionsCount.toString(),
-                  streak: streakCount.toString(),
+                  streak: "06",
                   daysActive: "12",
                 ),
                 const SizedBox(height: 14),
@@ -205,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 18),
 
-                const Text(
+                Text(
                   "Your wellness",
                   style: TextStyle(
                     color: textColor,
@@ -220,32 +209,32 @@ class _ProfilePageState extends State<ProfilePage> {
                   children: [
                     _SectionRow(
                       icon: Icons.auto_awesome_rounded,
-                      iconBg: isDark ? pink : pink.withValues(alpha: 0.55),
+                      iconBg: pink.withValues(alpha: 0.55),
                       title: "Reflections saved",
                       badgeText: reflectionsCount.toString(),
-                      badgeBg: isDark ? pink : pink.withValues(alpha: 0.18),
+                      badgeBg: pink.withValues(alpha: 0.18),
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.local_fire_department_rounded,
-                      iconBg: isDark ? yellow : yellow.withValues(alpha: 0.55),
+                      iconBg: yellow.withValues(alpha: 0.55),
                       title: "Reflection streak",
-                      badgeText: streakCount.toString(),
+                      badgeText: "6",
                       badgeBg: yellow.withValues(alpha: 0.20),
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.flag_rounded,
-                      iconBg: isDark ? blue : blue.withValues(alpha: 0.45),
+                      iconBg: blue.withValues(alpha: 0.45),
                       title: "Reflection goals",
                       onTap: () {},
                     ),
 
                     _SectionRow(
                       icon: Icons.emoji_emotions_rounded,
-                      iconBg: isDark ? pink : pink.withValues(alpha: 0.35),
+                      iconBg: pink.withValues(alpha: 0.35),
                       title: "Memory Highlights",
                       onTap: () {},
                     ),
@@ -254,7 +243,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 const SizedBox(height: 18),
 
-                const Text(
+                Text(
                   "Mood board",
                   style: TextStyle(
                     color: textColor,
@@ -268,6 +257,48 @@ class _ProfilePageState extends State<ProfilePage> {
               ],
             ),
           ),
+        ),
+      ),
+      // 这里是底部导航栏代码
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          // 同步 HomePage 的导航栏颜色
+          backgroundColor: isDark ? const Color(0xFF2A2A3D) : const Color(0xFFFFF8EE),
+          selectedItemColor: activeColor,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
         ),
       ),
     );
@@ -292,26 +323,28 @@ class _ProfileTopCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
-    const textColor = Color(0xFF94697E);
+    const textColorOriginal = Color(0xFF94697E);
     const pink = Color(0xFFFB7DA8);
-    //const peach = Color(0xFFFFE4B5);
     const blue = Color(0xFF058CD7);
     const yellow = Color(0xFFFFC567);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
+    // 同步 HomePage 的卡片颜色：暗黑模式下使用 Colors.black87
+    final Color boxColor = isDark ? Colors.black87 : softWhite.withValues(alpha: 0.7);
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? Colors.black : softWhite.withOpacity(0.78),
+        color: boxColor,
         borderRadius: BorderRadius.circular(26),
-        border: Border.all(
-          color: isDark ? Colors.black : softWhite.withOpacity(0.8),
-        ),
+        // 同步 HomePage 的边框逻辑
+        border: Border.all(color: isDark ? Colors.black : Colors.white.withValues(alpha: 0.5), width: 1.5),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 18,
-            offset: const Offset(0, 12),
+            color: Colors.pink.withValues(alpha: 0.1),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -369,7 +402,7 @@ class _ProfileTopCard extends StatelessWidget {
               children: [
                 Text(
                   displayName,
-                  style: const TextStyle(
+                  style: TextStyle(
                     color: textColor,
                     fontSize: 26,
                     fontWeight: FontWeight.w900,
@@ -419,13 +452,17 @@ class _MiniChip extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
-    const textColor = Color(0xFF94697E);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    const textColorOriginal = Color(0xFF94697E);
+
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
+    // 小卡片背景在暗黑模式下稍浅一点以示区分
+    final Color chipBg = isDark ? Colors.white10 : softWhite.withValues(alpha: 0.6);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? Colors.grey.shade900 : softWhite.withValues(alpha: 0.6),
+        color: chipBg,
         borderRadius: BorderRadius.circular(999),
         border: Border.all(color: accent.withValues(alpha: 0.35)),
       ),
@@ -435,7 +472,7 @@ class _MiniChip extends StatelessWidget {
         children: [
           Text(
             value,
-            style: const TextStyle(
+            style: TextStyle(
               fontWeight: FontWeight.w900,
               color: textColor,
             ),
@@ -494,14 +531,15 @@ class _SectionCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    // 与 HomePage 容器风格保持一致
+    final Color cardBg = isDark ? Colors.black87 : softWhite.withValues(alpha: 0.72);
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark
-            ? Colors.black.withValues(alpha: 1)
-            : softWhite.withValues(alpha: 0.72),
+        color: cardBg,
         borderRadius: BorderRadius.circular(24),
+        border: isDark ? Border.all(color: Colors.black, width: 1.5) : null,
       ),
       child: Column(children: children),
     );
@@ -527,8 +565,9 @@ class _SectionRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    const textColorOriginal = Color(0xFF94697E);
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
 
     return ListTile(
       onTap: onTap,
@@ -541,11 +580,11 @@ class _SectionRow extends StatelessWidget {
           color: iconBg,
           borderRadius: BorderRadius.circular(14),
         ),
-        child: Icon(icon, color: isDark ? Colors.white : textColor),
+        child: Icon(icon, color: isDark ? Colors.white : textColorOriginal),
       ),
       title: Text(
         title,
-        style: const TextStyle(color: textColor, fontWeight: FontWeight.w800),
+        style: TextStyle(color: textColor, fontWeight: FontWeight.w800),
       ),
       trailing: badgeText != null
           ? Container(
@@ -554,15 +593,9 @@ class _SectionRow extends StatelessWidget {
                 color: badgeBg ?? textColor.withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(999),
               ),
-              child: Text(
-                badgeText!,
-                style: TextStyle(color: isDark ? Colors.white : textColor),
-              ),
+              child: Text(badgeText!, style: TextStyle(color: textColor)),
             )
-          : Icon(
-              Icons.chevron_right_rounded,
-              color: isDark ? Colors.white : textColor,
-            ),
+          : Icon(Icons.chevron_right_rounded, color: textColor),
     );
   }
 }
@@ -576,7 +609,7 @@ class _MoodBoardSection extends StatefulWidget {
 }
 
 class _MoodBoardSectionState extends State<_MoodBoardSection> {
-  static const textColor = Color(0xFF94697E);
+  static const textColorDefault = Color(0xFF94697E);
   static const softWhite = Color(0xFFFFFFFF);
   static const pink = Color(0xFFFB7DA8);
   static const yellow = Color(0xFFFFC567);
@@ -690,18 +723,21 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
     final leadingEmpty =
         (firstDay.weekday - DateTime.monday) %
-        7; //bcs monday is the start of the week so im going based off it
+        7; 
 
     final totalCells = leadingEmpty + daysInMonth;
     final rows = (totalCells / 7).ceil();
     final gridCount = rows * 7;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+ 
+    final Color boardBg = isDark ? Colors.black87 : softWhite.withValues(alpha: 0.72);
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? Colors.black : softWhite.withValues(alpha: 0.72),
+        color: boardBg,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: softWhite.withValues(alpha: 0.65)),
+        border: Border.all(color: isDark ? Colors.black : softWhite.withValues(alpha: 0.65), width: 1.5),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -762,16 +798,18 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
   }
 
   Color _accentForLabel(String? label) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorDefault;
+
     if (label == null) return textColor.withValues(alpha: 0.10);
     if (label == "Happy" || label == "Good") {
-      return isDark ? yellow : yellow.withValues(alpha: 0.18);
+      return yellow.withValues(alpha: 0.18);
     }
     if (label == "Neutral" || label == "Confused") {
-      return isDark ? blue : blue.withValues(alpha: 0.16);
+      return blue.withValues(alpha: 0.16);
     }
 
-    return isDark ? pink : pink.withValues(alpha: 0.16);
+    return pink.withValues(alpha: 0.16);
   }
 }
 
@@ -788,20 +826,22 @@ class _MoodBoardHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
+    const textColorOriginal = Color(0xFF94697E);
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
 
     return Row(
       children: [
         IconButton(
           onPressed: onPrev,
-          icon: const Icon(Icons.chevron_left_rounded, color: textColor),
+          icon: Icon(Icons.chevron_left_rounded, color: textColor),
           splashRadius: 22,
         ),
         Expanded(
           child: Text(
             title,
             textAlign: TextAlign.center,
-            style: const TextStyle(
+            style: TextStyle(
               color: textColor,
               fontSize: 18,
               fontWeight: FontWeight.w900,
@@ -810,7 +850,7 @@ class _MoodBoardHeader extends StatelessWidget {
         ),
         IconButton(
           onPressed: onNext,
-          icon: const Icon(Icons.chevron_right_rounded, color: textColor),
+          icon: Icon(Icons.chevron_right_rounded, color: textColor),
           splashRadius: 22,
         ),
       ],
@@ -823,7 +863,9 @@ class _WeekdayRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
+    const textColorOriginal = Color(0xFF94697E);
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
     const labels = ["M", "T", "W", "T", "F", "S", "S"];
 
     return Row(
@@ -857,11 +899,13 @@ class _MoodCell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
+    const textColorOriginal = Color(0xFF94697E);
     const softWhite = Color(0xFFFFFFFF);
 
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
+
     final isEmpty = day == null;
-    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       decoration: BoxDecoration(
@@ -872,7 +916,7 @@ class _MoodCell extends StatelessWidget {
         border: Border.all(
           color: isEmpty
               ? Colors.transparent
-              : softWhite.withValues(alpha: 0.60),
+              : (isDark ? Colors.white12 : softWhite.withValues(alpha: 0.60)),
         ),
       ),
       child: isEmpty
@@ -891,15 +935,10 @@ class _MoodCell extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(
-                  child: Icon(
-                    icon,
-                    size: 37,
-                    color: isDark ? Colors.white : textColor,
-                  ),
-                ),
+                Center(child: Icon(icon, size: 37, color: isDark ? Colors.white : textColorOriginal)),
               ],
             ),
     );
   }
 }
+
