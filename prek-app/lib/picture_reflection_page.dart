@@ -456,100 +456,59 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
 
           const SizedBox(height: 18),
 
-      Container(
-        decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border:
-            Border.all(color: pink.withOpacity(0.2), width: 1.5),
-      ),
-      child: TextField(
-        controller: _captionCtrl,
-        maxLines: 3,
-        maxLength: 140,
-        style: const TextStyle(
-          color: textColor,
-          fontSize: 14,
-          fontFamily: 'Georgia',
-      ),
-      decoration: InputDecoration(
-      hintText:
-      'What made this moment special?',
-        hintStyle: TextStyle(
-          color: textColor.withOpacity(0.4), fontSize: 13),
-        contentPadding: const EdgeInsets.all(14),
-        border: InputBorder.none,
-        counterStyle:
-          TextStyle(color: textColor.withOpacity(0.35)),
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              border:
+                Border.all(color: pink.withOpacity(0.18)),
           ),
-        ),
-      ),
-      const SizedBox(height: 20),
+          child: TextField(
+            controller: _captionCtrl,
+            maxLines: 2,
+            maxLength: 100,
+            style: const TextStyle(
+              color: textColor,
+              fontSize: 14,
+              fontFamily: 'Georgia',
+          ),
+          decoration: InputDecoration(
+          hintText:
+          'What made this moment special?',
+            hintStyle: TextStyle(
+              color: textColor.withOpacity(0.35), fontSize: 13),
+            contentPadding: const EdgeInsets.all(12),
+            border: InputBorder.none,
+            counterStyle:
+              TextStyle(color: textColor.withOpacity(0.3), fontSize: 11),
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
 
-      SizedBox(
-        width: double.infinity,
-        height: 52,
-        child: ElevatedButton(
-          onPressed: _submit,
-          style: ElevatedButton.styleFrom(
-            backgroundColor: pink,
-            foregroundColor: Colors.white,
-            elevation: 0,
-            shadowColor: Colors.transparent,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
-           ),
-          child: const Text(
-            'Save to my album',
-            style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.w700,
-              letterSpacing: 0.3,
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: _submit,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: pink,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+              ),
+              child: const Text(
+                'Save to album',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+              ),
             ),
           ),
-        ),
-      ),
         ],
       ),
     );
   }
-  void _showImageSourceDialog() {
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (_) => SafeArea(
-        child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-        ListTile(
-        leading:
-        const Icon(Icons.camera_alt_rounded, color: Color(0xFFFB7DA8)),
-        title: const Text('Take a photo'),
-        onTap: () {
-          Navigator.pop(context);
-          _pickImage(ImageSource.camera);
-        },
-      ),
-              ListTile(
-                leading: const Icon(Icons.photo_library_rounded,
-                    color: Color(0xFFFB7DA8)),
-                title: const Text('Choose from gallery'),
-                onTap: () {
-                  Navigator.pop(context);
-                  _pickImage(ImageSource.gallery);
-                },
-              ),
-              const SizedBox(height: 8),
-            ],
-        ),
-      ),
-    );
-  }
 }
+
 
 class _MemoryFullScreen extends StatelessWidget {
   final MemoryCard memory;
