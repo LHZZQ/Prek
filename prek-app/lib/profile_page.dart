@@ -14,6 +14,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String profileEmail = "";
   int reflectionsCount = 0;
   bool loading = true;
+  int streakCount = 0;
 
   @override
   void initState() {
@@ -21,6 +22,49 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadReflectionsCount();
     _loadUsername();
     _loadEmail();
+    _loadStreak();
+  }
+
+  Future<void> _loadStreak() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final response = await supabase
+          .from('Gratitude Entries')
+          .select('created_at')
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false);
+
+      final Set<String> entryDays = {};
+      for (final row in response) {
+        final date = DateTime.parse(row['created_at']).toLocal();
+        entryDays.add(
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
+        );
+      }
+      final now = DateTime.now();
+      String keyFor(DateTime d) =>
+          '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+      final todayKey = keyFor(now);
+      final yesterdayKey = keyFor(now.subtract(const Duration(days: 1)));
+
+      int streak = 0;
+      if (entryDays.contains(todayKey) || entryDays.contains(yesterdayKey)) {
+        DateTime cursor = entryDays.contains(todayKey)
+            ? now
+            : now.subtract(const Duration(days: 1));
+        while (entryDays.contains(keyFor(cursor))) {
+          streak++;
+          cursor = cursor.subtract(const Duration(days: 1));
+        }
+      }
+
+      setState(() => streakCount = streak);
+    } catch (e) {
+      debugPrint('Error loading streak: $e');
+    }
   }
 
   Future<void> _loadReflectionsCount() async {
@@ -150,7 +194,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   displayName: profileName,
                   email: profileEmail,
                   reflections: reflectionsCount.toString(),
-                  streak: "06",
+                  streak: streakCount.toString(),
                   daysActive: "12",
                 ),
                 const SizedBox(height: 14),
@@ -187,8 +231,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       icon: Icons.local_fire_department_rounded,
                       iconBg: isDark ? yellow : yellow.withValues(alpha: 0.55),
                       title: "Reflection streak",
-                      badgeText: "6",
-                      badgeBg: isDark ? yellow : yellow.withValues(alpha: 0.20),
+                      badgeText: streakCount.toString(),
+                      badgeBg: yellow.withValues(alpha: 0.20),
                       onTap: () {},
                     ),
 
