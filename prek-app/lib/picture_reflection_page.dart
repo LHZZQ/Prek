@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-
 const Color pink = Color(0xFFFB7DA8);
 const Color textColor = Color(0xFF94697E);
 const Color bgColor = Color(0xFFFFF1F5);
@@ -9,11 +8,7 @@ class MemoryCard {
   final String caption;
   final DateTime date;
 
-  MemoryCard({
-    required this.caption,
-    required this.date
-  }
-  );
+  MemoryCard({required this.caption, required this.date});
 }
 
 class PictureReflectionPage extends StatefulWidget {
@@ -26,8 +21,7 @@ class PictureReflectionPage extends StatefulWidget {
 }
 
 class _PictureReflectionPageState extends State<PictureReflectionPage> {
-
-    //with TickerProviderStateMixin {
+  //with TickerProviderStateMixin {
   //static const Color pink = Color(0xFFFB7DA8);
   //static const Color yellow = Color(0xFFFFC567);
   //static const Color blue = Color(0xFF058CD7);
@@ -39,22 +33,10 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
   //static const Color pinkLight = Color(0xFFFFE4EF);
 
   final List<MemoryCard> _memories = [
-  MemoryCard(
-    caption: 'Coffee with my friend',
-    date: DateTime(2025, 1, 1),
-  ),
-  MemoryCard(
-
-    caption: 'Pretty sunset',
-    date: DateTime(2025, 2, 2),
-  ),
-  MemoryCard(
-
-    caption: 'cute dog',
-    date: DateTime(2025, 3, 3),
-  ),
+    MemoryCard(caption: 'Coffee with my friend', date: DateTime(2025, 1, 1)),
+    MemoryCard(caption: 'Pretty sunset', date: DateTime(2025, 2, 2)),
+    MemoryCard(caption: 'cute dog', date: DateTime(2025, 3, 3)),
   ];
-
 
   void _openAddMemorySheet() {
     showModalBottomSheet(
@@ -64,7 +46,10 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
       builder: (_) => _AddMemorySheet(
         onAdd: (caption) {
           setState(() {
-            _memories.insert(0, MemoryCard(caption: caption, date: DateTime.now()));
+            _memories.insert(
+              0,
+              MemoryCard(caption: caption, date: DateTime.now()),
+            );
           });
         },
       ),
@@ -72,106 +57,111 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
   }
 
   void _openMemory(MemoryCard memory) {
-    Navigator.of(context).push(MaterialPageRoute(
-      builder: (_) => _MemoryFullScreen(memory: memory),
-    ));
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => _MemoryFullScreen(memory: memory)),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: bgColor,
-        body: SafeArea(
-          child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-          Padding(
-          padding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              RichText(
-                text: const TextSpan(
-                  style: TextStyle(
-                    fontFamily: 'Georgia',
-                    fontSize: 26,
-                    fontWeight: FontWeight.w700,
-                    color: textColor,
-                    height: 1.2,
-                  ),
-                  children: [
-                    TextSpan(text: 'Capture\n'),
-                    TextSpan(
-                      text: 'happy moments',
-                      style: TextStyle(color: pink),
-                    ),
-                  ],
-                ),
-              ),
-              const SizedBox(height: 4),
-              Text(
-                'Snap moments that make you smile, and revisit them anytime.',
-                style: TextStyle(
-                  fontSize: 13,
-                  color: textColor.withOpacity(0.55),
-                ),
-              ),
-            ],
-          ),
-        ),
-
-                Padding(
-                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
-                  child: Row(
-                    children: [
-                      const Text(
-                        'Your happy moments',
-                        style: TextStyle(
-                          fontFamily: 'Georgia',
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: textColor,
+      backgroundColor: bgColor,
+      body: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Padding(
+              padding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  RichText(
+                    text: const TextSpan(
+                      style: TextStyle(
+                        fontFamily: 'Georgia',
+                        fontSize: 26,
+                        fontWeight: FontWeight.w700,
+                        color: textColor,
+                        height: 1.2,
+                      ),
+                      children: [
+                        TextSpan(text: 'Capture\n'),
+                        TextSpan(
+                          text: 'happy moments',
+                          style: TextStyle(color: pink),
                         ),
-                      ),
-                      const Spacer(),
-                      Text(
-                        '${_memories.length} saved',
-                        style: TextStyle(fontSize: 12, color: textColor.withOpacity(0.5)),
-                      ),
-                    ],
-                  ),
-                ),
-
-
-                Expanded(
-                  child: _memories.isEmpty
-                      ? _buildEmptyState()
-                      : GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(14, 0, 14, 100),
-                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisSpacing: 10,
-                      crossAxisSpacing: 10,
-                      mainAxisExtent: 200,
-                    ),
-                    itemCount: _memories.length,
-                    itemBuilder: (context, index) => _MemoryTile(
-                      memory: _memories[index],
-                      index: index,
-                      onTap: () => _openMemory(_memories[index]),
+                      ],
                     ),
                   ),
-                ),
-              ],
-          ),
+                  const SizedBox(height: 4),
+                  Text(
+                    'Snap moments that make you smile, and revisit them anytime.',
+                    style: TextStyle(
+                      fontSize: 13,
+                      color: textColor.withOpacity(0.55),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
+              child: Row(
+                children: [
+                  const Text(
+                    'Your happy moments',
+                    style: TextStyle(
+                      fontFamily: 'Georgia',
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: textColor,
+                    ),
+                  ),
+                  const Spacer(),
+                  Text(
+                    '${_memories.length} saved',
+                    style: TextStyle(
+                      fontSize: 12,
+                      color: textColor.withOpacity(0.5),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+
+            Expanded(
+              child: _memories.isEmpty
+                  ? _buildEmptyState()
+                  : GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(14, 0, 14, 100),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 10,
+                            crossAxisSpacing: 10,
+                            mainAxisExtent: 200,
+                          ),
+                      itemCount: _memories.length,
+                      itemBuilder: (context, index) => _MemoryTile(
+                        memory: _memories[index],
+                        index: index,
+                        onTap: () => _openMemory(_memories[index]),
+                      ),
+                    ),
+            ),
+          ],
         ),
+      ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: FloatingActionButton.extended(
         onPressed: _openAddMemorySheet,
         backgroundColor: pink,
         elevation: 4,
-        icon: const Icon(Icons.add_photo_alternate_rounded, color: Colors.white),
+        icon: const Icon(
+          Icons.add_photo_alternate_rounded,
+          color: Colors.white,
+        ),
         label: const Text(
           'Add a memory',
           style: TextStyle(
@@ -183,6 +173,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
       ),
     );
   }
+
   Widget _buildEmptyState() {
     return Center(
       child: Column(
@@ -195,7 +186,11 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
               color: const Color(0xFFFFE4EF),
               borderRadius: BorderRadius.circular(18),
             ),
-            child: const Icon(Icons.photo_library_outlined, color: pink, size: 28),
+            child: const Icon(
+              Icons.photo_library_outlined,
+              color: pink,
+              size: 28,
+            ),
           ),
           const SizedBox(height: 16),
           const Text(
@@ -218,7 +213,6 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
   }
 }
 
-
 class _MemoryTile extends StatelessWidget {
   final MemoryCard memory;
   final int index;
@@ -230,17 +224,12 @@ class _MemoryTile extends StatelessWidget {
     required this.onTap,
   });
 
-
-static const List<List<Color>> palettes = [
-  [Color(0xFFFFD6E8),
-    Color(0xFFF9A8C9)],
-  [Color(0xFFFFEAB0),
-    Color(0xFFFAC95C)],
-  [Color(0xFFB8DAFF),
-    Color(0xFF79B8F5)],
-  [Color(0xFFD4EED0),
-    Color(0xFF9FD49A)],
-];
+  static const List<List<Color>> palettes = [
+    [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
+    [Color(0xFFFFEAB0), Color(0xFFFAC95C)],
+    [Color(0xFFB8DAFF), Color(0xFF79B8F5)],
+    [Color(0xFFD4EED0), Color(0xFF9FD49A)],
+  ];
 
   String _formatDate(DateTime d) {
     const months = [
@@ -281,9 +270,10 @@ static const List<List<Color>> palettes = [
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             ClipRRect(
-              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(16),
+              ),
               child: Container(
                 height: 110,
                 width: double.infinity,
@@ -317,7 +307,10 @@ static const List<List<Color>> palettes = [
                   const SizedBox(height: 3),
                   Text(
                     _formatDate(memory.date),
-                    style: TextStyle(fontSize: 10, color: textColor.withOpacity(0.4)),
+                    style: TextStyle(
+                      fontSize: 10,
+                      color: textColor.withOpacity(0.4),
+                    ),
                   ),
                 ],
               ),
@@ -328,7 +321,6 @@ static const List<List<Color>> palettes = [
     );
   }
 }
-
 
 class _AddMemorySheet extends StatefulWidget {
   final void Function(String caption) onAdd;
@@ -362,7 +354,6 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     Navigator.of(context).pop();
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -382,10 +373,9 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
           Center(
             child: Container(
-            width: 34,
+              width: 34,
               height: 4,
               decoration: BoxDecoration(
                 color: pink.withOpacity(0.25),
@@ -407,10 +397,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
           const SizedBox(height: 3),
           Text(
             'Pick a photo that makes you smile',
-            style: TextStyle(
-            fontSize: 13,
-                color: textColor.withOpacity(0.5)
-            ),
+            style: TextStyle(fontSize: 13, color: textColor.withOpacity(0.5)),
           ),
 
           const SizedBox(height: 16),
@@ -423,10 +410,10 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
               decoration: BoxDecoration(
                 gradient: _hasPhoto
                     ? const LinearGradient(
-                  colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                )
+                        colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      )
                     : null,
                 color: _hasPhoto ? null : const Color(0xFFFFE4EF),
                 borderRadius: BorderRadius.circular(16),
@@ -435,22 +422,25 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
               child: _hasPhoto
                   ? null
                   : Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Icon(Icons.add_photo_alternate_outlined,
-                      color: pink, size: 30),
-                  const SizedBox(height: 6),
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.add_photo_alternate_outlined,
+                          color: pink,
+                          size: 30,
+                        ),
+                        const SizedBox(height: 6),
 
-                  Text(
-                    'Tap to add a photo',
-                    style: TextStyle(
-                      color: pink,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 14,
+                        Text(
+                          'Tap to add a photo',
+                          style: TextStyle(
+                            color: pink,
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
                     ),
-                  ),
-                ],
-              ),
             ),
           ),
 
@@ -460,27 +450,29 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(14),
-              border:
-                Border.all(color: pink.withOpacity(0.18)),
-          ),
-          child: TextField(
-            controller: _captionCtrl,
-            maxLines: 2,
-            maxLength: 100,
-            style: const TextStyle(
-              color: textColor,
-              fontSize: 14,
-              fontFamily: 'Georgia',
-          ),
-          decoration: InputDecoration(
-          hintText:
-          'What made this moment special?',
-            hintStyle: TextStyle(
-              color: textColor.withOpacity(0.35), fontSize: 13),
-            contentPadding: const EdgeInsets.all(12),
-            border: InputBorder.none,
-            counterStyle:
-              TextStyle(color: textColor.withOpacity(0.3), fontSize: 11),
+              border: Border.all(color: pink.withOpacity(0.18)),
+            ),
+            child: TextField(
+              controller: _captionCtrl,
+              maxLines: 2,
+              maxLength: 100,
+              style: const TextStyle(
+                color: textColor,
+                fontSize: 14,
+                fontFamily: 'Georgia',
+              ),
+              decoration: InputDecoration(
+                hintText: 'What made this moment special?',
+                hintStyle: TextStyle(
+                  color: textColor.withOpacity(0.35),
+                  fontSize: 13,
+                ),
+                contentPadding: const EdgeInsets.all(12),
+                border: InputBorder.none,
+                counterStyle: TextStyle(
+                  color: textColor.withOpacity(0.3),
+                  fontSize: 11,
+                ),
               ),
             ),
           ),
@@ -495,7 +487,9 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                 backgroundColor: pink,
                 foregroundColor: Colors.white,
                 elevation: 0,
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
               ),
               child: const Text(
                 'Save to album',
@@ -508,7 +502,6 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     );
   }
 }
-
 
 class _MemoryFullScreen extends StatelessWidget {
   final MemoryCard memory;
@@ -542,105 +535,94 @@ class _MemoryFullScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
-          children: [
-            Container(
-              decoration: const BoxDecoration(
+        children: [
+          Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+            ),
+          ),
+
+          Positioned(
+            left: 0,
+            right: 0,
+            bottom: 0,
+            height: 260,
+            child: Container(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
-                  colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
+                  colors: [Colors.transparent, Colors.black.withOpacity(0.65)],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
                 ),
               ),
             ),
+          ),
 
-            Positioned(
-              left: 0,
-              right: 0,
-              bottom: 0,
-              height: 260,
+          Positioned(
+            top: MediaQuery.of(context).padding.top + 10,
+            left: 14,
+            child: GestureDetector(
+              onTap: () => Navigator.of(context).pop(),
               child: Container(
+                width: 38,
+                height: 38,
                 decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: [
-                      Colors.transparent,
-                      Colors.black.withOpacity(0.65),
-                    ],
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                  ),
+                  color: Colors.white.withOpacity(0.18),
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                child: const Icon(
+                  Icons.arrow_back_rounded,
+                  color: Colors.white,
+                  size: 20,
                 ),
               ),
             ),
+          ),
 
-            Positioned(
-              top: MediaQuery.of(context).padding.top + 10,
-              left: 14,
-              child: GestureDetector(
-                onTap: () => Navigator.of(context).pop(),
-                child: Container(
-                  width: 38,
-                  height: 38,
-                  decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.18),
-                    borderRadius: BorderRadius.circular(12),
+          Positioned(
+            left: 20,
+            right: 20,
+            bottom: MediaQuery.of(context).padding.bottom + 32,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  memory.caption,
+                  style: const TextStyle(
+                    fontFamily: 'Georgia',
+                    fontSize: 22,
+                    fontWeight: FontWeight.w700,
+                    color: Colors.white,
+                    height: 1.3,
                   ),
-                  child: const Icon(Icons.arrow_back_rounded, color: Colors.white, size: 20),
                 ),
-              ),
-            ),
-
-
-            Positioned(
-              left: 20,
-              right: 20,
-              bottom: MediaQuery.of(context).padding.bottom + 32,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-
-                  Text(
-                    memory.caption,
-                    style: const TextStyle(
-                      fontFamily: 'Georgia',
-                      fontSize: 22,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.white,
-                      height: 1.3,
+                const SizedBox(height: 10),
+                Row(
+                  children: [
+                    Icon(
+                      Icons.calendar_today_rounded,
+                      size: 12,
+                      color: Colors.white.withOpacity(0.55),
                     ),
-                  ),
-                  const SizedBox(height: 10),
-                  Row(
-                    children: [
-                      Icon(
-                          Icons.calendar_today_rounded,
-                          size: 12,
-                          color: Colors.white.withOpacity(0.55)),
-                      const SizedBox(width: 6),
-                      Text(
-                        _formatDate(memory.date),
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: Colors.white.withOpacity(0.55),
-
-                        )),
-                    ],
-                  ),
-                ],
-              ),
+                    const SizedBox(width: 6),
+                    Text(
+                      _formatDate(memory.date),
+                      style: TextStyle(
+                        fontSize: 13,
+                        color: Colors.white.withOpacity(0.55),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
             ),
-          ],
+          ),
+        ],
       ),
     );
   }
 }
-
-
-
-
-
-
-
-
-
-
-
