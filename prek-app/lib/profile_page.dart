@@ -19,7 +19,6 @@ class _ProfilePageState extends State<ProfilePage> {
   int reflectionsCount = 0;
   bool loading = true;
 
-  // 这里插入导航键需要的变量和逻辑
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
@@ -34,7 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
     } else if (index == 2) {
-      // 已经在 Profile
     } else if (index == 3) {
       Navigator.push(
         context,
@@ -124,13 +122,15 @@ class _ProfilePageState extends State<ProfilePage> {
     const textColorOriginal = Color(0xFF94697E);
     const activeColor = Color(0xFFFB7DA8);
 
-    // 新增：同步 HomePage 的暗黑模式逻辑与颜色
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Color textColor = isDark ? Colors.white : textColorOriginal;
-    
-    // 同步 HomePage 的背景渐变色
-    final Color bgTop = isDark ? const Color(0xFF1E1E2C) : const Color(0xFFFFF1F5);
-    final Color bgBottom = isDark ? const Color(0xFF2A2A3D) : const Color(0xFFFFF8EE);
+
+    final Color bgTop = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
+    final Color bgBottom = isDark
+        ? const Color(0xFF2A2A3D)
+        : const Color(0xFFFFF8EE);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
@@ -259,7 +259,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      // 这里是底部导航栏代码
+
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           boxShadow: [
@@ -274,8 +274,10 @@ class _ProfilePageState extends State<ProfilePage> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          // 同步 HomePage 的导航栏颜色
-          backgroundColor: isDark ? const Color(0xFF2A2A3D) : const Color(0xFFFFF8EE),
+
+          backgroundColor: isDark
+              ? const Color(0xFF2A2A3D)
+              : const Color(0xFFFFF8EE),
           selectedItemColor: activeColor,
           unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
           showUnselectedLabels: true,
@@ -330,16 +332,21 @@ class _ProfileTopCard extends StatelessWidget {
 
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Color textColor = isDark ? Colors.white : textColorOriginal;
-    // 同步 HomePage 的卡片颜色：暗黑模式下使用 Colors.black87
-    final Color boxColor = isDark ? Colors.black87 : softWhite.withValues(alpha: 0.7);
+
+    final Color boxColor = isDark
+        ? Colors.black87
+        : softWhite.withValues(alpha: 0.7);
 
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: boxColor,
         borderRadius: BorderRadius.circular(26),
-        // 同步 HomePage 的边框逻辑
-        border: Border.all(color: isDark ? Colors.black : Colors.white.withValues(alpha: 0.5), width: 1.5),
+
+        border: Border.all(
+          color: isDark ? Colors.black : Colors.white.withValues(alpha: 0.5),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.pink.withValues(alpha: 0.1),
@@ -456,8 +463,10 @@ class _MiniChip extends StatelessWidget {
 
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Color textColor = isDark ? Colors.white : textColorOriginal;
-    // 小卡片背景在暗黑模式下稍浅一点以示区分
-    final Color chipBg = isDark ? Colors.white10 : softWhite.withValues(alpha: 0.6);
+
+    final Color chipBg = isDark
+        ? Colors.white10
+        : softWhite.withValues(alpha: 0.6);
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
@@ -472,10 +481,7 @@ class _MiniChip extends StatelessWidget {
         children: [
           Text(
             value,
-            style: TextStyle(
-              fontWeight: FontWeight.w900,
-              color: textColor,
-            ),
+            style: TextStyle(fontWeight: FontWeight.w900, color: textColor),
           ),
           const SizedBox(width: 6),
           Text(
@@ -532,8 +538,10 @@ class _SectionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     const softWhite = Color(0xFFFFFFFF);
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
-    // 与 HomePage 容器风格保持一致
-    final Color cardBg = isDark ? Colors.black87 : softWhite.withValues(alpha: 0.72);
+
+    final Color cardBg = isDark
+        ? Colors.black87
+        : softWhite.withValues(alpha: 0.72);
 
     return Container(
       decoration: BoxDecoration(
@@ -721,23 +729,26 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
     );
     final firstDay = DateTime(shownMonth.year, shownMonth.month, 1);
 
-    final leadingEmpty =
-        (firstDay.weekday - DateTime.monday) %
-        7; 
+    final leadingEmpty = (firstDay.weekday - DateTime.monday) % 7;
 
     final totalCells = leadingEmpty + daysInMonth;
     final rows = (totalCells / 7).ceil();
     final gridCount = rows * 7;
 
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
- 
-    final Color boardBg = isDark ? Colors.black87 : softWhite.withValues(alpha: 0.72);
+
+    final Color boardBg = isDark
+        ? Colors.black87
+        : softWhite.withValues(alpha: 0.72);
 
     return Container(
       decoration: BoxDecoration(
         color: boardBg,
         borderRadius: BorderRadius.circular(24),
-        border: Border.all(color: isDark ? Colors.black : softWhite.withValues(alpha: 0.65), width: 1.5),
+        border: Border.all(
+          color: isDark ? Colors.black : softWhite.withValues(alpha: 0.65),
+          width: 1.5,
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.04),
@@ -935,10 +946,15 @@ class _MoodCell extends StatelessWidget {
                     ),
                   ),
                 ),
-                Center(child: Icon(icon, size: 37, color: isDark ? Colors.white : textColorOriginal)),
+                Center(
+                  child: Icon(
+                    icon,
+                    size: 37,
+                    color: isDark ? Colors.white : textColorOriginal,
+                  ),
+                ),
               ],
             ),
     );
   }
 }
-
