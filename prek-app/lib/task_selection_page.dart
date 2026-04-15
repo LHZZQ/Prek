@@ -1,3 +1,4 @@
+import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:flutter/material.dart';
 import 'reflection_page.dart';
 
@@ -93,7 +94,15 @@ class TaskSelectionPage extends StatelessWidget {
                   iconBg: pink.withValues(alpha: 0.2),
                   title: "Lookbook",
                   subtitle: "Visualize your journey through photos",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) =>
+                            PictureReflectionPage(selectedMood: selectedMood),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
