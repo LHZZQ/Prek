@@ -36,7 +36,7 @@ class _SettingsPageState extends State<SettingsPage> {
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } else if (index == 3) {
-      
+      // 已经在设置页，无需跳转
     }
   }
 
@@ -297,10 +297,28 @@ class _SettingsPageState extends State<SettingsPage> {
                     ),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => const Login(),
+                        // 弹出确认对话框
+                        showDialog(
+                          context: context,
+                          builder: (context) => AlertDialog(
+                            title: const Text("Logout"),
+                            content: const Text("Are you sure you want to log out?"),
+                            actions: [
+                              TextButton(
+                                onPressed: () => Navigator.pop(context),
+                                child: const Text("Cancel"),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  Navigator.pushAndRemoveUntil(
+                                    context,
+                                    MaterialPageRoute(builder: (context) => const Login()),
+                                    (route) => false,
+                                  );
+                                },
+                                child: const Text("Logout", style: TextStyle(color: Colors.red)),
+                              ),
+                            ],
                           ),
                         );
                       },
