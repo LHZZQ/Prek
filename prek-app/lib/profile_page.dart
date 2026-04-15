@@ -1,7 +1,6 @@
 import 'package:_2025_prek/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:_2025_prek/mood_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/home_page.dart';
 
@@ -118,7 +117,6 @@ class _ProfilePageState extends State<ProfilePage> {
     const pink = Color(0xFFFB7DA8);
     const yellow = Color(0xFFFFC567);
     const blue = Color(0xFF058CD7);
-    const softWhite = Color(0xFFFFFFFF);
     const textColorOriginal = Color(0xFF94697E);
     const activeColor = Color(0xFFFB7DA8);
 
