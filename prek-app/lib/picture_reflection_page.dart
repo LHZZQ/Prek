@@ -101,9 +101,9 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
                     height: 1.2,
                   ),
                   children: [
-                    TextSpan(text: 'Smile\n'),
+                    TextSpan(text: 'Capture\n'),
                     TextSpan(
-                      text: 'album',
+                      text: 'happy moments',
                       style: TextStyle(color: pink),
                     ),
                   ],
@@ -111,7 +111,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
               ),
               const SizedBox(height: 4),
               Text(
-                'Moments worth holding onto',
+                'Snap moments that make you smile, and revisit them anytime.',
                 style: TextStyle(
                   fontSize: 13,
                   color: textColor.withOpacity(0.55),
