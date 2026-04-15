@@ -49,10 +49,8 @@ void main() {
   ) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
-
     await tester.tap(find.text('Voice Reflection'));
     await tester.pumpAndSettle();
-
     expect(find.byType(TaskSelectionPage), findsOneWidget);
     expect(find.byType(ReflectionPage), findsNothing);
     expect(find.byType(PictureReflectionPage), findsNothing);
