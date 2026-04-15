@@ -383,133 +383,137 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
 
-      Center(
-      child: Container(
-      width: 34,
-        height: 4,
-        decoration: BoxDecoration(
-          color: pink.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(4),
-        ),
-      ),
-    ),
-
-    const SizedBox(height: 18),
-
-    Text(
-    'Save a moment',
-    style: const TextStyle(
-    fontFamily: 'Georgia',
-    fontSize: 19,
-    fontWeight: FontWeight.w700,
-    color: textColor,
-      ),
-    ),
-    const SizedBox(height: 3),
-    Text(
-    'Pick a photo that makes you smile',
-    style: TextStyle(
-    fontSize: 13,
-        color: textColor.withOpacity(0.5)),
-    ),
-
-    const SizedBox(height: 16),
-
-    GestureDetector(
-    onTap: () => _showImageSourceDialog(),
-    child: Container(
-      height: 160,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: pinkLight,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: pink.withOpacity(0.25), width: 1.5),
-      ),
-      child: _pickedPath != null
-        ? ClipRRect(
-          borderRadius: BorderRadius.circular(17),
-          child: Image.file(
-        File(_pickedPath!),
-        fit: BoxFit.cover,
-        ),
-      )
-        : Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.add_photo_alternate_outlined,
-              color: pink, size: 36),
-          const SizedBox(height: 8),
-          Text(
-            'Tap to add a photo',
-            style: TextStyle(
-              color: pink,
-              fontWeight: FontWeight.w600,
-              fontSize: 14,
+          Center(
+            child: Container(
+            width: 34,
+              height: 4,
+              decoration: BoxDecoration(
+                color: pink.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(4),
+              ),
             ),
           ),
+          const SizedBox(height: 18),
+
+          const Text(
+            'Save a moment',
+            style: TextStyle(
+              fontFamily: 'Georgia',
+              fontSize: 19,
+              fontWeight: FontWeight.w700,
+              color: textColor,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            'Pick a photo that makes you smile',
+            style: TextStyle(
+            fontSize: 13,
+                color: textColor.withOpacity(0.5)
+            ),
+          ),
+
+          const SizedBox(height: 16),
+
+          GestureDetector(
+            onTap: () => setState(() => _hasPhoto = true),
+            child: Container(
+              height: 140,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                gradient: _hasPhoto
+                    ? const LinearGradient(
+                  colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
+                  begin: Alignment.topLeft,
+                  end: Alignment.bottomRight,
+                )
+                    : null,
+                color: _hasPhoto ? null : const Color(0xFFFFE4EF),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: pink.withOpacity(0.2)),
+              ),
+              child: _hasPhoto
+                  ? null
+                  : Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  const Icon(Icons.add_photo_alternate_outlined,
+                      color: pink, size: 30),
+                  const SizedBox(height: 6),
+
+                  Text(
+                    'Tap to add a photo',
+                    style: TextStyle(
+                      color: pink,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 18),
+
+      Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border:
+            Border.all(color: pink.withOpacity(0.2), width: 1.5),
+      ),
+      child: TextField(
+        controller: _captionCtrl,
+        maxLines: 3,
+        maxLength: 140,
+        style: const TextStyle(
+          color: textColor,
+          fontSize: 14,
+          fontFamily: 'Georgia',
+      ),
+      decoration: InputDecoration(
+      hintText:
+      'What made this moment special?',
+        hintStyle: TextStyle(
+          color: textColor.withOpacity(0.4), fontSize: 13),
+        contentPadding: const EdgeInsets.all(14),
+        border: InputBorder.none,
+        counterStyle:
+          TextStyle(color: textColor.withOpacity(0.35)),
+          ),
+        ),
+      ),
+      const SizedBox(height: 20),
+
+      SizedBox(
+        width: double.infinity,
+        height: 52,
+        child: ElevatedButton(
+          onPressed: _submit,
+          style: ElevatedButton.styleFrom(
+            backgroundColor: pink,
+            foregroundColor: Colors.white,
+            elevation: 0,
+            shadowColor: Colors.transparent,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+           ),
+          child: const Text(
+            'Save to my album',
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+              letterSpacing: 0.3,
+            ),
+          ),
+        ),
+      ),
         ],
       ),
-    ),
-    ),
-        const SizedBox(height: 18),
-    Container(
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border:
-          Border.all(color: pink.withOpacity(0.2), width: 1.5),
-    ),
-    child: TextField(
-      controller: _captionCtrl,
-      maxLines: 3,
-      maxLength: 140,
-      style: const TextStyle(
-        color: textColor,
-        fontSize: 14,
-        fontFamily: 'Georgia',
-    ),
-    decoration: InputDecoration(
-    hintText:
-    'What made this moment special?',
-      hintStyle: TextStyle(
-        color: textColor.withOpacity(0.4), fontSize: 13),
-      contentPadding: const EdgeInsets.all(14),
-      border: InputBorder.none,
-      counterStyle:
-        TextStyle(color: textColor.withOpacity(0.35)),
-        ),
-      ),
-    ),
-    const SizedBox(height: 20),
-
-    SizedBox(
-      width: double.infinity,
-      height: 52,
-      child: ElevatedButton(
-        onPressed: _submit,
-        style: ElevatedButton.styleFrom(
-          backgroundColor: pink,
-          foregroundColor: Colors.white,
-          elevation: 0,
-          shadowColor: Colors.transparent,
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
-          ),
-         ),
-        child: const Text(
-          'Save to my album',
-          style: TextStyle(
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
-            letterSpacing: 0.3,
-          ),
-        ),
-      ),
-    ),
-      ],
-    ),
-  );
-}
+    );
+  }
   void _showImageSourceDialog() {
     showModalBottomSheet(
       context: context,
