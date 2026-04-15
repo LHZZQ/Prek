@@ -85,7 +85,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
           child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-          // Header
+
           Padding(
           padding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
           child: Column(
@@ -143,7 +143,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
                   ),
                 ),
 
-                // Grid or empty state
+
                 Expanded(
                   child: _memories.isEmpty
                       ? _buildEmptyState()
@@ -260,80 +260,78 @@ static const List<List<Color>> palettes = [
     return '${months[d.month - 1]} ${d.day}';
   }
 
-
-  Widget _buildImage() {
-    if (widget.memory.imagePath == 'placeholder') {
-      // Warm gradient placeholder until real images are picked
-      final List<List<Color>> palettes = [
-        [const Color(0xFFFFD6E8), const Color(0xFFFFA8CC)],
-        [const Color(0xFFFFEAB0), const Color(0xFFFFC567)],
-        [const Color(0xFFB3DEFF), const Color(0xFF6BB8F7)],
-        [const Color(0xFFD7F5D0), const Color(0xFF8ADBA0)],
-      ];
-      final p = palettes[widget.index % palettes.length];
-      return Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            colors: p,
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-          ),
-        ),
-        child: const Center(
-          child: Text('🌸', style: TextStyle(fontSize: 36)),
-        ),
-      );
-    }
-
-    return Image.file(
-      File(widget.memory.imagePath),
-      fit: BoxFit.cover,
-      width: double.infinity,
-      height: double.infinity,
-    );
-  }
-}
-
-class _EmptyState extends StatelessWidget {
-  static const Color pink = Color(0xFFFB7DA8);
-  static const Color textColor = Color(0xFF94697E);
-
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-          Text('📷', style: const TextStyle(fontSize: 52)),
-      const SizedBox(height: 16),
-      Text(
-        'No memories yet',
-        style: TextStyle(
-          fontFamily: 'Georgia',
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
-          color: textColor,
-        ),
-      ),
+    final colors = palettes[index % palettes.length];
 
-            const SizedBox(height: 8),
-            Text(
-              'Tap the button below to add your\nfirst happy moment!',
-              textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 14,
-                color: textColor.withOpacity(0.55),
-                height: 1.5,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: pink.withOpacity(0.08),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+
+            ClipRRect(
+              borderRadius: const BorderRadius.vertical(top: Radius.circular(16)),
+              child: Container(
+                height: 110,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  gradient: LinearGradient(
+                    colors: colors,
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                ),
+              ),
+            ),
+
+            Padding(
+              padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    memory.caption,
+                    style: const TextStyle(
+                      fontFamily: 'Georgia',
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      color: textColor,
+                      height: 1.35,
+                    ),
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  const SizedBox(height: 3),
+                  Text(
+                    _formatDate(memory.date),
+                    style: TextStyle(fontSize: 10, color: textColor.withOpacity(0.4)),
+                  ),
+                ],
               ),
             ),
           ],
+        ),
       ),
     );
   }
 }
 
+
 class _AddMemorySheet extends StatefulWidget {
-  final void Function(String caption, String imagePath) onAdd;
+  final void Function(String caption) onAdd;
 
   const _AddMemorySheet({required this.onAdd});
 
@@ -342,29 +340,14 @@ class _AddMemorySheet extends StatefulWidget {
 }
 
 class _AddMemorySheetState extends State<_AddMemorySheet> {
-  static const Color pink = Color(0xFFFB7DA8);
-  static const Color yellow = Color(0xFFFFC567);
-  static const Color textColor = Color(0xFF94697E);
-  static const Color bgTop = Color(0xFFFFF1F5);
-  static const Color pinkLight = Color(0xFFFFE4EF);
-
-  String? _pickedPath;
   final TextEditingController _captionCtrl = TextEditingController();
-  final ImagePicker _picker = ImagePicker();
+  bool _hasPhoto = false;
 
-  Future<void> _pickImage(ImageSource source) async {
-    final XFile? file = await _picker.pickImage(source: source);
-    if (file != null) {
-      setState(() => _pickedPath = file.path);
-    }
-  }
-
-  void _submit() {
-    final caption = _captionCtrl.text.trim();
-    if (caption.isEmpty) return;
-    widget.onAdd(caption, _pickedPath ?? 'placeholder');
-    Navigator.of(context).pop();
-  }
+  //static const Color pink = Color(0xFFFB7DA8);
+  //static const Color yellow = Color(0xFFFFC567);
+  //static const Color textColor = Color(0xFF94697E);
+  //static const Color bgTop = Color(0xFFFFF1F5);
+  //static const Color pinkLight = Color(0xFFFFE4EF);
 
   @override
   void dispose() {
@@ -372,52 +355,66 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     super.dispose();
   }
 
+  void _submit() {
+    final caption = _captionCtrl.text.trim();
+    if (caption.isEmpty) return;
+    widget.onAdd(caption);
+    Navigator.of(context).pop();
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
       decoration: const BoxDecoration(
         color: bgTop,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(28)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
+
       padding: EdgeInsets.only(
-        left: 22,
-        right: 22,
-        top: 20,
+        left: 20,
+        right: 20,
+        top: 16,
         bottom: MediaQuery.of(context).viewInsets.bottom + 24,
       ),
+
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-      // drag handle
+
       Center(
       child: Container(
-      width: 38,
+      width: 34,
         height: 4,
         decoration: BoxDecoration(
-          color: pink.withOpacity(0.3),
+          color: pink.withOpacity(0.25),
           borderRadius: BorderRadius.circular(4),
         ),
       ),
     ),
-    const SizedBox(height: 20),
+
+    const SizedBox(height: 18),
 
     Text(
-    'Capture a happy moment',
+    'Save a moment',
     style: const TextStyle(
     fontFamily: 'Georgia',
-    fontSize: 20,
+    fontSize: 19,
     fontWeight: FontWeight.w700,
     color: textColor,
+      ),
     ),
-    ),
-    const SizedBox(height: 4),
+    const SizedBox(height: 3),
     Text(
     'Pick a photo that makes you smile',
     style: TextStyle(
-    fontSize: 13, color: textColor.withOpacity(0.55)),
+    fontSize: 13,
+        color: textColor.withOpacity(0.5)),
     ),
-    const SizedBox(height: 20),
+
+    const SizedBox(height: 16),
+
     GestureDetector(
     onTap: () => _showImageSourceDialog(),
     child: Container(
@@ -573,7 +570,7 @@ class _MemoryFullScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
           children: [
-      // ── full-bleed image ───────────────
+
       Positioned.fill(
       child: memory.imagePath != 'placeholder'
       ? Image.file(
