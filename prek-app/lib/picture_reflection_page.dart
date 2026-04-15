@@ -1,91 +1,70 @@
 import 'package:flutter/material.dart';
 import 'dart:io';
 
+const Color pink = Color(0xFFFB7DA8);
+const Color textColor = Color(0xFF94697E);
+const Color bgColor = Color(0xFFFFF1F5);
+
 class MemoryCard {
-  final String imagePath;
   final String caption;
   final DateTime date;
 
-  const MemoryCard({
-  required this.imagePath,
-  required this.caption,
-  required this.date,
-  });
+  MemoryCard({
+    required this.caption,
+    required this.date
+  }
+  );
 }
 
 class PictureReflectionPage extends StatefulWidget {
-  const PictureReflectionPage({super.key});
+  final String selectedMood;
+
+  const PictureReflectionPage({super.key, required this.selectedMood});
 
   @override
   State<PictureReflectionPage> createState() => _PictureReflectionPageState();
 }
 
-class _PictureReflectionPageState extends State<PictureReflectionPage>
-    with TickerProviderStateMixin {
-  static const Color pink = Color(0xFFFB7DA8);
-  static const Color yellow = Color(0xFFFFC567);
-  static const Color blue = Color(0xFF058CD7);
-  static const Color softWhite = Color(0xFFFFFFFF);
-  static const Color textColor = Color(0xFF94697E);
-  static const Color bgTop = Color(0xFFFFF1F5);
-  static const Color bgBottom = Color(0xFFFFF8EE);
-  static const Color cardBg = Color(0xFFFFFFFF);
-  static const Color pinkLight = Color(0xFFFFE4EF);
+class _PictureReflectionPageState extends State<PictureReflectionPage> {
+
+    //with TickerProviderStateMixin {
+  //static const Color pink = Color(0xFFFB7DA8);
+  //static const Color yellow = Color(0xFFFFC567);
+  //static const Color blue = Color(0xFF058CD7);
+  //static const Color softWhite = Color(0xFFFFFFFF);
+  //static const Color textColor = Color(0xFF94697E);
+  //static const Color bgTop = Color(0xFFFFF1F5);
+  //static const Color bgBottom = Color(0xFFFFF8EE);
+  //static const Color cardBg = Color(0xFFFFFFFF);
+  //static const Color pinkLight = Color(0xFFFFE4EF);
 
   final List<MemoryCard> _memories = [
   MemoryCard(
-    imagePath: 'placeholder',
-    caption: 'N/A',
+    caption: 'Coffee with my friend',
     date: DateTime(2025, 1, 1),
   ),
   MemoryCard(
-    imagePath: 'placeholder',
-    caption: 'N/A',
+
+    caption: 'Pretty sunset',
     date: DateTime(2025, 2, 2),
   ),
   MemoryCard(
-    imagePath: 'placeholder',
-    caption: 'N/a',
+
+    caption: 'cute dog',
     date: DateTime(2025, 3, 3),
   ),
   ];
 
-  late final AnimationController _fabController;
-  late final Animation<double> _fabScale;
 
-  @override
-  void initState() {
-    super.initState();
-    _fabController = AnimationController(
-      vsync: this,
-      duration: const Duration(milliseconds: 200),
-    );
-    _fabScale = Tween<double>(begin: 1.0, end: 0.9).animate(
-      CurvedAnimation(parent: _fabController, curve: Curves.easeInOut),
-    );
-  }
-
-  @override
-  void dispose() {
-    _fabController.dispose();
-    super.dispose();
-  }
   void _openAddMemorySheet() {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => _AddMemorySheet(
-        onAdd: (caption, imagePath) {
+        onAdd: (caption) {
           setState(() {
-            _memories.insert(
-              0,
-              MemoryCard(
-                imagePath: imagePath,
-                caption: caption,
-                date: DateTime.now(),
-              ),
-            );
+            _memories.insert(0, MemoryCard(caption: caption, date: DateTime.now()));
           });
         },
       ),
@@ -93,298 +72,152 @@ class _PictureReflectionPageState extends State<PictureReflectionPage>
   }
 
   void _openMemory(MemoryCard memory) {
-    Navigator.of(context).push(
-      PageRouteBuilder(
-        transitionDuration: const Duration(milliseconds: 400),
-        pageBuilder: (_, animation, __) => FadeTransition(
-          opacity: animation,
-          child: _MemoryFullScreen(memory: memory),
-        ),
-      ),
-    );
+    Navigator.of(context).push(MaterialPageRoute(
+      builder: (_) => _MemoryFullScreen(memory: memory),
+    ));
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: bgTop,
-        body: CustomScrollView(
-            slivers: [
-          SliverAppBar(
-          expandedHeight: 180,
-          pinned: true,
-          backgroundColor: bgTop,
-          elevation: 0,
-          flexibleSpace: FlexibleSpaceBar(
-            background: _Header(),
-          ),
-          leading: const SizedBox.shrink(),
-          actions: const [SizedBox.shrink()],
-        ),
-
-        SliverToBoxAdapter(child: _SparkBanner(memories: _memories)),
-
-        SliverToBoxAdapter(
-            child: Padding(
-                padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
-                child: Row(
-                  children: [
-                  Text(
-                  'Your happy moments',
+        backgroundColor: bgColor,
+        body: SafeArea(
+          child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+          // Header
+          Padding(
+          padding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              RichText(
+                text: const TextSpan(
                   style: TextStyle(
                     fontFamily: 'Georgia',
-                    fontSize: 18,
+                    fontSize: 26,
                     fontWeight: FontWeight.w700,
                     color: textColor,
+                    height: 1.2,
                   ),
-                ),
-                    const Spacer(),
-                    Text(
-                      '${_memories.length} memories',
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: textColor.withOpacity(0.55),
-                      ),
+                  children: [
+                    TextSpan(text: 'Smile\n'),
+                    TextSpan(
+                      text: 'album',
+                      style: TextStyle(color: pink),
                     ),
                   ],
                 ),
-            ),
-        ),
-
-        _memories.isEmpty
-            ? SliverFillRemaining(child: _EmptyState())
-            : SliverPadding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 120),
-            sliver: SliverGrid(
-                gridDelegate:
-                const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 14,
-                  crossAxisSpacing: 14,
-                  childAspectRatio: 0.72,
-                ),
-              delegate: SliverChildBuilderDelegate(
-                    (context, index) => _MemoryTile(
-                  memory: _memories[index],
-                  index: index,
-                  onTap: () => _openMemory(_memories[index]),
-                ),
-                childCount: _memories.length,
               ),
-            ),
-        ),
+              const SizedBox(height: 4),
+              Text(
+                'Moments worth holding onto',
+                style: TextStyle(
+                  fontSize: 13,
+                  color: textColor.withOpacity(0.55),
+                ),
+              ),
             ],
+          ),
         ),
 
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: ScaleTransition(
-            scale: _fabScale,
-            child: GestureDetector(
-                onTapDown: (_) => _fabController.forward(),
-                onTapUp: (_) {
-                  _fabController.reverse();
-                  _openAddMemorySheet();
-                },
-                onTapCancel: () => _fabController.reverse(),
-                child: Container(
-                    height: 56,
-                    padding: const EdgeInsets.symmetric(horizontal: 28),
-                    decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [pink, Color(0xFFFF9BC0)],
-                      ),
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: pink.withOpacity(0.4),
-                          blurRadius: 16,
-                          offset: const Offset(0, 6),
-                        ),
-                      ],
-                    ),
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 0, 16, 8),
                   child: Row(
-                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.add_photo_alternate_rounded,
-                          color: softWhite, size: 22),
-                      const SizedBox(width: 10),
                       const Text(
-                        'Add a memory',
+                        'Your happy moments',
                         style: TextStyle(
-                          color: softWhite,
+                          fontFamily: 'Georgia',
+                          fontSize: 16,
                           fontWeight: FontWeight.w700,
-                          fontSize: 15,
-                          letterSpacing: 0.3,
+                          color: textColor,
                         ),
+                      ),
+                      const Spacer(),
+                      Text(
+                        '${_memories.length} saved',
+                        style: TextStyle(fontSize: 12, color: textColor.withOpacity(0.5)),
                       ),
                     ],
                   ),
                 ),
-            ),
-        ),
-    );
-  }
-}
 
-class _Header extends StatelessWidget {
-  static const Color pink = Color(0xFFFB7DA8);
-  static const Color yellow = Color(0xFFFFC567);
-  static const Color bgTop = Color(0xFFFFF1F5);
-  static const Color textColor = Color(0xFF94697E);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            colors: [bgTop, Color(0xFFFFF8EE)],
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
+                // Grid or empty state
+                Expanded(
+                  child: _memories.isEmpty
+                      ? _buildEmptyState()
+                      : GridView.builder(
+                    padding: const EdgeInsets.fromLTRB(14, 0, 14, 100),
+                    gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisSpacing: 10,
+                      crossAxisSpacing: 10,
+                      mainAxisExtent: 200,
+                    ),
+                    itemCount: _memories.length,
+                    itemBuilder: (context, index) => _MemoryTile(
+                      memory: _memories[index],
+                      index: index,
+                      onTap: () => _openMemory(_memories[index]),
+                    ),
+                  ),
+                ),
+              ],
           ),
         ),
-        child: SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.fromLTRB(22, 12, 22, 0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-              // decorative dots row
-              Row(
-              children: List.generate(
-              5,
-                    (i) => Container(
-                  margin: const EdgeInsets.only(right: 5),
-                  width: 8,
-                  height: 8,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    color: i % 2 == 0
-                        ? pink.withOpacity(0.35)
-                        : yellow.withOpacity(0.5),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 10),
-            RichText(
-                text: TextSpan(
-                    style: const TextStyle(
-                      fontFamily: 'Georgia',
-                      fontSize: 28,
-                      height: 1.25,
-                      color: textColor,
-                      fontWeight: FontWeight.w700,
-                    ),
-                  children: [
-                    const TextSpan(text: 'Your smile\n'),
-                    TextSpan(
-                      text: 'album',
-                      style: TextStyle(
-                        color: pink,
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                  ],
-                ),
-            ),
-                  const SizedBox(height: 6),
-                  Text(
-                    'Peek back at moments that made you glow',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: textColor.withOpacity(0.65),
-                    ),
-                  ),
-                ],
-              ),
-            ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _openAddMemorySheet,
+        backgroundColor: pink,
+        elevation: 4,
+        icon: const Icon(Icons.add_photo_alternate_rounded, color: Colors.white),
+        label: const Text(
+          'Add a memory',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w700,
+            fontSize: 14,
+          ),
         ),
+      ),
     );
   }
-}
-
-class _SparkBanner extends StatelessWidget {
-  final List<MemoryCard> memories;
-
-  static const Color pink = Color(0xFFFB7DA8);
-  static const Color yellow = Color(0xFFFFC567);
-  static const Color textColor = Color(0xFF94697E);
-  static const Color softWhite = Color(0xFFFFFFFF);
-
-  const _SparkBanner({required this.memories});
-
-  @override
-  Widget build(BuildContext context) {
-    if (memories.isEmpty) return const SizedBox.shrink();
-
-    final pick = memories[DateTime.now().millisecondsSinceEpoch % memories.length];
-    return Container(
-      margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        gradient: const LinearGradient(
-          colors: [Color(0xFFFFC567), Color(0xFFFFD98C)],
-          begin: Alignment.topLeft,
-          end: Alignment.bottomRight,
-        ),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: yellow.withOpacity(0.35),
-            blurRadius: 14,
-            offset: const Offset(0, 4),
+  Widget _buildEmptyState() {
+    return Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 60,
+            height: 60,
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFE4EF),
+              borderRadius: BorderRadius.circular(18),
+            ),
+            child: const Icon(Icons.photo_library_outlined, color: pink, size: 28),
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            'No memories yet',
+            style: TextStyle(
+              fontFamily: 'Georgia',
+              fontSize: 18,
+              fontWeight: FontWeight.w700,
+              color: textColor,
+            ),
+          ),
+          const SizedBox(height: 6),
+          Text(
+            'Add your first happy moment',
+            style: TextStyle(fontSize: 13, color: textColor.withOpacity(0.5)),
           ),
         ],
       ),
-        child: Row(
-          children: [
-          // sparkle icon
-          Container(
-          width: 46,
-          height: 46,
-          decoration: BoxDecoration(
-            color: softWhite.withOpacity(0.45),
-            borderRadius: BorderRadius.circular(14),
-          ),
-          child: const Center(
-            child: Text('✨', style: TextStyle(fontSize: 22)),
-          ),
-        ),
-
-        const SizedBox(width: 14),
-        Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              const Text(
-              'A moment to smile about',
-              style: TextStyle(
-                fontFamily: 'Georgia',
-                fontSize: 12,
-                fontWeight: FontWeight.w700,
-                color: softWhite,
-              ),
-            ),
-                const SizedBox(height: 3),
-                Text(
-                  '"${pick.caption}"',
-                  style: const TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w600,
-                    color: Color(0xFF7A4F00),
-                  ),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-           ),
-          ],
-        ),
     );
   }
 }
+
 
 class _MemoryTile extends StatefulWidget {
   final MemoryCard memory;
@@ -397,119 +230,36 @@ class _MemoryTile extends StatefulWidget {
     required this.onTap,
   });
 
-  @override
-  State<_MemoryTile> createState() => _MemoryTileState();
-}
-class _MemoryTileState extends State<_MemoryTile>
-    with SingleTickerProviderStateMixin {
-  static const Color pink = Color(0xFFFB7DA8);
-  static const Color textColor = Color(0xFF94697E);
-  static const Color cardBg = Color(0xFFFFFFFF);
 
-  late final AnimationController _ctrl;
-  late final Animation<double> _fadeSlide;
-
-  @override
-  void initState() {
-    super.initState();
-    _ctrl = AnimationController(
-      vsync: this,
-      duration: Duration(milliseconds: 400 + widget.index * 80),
-    )..forward();
-    _fadeSlide = CurvedAnimation(parent: _ctrl, curve: Curves.easeOut);
-  }
-
-  @override
-  void dispose() {
-    _ctrl.dispose();
-    super.dispose();
-  }
+static const List<List<Color>> palettes = [
+  [Color(0xFFFFD6E8),
+    Color(0xFFF9A8C9)],
+  [Color(0xFFFFEAB0),
+    Color(0xFFFAC95C)],
+  [Color(0xFFB8DAFF),
+    Color(0xFF79B8F5)],
+  [Color(0xFFD4EED0),
+    Color(0xFF9FD49A)],
+];
 
   String _formatDate(DateTime d) {
     const months = [
-      'Jan','Feb','Mar','Apr','May','Jun',
-      'Jul','Aug','Sep','Oct','Nov','Dec',
+      'Jan',
+      'Feb',
+      'Mar',
+      'Apr',
+      'May',
+      'Jun',
+      'Jul',
+      'Aug',
+      'Sep',
+      'Oct',
+      'Nov',
+      'Dec',
     ];
-    return '${months[d.month - 1]} ${d.day}, ${d.year}';
+    return '${months[d.month - 1]} ${d.day}';
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return FadeTransition(
-        opacity: _fadeSlide,
-        child: SlideTransition(
-            position: Tween<Offset>(
-              begin: const Offset(0, 0.12),
-              end: Offset.zero,
-            ).animate(_fadeSlide),
-            child: GestureDetector(
-                onTap: widget.onTap,
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: cardBg,
-                    borderRadius: BorderRadius.circular(20),
-                    boxShadow: [
-                      BoxShadow(
-                        color: pink.withOpacity(0.10),
-                        blurRadius: 12,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                    Expanded(
-                    child: ClipRRect(
-                    borderRadius: const BorderRadius.vertical(
-                    top: Radius.circular(20),
-                ),
-              child: _buildImage(),
-            ),
-        ),
-        Padding(
-            padding: const EdgeInsets.fromLTRB(12, 10, 12, 12),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-              Text(
-              widget.memory.caption,
-              style: const TextStyle(
-                fontFamily: 'Georgia',
-                fontSize: 13,
-                fontWeight: FontWeight.w600,
-                color: textColor,
-                height: 1.35,
-              ),
-              maxLines: 2,
-              overflow: TextOverflow.ellipsis,
-            ),
-            const SizedBox(height: 6),
-            Row(
-                children: [
-                Icon(Icons.calendar_today_rounded,
-                size: 10,
-                color: textColor.withOpacity(0.45)),
-            const SizedBox(width: 4),
-            Text(
-                _formatDate(widget.memory.date),
-                style: TextStyle(
-                  fontSize: 10.5,
-                  color: textColor.withOpacity(0.5),
-                ),
-            ),
-                ],
-            ),
-              ],
-            ),
-        ),
-                        ],
-                    ),
-                ),
-            ),
-        ),
-    );
-  }
 
   Widget _buildImage() {
     if (widget.memory.imagePath == 'placeholder') {
