@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'dart:io';
+import 'package:image_picker/image_picker.dart';
 
 const Color pink = Color(0xFFFB7DA8);
 const Color textColor = Color(0xFF94697E);
@@ -7,8 +9,9 @@ const Color bgColor = Color(0xFFFFF1F5);
 class MemoryCard {
   final String caption;
   final DateTime date;
+  final String? imagePath;
 
-  MemoryCard({required this.caption, required this.date});
+  MemoryCard({required this.caption, required this.date, this.imagePath});
 }
 
 class PictureReflectionPage extends StatefulWidget {
@@ -46,11 +49,15 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
       builder: (_) => _AddMemorySheet(
-        onAdd: (caption) {
+        onAdd: (caption, imagePath) {
           setState(() {
             _memories.insert(
               0,
-              MemoryCard(caption: caption, date: DateTime.now()),
+              MemoryCard(
+                caption: caption,
+                date: DateTime.now(),
+                imagePath: imagePath,
+              ),
             );
           });
         },
@@ -286,13 +293,17 @@ class _MemoryTile extends StatelessWidget {
               child: Container(
                 height: 110,
                 width: double.infinity,
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    colors: colors,
-                    begin: Alignment.topLeft,
-                    end: Alignment.bottomRight,
-                  ),
-                ),
+                child: memory.imagePath != null
+                    ? Image.network(memory.imagePath!, fit: BoxFit.cover)
+                    : Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: colors,
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                        ),
+                      ),
               ),
             ),
 
@@ -332,7 +343,7 @@ class _MemoryTile extends StatelessWidget {
 }
 
 class _AddMemorySheet extends StatefulWidget {
-  final void Function(String caption) onAdd;
+  final void Function(String caption, String? imagePath) onAdd;
 
   const _AddMemorySheet({required this.onAdd});
 
@@ -342,7 +353,8 @@ class _AddMemorySheet extends StatefulWidget {
 
 class _AddMemorySheetState extends State<_AddMemorySheet> {
   final TextEditingController _captionCtrl = TextEditingController();
-  bool _hasPhoto = false;
+  final ImagePicker _picker = ImagePicker();
+  String? _pickedImagePath;
 
   //static const Color pink = Color(0xFFFB7DA8);
 
@@ -360,10 +372,56 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     super.dispose();
   }
 
+  Future<void> _pickImage() async {
+    // Shows a bottom sheet letting the user choose camera or gallery
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
+      ),
+      builder: (_) => SafeArea(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            ListTile(
+              leading: const Icon(Icons.photo_library_rounded, color: pink),
+              title: const Text('Choose from gallery'),
+              onTap: () async {
+                Navigator.pop(context);
+                final image = await _picker.pickImage(
+                  source: ImageSource.gallery,
+                  imageQuality: 85,
+                );
+                if (image != null) {
+                  setState(() => _pickedImagePath = image.path);
+                }
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.camera_alt_rounded, color: pink),
+              title: const Text('Take a photo'),
+              onTap: () async {
+                Navigator.pop(context);
+                final image = await _picker.pickImage(
+                  source: ImageSource.camera,
+                  imageQuality: 85,
+                );
+                if (image != null) {
+                  setState(() => _pickedImagePath = image.path);
+                }
+              },
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _submit() {
     final caption = _captionCtrl.text.trim();
     if (caption.isEmpty) return;
-    widget.onAdd(caption);
+    widget.onAdd(caption, _pickedImagePath);
     Navigator.of(context).pop();
   }
 
@@ -374,14 +432,12 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
         color: bgColor,
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
-
       padding: EdgeInsets.only(
         left: 20,
         right: 20,
         top: 16,
         bottom: MediaQuery.of(context).viewInsets.bottom + 24,
       ),
-
       child: Column(
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -397,7 +453,6 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
             ),
           ),
           const SizedBox(height: 18),
-
           const Text(
             'Save a moment',
             style: TextStyle(
@@ -409,32 +464,51 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
           ),
           const SizedBox(height: 3),
           Text(
-            'Pick a photo that makes you smile',
+            'Add a photo and a short note',
             style: TextStyle(fontSize: 13, color: textColor.withOpacity(0.5)),
           ),
-
           const SizedBox(height: 16),
 
           GestureDetector(
-            onTap: () => setState(() => _hasPhoto = true),
+            onTap: _pickImage,
             child: Container(
               height: 140,
               width: double.infinity,
               decoration: BoxDecoration(
-                gradient: _hasPhoto
-                    ? const LinearGradient(
-                        colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
-
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      )
-                    : null,
-                color: _hasPhoto ? null : const Color(0xFFFFE4EF),
+                color: const Color(0xFFFFE4EF),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(color: pink.withOpacity(0.2)),
               ),
-              child: _hasPhoto
-                  ? null
+              clipBehavior: Clip.hardEdge,
+              child: _pickedImagePath != null
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.network(_pickedImagePath!, fit: BoxFit.cover),
+
+                        Positioned(
+                          bottom: 8,
+                          right: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.45),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
@@ -444,21 +518,19 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                           size: 30,
                         ),
                         const SizedBox(height: 6),
-
                         Text(
-                          'Tap to add a photo',
+                          'Tap to choose a photo',
                           style: TextStyle(
-                            color: pink,
-                            fontWeight: FontWeight.w600,
-                            fontSize: 14,
+                            color: pink.withOpacity(0.8),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
                           ),
                         ),
                       ],
                     ),
             ),
           ),
-
-          const SizedBox(height: 18),
+          const SizedBox(height: 14),
 
           Container(
             decoration: BoxDecoration(
@@ -490,7 +562,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
               ),
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
           SizedBox(
             width: double.infinity,
@@ -551,14 +623,18 @@ class _MemoryFullScreen extends StatelessWidget {
       backgroundColor: Colors.black,
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              gradient: LinearGradient(
-                colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
-                begin: Alignment.topLeft,
-                end: Alignment.bottomRight,
-              ),
-            ),
+          Positioned.fill(
+            child: memory.imagePath != null
+                ? Image.network(memory.imagePath!, fit: BoxFit.cover)
+                : Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                    ),
+                  ),
           ),
 
           Positioned(
