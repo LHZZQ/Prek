@@ -8,6 +8,9 @@ import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 import 'package:audioplayers/audioplayers.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/settings_page.dart';
 
 class VoiceReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -24,6 +27,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   bool _isSaving = false;
   Duration _recordDuration = Duration.zero;
   Timer? _timer;
+  int _selectedIndex = 0;
 
   final AudioRecorder _recorder = AudioRecorder();
   final AudioPlayer _previewPlayer = AudioPlayer();
@@ -36,6 +40,31 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     _recorder.dispose();
     _previewPlayer.dispose();
     super.dispose();
+  }
+
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return;
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
+    } else if (index == 2) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
+    }
   }
 
   Future<void> _startRecording({bool isTapped = false}) async {
@@ -98,7 +127,6 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     if (!_isRecording) return;
     _timer?.cancel();
     await _recorder.stop();
-    // Delete local file if exists
     if (!kIsWeb && _localFilePath != null) {
       final f = File(_localFilePath!);
       if (await f.exists()) f.delete();
@@ -190,22 +218,23 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
     const pink = Color(0xFFFB7DA8);
     const blue = Color(0xFF058CD7);
-    //const yellow = Color(0xFFFFC567);
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           "Voice Reflection",
           style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
         ),
-        iconTheme: const IconThemeData(color: textColor),
+        iconTheme: IconThemeData(color: textColor),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -271,7 +300,6 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                       ),
                     ),
                   ),
-
                   Positioned(
                     top: constraints.maxHeight * 0.30,
                     child: GestureDetector(
@@ -304,7 +332,11 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                         decoration: BoxDecoration(
                           color: _isCancelling
                               ? Colors.redAccent
-                              : (_isRecording ? blue : Colors.white),
+                              : (_isRecording
+                                    ? blue
+                                    : (isDark
+                                          ? Colors.grey[800]
+                                          : Colors.white)),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
@@ -330,7 +362,6 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                       ),
                     ),
                   ),
-
                   Positioned(
                     top: constraints.maxHeight * 0.52,
                     child: Container(
@@ -347,7 +378,6 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                       ),
                     ),
                   ),
-
                   Positioned(
                     bottom: 20 * hUnit,
                     left: 30,
@@ -365,7 +395,9 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               ActionChip(
-                                backgroundColor: Colors.white,
+                                backgroundColor: isDark
+                                    ? Colors.grey[800]
+                                    : Colors.white,
                                 side: BorderSide.none,
                                 label: Text(
                                   _isPreviewing ? "Stop" : "Preview",
@@ -380,7 +412,9 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               ),
                               const SizedBox(width: 12),
                               ActionChip(
-                                backgroundColor: Colors.white,
+                                backgroundColor: isDark
+                                    ? Colors.grey[800]
+                                    : Colors.white,
                                 side: BorderSide.none,
                                 label: const Text(
                                   "Redo",
@@ -405,31 +439,26 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                         Container(
                           width: double.infinity,
                           height: 62,
-                          //gradient wrapper for button
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(40),
                             gradient: const LinearGradient(
                               begin: Alignment.centerLeft,
                               end: Alignment.centerRight,
                               colors: [
-                                Color(0xFFFFC567), // yellow
-                                Color(0xFFFB7DA8), // pink
-                                Color(0xFF058CD7), // blue
+                                Color(0xFFFFC567),
+                                Color(0xFFFB7DA8),
+                                Color(0xFF058CD7),
                               ],
                             ),
                             boxShadow: [
                               BoxShadow(
-                                color: Colors.pinkAccent.withValues(
-                                  alpha: 0.25,
-                                ),
+                                color: Colors.pinkAccent.withOpacity(0.25),
                                 blurRadius: 15,
                                 offset: const Offset(0, 6),
                               ),
                             ],
                           ),
-
                           child: ElevatedButton(
-                            //save button
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Colors.transparent,
                               shadowColor: Colors.transparent,
@@ -448,7 +477,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                                 ? const CircularProgressIndicator(
                                     color: Colors.white,
                                   )
-                                : Text(
+                                : const Text(
                                     "Save Reflection",
                                     style: TextStyle(
                                       color: Colors.white,
@@ -466,6 +495,32 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
             ),
           );
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: navBarBg,
+        selectedItemColor: const Color(0xFFFB7DA8),
+        unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history_rounded),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_rounded),
+            label: 'Settings',
+          ),
+        ],
       ),
     );
   }
