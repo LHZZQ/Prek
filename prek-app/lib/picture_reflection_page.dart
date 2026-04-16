@@ -34,7 +34,9 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
 
   final List<MemoryCard> _memories = [
     MemoryCard(caption: 'Coffee with my friend', date: DateTime(2025, 1, 1)),
+
     MemoryCard(caption: 'Pretty sunset', date: DateTime(2025, 2, 2)),
+
     MemoryCard(caption: 'cute dog', date: DateTime(2025, 3, 3)),
   ];
 
@@ -66,10 +68,17 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: bgColor,
+      extendBodyBehindAppBar: true,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        iconTheme: const IconThemeData(color: textColor),
+      ),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
               child: Column(
@@ -87,7 +96,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
                       children: [
                         TextSpan(text: 'Capture\n'),
                         TextSpan(
-                          text: 'happy moments',
+                          text: 'Happy Moments',
                           style: TextStyle(color: pink),
                         ),
                       ],
@@ -336,9 +345,13 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
   bool _hasPhoto = false;
 
   //static const Color pink = Color(0xFFFB7DA8);
+
   //static const Color yellow = Color(0xFFFFC567);
+
   //static const Color textColor = Color(0xFF94697E);
+
   //static const Color bgTop = Color(0xFFFFF1F5);
+
   //static const Color pinkLight = Color(0xFFFFE4EF);
 
   @override
@@ -411,6 +424,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                 gradient: _hasPhoto
                     ? const LinearGradient(
                         colors: [Color(0xFFFFD6E8), Color(0xFFF9A8C9)],
+
                         begin: Alignment.topLeft,
                         end: Alignment.bottomRight,
                       )
@@ -527,6 +541,7 @@ class _MemoryFullScreen extends StatelessWidget {
       'November',
       'December',
     ];
+
     return '${months[d.month - 1]} ${d.day}, ${d.year}';
   }
 
