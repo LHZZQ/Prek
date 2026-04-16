@@ -1,3 +1,4 @@
+import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:_2025_prek/reflection_page.dart';
 import 'package:_2025_prek/task_selection_page.dart';
 import 'package:_2025_prek/voice_reflection_page.dart';
@@ -47,25 +48,21 @@ void main() {
   testWidgets('navigates to voice reflection page', (tester) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
-
     await tester.tap(find.text('Voice Reflection'));
     await tester.pumpAndSettle();
-
     expect(find.byType(VoiceReflectionPage), findsOneWidget);
-    expect(find.text('Voice Reflection'), findsOneWidget);
+    expect(find.byType(TaskSelectionPage), findsNothing);
   });
 
-  // For now, the lookbook option doesn't navigate anywhere
-  // will update this test when we add lookbook
-  testWidgets('lookbook keeps user on task selection page', (tester) async {
+  testWidgets('lookbook opens picture reflection page', (tester) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
 
     await tester.tap(find.text('Lookbook'));
     await tester.pumpAndSettle();
 
-    expect(find.byType(TaskSelectionPage), findsOneWidget);
-    expect(find.text('You are feeling Happy today'), findsOneWidget);
+    expect(find.byType(PictureReflectionPage), findsOneWidget);
+    expect(find.byType(TaskSelectionPage), findsNothing);
   });
 
   testWidgets('app bar back button pops to previous page', (tester) async {
