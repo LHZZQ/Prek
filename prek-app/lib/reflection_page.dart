@@ -20,13 +20,25 @@ class _ReflectionPageState extends State<ReflectionPage> {
   void _onItemTapped(int index) {
     if (index == _selectedIndex) return;
     if (index == 0) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
     } else if (index == 1) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const EntryHistoryPage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
     } else if (index == 2) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
     } else if (index == 3) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
     }
   }
 
@@ -45,7 +57,10 @@ class _ReflectionPageState extends State<ReflectionPage> {
         centerTitle: true,
         title: Text(
           "Reflection 🌸",
-          style: TextStyle(color: currentTextColor, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: currentTextColor,
+            fontWeight: FontWeight.w600,
+          ),
         ),
         iconTheme: IconThemeData(color: currentTextColor),
       ),
@@ -102,7 +117,9 @@ class _ReflectionPageState extends State<ReflectionPage> {
                               style: TextStyle(color: currentTextColor),
                               decoration: InputDecoration(
                                 hintText: "Write your reflection here...",
-                                hintStyle: TextStyle(color: currentTextColor.withOpacity(0.5)),
+                                hintStyle: TextStyle(
+                                  color: currentTextColor.withOpacity(0.5),
+                                ),
                                 contentPadding: const EdgeInsets.all(20),
                                 border: InputBorder.none,
                               ),
@@ -160,7 +177,9 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text("Error saving reflection: $e"),
+                                      content: Text(
+                                        "Error saving reflection: $e",
+                                      ),
                                       backgroundColor: Colors.redAccent,
                                     ),
                                   );
@@ -195,10 +214,22 @@ class _ReflectionPageState extends State<ReflectionPage> {
         selectedItemColor: const Color(0xFFFB7DA8),
         unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'History'),
-          BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: 'Profile'),
-          BottomNavigationBarItem(icon: Icon(Icons.settings_rounded), label: 'Settings'),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history_rounded),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_rounded),
+            label: 'Settings',
+          ),
         ],
       ),
     );
