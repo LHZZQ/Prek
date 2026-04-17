@@ -62,9 +62,7 @@ void main() {
   }
 
   Future<void> pumpEntryHistoryPage(WidgetTester tester) async {
-    await tester.pumpWidget(
-      const MaterialApp(home: EntryHistoryPage()),
-    );
+    await tester.pumpWidget(const MaterialApp(home: EntryHistoryPage()));
     await tester.pump();
     await tester.pumpAndSettle();
   }
