@@ -10,18 +10,12 @@ void main() {
   }) {
     return MaterialApp(
       home: Scaffold(
-        body: GratitudeTile(
-          entry: entry,
-          onDeleted: onDeleted ?? () {},
-        ),
+        body: GratitudeTile(entry: entry, onDeleted: onDeleted ?? () {}),
       ),
     );
   }
 
-  GratitudeEntry makeEntry({
-    String? mood = 'Happy',
-    String? audioAssetPath,
-  }) {
+  GratitudeEntry makeEntry({String? mood = 'Happy', String? audioAssetPath}) {
     return GratitudeEntry(
       id: 'entry-1',
       userId: 'user-1',
@@ -36,9 +30,7 @@ void main() {
     tester,
   ) async {
     await tester.pumpWidget(
-      buildTestApp(
-        entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a'),
-      ),
+      buildTestApp(entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a')),
     );
 
     expect(find.text('I am grateful for sunshine'), findsOneWidget);
@@ -49,14 +41,8 @@ void main() {
     expect(find.byIcon(Icons.delete_outline), findsOneWidget);
   });
 
-  testWidgets('hides UI and shows delete confirmation dialog', (
-    tester,
-  ) async {
-    await tester.pumpWidget(
-      buildTestApp(
-        entry: makeEntry(mood: null),
-      ),
-    );
+  testWidgets('hides UI and shows delete confirmation dialog', (tester) async {
+    await tester.pumpWidget(buildTestApp(entry: makeEntry(mood: null)));
 
     expect(find.text('Happy'), findsNothing);
     expect(find.byType(Chip), findsNothing);
