@@ -165,9 +165,8 @@ void main() {
       await signInTestUser();
 
       expect(
-        () => gratitude_service.saveGratitudeEntry(
-          text: 'force insert failure',
-        ),
+        () =>
+            gratitude_service.saveGratitudeEntry(text: 'force insert failure'),
         throwsA(
           isA<Exception>().having(
             (error) => error.toString(),
