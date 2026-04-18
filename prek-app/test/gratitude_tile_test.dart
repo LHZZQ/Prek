@@ -22,7 +22,8 @@ void main() {
       return http.Response('[]', 200, headers: headers, request: request);
     }
 
-    if (path.contains('/storage/v1/object/gratitude-audio') && request.method == 'DELETE') {
+    if (path.contains('/storage/v1/object/gratitude-audio') &&
+        request.method == 'DELETE') {
       final body = jsonDecode(request.body);
       if (body is List) {
         removedAudioPaths.addAll(body.cast<String>());
@@ -86,9 +87,7 @@ void main() {
     );
   }
 
-  testWidgets('renders mood and audio', (
-    tester,
-  ) async {
+  testWidgets('renders mood and audio', (tester) async {
     await tester.pumpWidget(
       buildTestApp(entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a')),
     );
@@ -124,10 +123,7 @@ void main() {
 
   testWidgets('dark theme', (tester) async {
     await tester.pumpWidget(
-      buildTestApp(
-        entry: makeEntry(),
-        theme: ThemeData.dark(),
-      ),
+      buildTestApp(entry: makeEntry(), theme: ThemeData.dark()),
     );
 
     final card = tester.widget<Card>(find.byType(Card));
