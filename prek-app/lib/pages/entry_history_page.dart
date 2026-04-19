@@ -3,6 +3,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/gratitude_entry.dart';
 import '../utils/time_utils.dart';
 import '../widgets/gratitude_tile.dart';
+import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/settings_page.dart';
 
 class EntryHistoryPage extends StatefulWidget {
   const EntryHistoryPage({super.key});
@@ -13,14 +16,27 @@ class EntryHistoryPage extends StatefulWidget {
 
 class _EntryHistoryPageState extends State<EntryHistoryPage> {
   final supabase = Supabase.instance.client;
-
   List<GratitudeEntry> items = [];
   bool loading = true;
+  int _selectedIndex = 1;
 
   @override
   void initState() {
     super.initState();
     _loadEntries();
+  }
+
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return;
+    if (index == 0) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+    } else if (index == 1) {
+      return;
+    } else if (index == 2) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+    } else if (index == 3) {
+      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+    }
   }
 
   Future<void> _loadEntries() async {
@@ -42,6 +58,8 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
+
     Widget buildBackground(Widget child) {
       return Container(
         decoration: BoxDecoration(
@@ -53,17 +71,15 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
                 : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
-
         child: child,
       );
     }
 
     if (items.isEmpty) {
       return Scaffold(
-        backgroundColor: isDark ? Color(0xFF2A2A3D) : topBarColor,
+        backgroundColor: isDark ? const Color(0xFF2A2A3D) : topBarColor,
         appBar: AppBar(
           title: const Text('Gratitude History'),
-
           elevation: 0,
           foregroundColor: textColor,
         ),
@@ -72,20 +88,18 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
             child: Text(
               "No entries yet.\nAdd your first gratitude today!",
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.titleMedium?.copyWith(color: textColor),
+              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: textColor),
             ),
           ),
         ),
+        bottomNavigationBar: _buildNavBar(isDark, navBarBg),
       );
     }
 
     return Scaffold(
-      backgroundColor: isDark ? Color(0xFF2A2A3D) : topBarColor,
+      backgroundColor: isDark ? const Color(0xFF2A2A3D) : topBarColor,
       appBar: AppBar(
         title: const Text('Gratitude History'),
-
         elevation: 0,
         foregroundColor: textColor,
       ),
@@ -94,12 +108,9 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
           itemCount: items.length,
           itemBuilder: (_, i) {
             final e = items[i];
-            final showHeader =
-                i == 0 || !sameDay(e.createdAt, items[i - 1].createdAt);
-
+            final showHeader = i == 0 || !sameDay(e.createdAt, items[i - 1].createdAt);
             String two(int n) => n.toString().padLeft(2, '0');
-            final dateStr =
-                '${e.createdAt.year}-${two(e.createdAt.month)}-${two(e.createdAt.day)}';
+            final dateStr = '${e.createdAt.year}-${two(e.createdAt.month)}-${two(e.createdAt.day)}';
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,6 +139,24 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
           },
         ),
       ),
+      bottomNavigationBar: _buildNavBar(isDark, navBarBg),
+    );
+  }
+
+  Widget _buildNavBar(bool isDark, Color navBarBg) {
+    return BottomNavigationBar(
+      currentIndex: _selectedIndex,
+      onTap: _onItemTapped,
+      type: BottomNavigationBarType.fixed,
+      backgroundColor: navBarBg,
+      selectedItemColor: const Color(0xFFFB7DA8),
+      unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
+      items: const [
+        BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
+        BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'History'),
+        BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: 'Profile'),
+        BottomNavigationBarItem(icon: Icon(Icons.settings_rounded), label: 'Settings'),
+      ],
     );
   }
 }
