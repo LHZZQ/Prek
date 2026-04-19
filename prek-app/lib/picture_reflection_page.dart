@@ -70,6 +70,12 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
     );
   }
 
+  void _deleteMemory(int index) {
+    setState(() {
+      _memories.removeAt(index);
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -162,6 +168,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
                         memory: _memories[index],
                         index: index,
                         onTap: () => _openMemory(_memories[index]),
+                        onDelete: () => _deleteMemory(index),
                       ),
                     ),
             ),
@@ -232,11 +239,13 @@ class _MemoryTile extends StatelessWidget {
   final MemoryCard memory;
   final int index;
   final VoidCallback onTap;
+  final VoidCallback onDelete;
 
   const _MemoryTile({
     required this.memory,
     required this.index,
     required this.onTap,
+    required this.onDelete,
   });
 
   static const List<List<Color>> palettes = [
@@ -289,22 +298,43 @@ class _MemoryTile extends StatelessWidget {
               borderRadius: const BorderRadius.vertical(
                 top: Radius.circular(16),
               ),
-              child: Container(
-                height: 110,
-                width: double.infinity,
-                child: memory.imagePath != null
-                    ? Image.network(memory.imagePath!, fit: BoxFit.cover)
-                    : Container(
-                        decoration: BoxDecoration(
-                          gradient: LinearGradient(
-                            colors: colors,
-                            begin: Alignment.topLeft,
-                            end: Alignment.bottomRight,
+              child: Stack(
+              children: [
+                Container(
+                  height: 110,
+                  width: double.infinity,
+                  child: memory.imagePath != null
+                      ? Image.network(memory.imagePath!, fit: BoxFit.cover)
+                      : Container(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              colors: colors,
+                              begin: Alignment.topLeft,
+                              end: Alignment.bottomRight,
+                            ),
                           ),
                         ),
+                ),
+                Positioned(
+                  top: 6,
+                  right: 6,
+                  child: GestureDetector(
+                    onTap: onDelete,
+                    child: Container(
+                      width: 26,
+                      height: 26,
+                      decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(0.45),
+                        borderRadius: BorderRadius.circular(8),
                       ),
+                      child: const Icon(Icons.close_rounded, color: Colors.white, size: 15),
+                    ),
+                  ),
+                ),
+              ],
               ),
             ),
+
 
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
