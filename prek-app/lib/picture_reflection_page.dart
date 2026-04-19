@@ -372,49 +372,13 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
   }
 
   Future<void> _pickImage() async {
-    // Shows a bottom sheet letting the user choose camera or gallery
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-      ),
-      builder: (_) => SafeArea(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ListTile(
-              leading: const Icon(Icons.photo_library_rounded, color: pink),
-              title: const Text('Choose from gallery'),
-              onTap: () async {
-                Navigator.pop(context);
-                final image = await _picker.pickImage(
-                  source: ImageSource.gallery,
-                  imageQuality: 85,
-                );
-                if (image != null) {
-                  setState(() => _pickedImagePath = image.path);
-                }
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.camera_alt_rounded, color: pink),
-              title: const Text('Take a photo'),
-              onTap: () async {
-                Navigator.pop(context);
-                final image = await _picker.pickImage(
-                  source: ImageSource.camera,
-                  imageQuality: 85,
-                );
-                if (image != null) {
-                  setState(() => _pickedImagePath = image.path);
-                }
-              },
-            ),
-          ],
-        ),
-      ),
+    final image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 85,
     );
+    if (image != null) {
+      setState(() => _pickedImagePath = image.path);
+    }
   }
 
   void _submit() {
