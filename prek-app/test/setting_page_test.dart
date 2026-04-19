@@ -50,10 +50,7 @@ void main() {
     await pumpSettingsPage(tester);
 
     expect(
-      find.descendant(
-        of: find.byType(AppBar),
-        matching: find.text('Settings'),
-      ),
+      find.descendant(of: find.byType(AppBar), matching: find.text('Settings')),
       findsOneWidget,
     );
     expect(find.widgetWithText(ElevatedButton, 'Change Name'), findsOneWidget);
