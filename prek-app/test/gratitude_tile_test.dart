@@ -154,10 +154,7 @@ void main() {
     );
   }
 
-  GratitudeEntry makeEntry({
-    String? mood = 'Happy',
-    String? audioAssetPath,
-  }) {
+  GratitudeEntry makeEntry({String? mood = 'Happy', String? audioAssetPath}) {
     return GratitudeEntry(
       id: 'entry-1',
       userId: 'user-1',
@@ -364,9 +361,7 @@ void main() {
     expect(controller.calls, ['stop', 'play', 'pause']);
   });
 
-  testWidgets('updates timer', (
-    tester,
-  ) async {
+  testWidgets('updates timer', (tester) async {
     final controller = makeAudioController();
 
     await tester.pumpWidget(
