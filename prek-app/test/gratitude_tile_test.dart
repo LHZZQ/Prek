@@ -1,6 +1,8 @@
+import 'dart:async';
 import 'dart:convert';
 import 'package:_2025_prek/models/gratitude_entry.dart';
 import 'package:_2025_prek/widgets/gratitude_tile.dart';
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:http/http.dart' as http;
@@ -8,10 +10,62 @@ import 'package:http/testing.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+class FakeGratitudeAudioController implements GratitudeAudioController {
+  final positionController = StreamController<Duration>.broadcast();
+  final durationController = StreamController<Duration>.broadcast();
+  final stateController = StreamController<PlayerState>.broadcast();
+
+  final calls = <String>[];
+  String? lastPlayedUrl;
+  Duration? lastSeekPosition;
+  bool failOnPlay = false;
+
+  @override
+  Stream<Duration> get onPositionChanged => positionController.stream;
+
+  @override
+  Stream<Duration> get onDurationChanged => durationController.stream;
+
+  @override
+  Stream<PlayerState> get onPlayerStateChanged => stateController.stream;
+
+  @override
+  Future<void> play(String publicUrl) async {
+    calls.add('play');
+    lastPlayedUrl = publicUrl;
+    if (failOnPlay) {
+      throw Exception('play failed');
+    }
+  }
+
+  @override
+  Future<void> pause() async {
+    calls.add('pause');
+  }
+
+  @override
+  Future<void> stop() async {
+    calls.add('stop');
+  }
+
+  @override
+  Future<void> seek(Duration position) async {
+    calls.add('seek');
+    lastSeekPosition = position;
+  }
+
+  Future<void> dispose() async {
+    await positionController.close();
+    await durationController.close();
+    await stateController.close();
+  }
+}
+
 void main() {
   late MockClient mockHttpClient;
   final deletedEntryIds = <String>[];
   final removedAudioPaths = <String>[];
+  final audioControllers = <FakeGratitudeAudioController>[];
   var failDeleteRequests = false;
 
   Future<http.Response> handleRequest(http.Request request) async {
@@ -68,6 +122,13 @@ void main() {
     mockHttpClient.close();
   });
 
+  tearDown(() async {
+    for (final controller in audioControllers) {
+      await controller.dispose();
+    }
+    audioControllers.clear();
+  });
+
   setUp(() {
     deletedEntryIds.clear();
     removedAudioPaths.clear();
@@ -78,16 +139,25 @@ void main() {
     required GratitudeEntry entry,
     VoidCallback? onDeleted,
     ThemeData? theme,
+    GratitudeAudioController? audioController,
   }) {
     return MaterialApp(
       theme: theme ?? ThemeData(useMaterial3: false),
       home: Scaffold(
-        body: GratitudeTile(entry: entry, onDeleted: onDeleted ?? () {}),
+        body: GratitudeTile(
+          entry: entry,
+          onDeleted: onDeleted ?? () {},
+          audioController:
+              audioController ?? SharedGratitudeAudioController.instance,
+        ),
       ),
     );
   }
 
-  GratitudeEntry makeEntry({String? mood = 'Happy', String? audioAssetPath}) {
+  GratitudeEntry makeEntry({
+    String? mood = 'Happy',
+    String? audioAssetPath,
+  }) {
     return GratitudeEntry(
       id: 'entry-1',
       userId: 'user-1',
@@ -97,6 +167,27 @@ void main() {
       audioAssetPath: audioAssetPath,
     );
   }
+
+  FakeGratitudeAudioController makeAudioController() {
+    final controller = FakeGratitudeAudioController();
+    audioControllers.add(controller);
+    return controller;
+  }
+
+  test('normalize path removes prefixes and spaces', () {
+    expect(
+      normalizeGratitudeStoragePath(' /assets/user-1/audio-1.m4a '),
+      'user-1/audio-1.m4a',
+    );
+    expect(
+      normalizeGratitudeStoragePath('assets/user-1/audio-2.m4a'),
+      'user-1/audio-2.m4a',
+    );
+    expect(
+      normalizeGratitudeStoragePath('/user-1/audio-3.m4a'),
+      'user-1/audio-3.m4a',
+    );
+  });
 
   testWidgets('renders text mood time and audio controls', (tester) async {
     await tester.pumpWidget(
@@ -226,5 +317,120 @@ void main() {
 
     expect(onDeletedCalled, isFalse);
     expect(find.textContaining('Failed to delete:'), findsOneWidget);
+  });
+
+  testWidgets('play button stops previous audio and plays normalized url', (
+    tester,
+  ) async {
+    final controller = makeAudioController();
+
+    await tester.pumpWidget(
+      buildTestApp(
+        entry: makeEntry(audioAssetPath: ' /assets/user-1/audio-9.m4a '),
+        audioController: controller,
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.play_circle));
+    await tester.pumpAndSettle();
+
+    expect(controller.calls, ['stop', 'play']);
+    expect(
+      controller.lastPlayedUrl,
+      'http://localhost/storage/v1/object/public/gratitude-audio/user-1/audio-9.m4a',
+    );
+  });
+
+  testWidgets('pause button', (tester) async {
+    final controller = makeAudioController();
+
+    await tester.pumpWidget(
+      buildTestApp(
+        entry: makeEntry(audioAssetPath: 'user-1/audio-2.m4a'),
+        audioController: controller,
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.play_circle));
+    await tester.pump();
+    controller.stateController.add(PlayerState.playing);
+    await tester.pump();
+
+    expect(find.byIcon(Icons.pause_circle), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.pause_circle));
+    await tester.pumpAndSettle();
+
+    expect(controller.calls, ['stop', 'play', 'pause']);
+  });
+
+  testWidgets('updates timer', (
+    tester,
+  ) async {
+    final controller = makeAudioController();
+
+    await tester.pumpWidget(
+      buildTestApp(
+        entry: makeEntry(audioAssetPath: 'user-1/audio-3.m4a'),
+        audioController: controller,
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.play_circle));
+    await tester.pump();
+    controller.stateController.add(PlayerState.playing);
+    controller.durationController.add(const Duration(seconds: 40));
+    controller.positionController.add(const Duration(seconds: 10));
+    await tester.pump();
+
+    expect(find.text('00:10'), findsOneWidget);
+
+    final slider = tester.widget<Slider>(find.byType(Slider));
+    slider.onChanged!(0.5);
+    await tester.pumpAndSettle();
+
+    expect(controller.lastSeekPosition, const Duration(seconds: 20));
+  });
+
+  testWidgets('resets playback UI when finished', (tester) async {
+    final controller = makeAudioController();
+
+    await tester.pumpWidget(
+      buildTestApp(
+        entry: makeEntry(audioAssetPath: 'user-1/audio-4.m4a'),
+        audioController: controller,
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.play_circle));
+    await tester.pump();
+    controller.stateController.add(PlayerState.playing);
+    controller.durationController.add(const Duration(seconds: 20));
+    controller.positionController.add(const Duration(seconds: 8));
+    await tester.pump();
+
+    expect(find.text('00:08'), findsOneWidget);
+
+    controller.stateController.add(PlayerState.completed);
+    await tester.pump();
+
+    expect(find.byIcon(Icons.play_circle), findsOneWidget);
+    expect(find.text('00:00'), findsOneWidget);
+  });
+
+  testWidgets('shows snackbar when fails', (tester) async {
+    final controller = makeAudioController()..failOnPlay = true;
+
+    await tester.pumpWidget(
+      buildTestApp(
+        entry: makeEntry(audioAssetPath: 'assets/user-1/audio-error.m4a'),
+        audioController: controller,
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.play_circle));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Could not play audio'), findsOneWidget);
   });
 }
