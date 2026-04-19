@@ -3,6 +3,7 @@ import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
+import 'picture_reflection_page.dart';
 import 'reflection_page.dart';
 import 'voice_reflection_page.dart';
 
@@ -152,7 +153,16 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   iconBg: pink.withOpacity(0.2),
                   title: "Lookbook",
                   subtitle: "Visualize your journey through photos",
-                  onTap: () {},
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => PictureReflectionPage(
+                          selectedMood: widget.selectedMood,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
