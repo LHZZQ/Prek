@@ -299,42 +299,45 @@ class _MemoryTile extends StatelessWidget {
                 top: Radius.circular(16),
               ),
               child: Stack(
-              children: [
-                Container(
-                  height: 110,
-                  width: double.infinity,
-                  child: memory.imagePath != null
-                      ? Image.network(memory.imagePath!, fit: BoxFit.cover)
-                      : Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: colors,
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
+                children: [
+                  Container(
+                    height: 110,
+                    width: double.infinity,
+                    child: memory.imagePath != null
+                        ? Image.network(memory.imagePath!, fit: BoxFit.cover)
+                        : Container(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                colors: colors,
+                                begin: Alignment.topLeft,
+                                end: Alignment.bottomRight,
+                              ),
                             ),
                           ),
+                  ),
+                  Positioned(
+                    top: 6,
+                    right: 6,
+                    child: GestureDetector(
+                      onTap: onDelete,
+                      child: Container(
+                        width: 26,
+                        height: 26,
+                        decoration: BoxDecoration(
+                          color: Colors.black.withOpacity(0.45),
+                          borderRadius: BorderRadius.circular(8),
                         ),
-                ),
-                Positioned(
-                  top: 6,
-                  right: 6,
-                  child: GestureDetector(
-                    onTap: onDelete,
-                    child: Container(
-                      width: 26,
-                      height: 26,
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.45),
-                        borderRadius: BorderRadius.circular(8),
+                        child: const Icon(
+                          Icons.close_rounded,
+                          color: Colors.white,
+                          size: 15,
+                        ),
                       ),
-                      child: const Icon(Icons.close_rounded, color: Colors.white, size: 15),
                     ),
                   ),
-                ),
-              ],
+                ],
               ),
             ),
-
 
             Padding(
               padding: const EdgeInsets.fromLTRB(10, 8, 10, 8),
