@@ -49,7 +49,13 @@ void main() {
     useLargeViewport(tester);
     await pumpSettingsPage(tester);
 
-    expect(find.text('Settings'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(AppBar),
+        matching: find.text('Settings'),
+      ),
+      findsOneWidget,
+    );
     expect(find.widgetWithText(ElevatedButton, 'Change Name'), findsOneWidget);
     expect(find.widgetWithText(ElevatedButton, 'Change Email'), findsOneWidget);
     expect(
@@ -94,6 +100,8 @@ void main() {
     await pumpSettingsPage(tester);
 
     await tester.tap(find.text('Logout'));
+    await tester.pumpAndSettle();
+    await tester.tap(find.widgetWithText(TextButton, 'Logout'));
     await tester.pumpAndSettle();
 
     expect(find.byType(Login), findsOneWidget);
