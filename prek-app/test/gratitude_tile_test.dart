@@ -82,18 +82,12 @@ void main() {
     return MaterialApp(
       theme: theme ?? ThemeData(useMaterial3: false),
       home: Scaffold(
-        body: GratitudeTile(
-          entry: entry,
-          onDeleted: onDeleted ?? () {},
-        ),
+        body: GratitudeTile(entry: entry, onDeleted: onDeleted ?? () {}),
       ),
     );
   }
 
-  GratitudeEntry makeEntry({
-    String? mood = 'Happy',
-    String? audioAssetPath,
-  }) {
+  GratitudeEntry makeEntry({String? mood = 'Happy', String? audioAssetPath}) {
     return GratitudeEntry(
       id: 'entry-1',
       userId: 'user-1',
@@ -106,9 +100,7 @@ void main() {
 
   testWidgets('renders text mood time and audio controls', (tester) async {
     await tester.pumpWidget(
-      buildTestApp(
-        entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a'),
-      ),
+      buildTestApp(entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a')),
     );
 
     expect(find.text('Grateful for sunshine'), findsOneWidget);
@@ -139,9 +131,7 @@ void main() {
     }
   });
 
-  testWidgets('uses dark theme and hides optional UI', (
-    tester,
-  ) async {
+  testWidgets('uses dark theme and hides optional UI', (tester) async {
     await tester.pumpWidget(
       buildTestApp(
         entry: makeEntry(mood: null),
