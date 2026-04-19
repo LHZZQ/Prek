@@ -12,12 +12,22 @@ void main() {
   late MockClient mockHttpClient;
   final deletedEntryIds = <String>[];
   final removedAudioPaths = <String>[];
+  var failDeleteRequests = false;
 
   Future<http.Response> handleRequest(http.Request request) async {
     final path = Uri.decodeComponent(request.url.path);
     final headers = {'content-type': 'application/json'};
 
     if (path == '/rest/v1/Gratitude Entries' && request.method == 'DELETE') {
+      if (failDeleteRequests) {
+        return http.Response(
+          jsonEncode({'message': 'delete failed'}),
+          500,
+          headers: headers,
+          request: request,
+        );
+      }
+
       deletedEntryIds.add(request.url.queryParameters['id'] ?? '');
       return http.Response('[]', 200, headers: headers, request: request);
     }
@@ -61,6 +71,7 @@ void main() {
   setUp(() {
     deletedEntryIds.clear();
     removedAudioPaths.clear();
+    failDeleteRequests = false;
   });
 
   Widget buildTestApp({
@@ -69,14 +80,20 @@ void main() {
     ThemeData? theme,
   }) {
     return MaterialApp(
-      theme: theme,
+      theme: theme ?? ThemeData(useMaterial3: false),
       home: Scaffold(
-        body: GratitudeTile(entry: entry, onDeleted: onDeleted ?? () {}),
+        body: GratitudeTile(
+          entry: entry,
+          onDeleted: onDeleted ?? () {},
+        ),
       ),
     );
   }
 
-  GratitudeEntry makeEntry({String? mood = 'Happy', String? audioAssetPath}) {
+  GratitudeEntry makeEntry({
+    String? mood = 'Happy',
+    String? audioAssetPath,
+  }) {
     return GratitudeEntry(
       id: 'entry-1',
       userId: 'user-1',
@@ -87,20 +104,22 @@ void main() {
     );
   }
 
-  testWidgets('renders mood and audio', (tester) async {
+  testWidgets('renders text mood time and audio controls', (tester) async {
     await tester.pumpWidget(
-      buildTestApp(entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a')),
+      buildTestApp(
+        entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a'),
+      ),
     );
 
     expect(find.text('Grateful for sunshine'), findsOneWidget);
     expect(find.text('Happy'), findsOneWidget);
+    expect(find.textContaining('Today'), findsOneWidget);
     expect(find.byIcon(Icons.play_circle), findsOneWidget);
     expect(find.byType(Slider), findsOneWidget);
     expect(find.text('00:00'), findsOneWidget);
-    expect(find.byIcon(Icons.delete_outline), findsOneWidget);
   });
 
-  testWidgets('renders the expected icon for each mood', (tester) async {
+  testWidgets('renders expected icon for each mood branch', (tester) async {
     final moodCases = <(String, IconData)>[
       ('Happy', Icons.sentiment_very_satisfied_rounded),
       ('Good', Icons.sentiment_satisfied_rounded),
@@ -115,43 +134,37 @@ void main() {
 
     for (final (mood, icon) in moodCases) {
       await tester.pumpWidget(buildTestApp(entry: makeEntry(mood: mood)));
-
       expect(find.text(mood), findsOneWidget);
       expect(find.byIcon(icon), findsOneWidget);
     }
   });
 
-  testWidgets('dark theme', (tester) async {
+  testWidgets('uses dark theme and hides optional UI', (
+    tester,
+  ) async {
     await tester.pumpWidget(
-      buildTestApp(entry: makeEntry(), theme: ThemeData.dark()),
+      buildTestApp(
+        entry: makeEntry(mood: null),
+        theme: ThemeData.dark(useMaterial3: false),
+      ),
     );
 
     final card = tester.widget<Card>(find.byType(Card));
     expect(card.color, Colors.black);
+    expect(find.byType(Chip), findsNothing);
+    expect(find.byIcon(Icons.play_circle), findsNothing);
+    expect(find.byType(Slider), findsNothing);
   });
 
-  testWidgets('hides UI and shows delete confirmation dialog', (tester) async {
-    await tester.pumpWidget(buildTestApp(entry: makeEntry(mood: null)));
-
-    expect(find.text('Happy'), findsNothing);
-    expect(find.byType(Chip), findsNothing);
-    expect(find.byType(Slider), findsNothing);
-    expect(find.byIcon(Icons.play_circle), findsNothing);
+  testWidgets('shows delete dialog and cancel', (tester) async {
+    await tester.pumpWidget(buildTestApp(entry: makeEntry()));
 
     await tester.tap(find.byIcon(Icons.delete_outline));
     await tester.pumpAndSettle();
 
     expect(find.text('Delete reflection?'), findsOneWidget);
     expect(find.text('This cannot be undone'), findsOneWidget);
-    expect(find.text('Cancel'), findsOneWidget);
-    expect(find.text('Delete'), findsOneWidget);
-  });
 
-  testWidgets('closes delete dialog when cancel', (tester) async {
-    await tester.pumpWidget(buildTestApp(entry: makeEntry()));
-
-    await tester.tap(find.byIcon(Icons.delete_outline));
-    await tester.pumpAndSettle();
     await tester.tap(find.text('Cancel'));
     await tester.pumpAndSettle();
 
@@ -159,9 +172,7 @@ void main() {
     expect(deletedEntryIds, isEmpty);
   });
 
-  testWidgets('deletes entry and calls onDeleted after confirmation', (
-    tester,
-  ) async {
+  testWidgets('deletes audio and calls onDeleted', (tester) async {
     var onDeletedCalled = false;
 
     await tester.pumpWidget(
@@ -181,5 +192,49 @@ void main() {
     expect(onDeletedCalled, isTrue);
     expect(deletedEntryIds, contains('eq.entry-1'));
     expect(removedAudioPaths, contains('assets/user-1/audio-1.m4a'));
+  });
+
+  testWidgets('deletes text without removing audio', (tester) async {
+    var onDeletedCalled = false;
+
+    await tester.pumpWidget(
+      buildTestApp(
+        entry: makeEntry(audioAssetPath: null),
+        onDeleted: () {
+          onDeletedCalled = true;
+        },
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.delete_outline));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+
+    expect(onDeletedCalled, isTrue);
+    expect(deletedEntryIds, contains('eq.entry-1'));
+    expect(removedAudioPaths, isEmpty);
+  });
+
+  testWidgets('shows snackbar when delete fails', (tester) async {
+    failDeleteRequests = true;
+    var onDeletedCalled = false;
+
+    await tester.pumpWidget(
+      buildTestApp(
+        entry: makeEntry(),
+        onDeleted: () {
+          onDeletedCalled = true;
+        },
+      ),
+    );
+
+    await tester.tap(find.byIcon(Icons.delete_outline));
+    await tester.pumpAndSettle();
+    await tester.tap(find.text('Delete'));
+    await tester.pumpAndSettle();
+
+    expect(onDeletedCalled, isFalse);
+    expect(find.textContaining('Failed to delete:'), findsOneWidget);
   });
 }
