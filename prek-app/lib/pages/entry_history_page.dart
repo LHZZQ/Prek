@@ -29,13 +29,22 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
   void _onItemTapped(int index) {
     if (index == _selectedIndex) return;
     if (index == 0) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const HomePage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
     } else if (index == 1) {
       return;
     } else if (index == 2) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const ProfilePage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
     } else if (index == 3) {
-      Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => const SettingsPage()));
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
     }
   }
 
@@ -88,7 +97,9 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
             child: Text(
               "No entries yet.\nAdd your first gratitude today!",
               textAlign: TextAlign.center,
-              style: Theme.of(context).textTheme.titleMedium?.copyWith(color: textColor),
+              style: Theme.of(
+                context,
+              ).textTheme.titleMedium?.copyWith(color: textColor),
             ),
           ),
         ),
@@ -108,9 +119,11 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
           itemCount: items.length,
           itemBuilder: (_, i) {
             final e = items[i];
-            final showHeader = i == 0 || !sameDay(e.createdAt, items[i - 1].createdAt);
+            final showHeader =
+                i == 0 || !sameDay(e.createdAt, items[i - 1].createdAt);
             String two(int n) => n.toString().padLeft(2, '0');
-            final dateStr = '${e.createdAt.year}-${two(e.createdAt.month)}-${two(e.createdAt.day)}';
+            final dateStr =
+                '${e.createdAt.year}-${two(e.createdAt.month)}-${two(e.createdAt.day)}';
 
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -153,9 +166,18 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
       unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
       items: const [
         BottomNavigationBarItem(icon: Icon(Icons.home_rounded), label: 'Home'),
-        BottomNavigationBarItem(icon: Icon(Icons.history_rounded), label: 'History'),
-        BottomNavigationBarItem(icon: Icon(Icons.person_rounded), label: 'Profile'),
-        BottomNavigationBarItem(icon: Icon(Icons.settings_rounded), label: 'Settings'),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.history_rounded),
+          label: 'History',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person_rounded),
+          label: 'Profile',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.settings_rounded),
+          label: 'Settings',
+        ),
       ],
     );
   }
