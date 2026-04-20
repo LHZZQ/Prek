@@ -56,10 +56,7 @@ void main() {
     expect(find.text('Save a moment'), findsOneWidget);
     expect(find.text('Save to album'), findsOneWidget);
 
-    await tester.enterText(
-      find.byType(TextField),
-      'Grateful for sunshine',
-    );
+    await tester.enterText(find.byType(TextField), 'Grateful for sunshine');
     await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
     await tester.pumpAndSettle();
 
