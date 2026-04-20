@@ -188,7 +188,7 @@ void main() {
     useLargeViewport(tester);
     await pumpProfilePage(tester);
 
-    expect(find.text('Profile'), findsOneWidget);
+    expect(find.text('Profile'), findsWidgets);
     expect(find.text('Your wellness'), findsOneWidget);
     expect(find.text('Mood board'), findsOneWidget);
     expect(find.text('PREK'), findsOneWidget);

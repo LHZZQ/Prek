@@ -1,12 +1,24 @@
 import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:flutter/material.dart';
+import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/settings_page.dart';
+//import 'picture_reflection_page.dart';
 import 'reflection_page.dart';
 import 'voice_reflection_page.dart';
 
-class TaskSelectionPage extends StatelessWidget {
+class TaskSelectionPage extends StatefulWidget {
   final String selectedMood;
 
   const TaskSelectionPage({super.key, required this.selectedMood});
+
+  @override
+  State<TaskSelectionPage> createState() => _TaskSelectionPageState();
+}
+
+class _TaskSelectionPageState extends State<TaskSelectionPage> {
+  int _selectedIndex = 0;
 
   static const textColor = Color(0xFF94697E);
   static const softWhite = Color(0xFFFFFFFF);
@@ -14,15 +26,46 @@ class TaskSelectionPage extends StatelessWidget {
   static const yellow = Color(0xFFFFC567);
   static const blue = Color(0xFF058CD7);
 
+  void _onItemTapped(int index) {
+    if (index == _selectedIndex) return;
+    if (index == 0) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else if (index == 1) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
+    } else if (index == 2) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else if (index == 3) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
+    final cardBg = isDark
+        ? Colors.grey[850]!.withOpacity(0.8)
+        : softWhite.withOpacity(0.8);
+    final currentTextColor = isDark ? Colors.white : textColor;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        iconTheme: const IconThemeData(color: textColor),
+        iconTheme: IconThemeData(color: currentTextColor),
       ),
       body: Container(
         width: double.infinity,
@@ -42,31 +85,32 @@ class TaskSelectionPage extends StatelessWidget {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  "You are feeling $selectedMood today",
-                  style: const TextStyle(
-                    color: textColor,
+                  "You are feeling ${widget.selectedMood} today",
+                  style: TextStyle(
+                    color: currentTextColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
                   ),
                 ),
                 const SizedBox(height: 10),
-                const Text(
+                Text(
                   "What would you like to do?",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
                     fontWeight: FontWeight.w900,
-                    color: textColor,
+                    color: currentTextColor,
                     height: 1.2,
                   ),
                 ),
                 const SizedBox(height: 40),
-
                 _buildTaskCard(
                   context,
+                  isDark: isDark,
+                  cardBg: cardBg,
+                  currentTextColor: currentTextColor,
                   icon: Icons.edit_note_rounded,
-                  iconBg: yellow.withValues(alpha: 0.3),
-
+                  iconBg: yellow.withOpacity(0.3),
                   title: "Write a Reflection",
                   subtitle: "Express your thoughts in words",
                   onTap: () {
@@ -74,45 +118,49 @@ class TaskSelectionPage extends StatelessWidget {
                       context,
                       MaterialPageRoute(
                         builder: (_) =>
-                            ReflectionPage(selectedMood: selectedMood),
+                            ReflectionPage(selectedMood: widget.selectedMood),
                       ),
                     );
                   },
                 ),
-
                 const SizedBox(height: 20),
-
                 _buildTaskCard(
                   context,
+                  isDark: isDark,
+                  cardBg: cardBg,
+                  currentTextColor: currentTextColor,
                   icon: Icons.mic_rounded,
-                  iconBg: blue.withValues(alpha: 0.2),
+                  iconBg: blue.withOpacity(0.2),
                   title: "Voice Reflection",
                   subtitle: "Record your thoughts with audio",
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) =>
-                            VoiceReflectionPage(selectedMood: selectedMood),
+                        builder: (_) => VoiceReflectionPage(
+                          selectedMood: widget.selectedMood,
+                        ),
                       ),
                     );
                   },
                 ),
-
                 const SizedBox(height: 20),
-
                 _buildTaskCard(
                   context,
+                  isDark: isDark,
+                  cardBg: cardBg,
+                  currentTextColor: currentTextColor,
                   icon: Icons.photo_library_rounded,
-                  iconBg: pink.withValues(alpha: 0.2),
+                  iconBg: pink.withOpacity(0.2),
                   title: "Lookbook",
                   subtitle: "Visualize your journey through photos",
                   onTap: () {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) =>
-                            PictureReflectionPage(selectedMood: selectedMood),
+                        builder: (_) => PictureReflectionPage(
+                          selectedMood: widget.selectedMood,
+                        ),
                       ),
                     );
                   },
@@ -122,11 +170,40 @@ class TaskSelectionPage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedIndex,
+        onTap: _onItemTapped,
+        type: BottomNavigationBarType.fixed,
+        backgroundColor: navBarBg,
+        selectedItemColor: const Color(0xFFFB7DA8),
+        unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home_rounded),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.history_rounded),
+            label: 'History',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_rounded),
+            label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings_rounded),
+            label: 'Settings',
+          ),
+        ],
+      ),
     );
   }
 
   Widget _buildTaskCard(
     BuildContext context, {
+    required bool isDark,
+    required Color cardBg,
+    required Color currentTextColor,
     required IconData icon,
     required Color iconBg,
     required String title,
@@ -138,11 +215,11 @@ class TaskSelectionPage extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(20),
         decoration: BoxDecoration(
-          color: softWhite.withValues(alpha: 0.8),
+          color: cardBg,
           borderRadius: BorderRadius.circular(24),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: Colors.black.withOpacity(0.05),
               blurRadius: 15,
               offset: const Offset(0, 8),
             ),
@@ -153,7 +230,7 @@ class TaskSelectionPage extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
-              child: Icon(icon, color: textColor, size: 30),
+              child: Icon(icon, color: isDark ? pink : textColor, size: 30),
             ),
             const SizedBox(width: 20),
             Expanded(
@@ -162,8 +239,8 @@ class TaskSelectionPage extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      color: textColor,
+                    style: TextStyle(
+                      color: currentTextColor,
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
                     ),
@@ -172,16 +249,16 @@ class TaskSelectionPage extends StatelessWidget {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      color: textColor.withValues(alpha: 0.6),
+                      color: currentTextColor.withOpacity(0.6),
                       fontSize: 14,
                     ),
                   ),
                 ],
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios_rounded,
-              color: textColor,
+              color: currentTextColor,
               size: 18,
             ),
           ],
