@@ -29,7 +29,7 @@ exception
 end;
 $$;
 
-// user A
+/* Pretend the authenticated user is user A. */
 select set_config(
   'request.jwt.claim.sub',
   '11111111-1111-1111-1111-111111111111',
