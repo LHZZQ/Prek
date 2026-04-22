@@ -20,7 +20,7 @@ class GratitudeEntry {
       id: map['id'],
       userId: map['user_id'],
       text: map['text'],
-      createdAt: DateTime.parse(map['created_at']),
+      createdAt: DateTime.parse(map['created_at']).toLocal(),
       mood: map['mood'],
       audioAssetPath: map['audio_path'],
     );
