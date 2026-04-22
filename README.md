@@ -1,6 +1,6 @@
 
 <p align="center">
-  <img width="300" height="200" alt="image" src="https://github.com/user-attachments/assets/69f9251c-1c12-4b86-a194-aef5576b58aa" />
+  <img src="prek-app/images/prek_logo.png" width="300" height="200">
 </p>
 
 <h1 align="center">2025-Prek</h1>
