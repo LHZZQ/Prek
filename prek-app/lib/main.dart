@@ -1,4 +1,5 @@
 import 'package:_2025_prek/login.dart';
+import 'package:_2025_prek/updatepw.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/theme/theme_provider.dart';
@@ -29,8 +30,9 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
-      home: const Login(),
+      home: const AuthGate(),
       theme: Provider.of<ThemeProvider>(context).themeData,
+      routes: {'/update-password': (context) => const UpdatePW()},
     );
   }
 }
