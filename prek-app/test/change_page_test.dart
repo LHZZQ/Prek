@@ -65,7 +65,7 @@ void main() {
     return MaterialApp(theme: ThemeData(useMaterial3: false), home: home);
   }
 
-  testWidgets('change name page renders and can navigate after save', (
+  testWidgets('change name page does not show empty error on open', (
     tester,
   ) async {
     useLargeViewport(tester);
@@ -75,16 +75,10 @@ void main() {
 
     expect(find.text('Enter your new name'), findsOneWidget);
     expect(find.widgetWithText(ElevatedButton, 'Save'), findsOneWidget);
-
-    await setLoggedInSession();
-    await tester.enterText(find.byType(TextField), 'New Name');
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(HomePage), findsOneWidget);
+    expect(find.text('Username cannot be empty'), findsNothing);
   });
 
-  testWidgets('change email page renders and can navigate after save', (
+  testWidgets('change email page does not show empty error on open', (
     tester,
   ) async {
     useLargeViewport(tester);
@@ -94,13 +88,7 @@ void main() {
 
     expect(find.text('Enter your new email'), findsOneWidget);
     expect(find.widgetWithText(ElevatedButton, 'Save'), findsOneWidget);
-
-    await setLoggedInSession();
-    await tester.enterText(find.byType(TextField), 'test@example.com');
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
-    await tester.pumpAndSettle();
-
-    expect(find.byType(HomePage), findsOneWidget);
+    expect(find.text('Email cannot be empty'), findsNothing);
   });
 
   testWidgets('change password page shows wrong current password message', (

@@ -14,22 +14,16 @@ class _ChangeNameState extends State<ChangeName> {
   String profileName = "";
   bool loading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _updateUsername();
-  }
-
-  Future<void> _updateUsername() async {
+  Future<bool> _updateUsername() async {
     final user = supabase.auth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
 
     final newUsername = nameController.text.trim();
     if (newUsername.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Username cannot be empty")));
-      return;
+      return false;
     }
 
     try {
@@ -37,9 +31,11 @@ class _ChangeNameState extends State<ChangeName> {
           .from('Profiles')
           .update({'username': newUsername})
           .eq('id', user.id);
+      return true;
     } catch (e) {
       debugPrint('Error updating username: $e');
       setState(() => loading = false);
+      return false;
     }
   }
 
@@ -136,7 +132,8 @@ class _ChangeNameState extends State<ChangeName> {
                         ),
                       ),
                       onPressed: () async {
-                        await _updateUsername();
+                        final updated = await _updateUsername();
+                        if (!updated || !context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(

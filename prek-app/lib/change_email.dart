@@ -13,22 +13,16 @@ class _ChangeEmailState extends State<ChangeEmail> {
   final TextEditingController emailController = TextEditingController();
   bool loading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _updateEmail();
-  }
-
-  Future<void> _updateEmail() async {
+  Future<bool> _updateEmail() async {
     final user = supabase.auth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
 
     final newEmail = emailController.text.trim();
     if (newEmail.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
-      return;
+      return false;
     }
 
     try {
@@ -38,9 +32,11 @@ class _ChangeEmailState extends State<ChangeEmail> {
           .eq('id', user.id);
 
       await supabase.auth.updateUser(UserAttributes(email: newEmail));
+      return true;
     } catch (e) {
       debugPrint('Error updating email: $e');
       setState(() => loading = false);
+      return false;
     }
   }
 
@@ -137,7 +133,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                         ),
                       ),
                       onPressed: () async {
-                        await _updateEmail();
+                        final updated = await _updateEmail();
+                        if (!updated || !context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(
