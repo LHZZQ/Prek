@@ -9,18 +9,59 @@ class MemoryCard {
   final String caption;
   final DateTime date;
   final String? imagePath;
+  final dynamic imageBytes;
 
-  MemoryCard({required this.caption, required this.date, this.imagePath});
+  MemoryCard({required this.caption, required this.date, this.imagePath, this.imageBytes,});
 }
 
-class PictureReflectionPage extends StatefulWidget {
+class MemoryStore {
+  static final List<MemoryCard> memories = [];
+}
+
+Widget memoryImage({
+  dynamic imageBytes,
+  String? imagePath,
+  BoxFit fit = BoxFit.cover,
+}) {
+  if (imageBytes != null) {
+    return Image.memory(imageBytes as dynamic, fit: fit);
+  }
+  return const SizedBox.shrink();
+}
+
+class PictureReflectionPage extends StatelessWidget {
   final String selectedMood;
 
   const PictureReflectionPage({super.key, required this.selectedMood});
 
-  @override
-  State<PictureReflectionPage> createState() => _PictureReflectionPageState();
-}
+  void _openAddMemorySheet(BuildContext context) {
+    showModalBottomSheet<bool>(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => _AddMemorySheet(
+        selectedMood: selectedMood,
+        onAdd: (caption, imageBytes) {
+          MemoryStore.memories.insert(
+            0,
+            MemoryCard(
+              caption: caption,
+              date: DateTime.now(),
+              imageBytes: imageBytes,
+            ),
+          );
+        },
+      ),
+    ).then((saved) {
+      if (saved == true && context.mounted) {
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (_) => const HomePage()),
+              (route) => false,
+        );
+      }
+    });
+  }
 
 class _PictureReflectionPageState extends State<PictureReflectionPage> {
   //with TickerProviderStateMixin {
