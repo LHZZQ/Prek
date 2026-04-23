@@ -11,7 +11,12 @@ class MemoryCard {
   final String? imagePath;
   final dynamic imageBytes;
 
-  MemoryCard({required this.caption, required this.date, this.imagePath, this.imageBytes,});
+  MemoryCard({
+    required this.caption,
+    required this.date,
+    this.imagePath,
+    this.imageBytes,
+  });
 }
 
 class MemoryStore {
@@ -57,22 +62,11 @@ class PictureReflectionPage extends StatelessWidget {
         Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(builder: (_) => const HomePage()),
-              (route) => false,
+          (route) => false,
         );
       }
     });
   }
-
-
-  final List<MemoryCard> _memories = [
-    MemoryCard(caption: 'Coffee with my friend', date: DateTime(2025, 1, 1)),
-
-    MemoryCard(caption: 'Pretty sunset', date: DateTime(2025, 2, 2)),
-
-    MemoryCard(caption: 'cute dog', date: DateTime(2025, 3, 3)),
-  ];
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -85,42 +79,109 @@ class PictureReflectionPage extends StatelessWidget {
         iconTheme: const IconThemeData(color: textColor),
       ),
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const SizedBox(height: 20),
-            Padding(
-              padding: const EdgeInsets.fromLTRB(22, 20, 22, 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: const TextSpan(
-                      style: TextStyle(
-                        fontFamily: 'Georgia',
-                        fontSize: 26,
-                        fontWeight: FontWeight.w700,
-                        color: textColor,
-                        height: 1.2,
-                      ),
-                      children: [
-                        TextSpan(text: 'Capture\n'),
-                        TextSpan(
-                          text: 'Happy Moments',
-                          style: TextStyle(color: pink),
-                        ),
-                      ],
-                    ),
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 20, 24, 40),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
+              RichText(
+                text: const TextSpan(
+                  style: TextStyle(
+                    fontFamily: 'Georgia',
+                    fontSize: 28,
+                    fontWeight: FontWeight.w700,
+                    color: textColor,
+                    height: 1.2,
                   ),
-                  const SizedBox(height: 4),
-                  Text(
-                    'Snap moments that make you smile, and revisit them anytime.',
-                    style: TextStyle(
-                      fontSize: 13,
-                      color: textColor.withOpacity(0.55),
+                  children: [
+                    TextSpan(text: 'Capture\na '),
+                    TextSpan(
+                      text: 'Happy Moments',
+                      style: TextStyle(color: pink),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-
+              const SizedBox(height: 10),
+              Text(
+                'What made you smile today? Save it here.',
+                style: TextStyle(
+                  fontSize: 14,
+                  color: textColor.withOpacity(0.55),
+                  height: 1.4,
+                ),
+              ),
+              const SizedBox(height: 40),
+              GestureDetector(
+                onTap: () => _openAddMemorySheet(context),
+                child: Container(
+                  width: double.infinity,
+                  height: 220,
+                  decoration: BoxDecoration(
+                    color: Colors.white.withOpacity(0.7),
+                    borderRadius: BorderRadius.circular(30),
+                    border: Border.all(
+                      color: Colors.white.withOpacity(0.5),
+                      width: 1.5,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.pink.withOpacity(0.1),
+                        blurRadius: 20,
+                        offset: const Offset(0, 10),
+                      ),
+                    ],
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        width: 58,
+                        height: 58,
+                        decoration: BoxDecoration(
+                          color: pink,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                              color: pink.withOpacity(0.25),
+                              blurRadius: 14,
+                              offset: const Offset(0, 4),
+                            ),
+                          ],
+                        ),
+                        child: const Icon(
+                          Icons.add_photo_alternate_rounded,
+                          color: Colors.white,
+                          size: 26,
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      const Text(
+                        'Add a new memory',
+                        style: TextStyle(
+                          fontFamily: 'Georgia',
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: textColor,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+                      Text(
+                        'Tap to choose a photo & add a caption',
+                        style: TextStyle(
+                          fontSize: 12,
+                          color: textColor.withOpacity(0.45),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
