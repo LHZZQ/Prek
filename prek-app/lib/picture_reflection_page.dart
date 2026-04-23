@@ -199,7 +199,7 @@ class _AddMemorySheet extends StatefulWidget {
 class _AddMemorySheetState extends State<_AddMemorySheet> {
   final TextEditingController _captionCtrl = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  dynamic _imageBytes; // Uint8List on web, also works on mobile
+  dynamic _imageBytes;
 
   @override
   void dispose() {
@@ -224,3 +224,38 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     widget.onAdd(caption, _imageBytes);
     Navigator.of(context).pop(true);
   }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: bgColor,
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      padding: EdgeInsets.only(
+        left: 20,
+        right: 20,
+        top: 16,
+        bottom: MediaQuery.of(context).viewInsets.bottom + 24,
+      ),
+
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+      Center(
+      child: Container(
+      width: 34,
+        height: 4,
+        decoration: BoxDecoration(
+          color: pink.withOpacity(0.25),
+          borderRadius: BorderRadius.circular(4),
+        ),
+      ),
+    ),
+
+
+
+
+
+
