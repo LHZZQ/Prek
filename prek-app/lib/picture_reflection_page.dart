@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:_2025_prek/home_page.dart';
 
 const Color pink = Color(0xFFFB7DA8);
 const Color textColor = Color(0xFF94697E);
@@ -243,19 +244,149 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-      Center(
-      child: Container(
-      width: 34,
-        height: 4,
-        decoration: BoxDecoration(
-          color: pink.withOpacity(0.25),
-          borderRadius: BorderRadius.circular(4),
-        ),
+          Center(
+            child: Container(
+              width: 34,
+              height: 4,
+              decoration: BoxDecoration(
+                color: pink.withOpacity(0.25),
+                borderRadius: BorderRadius.circular(4),
+              ),
+            ),
+          ),
+
+          const SizedBox(height: 18),
+          const Text(
+            'Save a moment',
+            style: TextStyle(
+              fontFamily: 'Georgia',
+              fontSize: 19,
+              fontWeight: FontWeight.w700,
+              color: textColor,
+            ),
+          ),
+          const SizedBox(height: 3),
+          Text(
+            'Add a photo and a short note',
+            style: TextStyle(fontSize: 13, color: textColor.withOpacity(0.5)),
+          ),
+          const SizedBox(height: 16),
+
+          GestureDetector(
+            onTap: _pickImage,
+            child: Container(
+              height: 140,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: const Color(0xFFFFE4EF),
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(color: pink.withOpacity(0.2)),
+              ),
+              clipBehavior: Clip.hardEdge,
+              child: _imageBytes != null
+                  ? Stack(
+                      fit: StackFit.expand,
+                      children: [
+                        Image.memory(_imageBytes, fit: BoxFit.cover),
+                        Positioned(
+                          bottom: 8,
+                          right: 8,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 5,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.45),
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: const Text(
+                              'Change',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 11,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
+                  : Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        const Icon(
+                          Icons.add_photo_alternate_outlined,
+                          color: pink,
+                          size: 30,
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          'Tap to choose a photo',
+                          style: TextStyle(
+                            color: pink.withOpacity(0.8),
+                            fontWeight: FontWeight.w500,
+                            fontSize: 13,
+                          ),
+                        ),
+                      ],
+                    ),
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          Container(
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(color: pink.withOpacity(0.18)),
+            ),
+            child: TextField(
+              controller: _captionCtrl,
+              maxLines: 2,
+              maxLength: 100,
+              style: const TextStyle(
+                color: textColor,
+                fontSize: 14,
+                fontFamily: 'Georgia',
+              ),
+              decoration: InputDecoration(
+                hintText: 'What made this moment special?',
+                hintStyle: TextStyle(
+                  color: textColor.withOpacity(0.35),
+                  fontSize: 13,
+                ),
+                contentPadding: const EdgeInsets.all(12),
+                border: InputBorder.none,
+                counterStyle: TextStyle(
+                  color: textColor.withOpacity(0.3),
+                  fontSize: 11,
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 16),
+
+          SizedBox(
+            width: double.infinity,
+            height: 50,
+            child: ElevatedButton(
+              onPressed: _submit,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: pink,
+                foregroundColor: Colors.white,
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(14),
+                ),
+              ),
+              child: const Text(
+                'Save to album',
+                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+              ),
+            ),
+          ),
+        ],
       ),
-    ),
-
-
-
-
-
-
+    );
+  }
+}
