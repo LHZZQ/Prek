@@ -185,3 +185,42 @@ class PictureReflectionPage extends StatelessWidget {
     );
   }
 }
+
+class _AddMemorySheet extends StatefulWidget {
+  final String selectedMood;
+  final void Function(String caption, dynamic imageBytes) onAdd;
+
+  const _AddMemorySheet({required this.selectedMood, required this.onAdd});
+
+  @override
+  State<_AddMemorySheet> createState() => _AddMemorySheetState();
+}
+
+class _AddMemorySheetState extends State<_AddMemorySheet> {
+  final TextEditingController _captionCtrl = TextEditingController();
+  final ImagePicker _picker = ImagePicker();
+  dynamic _imageBytes; // Uint8List on web, also works on mobile
+
+  @override
+  void dispose() {
+    _captionCtrl.dispose();
+    super.dispose();
+  }
+
+  Future<void> _pickImage() async {
+    final image = await _picker.pickImage(
+      source: ImageSource.gallery,
+      imageQuality: 85,
+    );
+    if (image != null) {
+      final bytes = await image.readAsBytes();
+      setState(() => _imageBytes = bytes);
+    }
+  }
+
+  void _submit() {
+    final caption = _captionCtrl.text.trim();
+    if (caption.isEmpty) return;
+    widget.onAdd(caption, _imageBytes);
+    Navigator.of(context).pop(true);
+  }
