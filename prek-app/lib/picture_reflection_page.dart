@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:_2025_prek/home_page.dart';
@@ -5,35 +7,6 @@ import 'package:_2025_prek/home_page.dart';
 const Color pink = Color(0xFFFB7DA8);
 const Color textColor = Color(0xFF94697E);
 const Color bgColor = Color(0xFFFFF1F5);
-
-class MemoryCard {
-  final String caption;
-  final DateTime date;
-  final String? imagePath;
-  final dynamic imageBytes;
-
-  MemoryCard({
-    required this.caption,
-    required this.date,
-    this.imagePath,
-    this.imageBytes,
-  });
-}
-
-class MemoryStore {
-  static final List<MemoryCard> memories = [];
-}
-
-Widget memoryImage({
-  dynamic imageBytes,
-  String? imagePath,
-  BoxFit fit = BoxFit.cover,
-}) {
-  if (imageBytes != null) {
-    return Image.memory(imageBytes as dynamic, fit: fit);
-  }
-  return const SizedBox.shrink();
-}
 
 class PictureReflectionPage extends StatelessWidget {
   final String selectedMood;
@@ -45,19 +18,7 @@ class PictureReflectionPage extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AddMemorySheet(
-        selectedMood: selectedMood,
-        onAdd: (caption, imageBytes) {
-          MemoryStore.memories.insert(
-            0,
-            MemoryCard(
-              caption: caption,
-              date: DateTime.now(),
-              imageBytes: imageBytes,
-            ),
-          );
-        },
-      ),
+      builder: (_) => _AddMemorySheet(selectedMood: selectedMood),
     ).then((saved) {
       if (saved == true && context.mounted) {
         Navigator.pushAndRemoveUntil(
@@ -189,9 +150,7 @@ class PictureReflectionPage extends StatelessWidget {
 
 class _AddMemorySheet extends StatefulWidget {
   final String selectedMood;
-  final void Function(String caption, dynamic imageBytes) onAdd;
-
-  const _AddMemorySheet({required this.selectedMood, required this.onAdd});
+  const _AddMemorySheet({required this.selectedMood});
 
   @override
   State<_AddMemorySheet> createState() => _AddMemorySheetState();
@@ -200,7 +159,8 @@ class _AddMemorySheet extends StatefulWidget {
 class _AddMemorySheetState extends State<_AddMemorySheet> {
   final TextEditingController _captionCtrl = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  dynamic _imageBytes;
+  Uint8List _imageBytes;
+  bool _isSaving = false;
 
   @override
   void dispose() {
@@ -219,10 +179,16 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     }
   }
 
-  void _submit() {
+  Future<void> _submit() async {
     final caption = _captionCtrl.text.trim();
     if (caption.isEmpty) return;
-    widget.onAdd(caption, _imageBytes);
+
+    setState(() => isSaving = true);
+
+    try{
+      
+    }
+
     Navigator.of(context).pop(true);
   }
 
