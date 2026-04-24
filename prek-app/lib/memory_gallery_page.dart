@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 const Color _pink = Color(0xFFFB7DA8);
@@ -63,6 +62,27 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
     } finally {
       if (mounted) setState(() => _isLoading = false);
     }
+  }
+
+  Future<void> _deleteMemory(String id, String imagePath) async {
+    try {
+      await _client.storage.from('memories').remove([imagePath]);
+      await _client.from('Gratitude Entries').delete().eq('id', id);
+
+      setState(() => _memories.removeWhere((m) => m['id'] == id));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
+      }
+    }
+  }
+
+  void _openMemory(Map<String, dynamic> memory) {
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (_) => _MemoryFullScreen(memory: memory)),
+    );
   }
 
   @override
@@ -153,7 +173,10 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                       memory: _memories[index],
                       index: index,
                       onTap: () => _openMemory(_memories[index]),
-                      onDelete: () => _deleteMemory(index),
+                      onDelete: () => _deleteMemory(
+                        _memories[index]['id'] as String,
+                        _memories[index]['image_path'] as String
+                      ),
                     ),
                   ),
           ),
@@ -202,7 +225,8 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
 }
 
 class _MemoryTile extends StatelessWidget {
-  final MemoryCard memory;
+  final Map<String, dynamic> memory;
+
   final int index;
   final VoidCallback onTap;
   final VoidCallback onDelete;
