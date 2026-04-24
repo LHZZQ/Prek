@@ -1,4 +1,5 @@
 import 'dart:typed_data';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -186,7 +187,16 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     setState(() => isSaving = true);
 
     try{
-      
+      final client = Supabase.instance.client;
+      final user = client.auth.currentUser;
+      if (user == null) throw Exception('User not logged in');
+
+      String? imagePath;
+
+      if (_imageBytes != null ){
+        final fileName = '${user.id}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      }
+
     }
 
     Navigator.of(context).pop(true);
