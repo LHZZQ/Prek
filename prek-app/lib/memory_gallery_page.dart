@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:_2025_prek/picture_reflection_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 const Color _pink = Color(0xFFFB7DA8);
 const Color _textColor = Color(0xFF94697E);
@@ -13,16 +14,55 @@ class MemoryGalleryPage extends StatefulWidget {
 }
 
 class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
-  List<MemoryCard> get _memories => MemoryStore.memories;
+  final _client = Supabase.instance.client;
+  List<Map<String, dynamic>> _memories = [];
+  bool _isLoading = true;
 
-  void _deleteMemory(int index) {
-    setState(() => MemoryStore.memories.removeAt(index));
+  @override
+  void initState() {
+    super.initState();
+    _loadMemories();
   }
 
-  void _openMemory(MemoryCard memory) {
-    Navigator.of(context).push(
-      MaterialPageRoute(builder: (_) => _MemoryFullScreen(memory: memory)),
-    );
+  Future<void> _loadMemories() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final user = _client.auth.currentUser;
+      if (user == null) return;
+
+      final data = await _client
+          .from('Gratitude Entries')
+          .select('id, text, image_path, created_at')
+          .eq('user_id', user.id)
+          .not('image_path', 'is', null)
+          .order('created_at', ascending: false);
+
+      final enriched = await Future.wait(
+        (data as List<dynamic>).map((entry) async {
+          final map = Map<String, dynamic>.from(entry);
+
+          try {
+            map['signed_url'] = await _client.storage
+                .from('memories')
+                .createSignedUrl(map['image_path'] as String, 3600);
+          } catch (_) {
+            map['signed_url'] = null;
+          }
+          return map;
+        }),
+      );
+
+      if (mounted) setState(() => _memories = enriched);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to load memories: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
   }
 
   @override
