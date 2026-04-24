@@ -186,20 +186,45 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
 
     setState(() => isSaving = true);
 
-    try{
+    try {
       final client = Supabase.instance.client;
       final user = client.auth.currentUser;
       if (user == null) throw Exception('User not logged in');
 
       String? imagePath;
 
-      if (_imageBytes != null ){
-        final fileName = '${user.id}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+      if (_imageBytes != null) {
+        final fileName =
+            '${user.id}/${DateTime.now().millisecondsSinceEpoch}.jpg';
+
+        await client.storage
+            .from('memories')
+            .uploadBinary(
+              fileName,
+              _imageBytes!,
+              fileOptions: const FileOptions(contentType: 'image/jpeg'),
+            );
+
+        imagePath = fileName;
       }
 
-    }
+      await client.from('Gratitude Entries').insert({
+        'user_id': user.id,
+        'text': caption,
+        'mood': widget.selectedMood,
+        'image_path': imagePath,
+        'created_at': DateTime.now().toLocal().toIso8601String(),
+      });
 
-    Navigator.of(context).pop(true);
+      if (mounted) Navigator.of(context).pop(true);
+    } catch (e) {
+      setState(() => _isSaving = false);
+      if(mounted){
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text ('Failed to save: $e')),
+          );
+      }
+    }
   }
 
   @override
