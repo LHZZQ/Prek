@@ -159,30 +159,32 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
           Expanded(
             child: _isLoading
                 ? const Center(child: CircularProgressIndicator(color: _pink))
-                : _memories.isEmpty ? _buildEmptyState() : RefreshIndicator(
+                : _memories.isEmpty
+                ? _buildEmptyState()
+                : RefreshIndicator(
                     color: _pink,
                     onRefresh: _loadMemories,
-                  child : GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          mainAxisExtent: 200,
+                    child: GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            mainAxisExtent: 200,
+                          ),
+                      itemCount: _memories.length,
+                      itemBuilder: (context, index) => _MemoryTile(
+                        memory: _memories[index],
+                        index: index,
+                        onTap: () => _openMemory(_memories[index]),
+                        onDelete: () => _deleteMemory(
+                          _memories[index]['id'] as String,
+                          _memories[index]['image_path'] as String,
                         ),
-                    itemCount: _memories.length,
-                    itemBuilder: (context, index) => _MemoryTile(
-                      memory: _memories[index],
-                      index: index,
-                      onTap: () => _openMemory(_memories[index]),
-                      onDelete: () => _deleteMemory(
-                        _memories[index]['id'] as String,
-                        _memories[index]['image_path'] as String
                       ),
                     ),
                   ),
-                )
           ),
         ],
       ),
@@ -300,7 +302,10 @@ class _MemoryTile extends StatelessWidget {
                     height: 120,
                     width: double.infinity,
                     child: memory['signed_url'] != null
-                        ? Image.network(memory['signed_url'] as String, fit: BoxFit.cover)
+                        ? Image.network(
+                            memory['signed_url'] as String,
+                            fit: BoxFit.cover,
+                          )
                         : Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -372,7 +377,6 @@ class _MemoryTile extends StatelessWidget {
 class _MemoryFullScreen extends StatelessWidget {
   final Map<String, dynamic> memory;
 
-
   const _MemoryFullScreen({required this.memory});
 
   String _formatDate(String isoDate) {
@@ -402,7 +406,10 @@ class _MemoryFullScreen extends StatelessWidget {
         children: [
           Positioned.fill(
             child: memory['signed_url'] != null
-                ? Image.network(memory['signed_url'] as String, fit: BoxFit.cover)
+                ? Image.network(
+                    memory['signed_url'] as String,
+                    fit: BoxFit.cover,
+                  )
                 : Container(
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
