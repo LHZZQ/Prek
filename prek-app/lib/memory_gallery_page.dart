@@ -157,9 +157,12 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
             ),
           ),
           Expanded(
-            child: _memories.isEmpty
-                ? _buildEmptyState()
-                : GridView.builder(
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator(color: _pink))
+                : _memories.isEmpty ? _buildEmptyState() : RefreshIndicator(
+                    color: _pink,
+                    onRefresh: _loadMemories,
+                  child : GridView.builder(
                     padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
                     gridDelegate:
                         const SliverGridDelegateWithFixedCrossAxisCount(
@@ -179,6 +182,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                       ),
                     ),
                   ),
+                )
           ),
         ],
       ),
@@ -245,7 +249,9 @@ class _MemoryTile extends StatelessWidget {
     [Color(0xFFD4EED0), Color(0xFF9FD49A)],
   ];
 
-  String _formatDate(DateTime d) {
+  String _formatDate(String isoDate) {
+    final d = DateTime.parse(isoDate).toLocal();
+
     const months = [
       'Jan',
       'Feb',
@@ -293,8 +299,8 @@ class _MemoryTile extends StatelessWidget {
                   SizedBox(
                     height: 120,
                     width: double.infinity,
-                    child: memory.imageBytes != null
-                        ? Image.memory(memory.imageBytes, fit: BoxFit.cover)
+                    child: memory['signed_url'] != null
+                        ? Image.network(memory['signed_url'] as String, fit: BoxFit.cover)
                         : Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -334,7 +340,7 @@ class _MemoryTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    memory.caption,
+                    memory['text'] as String? ?? '',
                     style: const TextStyle(
                       fontFamily: 'Georgia',
                       fontSize: 11,
@@ -347,7 +353,7 @@ class _MemoryTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    _formatDate(memory.date),
+                    _formatDate(memory['created_at'] as String),
                     style: TextStyle(
                       fontSize: 10,
                       color: _textColor.withOpacity(0.4),
@@ -364,11 +370,13 @@ class _MemoryTile extends StatelessWidget {
 }
 
 class _MemoryFullScreen extends StatelessWidget {
-  final MemoryCard memory;
+  final Map<String, dynamic> memory;
+
 
   const _MemoryFullScreen({required this.memory});
 
-  String _formatDate(DateTime d) {
+  String _formatDate(String isoDate) {
+    final d = DateTime.parse(isoDate).toLocal();
     const months = [
       'January',
       'February',
@@ -393,8 +401,8 @@ class _MemoryFullScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: memory.imageBytes != null
-                ? Image.memory(memory.imageBytes, fit: BoxFit.cover)
+            child: memory['signed_url'] != null
+                ? Image.network(memory['signed_url'] as String, fit: BoxFit.cover)
                 : Container(
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -448,7 +456,7 @@ class _MemoryFullScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  memory.caption,
+                  memory['text'] as String? ?? '',
                   style: const TextStyle(
                     fontFamily: 'Georgia',
                     fontSize: 22,
@@ -467,7 +475,7 @@ class _MemoryFullScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      _formatDate(memory.date),
+                      _formatDate(memory['created_at'] as String),
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.white.withOpacity(0.55),
