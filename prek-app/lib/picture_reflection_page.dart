@@ -160,7 +160,7 @@ class _AddMemorySheet extends StatefulWidget {
 class _AddMemorySheetState extends State<_AddMemorySheet> {
   final TextEditingController _captionCtrl = TextEditingController();
   final ImagePicker _picker = ImagePicker();
-  Uint8List _imageBytes;
+  Uint8List? _imageBytes;
   bool _isSaving = false;
 
   @override
@@ -184,7 +184,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     final caption = _captionCtrl.text.trim();
     if (caption.isEmpty) return;
 
-    setState(() => isSaving = true);
+    setState(() => _isSaving = true);
 
     try {
       final client = Supabase.instance.client;
@@ -274,7 +274,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
           const SizedBox(height: 16),
 
           GestureDetector(
-            onTap: _pickImage,
+            onTap: _isSaving ? null : _pickImage,
             child: Container(
               height: 140,
               width: double.infinity,
@@ -288,7 +288,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                   ? Stack(
                       fit: StackFit.expand,
                       children: [
-                        Image.memory(_imageBytes, fit: BoxFit.cover),
+                        Image.memory(_imageBytes!, fit: BoxFit.cover),
                         Positioned(
                           bottom: 8,
                           right: 8,
@@ -371,7 +371,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
             width: double.infinity,
             height: 50,
             child: ElevatedButton(
-              onPressed: _submit,
+              onPressed: _isSaving ? null : _submit,
               style: ElevatedButton.styleFrom(
                 backgroundColor: pink,
                 foregroundColor: Colors.white,
