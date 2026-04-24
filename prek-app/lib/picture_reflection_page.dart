@@ -219,10 +219,10 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
       if (mounted) Navigator.of(context).pop(true);
     } catch (e) {
       setState(() => _isSaving = false);
-      if(mounted){
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text ('Failed to save: $e')),
-          );
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to save: $e')));
       }
     }
   }
