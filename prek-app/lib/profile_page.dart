@@ -33,11 +33,6 @@ class _ProfilePageState extends State<ProfilePage> {
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
-    } else if (index == 2) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const ProfilePage()),
-      );
     } else if (index == 3) {
       Navigator.push(
         context,

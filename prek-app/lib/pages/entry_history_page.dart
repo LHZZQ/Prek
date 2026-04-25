@@ -3,9 +3,10 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/gratitude_entry.dart';
 import '../utils/time_utils.dart';
 import '../widgets/gratitude_tile.dart';
-import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/home_page.dart';
 
 class EntryHistoryPage extends StatefulWidget {
   const EntryHistoryPage({super.key});
@@ -27,21 +28,23 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
   }
 
   void _onItemTapped(int index) {
-    if (index == _selectedIndex) return;
     if (index == 0) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
-    } else if (index == 1) {
-      return;
     } else if (index == 2) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } else if (index == 3) {
-      Navigator.pushReplacement(
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
       );
@@ -67,7 +70,7 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
     const textColor = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
+    //final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
 
     Widget buildBackground(Widget child) {
       return Container(
@@ -103,7 +106,7 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
             ),
           ),
         ),
-        bottomNavigationBar: _buildNavBar(isDark, navBarBg),
+        //bottomNavigationBar: _buildNavBar(isDark, navBarBg),
       );
     }
 
@@ -152,11 +155,55 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
           },
         ),
       ),
-      bottomNavigationBar: _buildNavBar(isDark, navBarBg),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: Color(0xFFFB7DA8),
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
     );
   }
 
-  Widget _buildNavBar(bool isDark, Color navBarBg) {
+  /*Widget _buildNavBar(bool isDark, Color navBarBg) {
     return BottomNavigationBar(
       currentIndex: _selectedIndex,
       onTap: _onItemTapped,
@@ -181,4 +228,5 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
       ],
     );
   }
+  */
 }
