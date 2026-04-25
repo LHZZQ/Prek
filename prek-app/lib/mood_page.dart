@@ -74,14 +74,14 @@ class _MoodPageState extends State<MoodPage> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: softWhite.withValues(alpha: 0.75),
+                      color: softWhite,
                       borderRadius: BorderRadius.circular(999),
                     ),
 
                     child: Text(
                       _greeting(),
                       style: TextStyle(
-                        color: textColor,
+                        color: isDark ? Colors.black : textColor,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -119,9 +119,15 @@ class _MoodPageState extends State<MoodPage> {
                           duration: const Duration(milliseconds: 180),
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: softWhite.withValues(
-                              alpha: isSelected ? 0.95 : 0.78,
-                            ),
+                            color: isDark
+                                ? isSelected
+                                      ? softWhite
+                                      : Color(
+                                          0xFF1E1E2C,
+                                        ).withValues(alpha: 0.78)
+                                : isSelected
+                                ? softWhite.withValues(alpha: 0.95)
+                                : softWhite.withValues(alpha: 0.78),
                             borderRadius: BorderRadius.circular(999),
 
                             border: Border.all(
@@ -154,7 +160,9 @@ class _MoodPageState extends State<MoodPage> {
                               Text(
                                 label,
                                 style: TextStyle(
-                                  color: textColor,
+                                  color: isSelected
+                                      ? pink.withValues(alpha: 0.6)
+                                      : textColor,
                                   fontWeight: isSelected
                                       ? FontWeight.w900
                                       : FontWeight.w700,

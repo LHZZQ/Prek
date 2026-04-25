@@ -58,9 +58,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textColor = isDark ? Colors.white : const Color(0xFF94697E);
-    final cardBg = isDark
-        ? Colors.grey[850]!.withOpacity(0.8)
-        : softWhite.withOpacity(0.8);
+    final cardBg = isDark ? Color(0xFF1E1E2C) : softWhite.withOpacity(0.8);
     final currentTextColor = isDark ? Colors.white : textColor;
     final topBarColor = isDark
         ? const Color(0xFF1E1E2C)
@@ -116,7 +114,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   cardBg: cardBg,
                   currentTextColor: currentTextColor,
                   icon: Icons.edit_note_rounded,
-                  iconBg: yellow.withOpacity(0.3),
+                  iconBg: isDark ? yellow : yellow.withOpacity(0.3),
                   title: "Write a Reflection",
                   subtitle: "Express your thoughts in words",
                   onTap: () {
@@ -136,7 +134,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   cardBg: cardBg,
                   currentTextColor: currentTextColor,
                   icon: Icons.mic_rounded,
-                  iconBg: blue.withOpacity(0.2),
+                  iconBg: isDark ? blue : blue.withOpacity(0.2),
                   title: "Voice Reflection",
                   subtitle: "Record your thoughts with audio",
                   onTap: () {
@@ -157,7 +155,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   cardBg: cardBg,
                   currentTextColor: currentTextColor,
                   icon: Icons.photo_library_rounded,
-                  iconBg: pink.withOpacity(0.2),
+                  iconBg: isDark ? pink : pink.withOpacity(0.2),
                   title: "Lookbook",
                   subtitle: "Visualize your journey through photos",
                   onTap: () {
@@ -180,7 +178,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
         decoration: BoxDecoration(
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: 0.05),
+              color: Colors.black.withValues(alpha: 0.2),
               blurRadius: 10,
               offset: const Offset(0, -5),
             ),
@@ -254,7 +252,11 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
-              child: Icon(icon, color: isDark ? pink : textColor, size: 30),
+              child: Icon(
+                icon,
+                color: isDark ? Colors.white : textColor,
+                size: 30,
+              ),
             ),
             const SizedBox(width: 20),
             Expanded(
