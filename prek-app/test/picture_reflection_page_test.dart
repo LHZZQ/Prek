@@ -240,7 +240,9 @@ void main() {
     expect(find.textContaining('Failed to save:'), findsNothing);
   });
 
-  testWidgets('save with image succeeds and returns to home page', (tester) async {
+  testWidgets('save with image succeeds and returns to home page', (
+    tester,
+  ) async {
     useLargeViewport(tester);
     await setLoggedInSession();
     fakeImagePicker.pickedFile = XFile.fromData(
@@ -257,10 +259,7 @@ void main() {
     await tester.pump();
     await tester.pumpAndSettle();
 
-    await tester.enterText(
-      find.byType(TextField),
-      'A happy moment from today',
-    );
+    await tester.enterText(find.byType(TextField), 'A happy moment from today');
     await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
     await tester.pump();
     await tester.pumpAndSettle();
