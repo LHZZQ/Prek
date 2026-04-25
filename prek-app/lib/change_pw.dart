@@ -62,12 +62,12 @@ class _ChangePWState extends State<ChangePW> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
     //const topBarColor = Color(0xFFFFF1F5);
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final Color bgTop = isDark
         ? const Color(0xFF1E1E2C)
         : const Color(0xFFFFF1F5);
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return Scaffold(
       backgroundColor: bgTop,

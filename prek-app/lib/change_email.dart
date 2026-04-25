@@ -42,8 +42,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     final Color bgTop = isDark
         ? const Color(0xFF1E1E2C)
