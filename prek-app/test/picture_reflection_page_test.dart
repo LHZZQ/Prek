@@ -140,12 +140,13 @@ void main() {
     expect(find.text('Add a photo and a short note'), findsOneWidget);
     expect(find.text('Tap to choose a photo'), findsOneWidget);
     expect(find.text('What made this moment special?'), findsOneWidget);
-    expect(find.widgetWithText(ElevatedButton, 'Save to album'), findsOneWidget);
+    expect(
+      find.widgetWithText(ElevatedButton, 'Save to album'),
+      findsOneWidget,
+    );
   });
 
-  testWidgets('image is shown in preview', (
-    tester,
-  ) async {
+  testWidgets('image is shown in preview', (tester) async {
     useLargeViewport(tester);
     fakeImagePicker.pickedFile = XFile.fromData(
       imageBytes,
