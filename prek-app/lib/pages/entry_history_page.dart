@@ -91,9 +91,18 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
       return Scaffold(
         backgroundColor: isDark ? const Color(0xFF2A2A3D) : topBarColor,
         appBar: AppBar(
-          title: const Text('Gratitude History'),
-          elevation: 0,
-          foregroundColor: textColor,
+          backgroundColor: Colors.transparent,
+          iconTheme: IconThemeData(color: textColor),
+          centerTitle: true,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+            onPressed: () => Navigator.pop(context),
+          ),
+
+          title: Text(
+            "Gratitude History",
+            style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+          ),
         ),
         body: buildBackground(
           Center(
@@ -113,9 +122,18 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
     return Scaffold(
       backgroundColor: isDark ? const Color(0xFF2A2A3D) : topBarColor,
       appBar: AppBar(
-        title: const Text('Gratitude History'),
-        elevation: 0,
-        foregroundColor: textColor,
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+
+        title: Text(
+          "Gratitude History",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: buildBackground(
         ListView.builder(
