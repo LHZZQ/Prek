@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -17,26 +18,30 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
-  int _selectedIndex = 3;
+  int _selectedIndex = 4;
 
   void _onItemTapped(int index) {
     if (index == 0) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
+    }
+    if (index == 1) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
     } else if (index == 2) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } else if (index == 3) {
-      // 已经在设置页，无需跳转
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
     }
   }
 
@@ -50,7 +55,7 @@ class _SettingsPageState extends State<SettingsPage> {
         : const Color(0xFFFFF1F5);
     final bgColor1 = isDark ? const Color(0xFF1E1E2C) : const Color(0xFFFFF1F5);
     final bgColor2 = isDark ? const Color(0xFF2A2A3D) : const Color(0xFFFFF8EE);
-    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
+
     const activeColor = Color(0xFFFB7DA8);
 
     return Scaffold(
@@ -372,9 +377,9 @@ class _SettingsPageState extends State<SettingsPage> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: navBarBg,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
           selectedItemColor: activeColor,
-          unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
           showUnselectedLabels: true,
           selectedFontSize: 12,
           unselectedFontSize: 12,
@@ -391,6 +396,11 @@ class _SettingsPageState extends State<SettingsPage> {
               icon: Icon(Icons.person_rounded),
               label: 'Profile',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
               label: 'Settings',

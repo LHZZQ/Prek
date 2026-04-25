@@ -63,18 +63,27 @@ class _ChangePWState extends State<ChangePW> {
   @override
   Widget build(BuildContext context) {
     const textColor = Color(0xFF94697E);
-    const topBarColor = Color(0xFFFFF1F5);
+    //const topBarColor = Color(0xFFFFF1F5);
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color bgTop = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
 
     return Scaffold(
-      backgroundColor: topBarColor,
+      backgroundColor: bgTop,
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
-        elevation: 0,
-        foregroundColor: textColor,
+
+        title: Text(
+          "Settings",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
