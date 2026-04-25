@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:_2025_prek/picture_reflection_page.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 const Color _pink = Color(0xFFFB7DA8);
 const Color _textColor = Color(0xFF94697E);
@@ -13,13 +13,73 @@ class MemoryGalleryPage extends StatefulWidget {
 }
 
 class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
-  List<MemoryCard> get _memories => MemoryStore.memories;
+  final _client = Supabase.instance.client;
+  List<Map<String, dynamic>> _memories = [];
+  bool _isLoading = true;
 
-  void _deleteMemory(int index) {
-    setState(() => MemoryStore.memories.removeAt(index));
+  @override
+  void initState() {
+    super.initState();
+    _loadMemories();
   }
 
-  void _openMemory(MemoryCard memory) {
+  Future<void> _loadMemories() async {
+    setState(() => _isLoading = true);
+
+    try {
+      final user = _client.auth.currentUser;
+      if (user == null) return;
+
+      final data = await _client
+          .from('Gratitude Entries')
+          .select('id, text, image_path, created_at')
+          .eq('user_id', user.id)
+          .not('image_path', 'is', null)
+          .order('created_at', ascending: false);
+
+      final enriched = await Future.wait(
+        (data as List<dynamic>).map((entry) async {
+          final map = Map<String, dynamic>.from(entry);
+
+          try {
+            map['signed_url'] = await _client.storage
+                .from('memories')
+                .createSignedUrl(map['image_path'] as String, 3600);
+          } catch (_) {
+            map['signed_url'] = null;
+          }
+          return map;
+        }),
+      );
+
+      if (mounted) setState(() => _memories = enriched);
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to load memories: $e')));
+      }
+    } finally {
+      if (mounted) setState(() => _isLoading = false);
+    }
+  }
+
+  Future<void> _deleteMemory(String id, String imagePath) async {
+    try {
+      await _client.storage.from('memories').remove([imagePath]);
+      await _client.from('Gratitude Entries').delete().eq('id', id);
+
+      setState(() => _memories.removeWhere((m) => m['id'] == id));
+    } catch (e) {
+      if (mounted) {
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
+      }
+    }
+  }
+
+  void _openMemory(Map<String, dynamic> memory) {
     Navigator.of(context).push(
       MaterialPageRoute(builder: (_) => _MemoryFullScreen(memory: memory)),
     );
@@ -97,23 +157,32 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
             ),
           ),
           Expanded(
-            child: _memories.isEmpty
+            child: _isLoading
+                ? const Center(child: CircularProgressIndicator(color: _pink))
+                : _memories.isEmpty
                 ? _buildEmptyState()
-                : GridView.builder(
-                    padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          mainAxisSpacing: 12,
-                          crossAxisSpacing: 12,
-                          mainAxisExtent: 200,
+                : RefreshIndicator(
+                    color: _pink,
+                    onRefresh: _loadMemories,
+                    child: GridView.builder(
+                      padding: const EdgeInsets.fromLTRB(16, 0, 16, 30),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            mainAxisSpacing: 12,
+                            crossAxisSpacing: 12,
+                            mainAxisExtent: 200,
+                          ),
+                      itemCount: _memories.length,
+                      itemBuilder: (context, index) => _MemoryTile(
+                        memory: _memories[index],
+                        index: index,
+                        onTap: () => _openMemory(_memories[index]),
+                        onDelete: () => _deleteMemory(
+                          _memories[index]['id'] as String,
+                          _memories[index]['image_path'] as String,
                         ),
-                    itemCount: _memories.length,
-                    itemBuilder: (context, index) => _MemoryTile(
-                      memory: _memories[index],
-                      index: index,
-                      onTap: () => _openMemory(_memories[index]),
-                      onDelete: () => _deleteMemory(index),
+                      ),
                     ),
                   ),
           ),
@@ -162,7 +231,8 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
 }
 
 class _MemoryTile extends StatelessWidget {
-  final MemoryCard memory;
+  final Map<String, dynamic> memory;
+
   final int index;
   final VoidCallback onTap;
   final VoidCallback onDelete;
@@ -181,7 +251,9 @@ class _MemoryTile extends StatelessWidget {
     [Color(0xFFD4EED0), Color(0xFF9FD49A)],
   ];
 
-  String _formatDate(DateTime d) {
+  String _formatDate(String isoDate) {
+    final d = DateTime.parse(isoDate).toLocal();
+
     const months = [
       'Jan',
       'Feb',
@@ -229,8 +301,11 @@ class _MemoryTile extends StatelessWidget {
                   SizedBox(
                     height: 120,
                     width: double.infinity,
-                    child: memory.imageBytes != null
-                        ? Image.memory(memory.imageBytes, fit: BoxFit.cover)
+                    child: memory['signed_url'] != null
+                        ? Image.network(
+                            memory['signed_url'] as String,
+                            fit: BoxFit.cover,
+                          )
                         : Container(
                             decoration: BoxDecoration(
                               gradient: LinearGradient(
@@ -270,7 +345,7 @@ class _MemoryTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    memory.caption,
+                    memory['text'] as String? ?? '',
                     style: const TextStyle(
                       fontFamily: 'Georgia',
                       fontSize: 11,
@@ -283,7 +358,7 @@ class _MemoryTile extends StatelessWidget {
                   ),
                   const SizedBox(height: 3),
                   Text(
-                    _formatDate(memory.date),
+                    _formatDate(memory['created_at'] as String),
                     style: TextStyle(
                       fontSize: 10,
                       color: _textColor.withOpacity(0.4),
@@ -300,11 +375,12 @@ class _MemoryTile extends StatelessWidget {
 }
 
 class _MemoryFullScreen extends StatelessWidget {
-  final MemoryCard memory;
+  final Map<String, dynamic> memory;
 
   const _MemoryFullScreen({required this.memory});
 
-  String _formatDate(DateTime d) {
+  String _formatDate(String isoDate) {
+    final d = DateTime.parse(isoDate).toLocal();
     const months = [
       'January',
       'February',
@@ -329,8 +405,11 @@ class _MemoryFullScreen extends StatelessWidget {
       body: Stack(
         children: [
           Positioned.fill(
-            child: memory.imageBytes != null
-                ? Image.memory(memory.imageBytes, fit: BoxFit.cover)
+            child: memory['signed_url'] != null
+                ? Image.network(
+                    memory['signed_url'] as String,
+                    fit: BoxFit.cover,
+                  )
                 : Container(
                     decoration: const BoxDecoration(
                       gradient: LinearGradient(
@@ -384,7 +463,7 @@ class _MemoryFullScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  memory.caption,
+                  memory['text'] as String? ?? '',
                   style: const TextStyle(
                     fontFamily: 'Georgia',
                     fontSize: 22,
@@ -403,7 +482,7 @@ class _MemoryFullScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      _formatDate(memory.date),
+                      _formatDate(memory['created_at'] as String),
                       style: TextStyle(
                         fontSize: 13,
                         color: Colors.white.withOpacity(0.55),
