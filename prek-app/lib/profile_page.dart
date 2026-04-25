@@ -1,3 +1,4 @@
+import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -21,6 +22,12 @@ class _ProfilePageState extends State<ProfilePage> {
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    }
     if (index == 1) {
       Navigator.push(
         context,
