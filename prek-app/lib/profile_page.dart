@@ -114,9 +114,6 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
-    const pink = Color(0xFFFB7DA8);
-    const yellow = Color(0xFFFFC567);
-    const blue = Color(0xFF058CD7);
     const textColorOriginal = Color(0xFF94697E);
     const activeColor = Color(0xFFFB7DA8);
 
@@ -126,16 +123,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final Color bgTop = isDark
         ? const Color(0xFF1E1E2C)
         : const Color(0xFFFFF1F5);
-    final Color bgBottom = isDark
-        ? const Color(0xFF2A2A3D)
-        : const Color(0xFFFFF8EE);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
         iconTheme: IconThemeData(color: textColor),
         centerTitle: true,
         leading: IconButton(
@@ -147,41 +140,30 @@ class _ProfilePageState extends State<ProfilePage> {
           "Profile",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
-
-        actions: [
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("not available right now")),
-              );
-            },
-            icon: Icon(Icons.logout_rounded, color: textColor),
-          ),
-        ],
       ),
 
       body: Container(
-        width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [bgTop, bgBottom],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
-        child: SafeArea(
+        child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: kToolbarHeight - 12),
+                const SizedBox(height: 15),
 
                 _ProfileTopCard(
                   displayName: profileName,
                   email: profileEmail,
                   reflections: reflectionsCount.toString(),
-                  streak: "06",
+                  streak: "6",
                   daysActive: "12",
                 ),
                 const SizedBox(height: 14),
@@ -192,6 +174,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 18),
 
+                /*
                 Text(
                   "Your wellness",
                   style: TextStyle(
@@ -200,9 +183,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
+                */
+                //const SizedBox(height: 12),
 
-                const SizedBox(height: 12),
-
+                /*
                 _SectionCard(
                   children: [
                     _SectionRow(
@@ -238,9 +222,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 18),
-
+                
+                //const SizedBox(height: 18),
                 Text(
                   "Mood board",
                   style: TextStyle(
@@ -250,6 +233,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 12),
+                */
                 _MoodBoardSection(userId: supabase.auth.currentUser?.id ?? ''),
                 const SizedBox(height: 18),
               ],
@@ -527,7 +511,7 @@ class _FunInfoPill extends StatelessWidget {
     );
   }
 }
-
+/*
 class _SectionCard extends StatelessWidget {
   final List<Widget> children;
   const _SectionCard({required this.children});
@@ -605,6 +589,7 @@ class _SectionRow extends StatelessWidget {
     );
   }
 }
+*/
 
 class _MoodBoardSection extends StatefulWidget {
   final String userId;
