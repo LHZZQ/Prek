@@ -7,6 +7,7 @@ import 'package:_2025_prek/settings_page.dart';
 //import 'picture_reflection_page.dart';
 import 'reflection_page.dart';
 import 'voice_reflection_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class TaskSelectionPage extends StatefulWidget {
   final String selectedMood;
@@ -18,33 +19,35 @@ class TaskSelectionPage extends StatefulWidget {
 }
 
 class _TaskSelectionPageState extends State<TaskSelectionPage> {
-  int _selectedIndex = 0;
-
-  static const textColor = Color(0xFF94697E);
   static const softWhite = Color(0xFFFFFFFF);
   static const pink = Color(0xFFFB7DA8);
   static const yellow = Color(0xFFFFC567);
   static const blue = Color(0xFF058CD7);
 
   void _onItemTapped(int index) {
-    if (index == _selectedIndex) return;
     if (index == 0) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
+    }
+    if (index == 1) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
     } else if (index == 2) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } else if (index == 3) {
-      Navigator.pushReplacement(
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
       );
@@ -54,18 +57,21 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
     final cardBg = isDark
         ? Colors.grey[850]!.withOpacity(0.8)
         : softWhite.withOpacity(0.8);
     final currentTextColor = isDark ? Colors.white : textColor;
+    final topBarColor = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: topBarColor,
         elevation: 0,
-        iconTheme: IconThemeData(color: currentTextColor),
+        foregroundColor: textColor,
       ),
       body: Container(
         width: double.infinity,
@@ -170,31 +176,49 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: navBarBg,
-        selectedItemColor: const Color(0xFFFB7DA8),
-        unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history_rounded),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_rounded),
-            label: 'Settings',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }

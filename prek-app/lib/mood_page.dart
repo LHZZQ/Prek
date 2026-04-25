@@ -11,7 +11,7 @@ class MoodPage extends StatefulWidget {
 
 class _MoodPageState extends State<MoodPage> {
   static const softWhite = Color(0xFFFFFFFF);
-  static const textColor = Color(0xFF94697E);
+
   static const pink = Color(0xFFFB7DA8);
   static const blue = Color(0xFF058CD7);
   static const yellow = Color(0xFFFFC567);
@@ -34,12 +34,17 @@ class _MoodPageState extends State<MoodPage> {
     final bgTop = Color.lerp(softWhite, pink, 0.12)!;
     final bgBottom = Color.lerp(softWhite, yellow, 0.14)!;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final topBarColor = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return Scaffold(
-      backgroundColor: bgTop,
+      backgroundColor: topBarColor,
       appBar: AppBar(
+        backgroundColor: topBarColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: textColor),
+        foregroundColor: textColor,
       ),
 
       body: Container(
@@ -75,7 +80,7 @@ class _MoodPageState extends State<MoodPage> {
 
                     child: Text(
                       _greeting(),
-                      style: const TextStyle(
+                      style: TextStyle(
                         color: textColor,
                         fontWeight: FontWeight.w700,
                       ),
@@ -84,7 +89,7 @@ class _MoodPageState extends State<MoodPage> {
 
                   const SizedBox(height: 18),
 
-                  const Text(
+                  Text(
                     "How are you feeling\ntoday?",
 
                     textAlign: TextAlign.center,
