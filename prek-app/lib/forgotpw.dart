@@ -24,7 +24,7 @@ class _ForgotPWState extends State<ForgotPW> {
     try {
       await supabase.auth.resetPasswordForEmail(
         emailController.text.trim(),
-        redirectTo: 'http://localhost:3000/#/update-password',
+        redirectTo: 'https://d28sobbmdqyycw.cloudfront.net/#/update-password',
       );
 
       return null;

@@ -5,14 +5,66 @@ import '../models/gratitude_entry.dart';
 import '../utils/time_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// sort out the path
+String normalizeGratitudeStoragePath(String path) {
+  var value = path.trim();
+  if (value.startsWith('/')) value = value.substring(1);
+  if (value.startsWith('assets/')) value = value.substring('assets/'.length);
+  return value;
+}
+
+// easy to mock test
+abstract class GratitudeAudioController {
+  Stream<Duration> get onPositionChanged;
+  Stream<Duration> get onDurationChanged;
+  Stream<PlayerState> get onPlayerStateChanged;
+
+  Future<void> play(String publicUrl);
+  Future<void> pause();
+  Future<void> stop();
+  Future<void> seek(Duration position);
+}
+
+class SharedGratitudeAudioController implements GratitudeAudioController {
+  SharedGratitudeAudioController._();
+
+  static final SharedGratitudeAudioController instance =
+      SharedGratitudeAudioController._();
+  //share one player
+  static final AudioPlayer _player = AudioPlayer();
+
+  @override
+  Stream<Duration> get onPositionChanged => _player.onPositionChanged;
+
+  @override
+  Stream<Duration> get onDurationChanged => _player.onDurationChanged;
+
+  @override
+  Stream<PlayerState> get onPlayerStateChanged => _player.onPlayerStateChanged;
+
+  @override
+  Future<void> play(String publicUrl) => _player.play(UrlSource(publicUrl));
+
+  @override
+  Future<void> pause() => _player.pause();
+
+  @override
+  Future<void> stop() => _player.stop();
+
+  @override
+  Future<void> seek(Duration position) => _player.seek(position);
+}
+
 //Single gratitude record card: Text + Timestamp + (Optional) Voice Playback
 class GratitudeTile extends StatefulWidget {
   final GratitudeEntry entry;
   final VoidCallback onDeleted;
+  final GratitudeAudioController? audioController; //easy to mock test
   const GratitudeTile({
     super.key,
     required this.entry,
     required this.onDeleted,
+    this.audioController,
   });
 
   @override
@@ -21,7 +73,6 @@ class GratitudeTile extends StatefulWidget {
 
 class _GratitudeTileState extends State<GratitudeTile> {
   // Shared player: Ensures that only one item is played at a time.
-  static final AudioPlayer _player = AudioPlayer();
   static String? _currentSrc; // The currently playing resource (asset path)
 
   late final StreamSubscription<Duration> _posSub;
@@ -31,20 +82,23 @@ class _GratitudeTileState extends State<GratitudeTile> {
   Duration _pos = Duration.zero;
   Duration _dur = Duration.zero;
   bool _playingMine = false; // test  this currently playing or not
+
+  GratitudeAudioController get _audioController =>
+      widget.audioController ?? SharedGratitudeAudioController.instance;
   //bool _isUrl(String s) => s.startsWith('http://') || s.startsWith('https://');
 
   @override
   void initState() {
     super.initState();
-    _posSub = _player.onPositionChanged.listen((p) {
+    _posSub = _audioController.onPositionChanged.listen((p) {
       if (!_isMine) return;
       setState(() => _pos = p);
     });
-    _durSub = _player.onDurationChanged.listen((d) {
+    _durSub = _audioController.onDurationChanged.listen((d) {
       if (!_isMine) return;
       setState(() => _dur = d);
     });
-    _stateSub = _player.onPlayerStateChanged.listen((s) {
+    _stateSub = _audioController.onPlayerStateChanged.listen((s) {
       final wasMine =
           _playingMine || _isMine; //Only update when it concerns oneself
 
@@ -82,13 +136,6 @@ class _GratitudeTileState extends State<GratitudeTile> {
     super.dispose();
   }
 
-  String _normalizeStoragePath(String p) {
-    var s = p.trim();
-    if (s.startsWith('assets/')) s = s.substring('assets/'.length);
-    if (s.startsWith('/')) s = s.substring(1);
-    return s;
-  }
-
   Future<void> _togglePlay() async {
     //Debug session/user info
     final src = widget.entry.audioAssetPath;
@@ -102,10 +149,10 @@ class _GratitudeTileState extends State<GratitudeTile> {
 
     if (_playingMine) {
       //print('Pause');
-      await _player.pause();
+      await _audioController.pause();
     } else {
       //print('Try to play');
-      await _player.stop(); // stop other playing
+      await _audioController.stop(); // stop other playing
 
       //Go to Supabase to obtain the signed URL and then use UrlSource to play it.
       _currentSrc = src;
@@ -113,7 +160,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
       _dur = Duration.zero;
       setState(() {});
       final client = Supabase.instance.client;
-      final cleanSrc = _normalizeStoragePath(src);
+      final cleanSrc = normalizeGratitudeStoragePath(src);
 
       debugPrint('bucket=gratitude-audio');
       debugPrint('src(raw)="$src"');
@@ -124,7 +171,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
             .from('gratitude-audio')
             .getPublicUrl(cleanSrc);
         print('publicUrl=$publicUrl');
-        await _player.play(UrlSource(publicUrl));
+        await _audioController.play(publicUrl);
       } catch (e) {
         debugPrint('getPublicUrl failed: $e');
         if (mounted) {
@@ -290,7 +337,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
                               final target = Duration(
                                 milliseconds: (_dur.inMilliseconds * v).round(),
                               );
-                              await _player.seek(target);
+                              await _audioController.seek(target);
                             }
                           : null,
                     ),
