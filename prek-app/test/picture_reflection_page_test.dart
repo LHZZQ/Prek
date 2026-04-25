@@ -1,9 +1,62 @@
+import 'dart:io';
 import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:image_picker_platform_interface/image_picker_platform_interface.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
+class _FakeImagePickerPlatform extends ImagePickerPlatform {
+  XFile? pickedFile;
+
+  @override
+  Future<XFile?> getImageFromSource({
+    required ImageSource source,
+    ImagePickerOptions options = const ImagePickerOptions(),
+  }) async {
+    return pickedFile;
+  }
+
+  @override
+  Future<LostDataResponse> getLostData() async {
+    return LostDataResponse.empty();
+  }
+}
 
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
+
+  late _FakeImagePickerPlatform fakeImagePicker;
+  late String imagePath;
+
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+
+    try {
+      if (Supabase.instance.isInitialized) {
+        await Supabase.instance.dispose();
+      }
+    } catch (_) {}
+
+    await Supabase.initialize(
+      url: 'https://example.supabase.co',
+      anonKey: 'test-anon-key',
+      authOptions: const FlutterAuthClientOptions(
+        localStorage: EmptyLocalStorage(),
+      ),
+    );
+
+    final imageFile = File('/tmp/picture_reflection_test_image.jpg');
+    await imageFile.writeAsBytes(<int>[1, 2, 3, 4, 5, 6, 7, 8]);
+    imagePath = imageFile.path;
+  });
+
+  setUp(() {
+    fakeImagePicker = _FakeImagePickerPlatform();
+    fakeImagePicker.pickedFile = null;
+    ImagePickerPlatform.instance = fakeImagePicker;
+  });
 
   void useLargeViewport(WidgetTester tester) {
     tester.view.physicalSize = const Size(1200, 2200);
@@ -17,67 +70,86 @@ void main() {
   Future<void> pumpPictureReflectionPage(WidgetTester tester) async {
     await tester.pumpWidget(
       MaterialApp(
-        theme: ThemeData(
-          useMaterial3: false,
-          splashFactory: InkRipple.splashFactory,
-        ),
+        theme: ThemeData(useMaterial3: false),
         home: const PictureReflectionPage(selectedMood: 'Happy'),
       ),
     );
     await tester.pumpAndSettle();
   }
 
-  testWidgets('renders default memories', (tester) async {
+  Finder addMemoryCardFinder() {
+    return find.byWidgetPredicate(
+      (widget) =>
+          widget is GestureDetector &&
+          widget.onTap != null &&
+          find
+              .descendant(
+                of: find.byWidget(widget),
+                matching: find.text('Add a new memory'),
+              )
+              .evaluate()
+              .isNotEmpty,
+    );
+  }
+
+  testWidgets('renders picture reflection UI', (tester) async {
     useLargeViewport(tester);
     await pumpPictureReflectionPage(tester);
 
-    expect(find.text('Your happy moments'), findsOneWidget);
+    expect(find.byType(RichText), findsWidgets);
+    expect(find.text('Happy Moments'), findsOneWidget);
     expect(
-      find.text('Snap moments that make you smile, and revisit them anytime.'),
+      find.text('What made you smile today? Save it here.'),
       findsOneWidget,
     );
-    expect(find.text('3 saved'), findsOneWidget);
-    expect(find.text('Coffee with my friend'), findsOneWidget);
-    expect(find.text('Pretty sunset'), findsOneWidget);
-    expect(find.text('cute dog'), findsOneWidget);
-    expect(
-      find.widgetWithText(FloatingActionButton, 'Add a memory'),
-      findsOneWidget,
-    );
+    expect(find.text('Add a new memory'), findsOneWidget);
+    expect(find.text('Tap to choose a photo & add a caption'), findsOneWidget);
+    expect(find.byIcon(Icons.add_photo_alternate_rounded), findsOneWidget);
   });
 
-  testWidgets('adds a memory', (tester) async {
+  testWidgets('tapping add memory opens the page', (tester) async {
     useLargeViewport(tester);
     await pumpPictureReflectionPage(tester);
 
-    await tester.tap(find.widgetWithText(FloatingActionButton, 'Add a memory'));
+    await tester.tap(addMemoryCardFinder());
     await tester.pumpAndSettle();
 
     expect(find.text('Save a moment'), findsOneWidget);
-    expect(find.text('Save to album'), findsOneWidget);
-
-    await tester.enterText(find.byType(TextField), 'Grateful for sunshine');
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
-    await tester.pumpAndSettle();
-
-    expect(find.text('Grateful for sunshine'), findsOneWidget);
-    expect(find.text('4 saved'), findsOneWidget);
+    expect(find.text('Add a photo and a short note'), findsOneWidget);
+    expect(find.text('Tap to choose a photo'), findsOneWidget);
+    expect(find.text('What made this moment special?'), findsOneWidget);
+    expect(find.widgetWithText(ElevatedButton, 'Save to album'), findsOneWidget);
   });
 
-  testWidgets('opens memory detail', (tester) async {
+  testWidgets('image is shown in preview', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    fakeImagePicker.pickedFile = XFile(imagePath);
+    await pumpPictureReflectionPage(tester);
+
+    await tester.tap(addMemoryCardFinder());
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.text('Tap to choose a photo'));
+    await tester.pumpAndSettle();
+
+    expect(find.text('Change'), findsOneWidget);
+    expect(find.text('Tap to choose a photo'), findsNothing);
+  });
+
+  testWidgets('save with empty keeps openning', (tester) async {
     useLargeViewport(tester);
     await pumpPictureReflectionPage(tester);
 
-    await tester.tap(find.text('Pretty sunset'));
+    await tester.tap(addMemoryCardFinder());
     await tester.pumpAndSettle();
 
-    expect(find.text('Pretty sunset'), findsOneWidget);
-    expect(find.text('February 2, 2025'), findsOneWidget);
-    expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
-
-    await tester.tap(find.byIcon(Icons.arrow_back_rounded));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
     await tester.pumpAndSettle();
 
-    expect(find.text('Your happy moments'), findsOneWidget);
+    expect(find.text('Save a moment'), findsOneWidget);
+    expect(find.byType(PictureReflectionPage), findsOneWidget);
+    expect(find.textContaining('Failed to save:'), findsNothing);
   });
 }
