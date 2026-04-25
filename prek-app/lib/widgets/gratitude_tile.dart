@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../models/gratitude_entry.dart';
@@ -211,38 +212,54 @@ class _GratitudeTileState extends State<GratitudeTile> {
   Widget _moodChip(String mood) {
     IconData icon;
     Color bgColor;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     switch (mood) {
       case 'Happy':
         icon = Icons.sentiment_very_satisfied_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
+        bgColor = isDark
+            ? Color(0xFFFFC567)
+            : Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
         break;
       case 'Good':
         icon = Icons.sentiment_satisfied_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
-        break;
+        bgColor = isDark
+            ? Color(0xFFFFC567)
+            : Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
       case 'Neutral':
         icon = Icons.sentiment_neutral_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
+        bgColor = isDark
+            ? Color(0xFF058CD7)
+            : Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
         break;
       case 'Confused':
         icon = Icons.psychology_alt_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
+        bgColor = isDark
+            ? Color(0xFF058CD7)
+            : Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
         break;
       case 'Sad':
         icon = Icons.sentiment_dissatisfied_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       case 'Overwhelmed':
         icon = Icons.warning_amber_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       case 'Frustrated':
         icon = Icons.whatshot_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       case 'Angry':
         icon = Icons.mood_bad_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       default:
         icon = Icons.emoji_emotions_outlined;

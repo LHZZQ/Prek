@@ -67,10 +67,10 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
+    const textColorOriginal = Color(0xFF94697E);
     const topBarColor = Color(0xFFFFF1F5);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    //final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
 
     Widget buildBackground(Widget child) {
       return Container(
