@@ -1,4 +1,5 @@
-import 'dart:io';
+import 'dart:convert';
+import 'dart:typed_data';
 import 'package:_2025_prek/picture_reflection_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
@@ -28,7 +29,7 @@ void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
   late _FakeImagePickerPlatform fakeImagePicker;
-  late String imagePath;
+  late Uint8List imageBytes;
 
   setUpAll(() async {
     SharedPreferences.setMockInitialValues({});
@@ -47,9 +48,9 @@ void main() {
       ),
     );
 
-    final imageFile = File('/tmp/picture_reflection_test_image.jpg');
-    await imageFile.writeAsBytes(<int>[1, 2, 3, 4, 5, 6, 7, 8]);
-    imagePath = imageFile.path;
+    imageBytes = base64Decode(
+      'iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mP8/x8AAusB9Wn8qS0AAAAASUVORK5CYII=',
+    );
   });
 
   setUp(() {
@@ -92,12 +93,33 @@ void main() {
     );
   }
 
+  Finder choosePhotoAreaFinder() {
+    return find.byWidgetPredicate(
+      (widget) =>
+          widget is GestureDetector &&
+          widget.onTap != null &&
+          find
+              .descendant(
+                of: find.byWidget(widget),
+                matching: find.text('Tap to choose a photo'),
+              )
+              .evaluate()
+              .isNotEmpty,
+    );
+  }
+
   testWidgets('renders picture reflection UI', (tester) async {
     useLargeViewport(tester);
     await pumpPictureReflectionPage(tester);
 
-    expect(find.byType(RichText), findsWidgets);
-    expect(find.text('Happy Moments'), findsOneWidget);
+    expect(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is RichText &&
+            widget.text.toPlainText().contains('Happy Moments'),
+      ),
+      findsOneWidget,
+    );
     expect(
       find.text('What made you smile today? Save it here.'),
       findsOneWidget,
@@ -125,13 +147,18 @@ void main() {
     tester,
   ) async {
     useLargeViewport(tester);
-    fakeImagePicker.pickedFile = XFile(imagePath);
+    fakeImagePicker.pickedFile = XFile.fromData(
+      imageBytes,
+      name: 'picture_reflection_test_image.png',
+      mimeType: 'image/png',
+    );
     await pumpPictureReflectionPage(tester);
 
     await tester.tap(addMemoryCardFinder());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text('Tap to choose a photo'));
+    await tester.tap(choosePhotoAreaFinder());
+    await tester.pump();
     await tester.pumpAndSettle();
 
     expect(find.text('Change'), findsOneWidget);
