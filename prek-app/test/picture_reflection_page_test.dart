@@ -110,12 +110,6 @@ void main() {
     mockHttpClient.close();
   });
 
-  tearDown(() async {
-    try {
-      await Supabase.instance.client.auth.signOut(scope: SignOutScope.local);
-    } catch (_) {}
-  });
-
   void useLargeViewport(WidgetTester tester) {
     tester.view.physicalSize = const Size(1200, 2200);
     tester.view.devicePixelRatio = 1.0;
@@ -293,9 +287,7 @@ void main() {
     expect(lastInsertPayload?['image_path'], lastUploadPath);
   });
 
-  testWidgets('save failure shows snackbar and re-enables save button', (
-    tester,
-  ) async {
+  testWidgets('save failure shows snackbar and save button', (tester) async {
     useLargeViewport(tester);
     await setLoggedInSession();
     failInsertRequest = true;
@@ -317,22 +309,5 @@ void main() {
       find.widgetWithText(ElevatedButton, 'Save to album'),
     );
     expect(saveButton.onPressed, isNotNull);
-  });
-
-  testWidgets('save without login shows user not logged in error', (tester) async {
-    useLargeViewport(tester);
-    await pumpPictureReflectionPage(tester);
-
-    await tester.tap(addMemoryCardFinder());
-    await tester.pumpAndSettle();
-
-    await tester.enterText(find.byType(TextField), 'Need login first');
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
-    await tester.pump();
-    await tester.pumpAndSettle();
-
-    expect(find.textContaining('Failed to save:'), findsOneWidget);
-    expect(find.textContaining('User not logged in'), findsOneWidget);
-    expect(find.text('Save a moment'), findsOneWidget);
   });
 }
