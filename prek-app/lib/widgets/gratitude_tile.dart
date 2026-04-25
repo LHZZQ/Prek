@@ -252,6 +252,10 @@ class _GratitudeTileState extends State<GratitudeTile> {
       label: Text(mood),
       avatar: Icon(icon, size: 16),
       backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: BorderSide(color: Colors.transparent, width: 1.5),
+      ),
     );
   }
 
@@ -271,8 +275,10 @@ class _GratitudeTileState extends State<GratitudeTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(e.text, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 6),
+            if (e.audioAssetPath == null) ...[
+              Text(e.text, style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 6),
+            ],
             Row(
               children: [
                 if (e.mood != null) _moodChip(e.mood!),
@@ -315,7 +321,6 @@ class _GratitudeTileState extends State<GratitudeTile> {
               ],
             ),
             if (e.audioAssetPath != null) ...[
-              const SizedBox(height: 8),
               Row(
                 children: [
                   IconButton(
