@@ -35,6 +35,7 @@ void main() {
   late MockClient mockHttpClient;
   Map<String, dynamic>? lastInsertPayload;
   String? lastUploadPath;
+  bool failInsertRequest = false;
 
   Future<http.Response> handleRequest(http.Request request) async {
     final path = Uri.decodeComponent(request.url.path);
@@ -53,6 +54,14 @@ void main() {
 
     if (path == '/rest/v1/Gratitude Entries' && request.method == 'POST') {
       lastInsertPayload = jsonDecode(request.body) as Map<String, dynamic>;
+      if (failInsertRequest) {
+        return http.Response(
+          jsonEncode({'message': 'insert failed'}),
+          500,
+          headers: headers,
+          request: request,
+        );
+      }
       return http.Response(
         jsonEncode([lastInsertPayload]),
         201,
@@ -94,10 +103,17 @@ void main() {
     ImagePickerPlatform.instance = fakeImagePicker;
     lastInsertPayload = null;
     lastUploadPath = null;
+    failInsertRequest = false;
   });
 
   tearDownAll(() {
     mockHttpClient.close();
+  });
+
+  tearDown(() async {
+    try {
+      await Supabase.instance.client.auth.signOut(scope: SignOutScope.local);
+    } catch (_) {}
   });
 
   void useLargeViewport(WidgetTester tester) {
@@ -275,5 +291,48 @@ void main() {
       '00000000-0000-0000-0000-000000000001',
     );
     expect(lastInsertPayload?['image_path'], lastUploadPath);
+  });
+
+  testWidgets('save failure shows snackbar and re-enables save button', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await setLoggedInSession();
+    failInsertRequest = true;
+    await pumpPictureReflectionPage(tester);
+
+    await tester.tap(addMemoryCardFinder());
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'force insert failure');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Failed to save:'), findsOneWidget);
+    expect(find.textContaining('insert failed'), findsOneWidget);
+    expect(find.text('Save a moment'), findsOneWidget);
+
+    final saveButton = tester.widget<ElevatedButton>(
+      find.widgetWithText(ElevatedButton, 'Save to album'),
+    );
+    expect(saveButton.onPressed, isNotNull);
+  });
+
+  testWidgets('save without login shows user not logged in error', (tester) async {
+    useLargeViewport(tester);
+    await pumpPictureReflectionPage(tester);
+
+    await tester.tap(addMemoryCardFinder());
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'Need login first');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Failed to save:'), findsOneWidget);
+    expect(find.textContaining('User not logged in'), findsOneWidget);
+    expect(find.text('Save a moment'), findsOneWidget);
   });
 }
