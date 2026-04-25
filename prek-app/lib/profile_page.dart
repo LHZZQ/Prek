@@ -2,7 +2,7 @@ import 'package:_2025_prek/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
-import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -18,22 +18,25 @@ class _ProfilePageState extends State<ProfilePage> {
   int reflectionsCount = 0;
   bool loading = true;
   int streakCount = 0;
-
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
-    if (index == 0) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(builder: (context) => const HomePage()),
-      );
-    } else if (index == 1) {
+    if (index == 1) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
     } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
     } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
@@ -300,10 +303,7 @@ class _ProfilePageState extends State<ProfilePage> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-
-          backgroundColor: isDark
-              ? const Color(0xFF2A2A3D)
-              : const Color(0xFFFFF8EE),
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
           selectedItemColor: activeColor,
           unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
           showUnselectedLabels: true,
@@ -322,6 +322,11 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icon(Icons.person_rounded),
               label: 'Profile',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
               label: 'Settings',
@@ -841,13 +846,13 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
     if (label == null) return textColor.withValues(alpha: 0.10);
     if (label == "Happy" || label == "Good") {
-      return yellow.withValues(alpha: 0.18);
+      return isDark ? yellow : yellow.withValues(alpha: 0.18);
     }
     if (label == "Neutral" || label == "Confused") {
-      return blue.withValues(alpha: 0.16);
+      return isDark ? blue : blue.withValues(alpha: 0.16);
     }
 
-    return pink.withValues(alpha: 0.16);
+    return isDark ? pink : pink.withValues(alpha: 0.16);
   }
 }
 
