@@ -122,13 +122,15 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     _timer?.cancel();
     _timer = null;
 
-    try{
-    final path = await _recorder.stop();
+    try {
+      final path = await _recorder.stop();
 
-    if (kIsWeb && path != null) {
-      _localFilePath = path;
+      if (kIsWeb && path != null) {
+        _localFilePath = path;
+      }
+    } catch (e) {
+      debugPrint('Error stopping recorder: $e');
     }
-    }catch(e) {debugPrint('Error stopping recorder: $e');}
     if (mounted) {
       setState(() {
         _isRecording = false;
