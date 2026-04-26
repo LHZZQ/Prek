@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/theme/theme_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:_2025_prek/theme/theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -31,7 +32,11 @@ class MyApp extends StatelessWidget {
       title: 'Prek App',
       debugShowCheckedModeBanner: false,
       home: const AuthGate(),
-      theme: Provider.of<ThemeProvider>(context).themeData,
+      theme: lightMode,
+      darkTheme: darkMode,
+      themeMode: Provider.of<ThemeProvider>(context).isDark
+          ? ThemeMode.dark
+          : ThemeMode.light,
       routes: {'/update-password': (context) => const UpdatePW()},
     );
   }
