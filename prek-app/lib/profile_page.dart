@@ -61,7 +61,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final user = supabase.auth.currentUser;
     if (user == null) return;
 
-    final createdAt = DateTime(.parse(user.createdAt)).toLocal();
+    final createdAt = DateTime.parse(user.createdAt).toLocal();
     final days = DateTime.now().difference(createdAt).inDays + 1;
 
     setState(() => daysActive = days,);
@@ -225,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   email: profileEmail,
                   reflections: reflectionsCount.toString(),
                   streak: streakCount.toString(),
-                  daysActive: "12",
+                  daysActive:   daysActive.toString(),
                 ),
                 const SizedBox(height: 14),
 
