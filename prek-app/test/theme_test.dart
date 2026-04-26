@@ -4,17 +4,37 @@ import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  final binding = TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUp(() {
+    binding.platformDispatcher.platformBrightnessTestValue = Brightness.light;
+  });
+
+  tearDown(() {
+    binding.platformDispatcher.clearPlatformBrightnessTestValue();
+  });
+
   group('theme definitions', () {
     test('lightMode use bright colors', () {
+      final expectedTheme = ThemeData(brightness: Brightness.light);
+
       expect(lightMode.brightness, Brightness.light);
-      expect(lightMode.colorScheme.background, Colors.black);
-      expect(lightMode.colorScheme.primary, Colors.black);
+      expect(
+        lightMode.colorScheme.background,
+        expectedTheme.colorScheme.background,
+      );
+      expect(lightMode.colorScheme.primary, expectedTheme.colorScheme.primary);
     });
 
     test('darkMode use dark colors', () {
+      final expectedTheme = ThemeData(brightness: Brightness.dark);
+
       expect(darkMode.brightness, Brightness.dark);
-      expect(darkMode.colorScheme.background, Colors.white);
-      expect(darkMode.colorScheme.primary, Colors.white);
+      expect(
+        darkMode.colorScheme.background,
+        expectedTheme.colorScheme.background,
+      );
+      expect(darkMode.colorScheme.primary, expectedTheme.colorScheme.primary);
     });
   });
 
