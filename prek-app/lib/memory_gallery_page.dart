@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/settings_page.dart';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+import 'package:_2025_prek/profile_page.dart';
 
 const Color _pink = Color(0xFFFB7DA8);
-const Color _textColor = Color(0xFF94697E);
-const Color _bgColor = Color(0xFFFFF1F5);
 
 class MemoryGalleryPage extends StatefulWidget {
   const MemoryGalleryPage({super.key});
@@ -16,6 +18,32 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
   final _client = Supabase.instance.client;
   List<Map<String, dynamic>> _memories = [];
   bool _isLoading = true;
+  int _selectedIndex = 3;
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    } else if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else if (index == 3) {
+    } else if (index == 4) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
+    }
+  }
 
   @override
   void initState() {
@@ -87,12 +115,20 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final _bgColor = isDark ? const Color(0xFF1E1E2C) : const Color(0xFFFFF1F5);
+    final _textColor = isDark ? Colors.white : const Color(0xFF94697E);
+    const activeColor = Color(0xFFFB7DA8);
     return Scaffold(
       backgroundColor: _bgColor,
       appBar: AppBar(
+        title: const Text(
+          'Lookbook',
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: _bgColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: _textColor),
+        foregroundColor: _textColor,
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -103,7 +139,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 RichText(
-                  text: const TextSpan(
+                  text: TextSpan(
                     style: TextStyle(
                       fontFamily: 'Georgia',
                       fontSize: 28,
@@ -125,7 +161,9 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                   'Every moment worth keeping.',
                   style: TextStyle(
                     fontSize: 13,
-                    color: _textColor.withOpacity(0.5),
+                    color: isDark
+                        ? _textColor.withOpacity(0.8)
+                        : _textColor.withOpacity(0.5),
                   ),
                 ),
               ],
@@ -136,7 +174,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
             padding: const EdgeInsets.fromLTRB(24, 0, 24, 10),
             child: Row(
               children: [
-                const Text(
+                Text(
                   'All memories',
                   style: TextStyle(
                     fontFamily: 'Georgia',
@@ -150,7 +188,9 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                   '${_memories.length} saved',
                   style: TextStyle(
                     fontSize: 12,
-                    color: _textColor.withOpacity(0.45),
+                    color: isDark
+                        ? _textColor.withOpacity(0.8)
+                        : _textColor.withOpacity(0.45),
                   ),
                 ),
               ],
@@ -188,10 +228,57 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
           ),
         ],
       ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: activeColor,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
     );
   }
 
   Widget _buildEmptyState() {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final _textColor = isDark ? Colors.white : const Color(0xFF94697E);
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -210,7 +297,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
             ),
           ),
           const SizedBox(height: 16),
-          const Text(
+          Text(
             'No memories yet',
             style: TextStyle(
               fontFamily: 'Georgia',
@@ -274,16 +361,20 @@ class _MemoryTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final colors = palettes[index % palettes.length];
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final _textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return GestureDetector(
       onTap: onTap,
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: isDark ? Color(0xFF161622) : Colors.white,
           borderRadius: BorderRadius.circular(18),
           boxShadow: [
             BoxShadow(
-              color: _pink.withOpacity(0.08),
+              color: isDark
+                  ? Colors.black.withOpacity(0.7)
+                  : _pink.withOpacity(0.08),
               blurRadius: 10,
               offset: const Offset(0, 4),
             ),
@@ -346,7 +437,7 @@ class _MemoryTile extends StatelessWidget {
                 children: [
                   Text(
                     memory['text'] as String? ?? '',
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontFamily: 'Georgia',
                       fontSize: 11,
                       fontWeight: FontWeight.w600,
