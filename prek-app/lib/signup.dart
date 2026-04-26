@@ -79,6 +79,7 @@ class _SignUpState extends State<SignUp> {
         ? const Color(0xFF1E1E2C)
         : const Color(0xFFFFF1F5);
     return Scaffold(
+      extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -103,7 +104,7 @@ class _SignUpState extends State<SignUp> {
           ),
           child: Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 30),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,

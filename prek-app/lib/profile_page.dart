@@ -215,7 +215,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
             child: Column(
               children: [
                 const SizedBox(height: 15),
@@ -816,9 +816,8 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
           const _WeekdayRow(),
 
-          const SizedBox(height: 10),
-
           GridView.builder(
+            padding: EdgeInsets.only(top: 10),
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: gridCount,
