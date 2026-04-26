@@ -188,26 +188,26 @@ void main() {
     useLargeViewport(tester);
     await pumpProfilePage(tester);
 
-    expect(find.text('Profile'), findsWidgets);
-    expect(find.text('Your wellness'), findsOneWidget);
-    expect(find.text('Mood board'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Profile')),
+      findsOneWidget,
+    );
     expect(find.text('PREK'), findsOneWidget);
     expect(find.text('Member since 2025'), findsOneWidget);
 
-    expect(find.text('Reflections saved'), findsOneWidget);
-    expect(find.text('Reflection streak'), findsOneWidget);
-    expect(find.text('Reflection goals'), findsOneWidget);
-    expect(find.text('Memory Highlights'), findsOneWidget);
+    expect(find.text('Reflections'), findsOneWidget);
+    expect(find.text('Streak'), findsOneWidget);
+    expect(find.text('Days'), findsOneWidget);
   });
 
-  testWidgets('logout icon shows snackbar', (tester) async {
+  testWidgets('profile app bar renders current title', (tester) async {
     useLargeViewport(tester);
     await pumpProfilePage(tester);
 
-    await tester.tap(find.byIcon(Icons.logout_rounded));
-    await tester.pump();
-    // will update later
-    expect(find.text('not available right now'), findsOneWidget);
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Profile')),
+      findsOneWidget,
+    );
   });
 
   testWidgets('back button pops to previous page', (tester) async {
@@ -311,22 +311,14 @@ void main() {
     expect(find.byIcon(Icons.mood_bad_rounded), findsOneWidget);
   });
 
-  testWidgets('section rows can be tapped', (tester) async {
+  testWidgets('profile summary renders without section rows', (tester) async {
     useLargeViewport(tester);
     await pumpProfilePage(tester);
 
-    await tester.tap(find.text('Reflections saved'));
-    await tester.pump();
-
-    await tester.tap(find.text('Reflection streak'));
-    await tester.pump();
-
-    await tester.tap(find.text('Reflection goals'));
-    await tester.pump();
-
-    await tester.tap(find.text('Memory Highlights'));
-    await tester.pump();
-
+    expect(find.text('Reflections saved'), findsNothing);
+    expect(find.text('Reflection streak'), findsNothing);
+    expect(find.text('Reflection goals'), findsNothing);
+    expect(find.text('Memory Highlights'), findsNothing);
     expect(tester.takeException(), isNull);
   });
 }
