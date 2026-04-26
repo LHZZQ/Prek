@@ -38,8 +38,22 @@ class _ForgotPWState extends State<ForgotPW> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    const textColorOriginal = Color(0xFF94697E);
+    final Color textColor = isDark ? Colors.white : textColorOriginal;
+    final Color bgTop = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
     return Scaffold(
-      appBar: AppBar(backgroundColor: Colors.transparent),
+      backgroundColor: bgTop,
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+      ),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -52,9 +66,11 @@ class _ForgotPWState extends State<ForgotPW> {
         ),
 
         child: Center(
-          child: Padding(
-            padding: EdgeInsets.symmetric(horizontal: 30, vertical: 50),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 //image
                 Image(image: AssetImage('images/prek_logo.png')),
@@ -65,7 +81,6 @@ class _ForgotPWState extends State<ForgotPW> {
                   child: TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
-                      hintText: 'hello@example.com',
                       labelText: 'Email',
                       icon: Icon(
                         CupertinoIcons.envelope,
