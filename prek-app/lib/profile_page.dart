@@ -19,6 +19,7 @@ class _ProfilePageState extends State<ProfilePage> {
   int reflectionsCount = 0;
   bool loading = true;
   int streakCount = 0;
+  int daysActive = 0;
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
@@ -53,6 +54,17 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadUsername();
     _loadEmail();
     _loadStreak();
+    _loadDaysActive();
+  }
+
+  void _loadDaysActive() {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    final createdAt = DateTime(.parse(user.createdAt)).toLocal();
+    final days = DateTime.now().difference(createdAt).inDays + 1;
+
+    setState(() => daysActive = days,);
   }
 
   Future<void> _loadReflectionsCount() async {
