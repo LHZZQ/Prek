@@ -41,20 +41,26 @@ class _ChangeNameState extends State<ChangeName> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
-    const topBarColor = Color(0xFFFFF1F5);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-
+    final Color bgTop = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
     return Scaffold(
-      backgroundColor: topBarColor,
+      backgroundColor: bgTop,
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
 
-        elevation: 0,
-        foregroundColor: textColor,
+        title: Text(
+          "Settings",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -79,11 +85,13 @@ class _ChangeNameState extends State<ChangeName> {
                   //new name
                   Container(
                     decoration: BoxDecoration(
-                      color: isDark ? Colors.black : Colors.white70,
+                      color: isDark ? Color(0xFF161622) : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          color: isDark
+                              ? Colors.black.withValues(alpha: 0.1)
+                              : Colors.pinkAccent.withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
@@ -99,7 +107,7 @@ class _ChangeNameState extends State<ChangeName> {
                     ),
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
 
                   //save button
                   Container(

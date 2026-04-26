@@ -7,6 +7,7 @@ import 'package:_2025_prek/settings_page.dart';
 //import 'picture_reflection_page.dart';
 import 'reflection_page.dart';
 import 'voice_reflection_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class TaskSelectionPage extends StatefulWidget {
   final String selectedMood;
@@ -18,33 +19,35 @@ class TaskSelectionPage extends StatefulWidget {
 }
 
 class _TaskSelectionPageState extends State<TaskSelectionPage> {
-  int _selectedIndex = 0;
-
-  static const textColor = Color(0xFF94697E);
   static const softWhite = Color(0xFFFFFFFF);
   static const pink = Color(0xFFFB7DA8);
   static const yellow = Color(0xFFFFC567);
   static const blue = Color(0xFF058CD7);
 
   void _onItemTapped(int index) {
-    if (index == _selectedIndex) return;
     if (index == 0) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
+    }
+    if (index == 1) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
     } else if (index == 2) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } else if (index == 3) {
-      Navigator.pushReplacement(
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
       );
@@ -54,18 +57,19 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
-    final cardBg = isDark
-        ? Colors.grey[850]!.withOpacity(0.8)
-        : softWhite.withOpacity(0.8);
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
+    final cardBg = isDark ? Color(0xFF1E1E2C) : softWhite.withOpacity(0.8);
     final currentTextColor = isDark ? Colors.white : textColor;
+    final topBarColor = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: topBarColor,
         elevation: 0,
-        iconTheme: IconThemeData(color: currentTextColor),
+        foregroundColor: textColor,
       ),
       body: Container(
         width: double.infinity,
@@ -110,7 +114,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   cardBg: cardBg,
                   currentTextColor: currentTextColor,
                   icon: Icons.edit_note_rounded,
-                  iconBg: yellow.withOpacity(0.3),
+                  iconBg: isDark ? yellow : yellow.withOpacity(0.3),
                   title: "Write a Reflection",
                   subtitle: "Express your thoughts in words",
                   onTap: () {
@@ -130,7 +134,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   cardBg: cardBg,
                   currentTextColor: currentTextColor,
                   icon: Icons.mic_rounded,
-                  iconBg: blue.withOpacity(0.2),
+                  iconBg: isDark ? blue : blue.withOpacity(0.2),
                   title: "Voice Reflection",
                   subtitle: "Record your thoughts with audio",
                   onTap: () {
@@ -151,7 +155,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   cardBg: cardBg,
                   currentTextColor: currentTextColor,
                   icon: Icons.photo_library_rounded,
-                  iconBg: pink.withOpacity(0.2),
+                  iconBg: isDark ? pink : pink.withOpacity(0.2),
                   title: "Lookbook",
                   subtitle: "Visualize your journey through photos",
                   onTap: () {
@@ -170,31 +174,49 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: navBarBg,
-        selectedItemColor: const Color(0xFFFB7DA8),
-        unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history_rounded),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_rounded),
-            label: 'Settings',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.2),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -230,7 +252,11 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
-              child: Icon(icon, color: isDark ? pink : textColor, size: 30),
+              child: Icon(
+                icon,
+                color: isDark ? Colors.white : Color(0xFF94697E),
+                size: 30,
+              ),
             ),
             const SizedBox(width: 20),
             Expanded(

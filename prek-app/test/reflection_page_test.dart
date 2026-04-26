@@ -40,7 +40,13 @@ void main() {
     useLargeViewport(tester);
     await pumpReflectionPage(tester);
 
-    expect(find.text('Reflection 🌸'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(AppBar),
+        matching: find.text('Reflection'),
+      ),
+      findsOneWidget,
+    );
     expect(
       find.text(
         "Take a moment to reflect on something you're grateful for today 💭",

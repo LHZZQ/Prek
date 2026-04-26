@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class ReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -15,27 +16,31 @@ class ReflectionPage extends StatefulWidget {
 
 class _ReflectionPageState extends State<ReflectionPage> {
   final _controller = TextEditingController();
-  int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == _selectedIndex) return;
     if (index == 0) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
+    }
+    if (index == 1) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
     } else if (index == 2) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } else if (index == 3) {
-      Navigator.pushReplacement(
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
       );
@@ -44,25 +49,24 @@ class _ReflectionPageState extends State<ReflectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
-    final currentTextColor = isDark ? Colors.white : textColor;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        iconTheme: IconThemeData(color: textColor),
         centerTitle: true,
-        title: Text(
-          "Reflection 🌸",
-          style: TextStyle(
-            color: currentTextColor,
-            fontWeight: FontWeight.w600,
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
-        iconTheme: IconThemeData(color: currentTextColor),
+
+        title: Text(
+          "Reflection",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -87,25 +91,28 @@ class _ReflectionPageState extends State<ReflectionPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 30),
                           Text(
                             "Take a moment to reflect on something you're grateful for today 💭",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: currentTextColor,
+                              color: textColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                               height: 1.5,
                             ),
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
                           Container(
                             decoration: BoxDecoration(
-                              color: isDark ? Colors.white10 : Colors.white70,
+                              color: isDark
+                                  ? Color(0xFF161622)
+                                  : Colors.white70,
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.pinkAccent.withOpacity(0.1),
+                                  color: isDark
+                                      ? Colors.black.withValues(alpha: 0.1)
+                                      : Colors.pinkAccent.withOpacity(0.1),
                                   blurRadius: 6,
                                   offset: const Offset(0, 3),
                                 ),
@@ -114,21 +121,21 @@ class _ReflectionPageState extends State<ReflectionPage> {
                             child: TextField(
                               controller: _controller,
                               maxLines: 9,
-                              style: TextStyle(color: currentTextColor),
+                              style: TextStyle(color: textColor),
                               decoration: InputDecoration(
                                 hintText: "Write your reflection here...",
                                 hintStyle: TextStyle(
-                                  color: currentTextColor.withOpacity(0.5),
+                                  color: textColor.withOpacity(0.5),
                                 ),
                                 contentPadding: const EdgeInsets.all(20),
                                 border: InputBorder.none,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 30),
                           Container(
                             width: double.infinity,
-                            height: 62,
+                            height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               gradient: const LinearGradient(
@@ -206,31 +213,49 @@ class _ReflectionPageState extends State<ReflectionPage> {
           ),
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: navBarBg,
-        selectedItemColor: const Color(0xFFFB7DA8),
-        unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history_rounded),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_rounded),
-            label: 'Settings',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }

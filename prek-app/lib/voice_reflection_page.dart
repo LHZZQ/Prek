@@ -11,6 +11,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class VoiceReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -27,7 +28,6 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   bool _isSaving = false;
   Duration _recordDuration = Duration.zero;
   Timer? _timer;
-  int _selectedIndex = 0;
 
   final AudioRecorder _recorder = AudioRecorder();
   final AudioPlayer _previewPlayer = AudioPlayer();
@@ -43,24 +43,29 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   }
 
   void _onItemTapped(int index) {
-    if (index == _selectedIndex) return;
     if (index == 0) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
-    } else if (index == 1) {
-      Navigator.pushReplacement(
+    }
+    if (index == 1) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
     } else if (index == 2) {
-      Navigator.pushReplacement(
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const ProfilePage()),
       );
     } else if (index == 3) {
-      Navigator.pushReplacement(
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
       );
@@ -222,19 +227,22 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     final textColor = isDark ? Colors.white : const Color(0xFF94697E);
     const pink = Color(0xFFFB7DA8);
     const blue = Color(0xFF058CD7);
-    final navBarBg = isDark ? const Color(0xFF2A2A3D) : Colors.white;
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          "Voice Reflection",
-          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-        ),
         iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+
+        title: Text(
+          "Relection",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -258,7 +266,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                 alignment: Alignment.center,
                 children: [
                   Positioned(
-                    top: 10 * hUnit,
+                    top: 1 * hUnit,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -278,6 +286,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                       ),
                     ),
                   ),
+
                   Positioned(
                     top: 50 * hUnit,
                     child: SizedBox(
@@ -335,14 +344,16 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               : (_isRecording
                                     ? blue
                                     : (isDark
-                                          ? Colors.grey[800]
+                                          ? Color(0xFF161622)
                                           : Colors.white)),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: (_isRecording ? blue : pink).withOpacity(
-                                0.2,
-                              ),
+                              color: isDark
+                                  ? Colors.black.withValues(alpha: 0.1)
+                                  : (_isRecording ? blue : pink).withOpacity(
+                                      0.2,
+                                    ),
                               blurRadius: 25,
                               offset: const Offset(0, 8),
                             ),
@@ -396,7 +407,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                             children: [
                               ActionChip(
                                 backgroundColor: isDark
-                                    ? Colors.grey[800]
+                                    ? Color(0xFF161622)
                                     : Colors.white,
                                 side: BorderSide.none,
                                 label: Text(
@@ -413,7 +424,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               const SizedBox(width: 12),
                               ActionChip(
                                 backgroundColor: isDark
-                                    ? Colors.grey[800]
+                                    ? Color(0xFF161622)
                                     : Colors.white,
                                 side: BorderSide.none,
                                 label: const Text(
@@ -435,10 +446,10 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10 * hUnit),
+                        SizedBox(height: 25),
                         Container(
                           width: double.infinity,
-                          height: 62,
+                          height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(40),
                             gradient: const LinearGradient(
@@ -496,31 +507,49 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
           );
         },
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
-        type: BottomNavigationBarType.fixed,
-        backgroundColor: navBarBg,
-        selectedItemColor: const Color(0xFFFB7DA8),
-        unselectedItemColor: isDark ? Colors.white70 : Colors.grey.shade400,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_rounded),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.history_rounded),
-            label: 'History',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_rounded),
-            label: 'Profile',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings_rounded),
-            label: 'Settings',
-          ),
-        ],
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
+        ),
       ),
     );
   }

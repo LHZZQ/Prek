@@ -1,8 +1,9 @@
+import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/settings_page.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
-import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -17,7 +18,7 @@ class _ProfilePageState extends State<ProfilePage> {
   String profileEmail = "";
   int reflectionsCount = 0;
   bool loading = true;
-
+  int streakCount = 0;
   int _selectedIndex = 2;
 
   void _onItemTapped(int index) {
@@ -26,13 +27,18 @@ class _ProfilePageState extends State<ProfilePage> {
         context,
         MaterialPageRoute(builder: (context) => const HomePage()),
       );
-    } else if (index == 1) {
+    }
+    if (index == 1) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
       );
-    } else if (index == 2) {
     } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
       Navigator.push(
         context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
@@ -46,6 +52,7 @@ class _ProfilePageState extends State<ProfilePage> {
     _loadReflectionsCount();
     _loadUsername();
     _loadEmail();
+    _loadStreak();
   }
 
   Future<void> _loadReflectionsCount() async {
@@ -112,11 +119,50 @@ class _ProfilePageState extends State<ProfilePage> {
     }
   }
 
+  Future<void> _loadStreak() async {
+    final user = supabase.auth.currentUser;
+    if (user == null) return;
+
+    try {
+      final response = await supabase
+          .from('Gratitude Entries')
+          .select('created_at')
+          .eq('user_id', user.id)
+          .order('created_at', ascending: false);
+
+      final Set<String> entryDays = {};
+      for (final row in response) {
+        final date = DateTime.parse(row['created_at']).toLocal();
+        entryDays.add(
+          '${date.year}-${date.month.toString().padLeft(2, '0')}-${date.day.toString().padLeft(2, '0')}',
+        );
+      }
+      final now = DateTime.now();
+      String keyFor(DateTime d) =>
+          '${d.year}-${d.month.toString().padLeft(2, '0')}-${d.day.toString().padLeft(2, '0')}';
+
+      final todayKey = keyFor(now);
+      final yesterdayKey = keyFor(now.subtract(const Duration(days: 1)));
+
+      int streak = 0;
+      if (entryDays.contains(todayKey) || entryDays.contains(yesterdayKey)) {
+        DateTime cursor = entryDays.contains(todayKey)
+            ? now
+            : now.subtract(const Duration(days: 1));
+        while (entryDays.contains(keyFor(cursor))) {
+          streak++;
+          cursor = cursor.subtract(const Duration(days: 1));
+        }
+      }
+
+      setState(() => streakCount = streak);
+    } catch (e) {
+      debugPrint('Error loading streak: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
-    const pink = Color(0xFFFB7DA8);
-    const yellow = Color(0xFFFFC567);
-    const blue = Color(0xFF058CD7);
     const textColorOriginal = Color(0xFF94697E);
     const activeColor = Color(0xFFFB7DA8);
 
@@ -126,16 +172,12 @@ class _ProfilePageState extends State<ProfilePage> {
     final Color bgTop = isDark
         ? const Color(0xFF1E1E2C)
         : const Color(0xFFFFF1F5);
-    final Color bgBottom = isDark
-        ? const Color(0xFF2A2A3D)
-        : const Color(0xFFFFF8EE);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: bgTop,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
         iconTheme: IconThemeData(color: textColor),
         centerTitle: true,
         leading: IconButton(
@@ -147,41 +189,30 @@ class _ProfilePageState extends State<ProfilePage> {
           "Profile",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
-
-        actions: [
-          IconButton(
-            onPressed: () {
-              ScaffoldMessenger.of(context).showSnackBar(
-                const SnackBar(content: Text("not available right now")),
-              );
-            },
-            icon: Icon(Icons.logout_rounded, color: textColor),
-          ),
-        ],
       ),
 
       body: Container(
-        width: double.infinity,
         decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [bgTop, bgBottom],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
-        child: SafeArea(
+        child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                const SizedBox(height: kToolbarHeight - 12),
+                const SizedBox(height: 15),
 
                 _ProfileTopCard(
                   displayName: profileName,
                   email: profileEmail,
                   reflections: reflectionsCount.toString(),
-                  streak: "06",
+                  streak: streakCount.toString(),
                   daysActive: "12",
                 ),
                 const SizedBox(height: 14),
@@ -192,6 +223,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 18),
 
+                /*
                 Text(
                   "Your wellness",
                   style: TextStyle(
@@ -200,9 +232,10 @@ class _ProfilePageState extends State<ProfilePage> {
                     fontWeight: FontWeight.w800,
                   ),
                 ),
+                */
+                //const SizedBox(height: 12),
 
-                const SizedBox(height: 12),
-
+                /*
                 _SectionCard(
                   children: [
                     _SectionRow(
@@ -238,9 +271,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     ),
                   ],
                 ),
-
-                const SizedBox(height: 18),
-
+                
+                //const SizedBox(height: 18),
                 Text(
                   "Mood board",
                   style: TextStyle(
@@ -250,6 +282,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ),
                 ),
                 const SizedBox(height: 12),
+                */
                 _MoodBoardSection(userId: supabase.auth.currentUser?.id ?? ''),
                 const SizedBox(height: 18),
               ],
@@ -272,10 +305,7 @@ class _ProfilePageState extends State<ProfilePage> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-
-          backgroundColor: isDark
-              ? const Color(0xFF2A2A3D)
-              : const Color(0xFFFFF8EE),
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
           selectedItemColor: activeColor,
           unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
           showUnselectedLabels: true,
@@ -294,6 +324,11 @@ class _ProfilePageState extends State<ProfilePage> {
               icon: Icon(Icons.person_rounded),
               label: 'Profile',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
               label: 'Settings',
@@ -527,7 +562,7 @@ class _FunInfoPill extends StatelessWidget {
     );
   }
 }
-
+/*
 class _SectionCard extends StatelessWidget {
   final List<Widget> children;
   const _SectionCard({required this.children});
@@ -605,6 +640,7 @@ class _SectionRow extends StatelessWidget {
     );
   }
 }
+*/
 
 class _MoodBoardSection extends StatefulWidget {
   final String userId;
@@ -812,13 +848,13 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
     if (label == null) return textColor.withValues(alpha: 0.10);
     if (label == "Happy" || label == "Good") {
-      return yellow.withValues(alpha: 0.18);
+      return isDark ? yellow : yellow.withValues(alpha: 0.18);
     }
     if (label == "Neutral" || label == "Confused") {
-      return blue.withValues(alpha: 0.16);
+      return isDark ? blue : blue.withValues(alpha: 0.16);
     }
 
-    return pink.withValues(alpha: 0.16);
+    return isDark ? pink : pink.withValues(alpha: 0.16);
   }
 }
 

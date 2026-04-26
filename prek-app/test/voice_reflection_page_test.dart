@@ -90,7 +90,13 @@ void main() {
     useLargeViewport(tester);
     await pumpVoicePage(tester);
 
-    expect(find.text('Voice Reflection'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(AppBar),
+        matching: find.text('Relection'),
+      ),
+      findsOneWidget,
+    );
     expect(find.text('Reflecting on: Happy'), findsOneWidget);
     expect(find.text('Tap or Hold to record'), findsOneWidget);
     expect(find.text('00:00'), findsOneWidget);

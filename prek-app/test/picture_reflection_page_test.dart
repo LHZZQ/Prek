@@ -210,7 +210,7 @@ void main() {
     expect(find.text('Tap to choose a photo'), findsOneWidget);
     expect(find.text('What made this moment special?'), findsOneWidget);
     expect(
-      find.widgetWithText(ElevatedButton, 'Save to album'),
+      find.widgetWithText(ElevatedButton, 'Save Reflection'),
       findsOneWidget,
     );
   });
@@ -235,14 +235,14 @@ void main() {
     expect(find.text('Tap to choose a photo'), findsNothing);
   });
 
-  testWidgets('save with empty keeps openning', (tester) async {
+  testWidgets('save with empty keeps open', (tester) async {
     useLargeViewport(tester);
     await pumpPictureReflectionPage(tester);
 
     await tester.tap(addMemoryCardFinder());
     await tester.pumpAndSettle();
 
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save Reflection'));
     await tester.pumpAndSettle();
 
     expect(find.text('Save a moment'), findsOneWidget);
@@ -270,7 +270,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField), 'A happy moment from today');
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save Reflection'));
     await tester.pump();
     await tester.pumpAndSettle();
 
@@ -297,7 +297,7 @@ void main() {
     await tester.pumpAndSettle();
 
     await tester.enterText(find.byType(TextField), 'force insert failure');
-    await tester.tap(find.widgetWithText(ElevatedButton, 'Save to album'));
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save Reflection'));
     await tester.pump();
     await tester.pumpAndSettle();
 
@@ -306,7 +306,7 @@ void main() {
     expect(find.text('Save a moment'), findsOneWidget);
 
     final saveButton = tester.widget<ElevatedButton>(
-      find.widgetWithText(ElevatedButton, 'Save to album'),
+      find.widgetWithText(ElevatedButton, 'Save Reflection'),
     );
     expect(saveButton.onPressed, isNotNull);
   });

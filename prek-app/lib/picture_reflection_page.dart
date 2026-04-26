@@ -1,25 +1,30 @@
 import 'dart:typed_data';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/settings_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 const Color pink = Color(0xFFFB7DA8);
-const Color textColor = Color(0xFF94697E);
-const Color bgColor = Color(0xFFFFF1F5);
 
-class PictureReflectionPage extends StatelessWidget {
+class PictureReflectionPage extends StatefulWidget {
   final String selectedMood;
-
   const PictureReflectionPage({super.key, required this.selectedMood});
 
+  @override
+  State<PictureReflectionPage> createState() => _PictureReflectionPageState();
+}
+
+class _PictureReflectionPageState extends State<PictureReflectionPage> {
   void _openAddMemorySheet(BuildContext context) {
     showModalBottomSheet<bool>(
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
-      builder: (_) => _AddMemorySheet(selectedMood: selectedMood),
+      builder: (_) => _AddMemorySheet(selectedMood: widget.selectedMood),
     ).then((saved) {
       if (saved == true && context.mounted) {
         Navigator.pushAndRemoveUntil(
@@ -31,15 +36,59 @@ class PictureReflectionPage extends StatelessWidget {
     });
   }
 
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    }
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
+    final Color bgTop = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
     return Scaffold(
-      backgroundColor: bgColor,
+      backgroundColor: bgTop,
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        iconTheme: const IconThemeData(color: textColor),
+        iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+
+        title: Text(
+          "Reflection",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: SafeArea(
         child: Padding(
@@ -49,7 +98,7 @@ class PictureReflectionPage extends StatelessWidget {
             children: [
               const SizedBox(height: 10),
               RichText(
-                text: const TextSpan(
+                text: TextSpan(
                   style: TextStyle(
                     fontFamily: 'Georgia',
                     fontSize: 28,
@@ -71,26 +120,32 @@ class PictureReflectionPage extends StatelessWidget {
                 'What made you smile today? Save it here.',
                 style: TextStyle(
                   fontSize: 14,
-                  color: textColor.withOpacity(0.55),
+                  color: textColor.withOpacity(isDark ? 0.9 : 0.55),
                   height: 1.4,
                 ),
               ),
-              const SizedBox(height: 40),
+              const SizedBox(height: 25),
               GestureDetector(
                 onTap: () => _openAddMemorySheet(context),
                 child: Container(
                   width: double.infinity,
-                  height: 220,
+                  height: 350,
                   decoration: BoxDecoration(
-                    color: Colors.white.withOpacity(0.7),
+                    color: isDark
+                        ? Color(0xFF14141F)
+                        : Colors.white.withOpacity(0.7),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: Colors.white.withOpacity(0.5),
+                      color: isDark
+                          ? Color(0xFF1E1E2C)
+                          : Colors.white.withOpacity(0.5),
                       width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pink.withOpacity(0.1),
+                        color: isDark
+                            ? Colors.black.withValues(alpha: 0.1)
+                            : Colors.pink.withOpacity(0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -120,7 +175,7 @@ class PictureReflectionPage extends StatelessWidget {
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
+                      Text(
                         'Add a new memory',
                         style: TextStyle(
                           fontFamily: 'Georgia',
@@ -145,6 +200,50 @@ class PictureReflectionPage extends StatelessWidget {
           ),
         ),
       ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -160,6 +259,7 @@ class _AddMemorySheet extends StatefulWidget {
 class _AddMemorySheetState extends State<_AddMemorySheet> {
   final TextEditingController _captionCtrl = TextEditingController();
   final ImagePicker _picker = ImagePicker();
+
   Uint8List? _imageBytes;
   bool _isSaving = false;
 
@@ -229,9 +329,11 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
     return Container(
-      decoration: const BoxDecoration(
-        color: bgColor,
+      decoration: BoxDecoration(
+        color: isDark ? Color(0xFF1E1E2C) : Color(0xFFFFF1F5),
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       padding: EdgeInsets.only(
@@ -257,7 +359,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
           ),
 
           const SizedBox(height: 18),
-          const Text(
+          Text(
             'Save a moment',
             style: TextStyle(
               fontFamily: 'Georgia',
@@ -279,9 +381,11 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
               height: 140,
               width: double.infinity,
               decoration: BoxDecoration(
-                color: const Color(0xFFFFE4EF),
+                color: isDark ? Color(0xFF14141F) : Color(0xFFFFE4EF),
                 borderRadius: BorderRadius.circular(16),
-                border: Border.all(color: pink.withOpacity(0.2)),
+                border: Border.all(
+                  color: isDark ? Color(0xFF1E1E2C) : pink.withOpacity(0.2),
+                ),
               ),
               clipBehavior: Clip.hardEdge,
               child: _imageBytes != null
@@ -315,7 +419,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                   : Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.add_photo_alternate_outlined,
                           color: pink,
                           size: 30,
@@ -337,15 +441,17 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
 
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: isDark ? Colors.black : Colors.white,
               borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: pink.withOpacity(0.18)),
+              border: Border.all(
+                color: isDark ? Colors.black : pink.withOpacity(0.18),
+              ),
             ),
             child: TextField(
               controller: _captionCtrl,
               maxLines: 2,
               maxLength: 100,
-              style: const TextStyle(
+              style: TextStyle(
                 color: textColor,
                 fontSize: 14,
                 fontFamily: 'Georgia',
@@ -367,22 +473,45 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
           ),
           const SizedBox(height: 16),
 
-          SizedBox(
+          Container(
             width: double.infinity,
             height: 50,
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(40),
+              gradient: const LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: [
+                  Color(0xFFFFC567),
+                  Color(0xFFFB7DA8),
+                  Color(0xFF058CD7),
+                ],
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.pinkAccent.withOpacity(0.25),
+                  blurRadius: 15,
+                  offset: const Offset(0, 6),
+                ),
+              ],
+            ),
             child: ElevatedButton(
-              onPressed: _isSaving ? null : _submit,
               style: ElevatedButton.styleFrom(
-                backgroundColor: pink,
-                foregroundColor: Colors.white,
-                elevation: 0,
+                backgroundColor: Colors.transparent,
+                shadowColor: Colors.transparent,
+                padding: EdgeInsets.zero,
                 shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(40),
                 ),
               ),
+              onPressed: _isSaving ? null : _submit,
               child: const Text(
-                'Save to album',
-                style: TextStyle(fontSize: 14, fontWeight: FontWeight.w700),
+                "Save Reflection",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
               ),
             ),
           ),
