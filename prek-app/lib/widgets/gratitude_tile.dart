@@ -141,7 +141,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
           if (s == PlayerState.completed && _isMine) {
             //complete and was mine
             _currentSrc = null;
-            _dur = Duration.zero
+            _dur = Duration.zero;
           }
         }
       });
