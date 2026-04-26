@@ -26,6 +26,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   bool _isCancelling = false;
   bool _isTappedMode = false;
   bool _isSaving = false;
+  bool _isStopping = false;
   Duration _recordDuration = Duration.zero;
   Timer? _timer;
 
@@ -115,17 +116,25 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
   }
 
   Future<void> _stopAndSaveRecording() async {
+    if (_isStopping || !_isRecording) return;
+    _isStopping = true;
+
     _timer?.cancel();
+    _timer = null;
+
+    try{
     final path = await _recorder.stop();
 
     if (kIsWeb && path != null) {
       _localFilePath = path;
     }
-
-    setState(() {
-      _isRecording = false;
-      _isTappedMode = false;
-    });
+    }catch(e) {debugPrint('Error stopping recorder: $e');}
+    if (mounted) {
+      setState(() {
+        _isRecording = false;
+        _isTappedMode = false;
+      });
+    }
   }
 
   Future<void> _cancelRecording() async {
