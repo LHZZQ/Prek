@@ -144,22 +144,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
     ```
      flutter pub get
     ```
-4. In the terminal, create .env file at the project root:
-    ```
-     touch .env
-    ```
-5. In the .env file, type in:
-   
-   ```
-   SUPABASE_URL="YOUR_SECRET_KEY"
-   SUPABASE_ANON_KEY="YOUR_ENCRYPTION_KEY"
-   ```
-6. In the .gitignore file, type in:
-
-   ```
-   .env
-   ```
-7. In the terminal, run the application:
+4. In the terminal, run the application:
    
    ```
    flutter run
