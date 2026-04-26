@@ -203,7 +203,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
         child: Center(
           child: SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 80),
             child: Column(
               children: [
                 const SizedBox(height: 15),
