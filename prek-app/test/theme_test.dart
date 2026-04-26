@@ -16,7 +16,10 @@ void main() {
 
   group('theme definitions', () {
     test('lightMode use bright colors', () {
-      final expectedTheme = ThemeData(brightness: Brightness.light);
+      final expectedTheme = ThemeData(
+        brightness: Brightness.light,
+        colorScheme: const ColorScheme.light(primary: Colors.black),
+      );
 
       expect(lightMode.brightness, Brightness.light);
       expect(
@@ -27,7 +30,10 @@ void main() {
     });
 
     test('darkMode use dark colors', () {
-      final expectedTheme = ThemeData(brightness: Brightness.dark);
+      final expectedTheme = ThemeData(
+        brightness: Brightness.dark,
+        colorScheme: const ColorScheme.dark(primary: Colors.white),
+      );
 
       expect(darkMode.brightness, Brightness.dark);
       expect(
