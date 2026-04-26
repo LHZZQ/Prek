@@ -232,13 +232,17 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
-        centerTitle: true,
-        title: Text(
-          "Voice Reflection",
-          style: TextStyle(color: textColor, fontWeight: FontWeight.bold),
-        ),
         iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+
+        title: Text(
+          "Relection",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
@@ -262,7 +266,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                 alignment: Alignment.center,
                 children: [
                   Positioned(
-                    top: 10 * hUnit,
+                    top: 1 * hUnit,
                     child: Container(
                       padding: const EdgeInsets.symmetric(
                         horizontal: 16,
@@ -282,6 +286,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                       ),
                     ),
                   ),
+
                   Positioned(
                     top: 50 * hUnit,
                     child: SizedBox(
@@ -339,14 +344,16 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               : (_isRecording
                                     ? blue
                                     : (isDark
-                                          ? Colors.grey[800]
+                                          ? Color(0xFF161622)
                                           : Colors.white)),
                           shape: BoxShape.circle,
                           boxShadow: [
                             BoxShadow(
-                              color: (_isRecording ? blue : pink).withOpacity(
-                                0.2,
-                              ),
+                              color: isDark
+                                  ? Colors.black.withValues(alpha: 0.1)
+                                  : (_isRecording ? blue : pink).withOpacity(
+                                      0.2,
+                                    ),
                               blurRadius: 25,
                               offset: const Offset(0, 8),
                             ),
@@ -400,7 +407,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                             children: [
                               ActionChip(
                                 backgroundColor: isDark
-                                    ? Colors.grey[800]
+                                    ? Color(0xFF161622)
                                     : Colors.white,
                                 side: BorderSide.none,
                                 label: Text(
@@ -417,7 +424,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                               const SizedBox(width: 12),
                               ActionChip(
                                 backgroundColor: isDark
-                                    ? Colors.grey[800]
+                                    ? Color(0xFF161622)
                                     : Colors.white,
                                 side: BorderSide.none,
                                 label: const Text(
@@ -439,10 +446,10 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                             ],
                           ),
                         ),
-                        SizedBox(height: 10 * hUnit),
+                        SizedBox(height: 25),
                         Container(
                           width: double.infinity,
-                          height: 62,
+                          height: 50,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(40),
                             gradient: const LinearGradient(

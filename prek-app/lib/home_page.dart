@@ -130,18 +130,20 @@ class HomePageState extends State<HomePage> {
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? Colors.black87
+                        ? Color(0xFF161622)
                         : softWhite.withValues(alpha: 0.7),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
                       color: isDark
-                          ? Colors.black
+                          ? Color(0xFF1E1E2C)
                           : Colors.white.withValues(alpha: 0.5),
                       width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pink.withValues(alpha: 0.1),
+                        color: isDark
+                            ? Colors.black.withValues(alpha: 0.1)
+                            : Colors.pink.withValues(alpha: 0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),

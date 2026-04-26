@@ -254,7 +254,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
               decoration: BoxDecoration(color: iconBg, shape: BoxShape.circle),
               child: Icon(
                 icon,
-                color: isDark ? Colors.white : textColor,
+                color: isDark ? Colors.white : Color(0xFF94697E),
                 size: 30,
               ),
             ),

@@ -49,24 +49,24 @@ class _ReflectionPageState extends State<ReflectionPage> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final currentTextColor = isDark ? Colors.white : textColor;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        iconTheme: IconThemeData(color: textColor),
         centerTitle: true,
-        title: Text(
-          "Reflection 🌸",
-          style: TextStyle(
-            color: currentTextColor,
-            fontWeight: FontWeight.w600,
-          ),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
-        iconTheme: IconThemeData(color: currentTextColor),
+
+        title: Text(
+          "Reflection",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: Container(
         decoration: BoxDecoration(
@@ -91,25 +91,28 @@ class _ReflectionPageState extends State<ReflectionPage> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const SizedBox(height: 30),
                           Text(
                             "Take a moment to reflect on something you're grateful for today 💭",
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: currentTextColor,
+                              color: textColor,
                               fontSize: 18,
                               fontWeight: FontWeight.w500,
                               height: 1.5,
                             ),
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
                           Container(
                             decoration: BoxDecoration(
-                              color: isDark ? Colors.white10 : Colors.white70,
+                              color: isDark
+                                  ? Color(0xFF161622)
+                                  : Colors.white70,
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.pinkAccent.withOpacity(0.1),
+                                  color: isDark
+                                      ? Colors.black.withValues(alpha: 0.1)
+                                      : Colors.pinkAccent.withOpacity(0.1),
                                   blurRadius: 6,
                                   offset: const Offset(0, 3),
                                 ),
@@ -118,21 +121,21 @@ class _ReflectionPageState extends State<ReflectionPage> {
                             child: TextField(
                               controller: _controller,
                               maxLines: 9,
-                              style: TextStyle(color: currentTextColor),
+                              style: TextStyle(color: textColor),
                               decoration: InputDecoration(
                                 hintText: "Write your reflection here...",
                                 hintStyle: TextStyle(
-                                  color: currentTextColor.withOpacity(0.5),
+                                  color: textColor.withOpacity(0.5),
                                 ),
                                 contentPadding: const EdgeInsets.all(20),
                                 border: InputBorder.none,
                               ),
                             ),
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 30),
                           Container(
                             width: double.infinity,
-                            height: 62,
+                            height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               gradient: const LinearGradient(
