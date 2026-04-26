@@ -804,9 +804,8 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
           const _WeekdayRow(),
 
-          const SizedBox(height: 10),
-
           GridView.builder(
+            padding: EdgeInsets.only(top: 10),
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
             itemCount: gridCount,
