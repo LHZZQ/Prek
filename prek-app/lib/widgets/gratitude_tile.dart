@@ -88,9 +88,32 @@ class _GratitudeTileState extends State<GratitudeTile> {
       widget.audioController ?? SharedGratitudeAudioController.instance;
   //bool _isUrl(String s) => s.startsWith('http://') || s.startsWith('https://');
 
+  Future<void> _probeDuration() async {
+  final src = widget.entry.audioAssetPath;
+  if (src == null) return;
+
+  try {
+    final client = Supabase.instance.client;
+    final cleanSrc = normalizeGratitudeStoragePath(src);
+    final publicUrl = client.storage.from('gratitude-audio').getPublicUrl(cleanSrc);
+
+    final probe = AudioPlayer();
+    await probe.setSource(UrlSource(publicUrl));
+    final duration = await probe.getDuration();
+    await probe.dispose();
+
+    if (mounted && duration != null) {
+      setState(() => _dur = duration);
+    }
+  } catch (e) {
+    debugPrint('Could not probe duration: $e');
+  }
+}
+
   @override
   void initState() {
     super.initState();
+    _probeDuration();
     _posSub = _audioController.onPositionChanged.listen((p) {
       if (!_isMine) return;
       setState(() => _pos = p);
@@ -112,7 +135,6 @@ class _GratitudeTileState extends State<GratitudeTile> {
             s == PlayerState.stopped ||
             s == PlayerState.paused) {
           _pos = Duration.zero;
-          _dur = Duration.zero;
 
           if (s == PlayerState.completed && _isMine) {
             //complete and was mine
@@ -158,7 +180,6 @@ class _GratitudeTileState extends State<GratitudeTile> {
       //Go to Supabase to obtain the signed URL and then use UrlSource to play it.
       _currentSrc = src;
       _pos = Duration.zero;
-      _dur = Duration.zero;
       setState(() {});
       final client = Supabase.instance.client;
       final cleanSrc = normalizeGratitudeStoragePath(src);
@@ -365,8 +386,9 @@ class _GratitudeTileState extends State<GratitudeTile> {
                     ),
                   ),
                   Text(
-                    _playingMine ? _mmss(_pos) : '00:00',
-                    style: Theme.of(context).textTheme.labelSmall,
+                    _dur.inMilliseconds > 0
+                        ? _mmss(_playingMine ? _pos : _dur)
+                        : '00:00', style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],
               ),
