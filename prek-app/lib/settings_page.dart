@@ -90,9 +90,9 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
 
         child: Center(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: SingleChildScrollView(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
               child: Column(
                 children: [
                   const Image(image: AssetImage('images/prek_logo.png')),
