@@ -224,7 +224,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                             builder: (ctx) => AlertDialog(
                               title: const Text('Delete memory?'),
                               content: const Text(
-                                  'This will permanently remove the memory.',
+                                'This will permanently remove the memory.',
                               ),
                               actions: [
                                 TextButton(
@@ -242,8 +242,10 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                             ),
                           );
                           if (confirmed == true) {
-                            _deleteMemory(_memories[index]['id'] as String,
-                              _memories[index]['image_path'] as String,);
+                            _deleteMemory(
+                              _memories[index]['id'] as String,
+                              _memories[index]['image_path'] as String,
+                            );
                           }
                         },
                       ),
