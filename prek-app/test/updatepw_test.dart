@@ -112,9 +112,7 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  testWidgets('update pw page render', (
-    tester,
-  ) async {
+  testWidgets('update pw page render', (tester) async {
     await pumpUpdatePW(tester);
 
     expect(find.text('Email'), findsOneWidget);
@@ -150,9 +148,7 @@ void main() {
     await tester.pump();
   });
 
-  testWidgets('update pw page validates mismatched pw', (
-    tester,
-  ) async {
+  testWidgets('update pw page validates mismatched pw', (tester) async {
     await pumpUpdatePW(tester);
 
     await tester.enterText(find.byType(TextFormField).at(1), 'Zzqzzq123!');
