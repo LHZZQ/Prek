@@ -30,7 +30,7 @@ void main() {
     expect(find.text('What would you like to do?'), findsOneWidget);
     expect(find.text('Write a Reflection'), findsOneWidget);
     expect(find.text('Voice Reflection'), findsOneWidget);
-    expect(find.text('Lookbook'), findsOneWidget);
+    expect(find.text('Lookbook'), findsNWidgets(2));
     expect(find.byIcon(Icons.arrow_forward_ios_rounded), findsNWidgets(3));
   });
 
@@ -42,7 +42,13 @@ void main() {
     await tester.pumpAndSettle();
 
     expect(find.byType(ReflectionPage), findsOneWidget);
-    expect(find.text('Reflection 🌸'), findsOneWidget);
+    expect(
+      find.descendant(
+        of: find.byType(AppBar),
+        matching: find.text('Reflection'),
+      ),
+      findsOneWidget,
+    );
   });
 
   testWidgets('navigates to voice reflection page', (tester) async {
@@ -58,7 +64,7 @@ void main() {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
 
-    await tester.tap(find.text('Lookbook'));
+    await tester.tap(find.text('Lookbook').first);
     await tester.pumpAndSettle();
 
     expect(find.byType(PictureReflectionPage), findsOneWidget);
