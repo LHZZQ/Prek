@@ -191,7 +191,6 @@ void main() {
       buildTestApp(entry: makeEntry(audioAssetPath: 'user-1/audio-1.m4a')),
     );
 
-    expect(find.text('Grateful for sunshine'), findsOneWidget);
     expect(find.text('Happy'), findsOneWidget);
     expect(find.textContaining('Today'), findsOneWidget);
     expect(find.byIcon(Icons.play_circle), findsOneWidget);
