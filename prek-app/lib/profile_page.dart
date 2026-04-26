@@ -64,7 +64,7 @@ class _ProfilePageState extends State<ProfilePage> {
     final createdAt = DateTime.parse(user.createdAt).toLocal();
     final days = DateTime.now().difference(createdAt).inDays + 1;
 
-    setState(() => daysActive = days,);
+    setState(() => daysActive = days);
   }
 
   Future<void> _loadReflectionsCount() async {
@@ -225,7 +225,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   email: profileEmail,
                   reflections: reflectionsCount.toString(),
                   streak: streakCount.toString(),
-                  daysActive:   daysActive.toString(),
+                  daysActive: daysActive.toString(),
                 ),
                 const SizedBox(height: 14),
 
