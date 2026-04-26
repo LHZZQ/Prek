@@ -87,11 +87,13 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   //new email
                   Container(
                     decoration: BoxDecoration(
-                      color: isDark ? Colors.black : Colors.white70,
+                      color: isDark ? Color(0xFF161622) : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          color: isDark
+                              ? Colors.black.withValues(alpha: 0.1)
+                              : Colors.pinkAccent.withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
@@ -108,7 +110,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                     ),
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
 
                   //save button
                   Container(
