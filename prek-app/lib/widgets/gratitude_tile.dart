@@ -89,26 +89,28 @@ class _GratitudeTileState extends State<GratitudeTile> {
   //bool _isUrl(String s) => s.startsWith('http://') || s.startsWith('https://');
 
   Future<void> _probeDuration() async {
-  final src = widget.entry.audioAssetPath;
-  if (src == null) return;
+    final src = widget.entry.audioAssetPath;
+    if (src == null) return;
 
-  try {
-    final client = Supabase.instance.client;
-    final cleanSrc = normalizeGratitudeStoragePath(src);
-    final publicUrl = client.storage.from('gratitude-audio').getPublicUrl(cleanSrc);
+    try {
+      final client = Supabase.instance.client;
+      final cleanSrc = normalizeGratitudeStoragePath(src);
+      final publicUrl = client.storage
+          .from('gratitude-audio')
+          .getPublicUrl(cleanSrc);
 
-    final probe = AudioPlayer();
-    await probe.setSource(UrlSource(publicUrl));
-    final duration = await probe.getDuration();
-    await probe.dispose();
+      final probe = AudioPlayer();
+      await probe.setSource(UrlSource(publicUrl));
+      final duration = await probe.getDuration();
+      await probe.dispose();
 
-    if (mounted && duration != null) {
-      setState(() => _dur = duration);
+      if (mounted && duration != null) {
+        setState(() => _dur = duration);
+      }
+    } catch (e) {
+      debugPrint('Could not probe duration: $e');
     }
-  } catch (e) {
-    debugPrint('Could not probe duration: $e');
   }
-}
 
   @override
   void initState() {
@@ -388,7 +390,8 @@ class _GratitudeTileState extends State<GratitudeTile> {
                   Text(
                     _dur.inMilliseconds > 0
                         ? _mmss(_playingMine ? _pos : _dur)
-                        : '00:00', style: Theme.of(context).textTheme.labelSmall,
+                        : '00:00',
+                    style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],
               ),
