@@ -218,10 +218,34 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                         memory: _memories[index],
                         index: index,
                         onTap: () => _openMemory(_memories[index]),
-                        onDelete: () => _deleteMemory(
-                          _memories[index]['id'] as String,
-                          _memories[index]['image_path'] as String,
-                        ),
+                        onDelete: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (ctx) => AlertDialog(
+                              title: const Text('Delete memory?'),
+                              content: const Text(
+                                  'This will permanently remove the memory.',
+                              ),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, false),
+                                  child: const Text('Cancel'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.pop(ctx, true),
+                                  style: TextButton.styleFrom(
+                                    foregroundColor: _pink,
+                                  ),
+                                  child: const Text('Delete'),
+                                ),
+                              ],
+                            ),
+                          );
+                          if (confirmed == true) {
+                            _deleteMemory(_memories[index]['id'] as String,
+                              _memories[index]['image_path'] as String,);
+                          }
+                        },
                       ),
                     ),
                   ),
