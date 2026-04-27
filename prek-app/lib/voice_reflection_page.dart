@@ -135,6 +135,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       setState(() {
         _isRecording = false;
         _isTappedMode = false;
+        _isStopping = false;
       });
     }
   }
@@ -197,9 +198,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
           .uploadBinary(
             fileName,
             fileBytes,
-            fileOptions: FileOptions(
-              contentType: 'audio/mp4',
-            ),
+            fileOptions: FileOptions(contentType: 'audio/mp4'),
           );
 
       await client.from('Gratitude Entries').insert({
@@ -251,7 +250,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
         ),
 
         title: Text(
-          "Relection",
+          "Reflection",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
