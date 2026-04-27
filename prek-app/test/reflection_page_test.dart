@@ -16,12 +16,7 @@ void main() {
     final headers = {'content-type': 'application/json'};
 
     if (path == '/rest/v1/Gratitude Entries' && request.method == 'GET') {
-      return http.Response(
-        '[]',
-        200,
-        headers: headers,
-        request: request,
-      );
+      return http.Response('[]', 200, headers: headers, request: request);
     }
 
     if (path == '/rest/v1/Gratitude Entries' && request.method == 'POST') {
