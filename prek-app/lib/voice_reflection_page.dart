@@ -86,7 +86,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
 
     if (kIsWeb) {
       await _recorder.start(
-        const RecordConfig(encoder: AudioEncoder.opus),
+        const RecordConfig(encoder: AudioEncoder.aacLc),
         path: '',
       );
     } else {
@@ -135,6 +135,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       setState(() {
         _isRecording = false;
         _isTappedMode = false;
+        _isStopping = false;
       });
     }
   }
@@ -181,7 +182,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       if (user == null) throw Exception('User not logged in');
 
       final fileName =
-          '${user.id}/${DateTime.now().millisecondsSinceEpoch}.webm';
+          '${user.id}/${DateTime.now().millisecondsSinceEpoch}.mp4';
 
       late Uint8List fileBytes;
 
@@ -197,9 +198,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
           .uploadBinary(
             fileName,
             fileBytes,
-            fileOptions: FileOptions(
-              contentType: kIsWeb ? 'audio/webm' : 'audio/mp4',
-            ),
+            fileOptions: FileOptions(contentType: 'audio/mp4'),
           );
 
       await client.from('Gratitude Entries').insert({
@@ -251,7 +250,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
         ),
 
         title: Text(
-          "Relection",
+          "Reflection",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),

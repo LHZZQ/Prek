@@ -93,7 +93,7 @@ void main() {
     expect(
       find.descendant(
         of: find.byType(AppBar),
-        matching: find.text('Relection'),
+        matching: find.text('Reflection'),
       ),
       findsOneWidget,
     );
