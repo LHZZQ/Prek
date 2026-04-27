@@ -129,6 +129,22 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<_RecordingNavigatorObserver> pumpPictureReflectionPageWithObserver(
+    WidgetTester tester,
+  ) async {
+    final observer = _RecordingNavigatorObserver();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorObservers: [observer],
+        theme: ThemeData(useMaterial3: false),
+        home: const PictureReflectionPage(selectedMood: 'Happy'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    observer.pushed.clear();
+    return observer;
+  }
+
   Future<void> setLoggedInSession() async {
     await Supabase.instance.client.auth.setInitialSession(
       jsonEncode({
@@ -197,6 +213,54 @@ void main() {
     expect(find.text('Tap to choose a photo & add a caption'), findsOneWidget);
     expect(find.byIcon(Icons.add_photo_alternate_rounded), findsOneWidget);
   });
+
+  testWidgets('renders dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const PictureReflectionPage(selectedMood: 'Happy'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.byWidgetPredicate(
+        (widget) =>
+            widget is RichText &&
+            widget.text.toPlainText().contains('Happy Moments'),
+      ),
+      findsOneWidget,
+    );
+    expect(find.text('Add a new memory'), findsOneWidget);
+    expect(find.byType(BottomNavigationBar), findsOneWidget);
+  });
+
+  final navCases = {
+    'Home': 0,
+    'History': 1,
+    'Profile': 2,
+    'Lookbook': 3,
+    'Settings': 4,
+  };
+
+  for (final entry in navCases.entries) {
+    final label = entry.key;
+    final index = entry.value;
+
+    testWidgets('bottom nav pushes $label route', (tester) async {
+      useLargeViewport(tester);
+      final observer = await pumpPictureReflectionPageWithObserver(tester);
+      final navBar = tester.widget<BottomNavigationBar>(
+        find.byType(BottomNavigationBar),
+      );
+
+      navBar.onTap!(index);
+
+      expect(observer.pushed, hasLength(1));
+    });
+  }
 
   testWidgets('tapping add memory opens the page', (tester) async {
     useLargeViewport(tester);
@@ -310,4 +374,14 @@ void main() {
     );
     expect(saveButton.onPressed, isNotNull);
   });
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  final pushed = <Route<dynamic>>[];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushed.add(route);
+    super.didPush(route, previousRoute);
+  }
 }
