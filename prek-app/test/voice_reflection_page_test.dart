@@ -75,6 +75,44 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<_RecordingNavigatorObserver> pumpVoicePageWithObserver(
+    WidgetTester tester,
+  ) async {
+    final observer = _RecordingNavigatorObserver();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorObservers: [observer],
+        home: const VoiceReflectionPage(selectedMood: 'Happy'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    observer.pushed.clear();
+    return observer;
+  }
+
+  Future<void> openVoiceRoute(WidgetTester tester) async {
+    await tester.pumpWidget(
+      MaterialApp(
+        home: Builder(
+          builder: (context) => ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) =>
+                      const VoiceReflectionPage(selectedMood: 'Happy'),
+                ),
+              );
+            },
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    );
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+  }
+
   Finder recordButtonFinder() {
     return find.byWidgetPredicate(
       (widget) =>
@@ -119,6 +157,32 @@ void main() {
     useLargeViewport(tester);
     await pumpVoicePage(tester, mood: 'Calm');
     expect(find.text('Reflecting on: Calm'), findsOneWidget);
+  });
+
+  testWidgets('back button pops voice reflection route', (tester) async {
+    useLargeViewport(tester);
+    await openVoiceRoute(tester);
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(VoiceReflectionPage), findsNothing);
+    expect(find.text('Open'), findsOneWidget);
+  });
+
+  testWidgets('renders dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const VoiceReflectionPage(selectedMood: 'Happy'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Tap or Hold to record'), findsOneWidget);
+    expect(find.byIcon(Icons.mic_rounded), findsOneWidget);
   });
 
   testWidgets('tap start/stop enables preview and redo can reset', (
@@ -185,6 +249,30 @@ void main() {
 
     expect(find.text('Release to cancel 🗑️'), findsOneWidget);
     expect(find.byIcon(Icons.delete_forever_rounded), findsOneWidget);
+  });
+
+  testWidgets('long press slide up cancel', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await pumpVoicePage(tester);
+
+    final detector = tester.widget<GestureDetector>(recordButtonFinder());
+    detector.onLongPressStart!.call(const LongPressStartDetails());
+    await tester.idle();
+    await tester.pump();
+    await tester.pump(const Duration(seconds: 1));
+
+    detector.onLongPressMoveUpdate!.call(
+      const LongPressMoveUpdateDetails(localOffsetFromOrigin: Offset(0, -100)),
+    );
+    await tester.pump();
+
+    detector.onLongPressEnd!.call(const LongPressEndDetails());
+    await tester.idle();
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
   });
 
   testWidgets(
@@ -257,4 +345,32 @@ void main() {
     expect(find.textContaining('Failed to save:'), findsOneWidget);
     expect(find.byType(SnackBar), findsOneWidget);
   });
+
+  final navCases = ['Home', 'History', 'Profile', 'Lookbook', 'Settings'];
+
+  for (final label in navCases) {
+    testWidgets('bottom nav pushes $label route', (tester) async {
+      useLargeViewport(tester);
+      final observer = await pumpVoicePageWithObserver(tester);
+
+      await tester.tap(
+        find.descendant(
+          of: find.byType(BottomNavigationBar),
+          matching: find.text(label),
+        ),
+      );
+
+      expect(observer.pushed, hasLength(1));
+    });
+  }
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  final pushed = <Route<dynamic>>[];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushed.add(route);
+    super.didPush(route, previousRoute);
+  }
 }
