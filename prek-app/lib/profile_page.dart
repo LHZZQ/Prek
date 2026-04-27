@@ -22,6 +22,13 @@ class _ProfilePageState extends State<ProfilePage> {
   int daysActive = 0;
   int _selectedIndex = 2;
 
+  String get _memberSince {
+    final user = supabase.auth.currentUser;
+    if (user == null) return '';
+    final date = DateTime.parse(user.createdAt).toLocal();
+    return '${date.year}';
+  }
+
   void _onItemTapped(int index) {
     if (index == 0) {
       Navigator.push(
@@ -229,9 +236,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
                 const SizedBox(height: 14),
 
-                const _FunInfoPill(
+                _FunInfoPill(
                   leftText: "PREK",
-                  rightText: "Member since 2025",
+                  rightText: "Member since ${_memberSince}",
                 ),
                 const SizedBox(height: 18),
 
