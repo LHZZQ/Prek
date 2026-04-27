@@ -92,9 +92,7 @@ void main() {
     expect(find.text('Username cannot be empty'), findsOneWidget);
   });
 
-  testWidgets('change name page fail', (
-    tester,
-  ) async {
+  testWidgets('change name page fail', (tester) async {
     useLargeViewport(tester);
     await setLoggedInSession();
 
@@ -139,9 +137,7 @@ void main() {
     expect(find.text('Open'), findsOneWidget);
   });
 
-  testWidgets('change name page renders dark mode', (
-    tester,
-  ) async {
+  testWidgets('change name page renders dark mode', (tester) async {
     useLargeViewport(tester);
 
     await tester.pumpWidget(
@@ -183,9 +179,7 @@ void main() {
     expect(find.text('Email cannot be empty'), findsOneWidget);
   });
 
-  testWidgets('change email page failed', (
-    tester,
-  ) async {
+  testWidgets('change email page failed', (tester) async {
     useLargeViewport(tester);
     await setLoggedInSession();
 
@@ -230,9 +224,7 @@ void main() {
     expect(find.text('Open'), findsOneWidget);
   });
 
-  testWidgets('change email page renders dark mode', (
-    tester,
-  ) async {
+  testWidgets('change email page renders dark mode', (tester) async {
     useLargeViewport(tester);
 
     await tester.pumpWidget(
