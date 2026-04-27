@@ -233,6 +233,37 @@ void main() {
     expect(find.byType(Slider), findsNothing);
   });
 
+  testWidgets('renders dark mood chip colors', (tester) async {
+    final moodCases = <(String, Color)>[
+      ('Happy', const Color(0xFFFFC567)),
+      ('Good', const Color(0xFFFFC567)),
+      ('Neutral', const Color(0xFF058CD7)),
+      ('Confused', const Color(0xFF058CD7)),
+      ('Sad', const Color(0xFFFB7DA8)),
+      ('Overwhelmed', const Color(0xFFFB7DA8)),
+      ('Frustrated', const Color(0xFFFB7DA8)),
+      ('Angry', const Color(0xFFFB7DA8)),
+      ('Calm', Colors.grey),
+    ];
+
+    for (final (mood, expectedColor) in moodCases) {
+      await tester.pumpWidget(
+        buildTestApp(
+          entry: makeEntry(mood: mood),
+          theme: ThemeData.dark(useMaterial3: false),
+        ),
+      );
+
+      final chip = tester.widget<Chip>(find.byType(Chip));
+      expect(find.text(mood), findsOneWidget);
+      if (mood == 'Calm') {
+        expect(chip.backgroundColor, Colors.grey.shade300);
+      } else {
+        expect(chip.backgroundColor, expectedColor);
+      }
+    }
+  });
+
   testWidgets('shows delete dialog and cancel', (tester) async {
     await tester.pumpWidget(buildTestApp(entry: makeEntry()));
 

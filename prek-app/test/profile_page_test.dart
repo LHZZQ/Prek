@@ -184,6 +184,28 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<_RecordingNavigatorObserver> pumpProfilePageWithObserver(
+    WidgetTester tester,
+  ) async {
+    final observer = _RecordingNavigatorObserver();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorObservers: [observer],
+        theme: ThemeData(
+          useMaterial3: false,
+          splashFactory: InkRipple.splashFactory,
+        ),
+        home: const MediaQuery(
+          data: MediaQueryData(textScaler: TextScaler.linear(0.85)),
+          child: ProfilePage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    observer.pushed.clear();
+    return observer;
+  }
+
   testWidgets('profile page renders core content', (tester) async {
     useLargeViewport(tester);
     await pumpProfilePage(tester);
@@ -199,6 +221,47 @@ void main() {
     expect(find.text('Streak'), findsOneWidget);
     expect(find.text('Days'), findsOneWidget);
   });
+
+  testWidgets('profile page renders dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const MediaQuery(
+          data: MediaQueryData(textScaler: TextScaler.linear(0.85)),
+          child: ProfilePage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(of: find.byType(AppBar), matching: find.text('Profile')),
+      findsOneWidget,
+    );
+    expect(find.text('PREK'), findsOneWidget);
+    expect(find.byType(BottomNavigationBar), findsOneWidget);
+  });
+
+  final navCases = {'Home': 0, 'History': 1, 'Lookbook': 3, 'Settings': 4};
+
+  for (final entry in navCases.entries) {
+    final label = entry.key;
+    final index = entry.value;
+
+    testWidgets('bottom nav pushes $label route', (tester) async {
+      useLargeViewport(tester);
+      final observer = await pumpProfilePageWithObserver(tester);
+      final navBar = tester.widget<BottomNavigationBar>(
+        find.byType(BottomNavigationBar),
+      );
+
+      navBar.onTap!(index);
+
+      expect(observer.pushed, hasLength(1));
+    });
+  }
 
   testWidgets('profile app bar renders current title', (tester) async {
     useLargeViewport(tester);
@@ -321,4 +384,14 @@ void main() {
     expect(find.text('Memory Highlights'), findsNothing);
     expect(tester.takeException(), isNull);
   });
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  final pushed = <Route<dynamic>>[];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushed.add(route);
+    super.didPush(route, previousRoute);
+  }
 }

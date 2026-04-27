@@ -22,6 +22,21 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<_RecordingNavigatorObserver> pumpTaskSelectionPageWithObserver(
+    WidgetTester tester,
+  ) async {
+    final observer = _RecordingNavigatorObserver();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorObservers: [observer],
+        home: const TaskSelectionPage(selectedMood: 'Happy'),
+      ),
+    );
+    await tester.pumpAndSettle();
+    observer.pushed.clear();
+    return observer;
+  }
+
   testWidgets('renders task selection content', (tester) async {
     useLargeViewport(tester);
     await pumpTaskSelectionPage(tester);
@@ -33,6 +48,47 @@ void main() {
     expect(find.text('Lookbook'), findsNWidgets(2));
     expect(find.byIcon(Icons.arrow_forward_ios_rounded), findsNWidgets(3));
   });
+
+  testWidgets('renders dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const TaskSelectionPage(selectedMood: 'Happy'),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('You are feeling Happy today'), findsOneWidget);
+    expect(find.text('What would you like to do?'), findsOneWidget);
+    expect(find.byType(BottomNavigationBar), findsOneWidget);
+  });
+
+  final navCases = {
+    'Home': 0,
+    'History': 1,
+    'Profile': 2,
+    'Lookbook': 3,
+    'Settings': 4,
+  };
+
+  for (final entry in navCases.entries) {
+    final label = entry.key;
+    final index = entry.value;
+
+    testWidgets('bottom nav pushes $label route', (tester) async {
+      useLargeViewport(tester);
+      final observer = await pumpTaskSelectionPageWithObserver(tester);
+      final navBar = tester.widget<BottomNavigationBar>(
+        find.byType(BottomNavigationBar),
+      );
+
+      navBar.onTap!(index);
+
+      expect(observer.pushed, hasLength(1));
+    });
+  }
 
   testWidgets('navigates to reflection page', (tester) async {
     useLargeViewport(tester);
@@ -109,4 +165,14 @@ void main() {
     expect(find.text('Go to Task Selection'), findsOneWidget);
     expect(find.byType(TaskSelectionPage), findsNothing);
   });
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  final pushed = <Route<dynamic>>[];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushed.add(route);
+    super.didPush(route, previousRoute);
+  }
 }

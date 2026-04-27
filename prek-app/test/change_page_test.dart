@@ -77,6 +77,80 @@ void main() {
     expect(find.text('Username cannot be empty'), findsNothing);
   });
 
+  testWidgets('change name page validates empty save after login', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await setLoggedInSession();
+
+    await tester.pumpWidget(buildTestApp(const ChangeName()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
+    await tester.pump();
+
+    expect(find.text('Username cannot be empty'), findsOneWidget);
+  });
+
+  testWidgets('change name page fail', (tester) async {
+    useLargeViewport(tester);
+    await setLoggedInSession();
+
+    await tester.pumpWidget(buildTestApp(const ChangeName()));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'Ziqian');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ChangeName), findsOneWidget);
+    expect(find.text('Ziqian'), findsOneWidget);
+  });
+
+  testWidgets('change name page back button', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      buildTestApp(
+        Builder(
+          builder: (context) => ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ChangeName()),
+              );
+            },
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ChangeName), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ChangeName), findsNothing);
+    expect(find.text('Open'), findsOneWidget);
+  });
+
+  testWidgets('change name page renders dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const ChangeName(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Enter your new name'), findsOneWidget);
+  });
+
   testWidgets('change email page does not show empty error on open', (
     tester,
   ) async {
@@ -88,6 +162,80 @@ void main() {
     expect(find.text('Enter your new email'), findsOneWidget);
     expect(find.widgetWithText(ElevatedButton, 'Save'), findsOneWidget);
     expect(find.text('Email cannot be empty'), findsNothing);
+  });
+
+  testWidgets('change email page validates empty save after login', (
+    tester,
+  ) async {
+    useLargeViewport(tester);
+    await setLoggedInSession();
+
+    await tester.pumpWidget(buildTestApp(const ChangeEmail()));
+    await tester.pumpAndSettle();
+
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
+    await tester.pump();
+
+    expect(find.text('Email cannot be empty'), findsOneWidget);
+  });
+
+  testWidgets('change email page failed', (tester) async {
+    useLargeViewport(tester);
+    await setLoggedInSession();
+
+    await tester.pumpWidget(buildTestApp(const ChangeEmail()));
+    await tester.pumpAndSettle();
+
+    await tester.enterText(find.byType(TextField), 'zzq123@example.com');
+    await tester.tap(find.widgetWithText(ElevatedButton, 'Save'));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ChangeEmail), findsOneWidget);
+    expect(find.text('zzq123@example.com'), findsOneWidget);
+  });
+
+  testWidgets('change email page back button', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      buildTestApp(
+        Builder(
+          builder: (context) => ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (_) => const ChangeEmail()),
+              );
+            },
+            child: const Text('Open'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('Open'));
+    await tester.pumpAndSettle();
+    expect(find.byType(ChangeEmail), findsOneWidget);
+
+    await tester.tap(find.byIcon(Icons.arrow_back_ios_new_rounded));
+    await tester.pumpAndSettle();
+
+    expect(find.byType(ChangeEmail), findsNothing);
+    expect(find.text('Open'), findsOneWidget);
+  });
+
+  testWidgets('change email page renders dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const ChangeEmail(),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.text('Enter your new email'), findsOneWidget);
   });
 
   testWidgets('change password page shows wrong current password message', (
