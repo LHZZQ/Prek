@@ -134,11 +134,11 @@ class _GratitudeTileState extends State<GratitudeTile> {
         _playingMine = _isMine && s == PlayerState.playing;
 
         if (s == PlayerState.completed) {
-      _pos = _dur; // show full duration
-      _currentSrc = null;
-    } else if (s == PlayerState.stopped) {
-      _pos = Duration.zero;
-    }
+          _pos = _dur; // show full duration
+          _currentSrc = null;
+        } else if (s == PlayerState.stopped) {
+          _pos = Duration.zero;
+        }
       });
     });
   }
