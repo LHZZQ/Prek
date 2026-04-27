@@ -99,6 +99,23 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<_RecordingNavigatorObserver> pumpMemoryGalleryPageWithObserver(
+    WidgetTester tester,
+  ) async {
+    final observer = _RecordingNavigatorObserver();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorObservers: [observer],
+        theme: ThemeData(useMaterial3: false),
+        home: const MemoryGalleryPage(),
+      ),
+    );
+    await tester.pump();
+    await tester.pumpAndSettle();
+    observer.pushed.clear();
+    return observer;
+  }
+
   testWidgets('shows empty', (tester) async {
     useLargeViewport(tester);
     await pumpMemoryGalleryPage(tester);
@@ -118,6 +135,42 @@ void main() {
     expect(find.text('Add one from the reflection flow'), findsOneWidget);
     expect(find.byIcon(Icons.photo_library_outlined), findsOneWidget);
   });
+
+  testWidgets('renders dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const MemoryGalleryPage(),
+      ),
+    );
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Every moment worth keeping.'), findsOneWidget);
+    expect(find.text('All memories'), findsOneWidget);
+    expect(find.byType(BottomNavigationBar), findsOneWidget);
+  });
+
+  final navCases = {'Home': 0, 'History': 1, 'Profile': 2, 'Settings': 4};
+
+  for (final entry in navCases.entries) {
+    final label = entry.key;
+    final index = entry.value;
+
+    testWidgets('bottom nav pushes $label route', (tester) async {
+      useLargeViewport(tester);
+      final observer = await pumpMemoryGalleryPageWithObserver(tester);
+      final navBar = tester.widget<BottomNavigationBar>(
+        find.byType(BottomNavigationBar),
+      );
+
+      navBar.onTap!(index);
+
+      expect(observer.pushed, hasLength(1));
+    });
+  }
 
   testWidgets('renders one memory tile', (tester) async {
     mockMemories = [
@@ -163,4 +216,14 @@ void main() {
     expect(find.byIcon(Icons.calendar_today_rounded), findsOneWidget);
     expect(find.byIcon(Icons.arrow_back_rounded), findsOneWidget);
   });
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  final pushed = <Route<dynamic>>[];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushed.add(route);
+    super.didPush(route, previousRoute);
+  }
 }
