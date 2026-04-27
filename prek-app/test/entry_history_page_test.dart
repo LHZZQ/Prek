@@ -67,6 +67,22 @@ void main() {
     await tester.pumpAndSettle();
   }
 
+  Future<_RecordingNavigatorObserver> pumpEntryHistoryPageWithObserver(
+    WidgetTester tester,
+  ) async {
+    final observer = _RecordingNavigatorObserver();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorObservers: [observer],
+        home: const EntryHistoryPage(),
+      ),
+    );
+    await tester.pump();
+    await tester.pumpAndSettle();
+    observer.pushed.clear();
+    return observer;
+  }
+
   testWidgets('shows empty state when no entries', (tester) async {
     mockEntries = [];
     useLargeViewport(tester);
@@ -79,6 +95,26 @@ void main() {
       findsOneWidget,
     );
     expect(find.byType(ListView), findsNothing);
+  });
+
+  testWidgets('renders dark mode empty state', (tester) async {
+    mockEntries = [];
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const EntryHistoryPage(),
+      ),
+    );
+    await tester.pump();
+    await tester.pumpAndSettle();
+
+    expect(find.text('Gratitude History'), findsOneWidget);
+    expect(
+      find.text('No entries yet.\nAdd your first gratitude today!'),
+      findsOneWidget,
+    );
   });
 
   testWidgets('renders entries and date headers', (tester) async {
@@ -122,4 +158,43 @@ void main() {
     expect(find.text('Neutral'), findsOneWidget);
     expect(find.text('Calm'), findsOneWidget);
   });
+
+  final navCases = {'Home': 0, 'Profile': 2, 'Lookbook': 3, 'Settings': 4};
+
+  for (final entry in navCases.entries) {
+    final label = entry.key;
+    final index = entry.value;
+
+    testWidgets('bottom nav pushes $label route', (tester) async {
+      mockEntries = [
+        {
+          'id': 'entry-1',
+          'user_id': 'user-1',
+          'text': 'I am grateful for sunshine.',
+          'created_at': '2026-04-17T09:30:00Z',
+          'mood': 'Happy',
+          'audio_path': null,
+        },
+      ];
+      useLargeViewport(tester);
+      final observer = await pumpEntryHistoryPageWithObserver(tester);
+      final navBar = tester.widget<BottomNavigationBar>(
+        find.byType(BottomNavigationBar),
+      );
+
+      navBar.onTap!(index);
+
+      expect(observer.pushed, hasLength(1));
+    });
+  }
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  final pushed = <Route<dynamic>>[];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushed.add(route);
+    super.didPush(route, previousRoute);
+  }
 }
