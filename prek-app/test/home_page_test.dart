@@ -2,8 +2,24 @@ import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/mood_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized();
+
+  setUpAll(() async {
+    SharedPreferences.setMockInitialValues({});
+
+    await Supabase.initialize(
+      url: 'https://example.supabase.co',
+      anonKey: 'sample',
+      authOptions: const FlutterAuthClientOptions(
+        localStorage: EmptyLocalStorage(),
+      ),
+    );
+  });
+
   Future<void> pumpHomePage(WidgetTester tester) async {
     await tester.pumpWidget(
       const MaterialApp(
@@ -16,6 +32,24 @@ void main() {
       ),
     );
     await tester.pumpAndSettle();
+  }
+
+  Future<_RecordingNavigatorObserver> pumpHomePageWithObserver(
+    WidgetTester tester,
+  ) async {
+    final observer = _RecordingNavigatorObserver();
+    await tester.pumpWidget(
+      MaterialApp(
+        navigatorObservers: [observer],
+        home: const MediaQuery(
+          data: MediaQueryData(textScaler: TextScaler.linear(0.85)),
+          child: HomePage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+    observer.pushed.clear();
+    return observer;
   }
 
   void useLargeViewport(WidgetTester tester) {
@@ -57,6 +91,47 @@ void main() {
     expect(find.byType(MoodPage), findsOneWidget);
   });
 
+  testWidgets('homepage renders in dark mode', (tester) async {
+    useLargeViewport(tester);
+
+    await tester.pumpWidget(
+      MaterialApp(
+        theme: ThemeData.dark(useMaterial3: false),
+        home: const MediaQuery(
+          data: MediaQueryData(textScaler: TextScaler.linear(0.85)),
+          child: HomePage(),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(find.textContaining('Welcome Back'), findsOneWidget);
+    expect(find.byType(BottomNavigationBar), findsOneWidget);
+    expect(
+      find.widgetWithText(ElevatedButton, 'Start Reflection'),
+      findsOneWidget,
+    );
+  });
+
+  final navCases = {'History': 1, 'Profile': 2, 'Lookbook': 3, 'Settings': 4};
+
+  for (final entry in navCases.entries) {
+    final label = entry.key;
+    final index = entry.value;
+
+    testWidgets('bottom nav pushes $label route', (tester) async {
+      useLargeViewport(tester);
+      final observer = await pumpHomePageWithObserver(tester);
+      final navBar = tester.widget<BottomNavigationBar>(
+        find.byType(BottomNavigationBar),
+      );
+
+      navBar.onTap!(index);
+
+      expect(observer.pushed, hasLength(1));
+    });
+  }
+
   // testWidgets('menu shows all items', (tester) async {
   //   useLargeViewport(tester);
   //   await pumpHomePage(tester);
@@ -91,4 +166,14 @@ void main() {
     expect(first, second);
     expect(state.affirmations, contains(first));
   });
+}
+
+class _RecordingNavigatorObserver extends NavigatorObserver {
+  final pushed = <Route<dynamic>>[];
+
+  @override
+  void didPush(Route<dynamic> route, Route<dynamic>? previousRoute) {
+    pushed.add(route);
+    super.didPush(route, previousRoute);
+  }
 }
