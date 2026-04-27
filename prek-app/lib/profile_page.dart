@@ -23,11 +23,11 @@ class _ProfilePageState extends State<ProfilePage> {
   int _selectedIndex = 2;
 
   String get _memberSince {
-  final user = supabase.auth.currentUser;
-  if (user == null) return '';
-  final date = DateTime.parse(user.createdAt).toLocal();
-  return '${date.year}';
-}
+    final user = supabase.auth.currentUser;
+    if (user == null) return '';
+    final date = DateTime.parse(user.createdAt).toLocal();
+    return '${date.year}';
+  }
 
   void _onItemTapped(int index) {
     if (index == 0) {
