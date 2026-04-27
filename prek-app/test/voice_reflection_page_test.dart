@@ -251,9 +251,7 @@ void main() {
     expect(find.byIcon(Icons.delete_forever_rounded), findsOneWidget);
   });
 
-  testWidgets('long press slide up cancel', (
-    tester,
-  ) async {
+  testWidgets('long press slide up cancel', (tester) async {
     useLargeViewport(tester);
     await pumpVoicePage(tester);
 
