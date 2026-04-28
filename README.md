@@ -112,25 +112,34 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 3. Forgot Password
    - Click the Forgot Password button if you have forgotten your password.
    - Enter your email.
-   - Enter your new password twice and click done.
-   - It will be saved and you can now login with your new password.
-  
+   - There will be a Reset Password link sent to your email if you are a registered user.
+   - After updating your password, log in again.
+    
 4. Home Page
    - Once logged in, you will see a new affirmation everyday.
    - Click the Start Reflection button to write your reflection.
-   - Access the History Page, Profile Page and Settings Page by clicking the icon in the menu bar at the bottom.
+   - Access the History Page, Profile Page, Lookbook Page and Settings Page by clicking the icon in the menu bar at the bottom.
 
 5. Reflection Page
    - Choose an emoji on how you feel today.
-   - Choose to write a reflection, record a reflection or view your lookbook.
-   - Click Save Reflection to link it to the History Page.
+   - Choose to write a reflection, record a reflection or upload a picture to the lookbook.
+   - Click Save Reflection to link it to the History Page or Lookbook Page.
      
 6. History Page
-   - Your past entries will show up here with timestamps.
-  
-7. Settings Page
-   - Can change name, email and password in this page.
+   - Your past text and voice reflections will show up here with timestamps and moods.
+     
+7. Profile Page
+   - View your username, email and streaks here.
+   - View your previous moods in a calendar view here.
+
+8. Lookbook Page
+   - Your past picture reflections will show up here with captions.
+     
+9. Settings Page
+   - Change your name, email and password in this page.
    - Click save and your information will be updated.
+   - Click the button on the top right corner to switch to dark mode or light mode.
+   - Click the logout button to logout. 
 
 ## Developer Instructions
 1. Install [Flutter](https://docs.flutter.dev/install/manual)
