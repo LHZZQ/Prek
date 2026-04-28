@@ -1,4 +1,5 @@
 
+
 <p align="center">
   <img src="prek-app/images/prek_logo.png" width="300" height="200">
 </p>
@@ -96,7 +97,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 - **Database** : PostgreSQL
   
 ## Architecture Diagram
-<img width="1587" height="2245" alt="tech stack" src="https://github.com/user-attachments/assets/ea47d27b-f34a-4d9a-9f07-6dcd33e7e41f" />
+<img width="1060" height="1484" alt="Arch diagram" src="https://github.com/user-attachments/assets/01a08f2f-fa97-49b3-8ac5-382ff62271df" />
 
 ## User Instructions
 1. Login
