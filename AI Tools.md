@@ -211,7 +211,7 @@ Dart is a completely new language for me and there are no lectures to teach me. 
 
 I have absolutely no experience in designing UI and user interfaces. I'm not sure what a comfortable interface looks like. After creating the initial draft, I need to use AI for reference to design a user interface that is comfortable for people.
 
-Writing the test was something I had never done before because in previous programming, I didn't need to write tests myself.
+Writing the test was something I had never done before because in previous programming, I didn't need to write tests myself. I need some guidance, and then I'll be able to write the relevant test code independently without relying on the AI.
 
 ### Debugging
 I used ChatGPT (the GPT4o/GPT5.2/GPT5.4/codex) , Claude (Sonnet 4.5) to fixing bugs and understanding unexpected errors during development. I also used AI to create a piece of code that simulates user data. This way, we can conduct some front-end and back-end tests without accessing the database, which can enhance our testing efficiency. 
@@ -221,6 +221,7 @@ I used ChatGPT (the GPT4o/GPT5.2/GPT5.4/codex) , Claude (Sonnet 4.5) to fixing b
 - The compiler has reported an error. Why did this happen? Please provide a detailed explanation.
 - The CI test on Github failed. Could you please take a look and tell me where it didn't meet the requirements?
 - How can I simulate user data during testing without actually making a real call to the Supabase backend for testing purposes?
+- Why did my 'xxx_test.dart' test fail here? What are the specific reasons? Please explain them to me in detail.
 
 #### Why?
 Most of the time, errors are not noticed by the programmer. I need to use the AI to assist me in identifying the errors and providing explanations, so that my code can run properly and not encounter the same issues again in the future.
@@ -228,11 +229,12 @@ Most of the time, errors are not noticed by the programmer. I need to use the AI
 Some of the test data involves the backend. If we access the backend for each test, it would become extremely slow. I thought about simulating the test user data and keeping all the tests local. So, I sought the help of AI.
 
 ### Reviewing
-I used ChatGPT (the GPT4o/GPT5.2/GPT5.4) , Claude (Sonnet 4.5) to review and clarify some of my own code and others' PR.
+I used ChatGPT (the GPT4o/GPT5.2/GPT5.4) , Claude (Sonnet 4.5) to review and clarify some of my own code and others' PR. I don't want to draw wrong conclusions due to my carelessness, so I will use AI to check if my code and ideas are correct.
 
 #### Prompts examples
 - Is there anything wrong with this way I wrote my code? Can it be made more concise or how can it be improved? Please elaborate.
 - This is a section from PR's of our team. Could you please explain in detail what this section is specifically about? 
+- Could we possibly use simulated user data to accelerate the speed of our tests?
 
 #### Why?
 When I write my own code, I often don't know how to improve and enhance it. I would like to hear some suggestions from AI. If the suggestions are reasonable, I will consider making the necessary modifications.
