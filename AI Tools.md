@@ -145,52 +145,55 @@ I, Carol, declare that this document is accurate to my AI usage throughout the c
 
 ### Development
 
-I used ChatGPT (OpenAI GPT4 / GPT5) as a learning aid while developing my understanding of git and the dart programming language.
-
+I used ChatGPT (OpenAI GPT4 / GPT5) to :
+- Learn Git and the Dart language
+- Learn how to use the reset password feature
+- Learn how to do the dark mode feature
 
 #### Prompts examples
 
-- "Why does my UI not fill the entire screen even though I set width to double.infinity?"
-- "How can I structure a Flutter page so it looks visually balanced?"
-- "How do padding and margin affect widget positioning in Flutter?"
-
+- "How to create a scrollable page?"
+- "How to un-push a code that I just committed?
+- "How to make Supabase's reset password link redirect users to the correct page?"
+- "How to use users' system settings to set dark/light mode"
 
 #### Why?
 
-When I started using Flutter, I found the layout system confusing and sometimes unpredictable. I used AI to explain how spacing and structure worked so I could understand what I was doing instead of just guessing.
-
+As a beginner in web development, I used AI as a supplementary learning tool to learn Flutter and Supabase. Sometimes I cannot resolve certain problems because the online tutorials are insufficient and incomplete. I do not copy the code directly. Instead, I try to understand the different approach and implementation that the AI provides. This allowed me to learn from it and make better decisions in the future.
 
 ### Debugging
 
-I used ChatGPT (OpenAI GPT4 / GPT5) to help debug layout and UI issues, particularly related to page spacing and empty space appearing at the bottom of screens.
-
+I used ChatGPT (OpenAI GPT4 / GPT5) to :
+- Debug UI issues
+- Solve frontend to backend issues
 
 #### Prompts examples
 
-- "Why is there empty space at the bottom of my flutter page?"
-- "How do I remove extra padding in a scaffold layout?"
-
+- "Why is there empty space at the bottom of the page?"
+- "Why is there an overflow?"
+- "Why is the appbar covering the page content?"
+- "Why is Supabase redirecting users to the login page instead of the reset password page?"
+- "Why does the profile page not show the updated username after the user updates it?"
   
 #### Why?
 
-Sometimes I would fix layout issues by trial and error without fully understanding what caused them. I used AI to explain why the empty space or spacing bugs were happening so I could properly fix them and avoid making the same mistakes again.
-
+Sometimes, there could be rendering issues caused by the UI, but the error message just gives you a whole list of errors, which makes it difficult to identify where the exact bug is. I used AI to help find the exact bug, and try to solve it on my own. For the frontend to backend issues, I used AI to help bridge the gap because there are not many tutorials out there using Flutter and Supabase together, so it could be difficult to learn how to link them up.
 
 ### Reviewing
 
-I used ChatGPT (OpenAI GPT4 / GPT5) to double check my understanding of git workflows and my dart structure.
-
+I used ChatGPT (OpenAI GPT4 / GPT5) to:
+- Improve code readability
+- Identify potential bugs when different devices are used
 
 #### Prompts examples
 
-- "Is there a cleaner way to structure this widget tree?"
-- "Is this the correct git workflow when working on a feature branch?"
-
+- "Is my use of Column or Expanded correct here?"
+- "How can I reduce repetition for this part of the code"
+- "Will there be an overflow if the user opens the website on a phone?"
 
 #### Why?
 
-Since I was still learning both git and flutter, I sometimes wanted reassurance that I was doing things the right way. I used AI to clarify small doubts and make sure my approach made sense, rather than to rewrite or generate my work.
-
+I used AI to gain confirmation if my code is clear, and follows the DRY rule so that it is easier for my groupmates to review and easier for future developers to understand the code. Also, I used AI to make sure Prek is compatible with all kinds of devices.
 
 
 ## Ziqian:
