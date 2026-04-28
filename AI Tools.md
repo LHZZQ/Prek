@@ -200,33 +200,48 @@ I used AI to gain confirmation if my code is clear, and follows the DRY rule so 
 I, Ziqian, declare that this document is accurate to my AI usage throughout the course of SEP.
 
 ### Development
-- I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to learn the Dart language, comparing it to the languages I had learned before such as C and Java. And also learned how to design an attractive user interface.
+- I used ChatGPT (the GPT4o/GPT5.2/GPT5.4) , Claude (Sonnet 4.5) to learn the Dart language, comparing it to the languages I had learned before such as C and Java. And also learned how to design an attractive user interface.
+- I also learned how to write tests for Flutter using AI.
 #### Prompts examples
 - I have already learned other programming languages such as C and Java. How should I focus on learning Dart, this new language, so that I can design an app?
 - What are some basic UI design principles for mobile wellbeing apps? How can layout, spacing, and color choices improve user experience?
 - Can you explain how Flutter’s widget-based UI system works, especially layout widgets like Column, Row, and Expanded?
 - I currently have a simple Flutter project with a text input box and a button. Regarding how to optimize the visual hierarchy and readability without rewriting the entire code.
+- How are the tests for Flutter written? Are there any writing guidelines that I can refer to? What is the syntax of the test files? How should I trigger the tests?
 
 #### Why?
 Dart is a completely new language for me and there are no lectures to teach me. I think we can use AI to facilitate the learning process, similar to how we learn other programming languages.
+
 I have absolutely no experience in designing UI and user interfaces. I'm not sure what a comfortable interface looks like. After creating the initial draft, I need to use AI for reference to design a user interface that is comfortable for people.
+
+Writing the test was something I had never done before because in previous programming, I didn't need to write tests myself. I need some guidance, and then I'll be able to write the relevant test code independently without relying on the AI.
+
 ### Debugging
-I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to fixing bugs and understanding unexpected errors during development.
+I used ChatGPT (the GPT4o/GPT5.2/GPT5.4/codex) , Claude (Sonnet 4.5) to fixing bugs and understanding unexpected errors during development. I also used AI to create a piece of code that simulates user data. This way, we can conduct some front-end and back-end tests without accessing the database, which can enhance our testing efficiency. 
 
 #### Prompts examples
 
 - The compiler has reported an error. Why did this happen? Please provide a detailed explanation.
 - The CI test on Github failed. Could you please take a look and tell me where it didn't meet the requirements?
+- How can I simulate user data during testing without actually making a real call to the Supabase backend for testing purposes?
+- Why did my 'xxx_test.dart' test fail here? What are the specific reasons? Please explain them to me in detail.
+
 #### Why?
 Most of the time, errors are not noticed by the programmer. I need to use the AI to assist me in identifying the errors and providing explanations, so that my code can run properly and not encounter the same issues again in the future.
+
+Some of the test data involves the backend. If we access the backend for each test, it would become extremely slow. I thought about simulating the test user data and keeping all the tests local. So, I sought the help of AI.
+
 ### Reviewing
-I used ChatGPT (the GPT4o/GPT5.2) , Claude (Sonnet 4.5) to review and clarify some of my own code and others' PR.
+I used ChatGPT (the GPT4o/GPT5.2/GPT5.4) , Claude (Sonnet 4.5) to review and clarify some of my own code and others' PR. I don't want to draw wrong conclusions due to my carelessness, so I will use AI to check if my code and ideas are correct.
+
 #### Prompts examples
 - Is there anything wrong with this way I wrote my code? Can it be made more concise or how can it be improved? Please elaborate.
-- This is a section from PR's of our team. Could you please explain in detail what this section is specifically about?
+- This is a section from PR's of our team. Could you please explain in detail what this section is specifically about? 
+- Could we possibly use simulated user data to accelerate the speed of our tests?
 
 #### Why?
 When I write my own code, I often don't know how to improve and enhance it. I would like to hear some suggestions from AI. If the suggestions are reasonable, I will consider making the necessary modifications.
+
 For the code of my team members, there are some parts that I might not understand. I will ask the AI to provide me with detailed explanations so that I can grasp the content of the PR and be able to offer suggestions on my own, thereby helping our project to be better.
 
 ## Kylan:
