@@ -91,23 +91,29 @@ I, Daud, declare that this document is accurate to my AI usage throughout the co
 
 ### Development
 
-I used ChatGPT (OpenAI GPT4 / GPT5) to research suitable architecture patterns, suggest appropriate tech stacks, and understand how to integrate supabase with flutter.
+I used ChatGPT (OpenAI GPT4 / GPT5) to:
+- Learn the Dart language which was new to me.
+- Research suitable architecture patterns and suggest appropriate tech stacks
+- Understand how to integrate supabase with flutter.
 
 
 #### Prompts examples
 
 - "How do I connect a Flutter app to supabase?"
 - "How should I structure authentication flow in flutter?"
+- “How do I handle data fetching in Flutter when calling Supabase?”
 
 
 #### Why?
 
-Since we had to make decisions about backend integration and app structure early on, I used AI to explore different options and understand them. I also needed help understanding how supabase works with flutter, especially around authentication. AI helped me grasp the concepts more quickly so I could implement them properly rather than relying on guesswork.
+Since we had to make decisions about backend integration and app structure early on, I used AI to explore different options and understand them. I also needed help understanding how supabase works with flutter, especially around authentication and fetching data from the database. AI helped me grasp the concepts more quickly so I could implement them properly rather than relying on guesswork.
 
 
 ### Debugging
 
-I used ChatGPT (OpenAI GPT4 / GPT5) to debug authentication issues and resolve problems related to supabase and Row Level Security (RLS).
+I used ChatGPT (OpenAI GPT4 / GPT5) to debug:
+- Authentication issues and resolve problems related to supabase and Row Level Security (RLS).
+- Debug and resolve issues related to backend integration.
 
 
 #### Prompts examples
@@ -115,6 +121,7 @@ I used ChatGPT (OpenAI GPT4 / GPT5) to debug authentication issues and resolve p
 - "Why is my Supabase authentication failing?"
 - "What causes this RLS policy error?"
 - "How do I configure Supabase RLS policies correctly?"
+- “How do I debug failed or empty responses from Supabase?”
 
   
 #### Why?
@@ -124,13 +131,15 @@ Backend errors can be difficult to interpret, especially when dealing with authe
 
 ### Reviewing
 
-I used ChatGPT (OpenAI GPT4 / GPT5) to review architecture decisions and confirm whether my implementation approach made sense.
+I used ChatGPT (OpenAI GPT4 / GPT5) to:
+- Review architecture decisions and confirm whether my implementation approach made sense.
 
 
 #### Prompts examples
 
 - "Is this a secure way to structure user data access?"
 - "Am I handling async calls correctly in this function?"
+- "Is this a scalable way to design my backend data model?"
 
   
 #### Why?
