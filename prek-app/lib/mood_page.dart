@@ -11,7 +11,7 @@ class MoodPage extends StatefulWidget {
 
 class _MoodPageState extends State<MoodPage> {
   static const softWhite = Color(0xFFFFFFFF);
-  static const textColor = Color(0xFF94697E);
+
   static const pink = Color(0xFFFB7DA8);
   static const blue = Color(0xFF058CD7);
   static const yellow = Color(0xFFFFC567);
@@ -33,13 +33,18 @@ class _MoodPageState extends State<MoodPage> {
   Widget build(BuildContext context) {
     final bgTop = Color.lerp(softWhite, pink, 0.12)!;
     final bgBottom = Color.lerp(softWhite, yellow, 0.14)!;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final topBarColor = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return Scaffold(
-      backgroundColor: bgTop,
+      backgroundColor: topBarColor,
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: topBarColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: textColor),
+        foregroundColor: textColor,
       ),
 
       body: Container(
@@ -49,7 +54,9 @@ class _MoodPageState extends State<MoodPage> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
 
-            colors: [bgTop, bgBottom],
+            colors: isDark
+                ? [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : [bgTop, bgBottom],
           ),
         ),
 
@@ -67,14 +74,14 @@ class _MoodPageState extends State<MoodPage> {
                       vertical: 8,
                     ),
                     decoration: BoxDecoration(
-                      color: softWhite.withValues(alpha: 0.75),
+                      color: softWhite,
                       borderRadius: BorderRadius.circular(999),
                     ),
 
                     child: Text(
                       _greeting(),
-                      style: const TextStyle(
-                        color: textColor,
+                      style: TextStyle(
+                        color: isDark ? Colors.black : textColor,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -82,7 +89,7 @@ class _MoodPageState extends State<MoodPage> {
 
                   const SizedBox(height: 18),
 
-                  const Text(
+                  Text(
                     "How are you feeling\ntoday?",
 
                     textAlign: TextAlign.center,
@@ -112,9 +119,15 @@ class _MoodPageState extends State<MoodPage> {
                           duration: const Duration(milliseconds: 180),
                           padding: const EdgeInsets.all(14),
                           decoration: BoxDecoration(
-                            color: softWhite.withValues(
-                              alpha: isSelected ? 0.95 : 0.78,
-                            ),
+                            color: isDark
+                                ? isSelected
+                                      ? softWhite
+                                      : Color(
+                                          0xFF1E1E2C,
+                                        ).withValues(alpha: 0.78)
+                                : isSelected
+                                ? softWhite.withValues(alpha: 0.95)
+                                : softWhite.withValues(alpha: 0.78),
                             borderRadius: BorderRadius.circular(999),
 
                             border: Border.all(
@@ -147,7 +160,9 @@ class _MoodPageState extends State<MoodPage> {
                               Text(
                                 label,
                                 style: TextStyle(
-                                  color: textColor,
+                                  color: isSelected
+                                      ? pink.withValues(alpha: 0.6)
+                                      : textColor,
                                   fontWeight: isSelected
                                       ? FontWeight.w900
                                       : FontWeight.w700,

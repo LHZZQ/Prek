@@ -1,6 +1,7 @@
 
+
 <p align="center">
-  <img width="300" height="200" alt="image" src="https://github.com/user-attachments/assets/69f9251c-1c12-4b86-a194-aef5576b58aa" />
+  <img src="prek-app/images/prek_logo.png" width="300" height="200">
 </p>
 
 <h1 align="center">2025-Prek</h1>
@@ -11,6 +12,9 @@
 [![Dart](https://img.shields.io/badge/Dart-0175C2?style=for-the-badge&logo=dart&logoColor=white)](https://dart.dev/)
 [![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.io)
 [![PostgreSQL](https://img.shields.io/badge/PostgreSQL-4169E1?style=for-the-badge&logo=postgresql&logoColor=white)](https://www.postgresql.org/)
+[![Docker](https://img.shields.io/badge/Docker-2496ED?style=for-the-badge&logo=docker&logoColor=white)](https://www.docker.com/)
+[![Amazon AWS](https://img.shields.io/badge/Amazon%20AWS-FF9900?style=for-the-badge&logo=amazonaws&logoColor=white)](https://aws.amazon.com/)
+[![GitHub Actions](https://img.shields.io/badge/GitHub%20Actions-2088FF?style=for-the-badge&logo=githubactions&logoColor=white)](https://github.com/features/actions)
 
 </div>
 
@@ -70,7 +74,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 |----------------|-----------------------------------------------------------|--------------|----------|
 | **MVP**         | Core functionality for initial launch.                    | 20/11/2025   | Completed  |
 | **Beta**        | Majority of functionality implemented.                    | 19/02/2026   | Completed  |
-| **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Pending  |
+| **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Completed  |
 
 ## Project Structure
 ```
@@ -93,7 +97,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 - **Database** : PostgreSQL
   
 ## Architecture Diagram
-<img width="1587" height="2245" alt="tech stack" src="https://github.com/user-attachments/assets/ea47d27b-f34a-4d9a-9f07-6dcd33e7e41f" />
+<img width="1060" height="1484" alt="Arch diagram" src="https://github.com/user-attachments/assets/01a08f2f-fa97-49b3-8ac5-382ff62271df" />
 
 ## User Instructions
 1. Login
@@ -109,25 +113,34 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
 3. Forgot Password
    - Click the Forgot Password button if you have forgotten your password.
    - Enter your email.
-   - Enter your new password twice and click done.
-   - It will be saved and you can now login with your new password.
-  
+   - There will be a Reset Password link sent to your email if you are a registered user.
+   - After updating your password, log in again.
+    
 4. Home Page
    - Once logged in, you will see a new affirmation everyday.
    - Click the Start Reflection button to write your reflection.
-   - Access the History Page, Profile Page and Settings Page by clicking the icon in the menu bar at the bottom.
+   - Access the History Page, Profile Page, Lookbook Page and Settings Page by clicking the icon in the menu bar at the bottom.
 
 5. Reflection Page
    - Choose an emoji on how you feel today.
-   - Choose to write a reflection, record a reflection or view your lookbook.
-   - Click Save Reflection to link it to the History Page.
+   - Choose to write a reflection, record a reflection or upload a picture to the lookbook.
+   - Click Save Reflection to link it to the History Page or Lookbook Page.
      
 6. History Page
-   - Your past entries will show up here with timestamps.
-  
-7. Settings Page
-   - Can change name, email and password in this page.
+   - Your past text and voice reflections will show up here with timestamps and moods.
+     
+7. Profile Page
+   - View your username, email and streaks here.
+   - View your previous moods in a calendar view here.
+
+8. Lookbook Page
+   - Your past picture reflections will show up here with captions.
+     
+9. Settings Page
+   - Change your name, email and password in this page.
    - Click save and your information will be updated.
+   - Click the button on the top right corner to switch to dark mode or light mode.
+   - Click the logout button to logout. 
 
 ## Developer Instructions
 1. Install [Flutter](https://docs.flutter.dev/install/manual)
@@ -141,22 +154,7 @@ The **goal** of Prek is to create a simple, reflective, and uplifting digital sp
     ```
      flutter pub get
     ```
-4. In the terminal, create .env file at the project root:
-    ```
-     touch .env
-    ```
-5. In the .env file, type in:
-   
-   ```
-   SUPABASE_URL="YOUR_SECRET_KEY"
-   SUPABASE_ANON_KEY="YOUR_ENCRYPTION_KEY"
-   ```
-6. In the .gitignore file, type in:
-
-   ```
-   .env
-   ```
-7. In the terminal, run the application:
+4. In the terminal, run the application:
    
    ```
    flutter run

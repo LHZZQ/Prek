@@ -1,14 +1,72 @@
 import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../models/gratitude_entry.dart';
 import '../utils/time_utils.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+// sort out the path
+String normalizeGratitudeStoragePath(String path) {
+  var value = path.trim();
+  if (value.startsWith('/')) value = value.substring(1);
+  if (value.startsWith('assets/')) value = value.substring('assets/'.length);
+  return value;
+}
+
+// easy to mock test
+abstract class GratitudeAudioController {
+  Stream<Duration> get onPositionChanged;
+  Stream<Duration> get onDurationChanged;
+  Stream<PlayerState> get onPlayerStateChanged;
+
+  Future<void> play(String publicUrl);
+  Future<void> pause();
+  Future<void> stop();
+  Future<void> seek(Duration position);
+}
+
+class SharedGratitudeAudioController implements GratitudeAudioController {
+  SharedGratitudeAudioController._();
+
+  static final SharedGratitudeAudioController instance =
+      SharedGratitudeAudioController._();
+  //share one player
+  static final AudioPlayer _player = AudioPlayer();
+
+  @override
+  Stream<Duration> get onPositionChanged => _player.onPositionChanged;
+
+  @override
+  Stream<Duration> get onDurationChanged => _player.onDurationChanged;
+
+  @override
+  Stream<PlayerState> get onPlayerStateChanged => _player.onPlayerStateChanged;
+
+  @override
+  Future<void> play(String publicUrl) => _player.play(UrlSource(publicUrl));
+
+  @override
+  Future<void> pause() => _player.pause();
+
+  @override
+  Future<void> stop() => _player.stop();
+
+  @override
+  Future<void> seek(Duration position) => _player.seek(position);
+}
+
 //Single gratitude record card: Text + Timestamp + (Optional) Voice Playback
 class GratitudeTile extends StatefulWidget {
   final GratitudeEntry entry;
-  const GratitudeTile({super.key, required this.entry});
+  final VoidCallback onDeleted;
+  final GratitudeAudioController? audioController; //easy to mock test
+  const GratitudeTile({
+    super.key,
+    required this.entry,
+    required this.onDeleted,
+    this.audioController,
+  });
 
   @override
   State<GratitudeTile> createState() => _GratitudeTileState();
@@ -16,7 +74,6 @@ class GratitudeTile extends StatefulWidget {
 
 class _GratitudeTileState extends State<GratitudeTile> {
   // Shared player: Ensures that only one item is played at a time.
-  static final AudioPlayer _player = AudioPlayer();
   static String? _currentSrc; // The currently playing resource (asset path)
 
   late final StreamSubscription<Duration> _posSub;
@@ -26,20 +83,48 @@ class _GratitudeTileState extends State<GratitudeTile> {
   Duration _pos = Duration.zero;
   Duration _dur = Duration.zero;
   bool _playingMine = false; // test  this currently playing or not
+
+  GratitudeAudioController get _audioController =>
+      widget.audioController ?? SharedGratitudeAudioController.instance;
   //bool _isUrl(String s) => s.startsWith('http://') || s.startsWith('https://');
+
+  Future<void> _probeDuration() async {
+    final src = widget.entry.audioAssetPath;
+    if (src == null) return;
+
+    try {
+      final client = Supabase.instance.client;
+      final cleanSrc = normalizeGratitudeStoragePath(src);
+      final publicUrl = client.storage
+          .from('gratitude-audio')
+          .getPublicUrl(cleanSrc);
+
+      final probe = AudioPlayer();
+      await probe.setSource(UrlSource(publicUrl));
+      final duration = await probe.getDuration();
+      await probe.dispose();
+
+      if (mounted && duration != null) {
+        setState(() => _dur = duration);
+      }
+    } catch (e) {
+      debugPrint('Could not probe duration: $e');
+    }
+  }
 
   @override
   void initState() {
     super.initState();
-    _posSub = _player.onPositionChanged.listen((p) {
+    _probeDuration();
+    _posSub = _audioController.onPositionChanged.listen((p) {
       if (!_isMine) return;
       setState(() => _pos = p);
     });
-    _durSub = _player.onDurationChanged.listen((d) {
+    _durSub = _audioController.onDurationChanged.listen((d) {
       if (!_isMine) return;
       setState(() => _dur = d);
     });
-    _stateSub = _player.onPlayerStateChanged.listen((s) {
+    _stateSub = _audioController.onPlayerStateChanged.listen((s) {
       final wasMine =
           _playingMine || _isMine; //Only update when it concerns oneself
 
@@ -52,11 +137,11 @@ class _GratitudeTileState extends State<GratitudeTile> {
             s == PlayerState.stopped ||
             s == PlayerState.paused) {
           _pos = Duration.zero;
-          _dur = Duration.zero;
 
           if (s == PlayerState.completed && _isMine) {
             //complete and was mine
             _currentSrc = null;
+            _dur = Duration.zero;
           }
         }
       });
@@ -77,13 +162,6 @@ class _GratitudeTileState extends State<GratitudeTile> {
     super.dispose();
   }
 
-  String _normalizeStoragePath(String p) {
-    var s = p.trim();
-    if (s.startsWith('assets/')) s = s.substring('assets/'.length);
-    if (s.startsWith('/')) s = s.substring(1);
-    return s;
-  }
-
   Future<void> _togglePlay() async {
     //Debug session/user info
     final src = widget.entry.audioAssetPath;
@@ -97,48 +175,57 @@ class _GratitudeTileState extends State<GratitudeTile> {
 
     if (_playingMine) {
       //print('Pause');
-      await _player.pause();
+      await _audioController.pause();
     } else {
       //print('Try to play');
-      await _player.stop(); // stop other playing
+      await _audioController.stop(); // stop other playing
 
       //Go to Supabase to obtain the signed URL and then use UrlSource to play it.
       _currentSrc = src;
       _pos = Duration.zero;
-      _dur = Duration.zero;
       setState(() {});
       final client = Supabase.instance.client;
-      final cleanSrc = _normalizeStoragePath(src);
+      final cleanSrc = normalizeGratitudeStoragePath(src);
 
       debugPrint('bucket=gratitude-audio');
       debugPrint('src(raw)="$src"');
       debugPrint('src(clean)="$cleanSrc"');
-      final list = await client.storage
-          .from('gratitude-audio')
-          .list(path: 'user123'); // user123 for mock data
-      final names = list.map((e) => e.name).toList();
-      debugPrint('files under user123 = $names');
-
-      final fileName = cleanSrc.split('/').last;
-      if (!names.contains(fileName)) {
-        debugPrint('file not found in folder yet, skip createSignedUrl');
-        return;
-      }
 
       try {
-        final signedUrl = await client.storage
+        final publicUrl = client.storage
             .from('gratitude-audio')
-            .createSignedUrl(cleanSrc, 60);
-        print('signedUrl=$signedUrl');
-        await _player.play(UrlSource(signedUrl));
+            .getPublicUrl(cleanSrc);
+        print('publicUrl=$publicUrl');
+        await _audioController.play(publicUrl);
       } catch (e) {
-        debugPrint('createSignedUrl failed: $e');
+        debugPrint('getPublicUrl failed: $e');
         if (mounted) {
           ScaffoldMessenger.of(
             context,
           ).showSnackBar(SnackBar(content: Text('Could not play audio')));
         }
       }
+    }
+  }
+
+  Future<void> _deleteEntry() async {
+    final supabase = Supabase.instance.client;
+    try {
+      if (widget.entry.audioAssetPath != null) {
+        await supabase.storage.from('gratitude-audio').remove([
+          widget.entry.audioAssetPath!,
+        ]);
+      }
+      await supabase
+          .from('Gratitude Entries')
+          .delete()
+          .eq('id', widget.entry.id);
+
+      widget.onDeleted();
+    } catch (e) {
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
     }
   }
 
@@ -149,38 +236,54 @@ class _GratitudeTileState extends State<GratitudeTile> {
   Widget _moodChip(String mood) {
     IconData icon;
     Color bgColor;
+    final bool isDark = Theme.of(context).brightness == Brightness.dark;
     switch (mood) {
       case 'Happy':
         icon = Icons.sentiment_very_satisfied_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
+        bgColor = isDark
+            ? Color(0xFFFFC567)
+            : Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
         break;
       case 'Good':
         icon = Icons.sentiment_satisfied_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
-        break;
+        bgColor = isDark
+            ? Color(0xFFFFC567)
+            : Color.lerp(Colors.white, const Color(0xFFFFC567), 0.55)!;
       case 'Neutral':
         icon = Icons.sentiment_neutral_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
+        bgColor = isDark
+            ? Color(0xFF058CD7)
+            : Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
         break;
       case 'Confused':
         icon = Icons.psychology_alt_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
+        bgColor = isDark
+            ? Color(0xFF058CD7)
+            : Color.lerp(Colors.white, const Color(0xFF058CD7), 0.40)!;
         break;
       case 'Sad':
         icon = Icons.sentiment_dissatisfied_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       case 'Overwhelmed':
         icon = Icons.warning_amber_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       case 'Frustrated':
         icon = Icons.whatshot_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       case 'Angry':
         icon = Icons.mood_bad_rounded;
-        bgColor = Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
+        bgColor = isDark
+            ? Color(0xFFFB7DA8)
+            : Color.lerp(Colors.white, const Color(0xFFFB7DA8), 0.45)!;
         break;
       default:
         icon = Icons.emoji_emotions_outlined;
@@ -190,17 +293,22 @@ class _GratitudeTileState extends State<GratitudeTile> {
       label: Text(mood),
       avatar: Icon(icon, size: 16),
       backgroundColor: bgColor,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(15),
+        side: BorderSide(color: Colors.transparent, width: 1.5),
+      ),
     );
   }
 
   @override
   Widget build(BuildContext context) {
     final e = widget.entry;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Card(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       //color: Colors.white.withOpacity(0.96),
-      color: const Color.fromRGBO(255, 255, 255, 0.96),
+      color: isDark ? Colors.black : Color.fromRGBO(255, 255, 255, 0.96),
       elevation: 2,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       child: Padding(
@@ -208,8 +316,10 @@ class _GratitudeTileState extends State<GratitudeTile> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(e.text, style: Theme.of(context).textTheme.titleMedium),
-            const SizedBox(height: 6),
+            if (e.audioAssetPath == null) ...[
+              Text(e.text, style: Theme.of(context).textTheme.titleMedium),
+              const SizedBox(height: 6),
+            ],
             Row(
               children: [
                 if (e.mood != null) _moodChip(e.mood!),
@@ -218,10 +328,40 @@ class _GratitudeTileState extends State<GratitudeTile> {
                   friendlyTime(e.createdAt),
                   style: Theme.of(context).textTheme.bodySmall,
                 ),
+                const Spacer(),
+                IconButton(
+                  icon: const Icon(
+                    Icons.delete_outline,
+                    color: Colors.redAccent,
+                    size: 20,
+                  ),
+                  onPressed: () async {
+                    final confirm = await showDialog<bool>(
+                      context: context,
+                      builder: (_) => AlertDialog(
+                        title: const Text('Delete reflection?'),
+                        content: const Text('This cannot be undone'),
+                        actions: [
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, false),
+                            child: const Text('Cancel'),
+                          ),
+                          TextButton(
+                            onPressed: () => Navigator.pop(context, true),
+                            child: const Text(
+                              'Delete',
+                              style: TextStyle(color: Colors.redAccent),
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                    if (confirm == true) await _deleteEntry();
+                  },
+                ),
               ],
             ),
             if (e.audioAssetPath != null) ...[
-              const SizedBox(height: 8),
               Row(
                 children: [
                   IconButton(
@@ -243,13 +383,15 @@ class _GratitudeTileState extends State<GratitudeTile> {
                               final target = Duration(
                                 milliseconds: (_dur.inMilliseconds * v).round(),
                               );
-                              await _player.seek(target);
+                              await _audioController.seek(target);
                             }
                           : null,
                     ),
                   ),
                   Text(
-                    _playingMine ? _mmss(_pos) : '00:00',
+                    _dur.inMilliseconds > 0
+                        ? _mmss(_playingMine ? _pos : _dur)
+                        : '00:00',
                     style: Theme.of(context).textTheme.labelSmall,
                   ),
                 ],

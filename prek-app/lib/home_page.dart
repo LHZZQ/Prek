@@ -4,6 +4,7 @@ import 'dart:math';
 import 'package:_2025_prek/mood_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -75,6 +76,11 @@ class HomePageState extends State<HomePage> {
     } else if (index == 3) {
       Navigator.push(
         context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
+        context,
         MaterialPageRoute(builder: (context) => const SettingsPage()),
       );
     }
@@ -85,39 +91,33 @@ class HomePageState extends State<HomePage> {
     const softWhite = Color(0xFFFFFFFF);
     const textColor = Color(0xFF94697E);
     const activeColor = Color(0xFFFB7DA8);
-
+    final isDark = Theme.of(context).brightness == Brightness.dark;
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 60),
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
-                  height: 140,
-                  width: 140,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(40),
-                    image: const DecorationImage(
-                      image: AssetImage('images/prek-logo2.png'),
-                      fit: BoxFit.cover,
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 50),
-                const Text(
+                Image(image: AssetImage('images/prek_logo.png')),
+
+                Text(
                   "Welcome Back 🌞",
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
-                    color: textColor,
+                    color: isDark ? Colors.white : textColor,
                     letterSpacing: 0.5,
                   ),
                 ),
@@ -129,15 +129,21 @@ class HomePageState extends State<HomePage> {
                   ),
                   margin: const EdgeInsets.symmetric(horizontal: 10),
                   decoration: BoxDecoration(
-                    color: softWhite.withValues(alpha: 0.7),
+                    color: isDark
+                        ? Color(0xFF161622)
+                        : softWhite.withValues(alpha: 0.7),
                     borderRadius: BorderRadius.circular(30),
                     border: Border.all(
-                      color: Colors.white.withValues(alpha: 0.5),
+                      color: isDark
+                          ? Color(0xFF1E1E2C)
+                          : Colors.white.withValues(alpha: 0.5),
                       width: 1.5,
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.pink.withValues(alpha: 0.1),
+                        color: isDark
+                            ? Colors.black.withValues(alpha: 0.1)
+                            : Colors.pink.withValues(alpha: 0.1),
                         blurRadius: 20,
                         offset: const Offset(0, 10),
                       ),
@@ -146,39 +152,43 @@ class HomePageState extends State<HomePage> {
                   child: Text(
                     '"$dailyAffirmation"',
                     textAlign: TextAlign.center,
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontSize: 20,
                       fontStyle: FontStyle.italic,
                       height: 1.6,
-                      color: textColor,
+                      color: isDark ? Colors.white : textColor,
                     ),
                   ),
                 ),
-                const SizedBox(height: 12),
-                const Row(
+                const SizedBox(height: 20),
+                Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Icon(
                       Icons.local_florist_outlined,
-                      color: textColor,
+                      color: isDark ? Colors.white : textColor,
                       size: 16,
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Text(
                       "Your next affirmation will appear tomorrow",
-                      style: TextStyle(color: textColor, fontSize: 14),
+                      style: TextStyle(
+                        color: isDark ? Colors.white : textColor,
+                        fontSize: 14,
+                      ),
                     ),
-                    SizedBox(width: 8),
+                    const SizedBox(width: 8),
                     Icon(
                       Icons.local_florist_outlined,
-                      color: textColor,
+                      color: isDark ? Colors.white : textColor,
                       size: 16,
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 20),
                 Container(
-                  width: 220,
+                  height: 45,
+                  width: 400,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(40),
                     gradient: const LinearGradient(
@@ -202,7 +212,6 @@ class HomePageState extends State<HomePage> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: Colors.transparent,
                       shadowColor: Colors.transparent,
-                      padding: const EdgeInsets.symmetric(vertical: 18),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(40),
                       ),
@@ -226,7 +235,6 @@ class HomePageState extends State<HomePage> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 40),
               ],
             ),
           ),
@@ -246,9 +254,9 @@ class HomePageState extends State<HomePage> {
           currentIndex: _selectedIndex,
           onTap: _onItemTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
           selectedItemColor: activeColor,
-          unselectedItemColor: Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
           showUnselectedLabels: true,
           selectedFontSize: 12,
           unselectedFontSize: 12,
@@ -265,6 +273,11 @@ class HomePageState extends State<HomePage> {
               icon: Icon(Icons.person_rounded),
               label: 'Profile',
             ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
               label: 'Settings',

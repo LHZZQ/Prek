@@ -1,6 +1,10 @@
 import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/services/gratitude_service.dart';
 import 'package:flutter/material.dart';
+import 'package:_2025_prek/pages/entry_history_page.dart';
+import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/settings_page.dart';
+import 'package:_2025_prek/memory_gallery_page.dart';
 
 class ReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -11,36 +15,67 @@ class ReflectionPage extends StatefulWidget {
 }
 
 class _ReflectionPageState extends State<ReflectionPage> {
-  final _controller = TextEditingController(); //text controller for inputs
+  final _controller = TextEditingController();
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const HomePage()),
+      );
+    }
+    if (index == 1) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const EntryHistoryPage()),
+      );
+    } else if (index == 2) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const ProfilePage()),
+      );
+    } else if (index == 3) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const MemoryGalleryPage()),
+      );
+    } else if (index == 4) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => const SettingsPage()),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    //colors
-
-    // const peach = Color(0xFFFFE4B5);
-    const textColor = Color(0xFF94697E);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-
       appBar: AppBar(
         backgroundColor: Colors.transparent,
-        elevation: 0,
+        iconTheme: IconThemeData(color: textColor),
         centerTitle: true,
-        title: const Text(
-          "Reflection 🌸", //title
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
+        ),
+
+        title: Text(
+          "Reflection",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
-        iconTheme: const IconThemeData(color: textColor),
       ),
-
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
-            // background gradient
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
         child: SafeArea(
@@ -55,11 +90,9 @@ class _ReflectionPageState extends State<ReflectionPage> {
                       constraints: const BoxConstraints(maxWidth: 820),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
-
                         children: [
-                          const SizedBox(height: 30),
-                          const Text(
-                            "Take a moment to reflect on something you're grateful for today 💭", //header text
+                          Text(
+                            "Take a moment to reflect on something you're grateful for today 💭",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: textColor,
@@ -68,65 +101,61 @@ class _ReflectionPageState extends State<ReflectionPage> {
                               height: 1.5,
                             ),
                           ),
-
-                          const SizedBox(height: 40),
-
+                          const SizedBox(height: 20),
                           Container(
                             decoration: BoxDecoration(
-                              //input box
-                              color: Colors.white70,
+                              color: isDark
+                                  ? Color(0xFF161622)
+                                  : Colors.white70,
                               borderRadius: BorderRadius.circular(20),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.pinkAccent.withValues(
-                                    alpha: 0.1,
-                                  ),
+                                  color: isDark
+                                      ? Colors.black.withValues(alpha: 0.1)
+                                      : Colors.pinkAccent.withOpacity(0.1),
                                   blurRadius: 6,
-                                  offset: Offset(0, 3),
+                                  offset: const Offset(0, 3),
                                 ),
                               ],
                             ),
                             child: TextField(
                               controller: _controller,
-                              maxLines: 9, //enough space for a short reflection
-                              decoration: const InputDecoration(
+                              maxLines: 9,
+                              style: TextStyle(color: textColor),
+                              decoration: InputDecoration(
                                 hintText: "Write your reflection here...",
-                                contentPadding: EdgeInsets.all(20),
+                                hintStyle: TextStyle(
+                                  color: textColor.withOpacity(0.5),
+                                ),
+                                contentPadding: const EdgeInsets.all(20),
                                 border: InputBorder.none,
                               ),
                             ),
                           ),
-
-                          const SizedBox(height: 40),
-
+                          const SizedBox(height: 30),
                           Container(
                             width: double.infinity,
-                            height: 62,
-                            //gradient wrapper for button
+                            height: 50,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               gradient: const LinearGradient(
                                 begin: Alignment.centerLeft,
                                 end: Alignment.centerRight,
                                 colors: [
-                                  Color(0xFFFFC567), // yellow
-                                  Color(0xFFFB7DA8), // pink
-                                  Color(0xFF058CD7), // blue
+                                  Color(0xFFFFC567),
+                                  Color(0xFFFB7DA8),
+                                  Color(0xFF058CD7),
                                 ],
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.pinkAccent.withValues(
-                                    alpha: 0.25,
-                                  ),
+                                  color: Colors.pinkAccent.withOpacity(0.25),
                                   blurRadius: 15,
                                   offset: const Offset(0, 6),
                                 ),
                               ],
                             ),
-
                             child: ElevatedButton(
-                              //save button
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: Colors.transparent,
                                 shadowColor: Colors.transparent,
@@ -135,20 +164,15 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                   borderRadius: BorderRadius.circular(40),
                                 ),
                               ),
-
                               onPressed: () async {
                                 final text = _controller.text.trim();
-
                                 if (text.isEmpty) return;
-
                                 try {
                                   await saveGratitudeEntry(
                                     text: text,
                                     mood: widget.selectedMood,
                                   );
-
                                   if (!mounted) return;
-
                                   Navigator.pushAndRemoveUntil(
                                     context,
                                     MaterialPageRoute(
@@ -156,8 +180,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                     ),
                                     (route) => false,
                                   );
-
-                                  _controller.clear(); //clears input
+                                  _controller.clear();
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
@@ -169,7 +192,6 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                   );
                                 }
                               },
-
                               child: const Text(
                                 "Save Reflection",
                                 style: TextStyle(
@@ -180,7 +202,6 @@ class _ReflectionPageState extends State<ReflectionPage> {
                               ),
                             ),
                           ),
-
                           const SizedBox(height: 30),
                         ],
                       ),
@@ -190,6 +211,50 @@ class _ReflectionPageState extends State<ReflectionPage> {
               );
             },
           ),
+        ),
+      ),
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.05),
+              blurRadius: 10,
+              offset: const Offset(0, -5),
+            ),
+          ],
+        ),
+        child: BottomNavigationBar(
+          onTap: _onItemTapped,
+          type: BottomNavigationBarType.fixed,
+          backgroundColor: isDark ? Color(0xFF2A2A3D) : Color(0xFFFFF8EE),
+          selectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          unselectedItemColor: isDark ? Colors.white : Colors.grey.shade400,
+          showUnselectedLabels: true,
+          selectedFontSize: 12,
+          unselectedFontSize: 12,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.history_rounded),
+              label: 'History',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.photo_album_rounded),
+              label: 'Lookbook',
+            ),
+
+            BottomNavigationBarItem(
+              icon: Icon(Icons.settings_rounded),
+              label: 'Settings',
+            ),
+          ],
         ),
       ),
     );

@@ -13,22 +13,16 @@ class _ChangeEmailState extends State<ChangeEmail> {
   final TextEditingController emailController = TextEditingController();
   bool loading = true;
 
-  @override
-  void initState() {
-    super.initState();
-    _updateEmail();
-  }
-
-  Future<void> _updateEmail() async {
+  Future<bool> _updateEmail() async {
     final user = supabase.auth.currentUser;
-    if (user == null) return;
+    if (user == null) return false;
 
     final newEmail = emailController.text.trim();
     if (newEmail.isEmpty) {
       ScaffoldMessenger.of(
         context,
       ).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
-      return;
+      return false;
     }
 
     try {
@@ -38,37 +32,49 @@ class _ChangeEmailState extends State<ChangeEmail> {
           .eq('id', user.id);
 
       await supabase.auth.updateUser(UserAttributes(email: newEmail));
+      return true;
     } catch (e) {
       debugPrint('Error updating email: $e');
       setState(() => loading = false);
+      return false;
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
-    const topBarColor = Color(0xFFFFF1F5);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
+
+    final Color bgTop = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
 
     return Scaffold(
-      backgroundColor: topBarColor,
+      backgroundColor: bgTop,
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
-        backgroundColor: topBarColor,
-        elevation: 0,
-        foregroundColor: textColor,
+
+        title: Text(
+          "Settings",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
-
         child: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
@@ -81,11 +87,13 @@ class _ChangeEmailState extends State<ChangeEmail> {
                   //new email
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: isDark ? Color(0xFF161622) : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          color: isDark
+                              ? Colors.black.withValues(alpha: 0.1)
+                              : Colors.pinkAccent.withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
@@ -102,7 +110,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                     ),
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
 
                   //save button
                   Container(
@@ -135,7 +143,8 @@ class _ChangeEmailState extends State<ChangeEmail> {
                         ),
                       ),
                       onPressed: () async {
-                        await _updateEmail();
+                        final updated = await _updateEmail();
+                        if (!updated || !context.mounted) return;
                         Navigator.push(
                           context,
                           MaterialPageRoute(

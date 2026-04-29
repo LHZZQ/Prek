@@ -62,29 +62,39 @@ class _ChangePWState extends State<ChangePW> {
 
   @override
   Widget build(BuildContext context) {
-    const textColor = Color(0xFF94697E);
-    const topBarColor = Color(0xFFFFF1F5);
+    //const topBarColor = Color(0xFFFFF1F5);
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final Color bgTop = isDark
+        ? const Color(0xFF1E1E2C)
+        : const Color(0xFFFFF1F5);
+    final textColor = isDark ? Colors.white : const Color(0xFF94697E);
 
     return Scaffold(
-      backgroundColor: topBarColor,
+      backgroundColor: bgTop,
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
+        backgroundColor: Colors.transparent,
+        iconTheme: IconThemeData(color: textColor),
+        centerTitle: true,
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back_ios_new_rounded, color: textColor),
+          onPressed: () => Navigator.pop(context),
         ),
-        backgroundColor: topBarColor,
-        elevation: 0,
-        foregroundColor: textColor,
+
+        title: Text(
+          "Settings",
+          style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
+        ),
       ),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
+            colors: isDark
+                ? const [Color(0xFF1E1E2C), Color(0xFF2A2A3D)]
+                : const [Color(0xFFFFF1F5), Color(0xFFFFF8EE)],
           ),
         ),
-
         child: Center(
           child: Padding(
             padding: EdgeInsets.symmetric(horizontal: 25),
@@ -97,11 +107,13 @@ class _ChangePWState extends State<ChangePW> {
                   //current password
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: isDark ? Color(0xFF161622) : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          color: isDark
+                              ? Colors.black.withValues(alpha: 0.1)
+                              : Colors.pinkAccent.withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
@@ -117,11 +129,11 @@ class _ChangePWState extends State<ChangePW> {
                           icon: isPasswordVisible1
                               ? const Icon(
                                   Icons.visibility_off,
-                                  color: Colors.pink,
+                                  color: Color(0xFFFB7DA8),
                                 )
                               : const Icon(
                                   Icons.visibility,
-                                  color: Colors.pink,
+                                  color: Color(0xFFFB7DA8),
                                 ),
                           onPressed: () => setState(
                             () => isPasswordVisible1 = !isPasswordVisible1,
@@ -137,11 +149,13 @@ class _ChangePWState extends State<ChangePW> {
                   //new password
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: isDark ? Color(0xFF161622) : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          color: isDark
+                              ? Colors.black.withValues(alpha: 0.1)
+                              : Colors.pinkAccent.withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
@@ -157,11 +171,11 @@ class _ChangePWState extends State<ChangePW> {
                           icon: isPasswordVisible2
                               ? const Icon(
                                   Icons.visibility_off,
-                                  color: Colors.pink,
+                                  color: Color(0xFFFB7DA8),
                                 )
                               : const Icon(
                                   Icons.visibility,
-                                  color: Colors.pink,
+                                  color: Color(0xFFFB7DA8),
                                 ),
                           onPressed: () => setState(
                             () => isPasswordVisible2 = !isPasswordVisible2,
@@ -177,11 +191,13 @@ class _ChangePWState extends State<ChangePW> {
                   //confirm password
                   Container(
                     decoration: BoxDecoration(
-                      color: Colors.white70,
+                      color: isDark ? Color(0xFF161622) : Colors.white70,
                       borderRadius: BorderRadius.circular(20),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.pinkAccent.withValues(alpha: 0.1),
+                          color: isDark
+                              ? Colors.black.withValues(alpha: 0.1)
+                              : Colors.pinkAccent.withValues(alpha: 0.1),
                           blurRadius: 6,
                           offset: Offset(0, 3),
                         ),
@@ -197,11 +213,11 @@ class _ChangePWState extends State<ChangePW> {
                           icon: isPasswordVisible3
                               ? const Icon(
                                   Icons.visibility_off,
-                                  color: Colors.pink,
+                                  color: Color(0xFFFB7DA8),
                                 )
                               : const Icon(
                                   Icons.visibility,
-                                  color: Colors.pink,
+                                  color: Color(0xFFFB7DA8),
                                 ),
                           onPressed: () => setState(
                             () => isPasswordVisible3 = !isPasswordVisible3,
@@ -212,7 +228,7 @@ class _ChangePWState extends State<ChangePW> {
                     ),
                   ),
 
-                  SizedBox(height: 50),
+                  SizedBox(height: 30),
 
                   //save button
                   Container(
