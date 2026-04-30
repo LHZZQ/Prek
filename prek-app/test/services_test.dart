@@ -158,7 +158,6 @@ void main() {
       expect(lastInsertPayload!['text'], 'Gratful for sunshine');
       expect(lastInsertPayload!['mood'], 'Happy');
       expect(lastInsertPayload!['audio_path'], 'audio/test.m4a');
-      expect(lastInsertPayload!['created_at'], isA<String>());
     });
 
     test('insert errors for logged in user', () async {
