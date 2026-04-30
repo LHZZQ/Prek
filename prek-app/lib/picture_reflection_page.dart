@@ -313,7 +313,6 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
         'text': caption,
         'mood': widget.selectedMood,
         'image_path': imagePath,
-        'created_at': DateTime.now().toLocal().toIso8601String(),
       });
 
       if (mounted) Navigator.of(context).pop(true);
