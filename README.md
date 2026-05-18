@@ -95,7 +95,8 @@
 - **数据库**：PostgreSQL
   
 ## 架构图
-<img width="1060" height="1484" alt="架构图" src="https://github.com/user-attachments/assets/01a08f2f-fa97-49b3-8ac5-382ff62271df" />
+<img width="1057" height="1488" alt="image" src="https://github.com/user-attachments/assets/74257a47-a015-4e1b-a42c-d08defeea0cb" />
+
 
 ## 用户使用说明
 1. 登录
