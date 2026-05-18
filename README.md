@@ -1,5 +1,4 @@
 
-
 <p align="center">
   <img src="prek-app/images/prek_logo.png" width="300" height="200">
 </p>
@@ -18,166 +17,165 @@
 
 </div>
 
-## Contents
-- [Project description](#project-description)
-- [Stakeholders](#stakeholders)
-- [User Stories](#user-stories)
-- [Project Structure](#project-structure)
-- [Tech Stack](#tech-stack)
-- [Architecture Diagram](#architecture-diagram)
-- [User Instructions](#user-instructions)
-- [Developer Instructions](#developer-instructions)
-- [Internal Links](#internal-links)
-- [Team Members](#team-members)
+## 目录
+- [项目介绍](#项目介绍)
+- [相关方](#相关方)
+- [用户故事](#用户故事)
+- [项目结构](#项目结构)
+- [技术栈](#技术栈)
+- [架构图](#架构图)
+- [用户使用说明](#用户使用说明)
+- [开发者说明](#开发者说明)
+- [内部链接](#内部链接)
+- [团队成员](#团队成员)
 
-## Project Description  
-**Prek** is a wellbeing application designed to help users cultivate mindfulness and positivity through guided reflection exercises. 
-The application encourages users to focus on gratitude and intentional living by providing structured daily prompts and journaling features that promote positive thinking and emotional balance.   
+## 项目介绍
+**Prek** 是一款关注身心健康的应用，旨在通过有引导的反思练习，帮助用户培养正念和积极心态。
+应用会提供结构化的每日提示和日记记录功能，鼓励用户关注值得感恩的时刻，更有意识地生活，从而促进积极思考和情绪平衡。
 
-The **goal** of Prek is to create a simple, reflective, and uplifting digital space that helps users cultivate gratitude, mindfulness, and intentional living. By providing structured prompts and seamless journaling features, the project aims to empower users to recognise positive moments, manage stress, and enhance their sense of wellbeing over time. 
+**Prek** 的目标是打造一个简单、安静、积极的数字空间，帮助用户在日常生活中练习感恩、正念和有意识的生活方式。通过清晰的提示和流畅的记录体验，本项目希望帮助用户发现生活中的积极瞬间，缓解压力，并在长期使用中提升整体幸福感。
 
-**Main functionality**:
-- Providing different affirmations every day
-- Write daily reflections
-- View past entries
+**主要功能**：
+- 每天提供不同的肯定语
+- 记录每日反思
+- 查看过去的记录
 
-## Stakeholders
-- **Individual Client**: The project owner who will oversee the general direction of the app and receive the final deliverables.
+## 相关方
+- **个人客户**：项目负责人，负责把握应用的整体方向，并接收最终交付成果。
 
-- **End Users**: The individuals seeking to enhance their mindfulness and general wellbeing by daily reflection and gratitude.
+- **最终用户**：希望通过每日反思和感恩练习来提升正念水平与整体幸福感的用户。
 
-- **Student Team**: The group of programmers and designers responsible for designing and developing the application.
+- **学生团队**：负责设计和开发本应用的程序员与设计成员团队。
 
-## User Stories
-**As a University Student,**
+## 用户故事
+**作为一名大学生，**
 
-- I want a quick way to record what I’m grateful for after lectures so that I can keep a positive mindset and handle academic stress better.
+- 我希望能在课后快速记录自己感恩的事情，这样我可以保持更积极的心态，也能更好地应对学业压力。
   
-- I want my gratitude entries linked to specific days or classes so that I can see which parts of my routine affect my well-being.
+- 我希望自己的感恩记录可以关联到具体日期或课程，这样我能看出日常安排中的哪些部分会影响我的幸福感。
 
-**As a Busy Professional,**
+**作为一名忙碌的职场人士，**
 
-- I want short daily prompts that guide my gratitude reflections so that I can practice mindfulness without adding extra effort to my schedule.
+- 我希望每天有简短的提示来引导我的感恩反思，这样我不用额外花很多精力，也能坚持练习正念。
   
-- I want to log my mood alongside my gratitude entries so that I can notice patterns that influence my focus and work-life balance.
+- 我希望在写感恩记录的同时记录自己的心情，这样我能发现哪些规律会影响我的专注度和工作生活平衡。
 
-**As Someone Working on Their Mental Health,**
+**作为一名正在关注心理健康的人，**
 
-- I want to review my past gratitude entries so that I can see how far I’ve come and stay motivated on harder days.
+- 我希望可以回顾过去的感恩记录，这样我能看到自己的变化，也能在困难的日子里继续保持动力。
 
-- I want to see simple trends or highlights from my entries so that I can better understand what contributes to my happiness.
+- 我希望能从记录中看到简单的趋势或高亮内容，这样我可以更好地理解什么会让我感到快乐。
 
-  
-## Releases
+## 发布计划
 
-| Release        | Description                                               | Target Date | Status  |
+| 版本        | 说明                                               | 目标日期 | 状态  |
 |----------------|-----------------------------------------------------------|--------------|----------|
-| **MVP**         | Core functionality for initial launch.                    | 20/11/2025   | Completed  |
-| **Beta**        | Majority of functionality implemented.                    | 19/02/2026   | Completed  |
-| **Final Release** | Full functionality and optimizations; ready for production. | 30/04/2026   | Completed  |
+| **MVP**         | 面向首次发布的核心功能。                    | 20/11/2025   | 已完成  |
+| **Beta**        | 大部分功能已实现。                    | 19/02/2026   | 已完成  |
+| **最终版本** | 完整功能与优化已完成，可用于正式发布。 | 30/04/2026   | 已完成  |
 
-## Project Structure
+## 项目结构
 ```
 2025-Prek
 ├─ .github/
-│  ├─ workflows/     # CI / CD pipelines (Flutter checks, tests, etc.)
+│  ├─ workflows/     # CI / CD 流水线（Flutter 检查、测试等）
 │  └─ PULL_REQUEST_TEMPLATE.md
-├─ docs/minutes      # Documentation and meeting minutes
-├─ prek-app          # Project root with all source code
-├─ AI Tools.md       # AI usage disclosure and coverage
-├─ CONTRIBUTING.md   # Contribution guidelines and development workflow
-├─ ETHICS.md         # Ethical considerations and responsible design
-├─ LICENSE           # Project license (MIT)
-└─ README.md         # Project overview and setup instructions
+├─ docs/minutes      # 文档与会议记录
+├─ prek-app          # 项目根目录，包含所有源代码
+├─ AI Tools.md       # AI 使用说明与覆盖范围
+├─ CONTRIBUTING.md   # 贡献指南与开发流程
+├─ ETHICS.md         # 伦理考虑与负责任设计
+├─ LICENSE           # 项目许可证（MIT）
+└─ README.md         # 项目概览与配置说明
 ```
 
-## Tech Stack  
-- **Frontend** : Flutter
-- **Backend**  : Supabase
-- **Database** : PostgreSQL
+## 技术栈
+- **前端**：Flutter
+- **后端**：Supabase
+- **数据库**：PostgreSQL
   
-## Architecture Diagram
-<img width="1060" height="1484" alt="Arch diagram" src="https://github.com/user-attachments/assets/01a08f2f-fa97-49b3-8ac5-382ff62271df" />
+## 架构图
+<img width="1060" height="1484" alt="架构图" src="https://github.com/user-attachments/assets/01a08f2f-fa97-49b3-8ac5-382ff62271df" />
 
-## User Instructions
-1. Login
-    - Enter your email and password then click Login.
+## 用户使用说明
+1. 登录
+    - 输入邮箱和密码，然后点击 '登录'。
     
-2. Sign Up
-   - Click the Sign Up button if you are a new user.
-   - Enter your username
-   - Enter your email.
-   - Enter your password twice for verification process.
-   - Click the Sign Up button and your account will be created.
+2. 注册
+   - 如果你是新用户，请点击 '注册' 按钮。
+   - 输入用户名。
+   - 输入邮箱。
+   - 输入两次密码，用于确认。
+   - 点击 '注册' 按钮后，账户就会创建完成。
 
-3. Forgot Password
-   - Click the Forgot Password button if you have forgotten your password.
-   - Enter your email.
-   - There will be a Reset Password link sent to your email if you are a registered user.
-   - After updating your password, log in again.
+3. 忘记密码
+   - 如果忘记了密码，请点击 '忘记密码' 按钮。
+   - 输入邮箱。
+   - 如果你是已注册用户，系统会向你的邮箱发送 '重置密码' 链接。
+   - 更新密码后，请重新登录。
     
-4. Home Page
-   - Once logged in, you will see a new affirmation everyday.
-   - Click the Start Reflection button to write your reflection.
-   - Access the History Page, Profile Page, Lookbook Page and Settings Page by clicking the icon in the menu bar at the bottom.
+4. 主页
+   - 登录后，你每天都会看到一条新的肯定语。
+   - 点击 '保存反思' 按钮来写反思。
+   - 点击底部菜单栏中的图标，可以进入 '历史'、'我的'、'相册' 和 '设置'。
 
-5. Reflection Page
-   - Choose an emoji on how you feel today.
-   - Choose to write a reflection, record a reflection or upload a picture to the lookbook.
-   - Click Save Reflection to link it to the History Page or Lookbook Page.
+5. 反思页面
+   - 选择一个 表情 来表示你今天的心情。
+   - 你可以选择写一段反思、录制一段反思，或者上传一张图片到 相册。
+   - 点击 '保存反思'，将内容关联到 历史 或 相册。
      
-6. History Page
-   - Your past text and voice reflections will show up here with timestamps and moods.
+6. 历史页面
+   - 这里会显示你过去的文字和语音反思，并附带时间戳和心情记录。
      
-7. Profile Page
-   - View your username, email and streaks here.
-   - View your previous moods in a calendar view here.
+7. 个人资料页面
+   - 这里可以查看你的用户名、邮箱和连续记录天数。
+   - 这里也可以通过日历视图查看你之前的心情记录。
 
-8. Lookbook Page
-   - Your past picture reflections will show up here with captions.
+8. 相册 页面
+   - 这里会显示你过去的图片反思和对应说明。
      
-9. Settings Page
-   - Change your name, email and password in this page.
-   - Click save and your information will be updated.
-   - Click the button on the top right corner to switch to dark mode or light mode.
-   - Click the logout button to logout. 
+9. 设置页面
+   - 你可以在这个页面修改姓名、邮箱和密码。
+   - 点击保存后，你的信息会被更新。
+   - 点击右上角按钮，可以在深色模式和浅色模式之间切换。
+   - 点击 '退出登录' 按钮即可退出登录。
 
-## Developer Instructions
-1. Install [Flutter](https://docs.flutter.dev/install/manual)
-2. In the terminal, clone this repository:
+## 开发者说明
+1. 安装 [Flutter](https://docs.flutter.dev/install/manual)
+2. 在终端中克隆此仓库：
    
    ```
    git clone https://github.com/spe-uob/2025-Prek.git
    ```
-3. In the terminal, install dependencies at the project root:
+3. 在终端中进入项目根目录并安装依赖：
 
     ```
      flutter pub get
     ```
-4. In the terminal, run the application:
+4. 在终端中运行应用：
    
    ```
    flutter run
    ```
    
-## Internal Links
-- [Kanban Board](https://github.com/orgs/spe-uob/projects/342)
-- [License](https://github.com/spe-uob/2025-Prek/blob/a588db8ce4e40b9cb71dcd3317db70c8fcda09c1/LICENSE)
-- [Ethics](https://github.com/spe-uob/2025-Prek/blob/dev/ETHICS.md)
-- [AI document](https://github.com/spe-uob/2025-Prek/blob/dev/AI%20Tools.md)
-- [Contributing](https://github.com/spe-uob/2025-Prek/blob/dev/CONTRIBUTING.md)
+## 内部链接
+- [看板](https://github.com/orgs/spe-uob/projects/342)
+- [许可证](https://github.com/spe-uob/2025-Prek/blob/a588db8ce4e40b9cb71dcd3317db70c8fcda09c1/LICENSE)
+- [伦理文档](https://github.com/spe-uob/2025-Prek/blob/dev/ETHICS.md)
+- [AI 文档](https://github.com/spe-uob/2025-Prek/blob/dev/AI%20Tools.md)
+- [贡献指南](https://github.com/spe-uob/2025-Prek/blob/dev/CONTRIBUTING.md)
   
-## Team Members 
+## 团队成员
 
-| Members        | Email                |
+| 成员        | 邮箱                |
 |----------------|----------------------|
 | Carol Tan      |pn24594@bristol.ac.uk |
 | Daud Ismail    |kk24104@bristol.ac.uk |
-| Layan Alaskar (Client Liaison)  |pk23085@bristol.ac.uk |
+| Layan Alaskar（客户联络人）  |pk23085@bristol.ac.uk |
 | Ziqian Zhang   |ni24790@bristol.ac.uk |
 | Kylan Zou      |gn23627@bristol.ac.uk |
 
-| Week        | Project Manager      |
+| 周数        | 项目经理      |
 |-------------|----------------------|
 | 2-7         |Layan Alaskar         |
 | 8-12        |Daud Ismail           |
