@@ -12,6 +12,7 @@ import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 class VoiceReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -77,9 +78,9 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     if (_isRecording) return;
     if (!await _recorder.hasPermission()) {
       if (mounted) {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Microphone permission denied')),
-        );
+        ScaffoldMessenger.of(
+          context,
+        ).showSnackBar(const SnackBar(content: Text('麦克风权限被拒绝')));
       }
       return;
     }
@@ -179,7 +180,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
     try {
       final client = Supabase.instance.client;
       final user = client.auth.currentUser;
-      if (user == null) throw Exception('User not logged in');
+      if (user == null) throw Exception('用户未登录');
 
       final fileName =
           '${user.id}/${DateTime.now().millisecondsSinceEpoch}.mp4';
@@ -221,7 +222,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to save: $e')));
+        ).showSnackBar(SnackBar(content: Text('保存失败：$e')));
       }
     }
   }
@@ -250,7 +251,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
         ),
 
         title: Text(
-          "Reflection",
+          "反思",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -287,7 +288,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Text(
-                        "Reflecting on: ${widget.selectedMood}",
+                        "正在记录：${moodLabelZh(widget.selectedMood)}",
                         style: TextStyle(
                           color: pink,
                           fontWeight: FontWeight.w600,
@@ -304,11 +305,11 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                       child: Text(
                         _isRecording
                             ? (_isCancelling
-                                  ? "Release to cancel 🗑️"
+                                  ? "松开取消 🗑️"
                                   : (_isTappedMode
-                                        ? "Tap button to stop\nor Slide up to cancel ⬆️"
-                                        : "Swipe up to cancel ⬆️"))
-                            : "Tap or Hold to record",
+                                        ? "点击按钮停止\n或上滑取消 ⬆️"
+                                        : "上滑取消 ⬆️"))
+                            : "点击或长按开始录音",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           color: _isCancelling ? Colors.redAccent : textColor,
@@ -421,7 +422,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                                     : Colors.white,
                                 side: BorderSide.none,
                                 label: Text(
-                                  _isPreviewing ? "Stop" : "Preview",
+                                  _isPreviewing ? "停止" : "预听",
                                   style: const TextStyle(color: blue),
                                 ),
                                 avatar: Icon(
@@ -438,7 +439,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                                     : Colors.white,
                                 side: BorderSide.none,
                                 label: const Text(
-                                  "Redo",
+                                  "重录",
                                   style: TextStyle(color: pink),
                                 ),
                                 avatar: const Icon(
@@ -499,7 +500,7 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
                                     color: Colors.white,
                                   )
                                 : const Text(
-                                    "Save Reflection",
+                                    "保存反思",
                                     style: TextStyle(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -539,24 +540,24 @@ class _VoiceReflectionPageState extends State<VoiceReflectionPage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),

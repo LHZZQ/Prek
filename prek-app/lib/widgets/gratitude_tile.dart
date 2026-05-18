@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:audioplayers/audioplayers.dart';
 import '../models/gratitude_entry.dart';
 import '../utils/time_utils.dart';
+import '../utils/ui_text.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 // sort out the path
@@ -202,7 +203,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
         if (mounted) {
           ScaffoldMessenger.of(
             context,
-          ).showSnackBar(SnackBar(content: Text('Could not play audio')));
+          ).showSnackBar(SnackBar(content: Text('无法播放音频')));
         }
       }
     }
@@ -225,7 +226,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
+      ).showSnackBar(SnackBar(content: Text('删除失败：$e')));
     }
   }
 
@@ -290,7 +291,7 @@ class _GratitudeTileState extends State<GratitudeTile> {
         bgColor = Colors.grey.shade300;
     }
     return Chip(
-      label: Text(mood),
+      label: Text(moodLabelZh(mood)),
       avatar: Icon(icon, size: 16),
       backgroundColor: bgColor,
       shape: RoundedRectangleBorder(
@@ -339,17 +340,17 @@ class _GratitudeTileState extends State<GratitudeTile> {
                     final confirm = await showDialog<bool>(
                       context: context,
                       builder: (_) => AlertDialog(
-                        title: const Text('Delete reflection?'),
-                        content: const Text('This cannot be undone'),
+                        title: const Text('删除这条反思？'),
+                        content: const Text('此操作无法撤销'),
                         actions: [
                           TextButton(
                             onPressed: () => Navigator.pop(context, false),
-                            child: const Text('Cancel'),
+                            child: const Text('取消'),
                           ),
                           TextButton(
                             onPressed: () => Navigator.pop(context, true),
                             child: const Text(
-                              'Delete',
+                              '删除',
                               style: TextStyle(color: Colors.redAccent),
                             ),
                           ),

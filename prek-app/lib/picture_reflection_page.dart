@@ -7,6 +7,7 @@ import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 const Color pink = Color(0xFFFB7DA8);
 
@@ -86,7 +87,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
         ),
 
         title: Text(
-          "Reflection",
+          "反思",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -107,9 +108,9 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
                     height: 1.2,
                   ),
                   children: [
-                    TextSpan(text: 'Capture\na '),
+                    TextSpan(text: '记录\n'),
                     TextSpan(
-                      text: 'Happy Moments',
+                      text: '快乐时刻',
                       style: TextStyle(color: pink),
                     ),
                   ],
@@ -117,7 +118,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
               ),
               const SizedBox(height: 10),
               Text(
-                'What made you smile today? Save it here.',
+                '今天是什么让你微笑？把它保存在这里。',
                 style: TextStyle(
                   fontSize: 14,
                   color: textColor.withOpacity(isDark ? 0.9 : 0.55),
@@ -176,7 +177,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        'Add a new memory',
+                        '添加新的回忆',
                         style: TextStyle(
                           fontFamily: 'Georgia',
                           fontSize: 18,
@@ -186,7 +187,7 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
                       ),
                       const SizedBox(height: 4),
                       Text(
-                        'Tap to choose a photo & add a caption',
+                        '点击选择照片并添加说明',
                         style: TextStyle(
                           fontSize: 12,
                           color: textColor.withOpacity(0.45),
@@ -222,24 +223,24 @@ class _PictureReflectionPageState extends State<PictureReflectionPage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),
@@ -289,7 +290,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
     try {
       final client = Supabase.instance.client;
       final user = client.auth.currentUser;
-      if (user == null) throw Exception('User not logged in');
+      if (user == null) throw Exception('用户未登录');
 
       String? imagePath;
 
@@ -321,7 +322,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to save: $e')));
+        ).showSnackBar(SnackBar(content: Text('保存失败：$e')));
       }
     }
   }
@@ -359,7 +360,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
 
           const SizedBox(height: 18),
           Text(
-            'Save a moment',
+            '保存这一刻',
             style: TextStyle(
               fontFamily: 'Georgia',
               fontSize: 19,
@@ -369,7 +370,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
           ),
           const SizedBox(height: 3),
           Text(
-            'Add a photo and a short note',
+            '添加照片和简短记录',
             style: TextStyle(fontSize: 13, color: textColor.withOpacity(0.5)),
           ),
           const SizedBox(height: 16),
@@ -405,7 +406,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                               borderRadius: BorderRadius.circular(20),
                             ),
                             child: const Text(
-                              'Change',
+                              '更换',
                               style: TextStyle(
                                 color: Colors.white,
                                 fontSize: 11,
@@ -425,7 +426,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                         ),
                         const SizedBox(height: 6),
                         Text(
-                          'Tap to choose a photo',
+                          '点击选择照片',
                           style: TextStyle(
                             color: pink.withOpacity(0.8),
                             fontWeight: FontWeight.w500,
@@ -456,7 +457,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
                 fontFamily: 'Georgia',
               ),
               decoration: InputDecoration(
-                hintText: 'What made this moment special?',
+                hintText: '这一刻为什么特别？',
                 hintStyle: TextStyle(
                   color: textColor.withOpacity(0.35),
                   fontSize: 13,
@@ -505,7 +506,7 @@ class _AddMemorySheetState extends State<_AddMemorySheet> {
               ),
               onPressed: _isSaving ? null : _submit,
               child: const Text(
-                "Save Reflection",
+                "保存反思",
                 style: TextStyle(
                   color: Colors.white,
                   fontWeight: FontWeight.bold,

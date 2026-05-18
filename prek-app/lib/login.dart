@@ -27,7 +27,7 @@ class _LoginState extends State<Login> {
 
   Future<void> _login() async {
     if (emailController.text.isEmpty || passwordController.text.isEmpty) {
-      setState(() => authError = 'Please enter email and password.');
+      setState(() => authError = '请输入邮箱和密码。');
       return;
     }
     setState(() {
@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
                   child: TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: '邮箱',
                       icon: Icon(
                         Icons.mail_outline,
                         color: Colors.pink[200],
@@ -119,7 +119,7 @@ class _LoginState extends State<Login> {
                   child: TextFormField(
                     controller: passwordController,
                     decoration: InputDecoration(
-                      labelText: 'Password',
+                      labelText: '密码',
                       //errorText: 'Password entered is wrong',
                       icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
                       suffixIcon: IconButton(
@@ -162,7 +162,7 @@ class _LoginState extends State<Login> {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    "Forgot Password",
+                    "忘记密码",
                     style: TextStyle(
                       color: textColor,
                       fontWeight: FontWeight.bold,
@@ -212,7 +212,7 @@ class _LoginState extends State<Login> {
                     onPressed: isLoading ? null : _login,
 
                     child: const Text(
-                      "Login",
+                      "登录",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -291,7 +291,7 @@ class _LoginState extends State<Login> {
 
                 //Dont have an account
                 Text(
-                  "Don't have an account?",
+                  "还没有账号？",
                   style: TextStyle(
                     color: textColor,
                     fontWeight: FontWeight.bold,
@@ -306,7 +306,7 @@ class _LoginState extends State<Login> {
                     tapTargetSize: MaterialTapTargetSize.shrinkWrap,
                   ),
                   child: Text(
-                    "Sign up",
+                    "注册",
                     style: TextStyle(
                       color: textColor,
                       fontWeight: FontWeight.bold,

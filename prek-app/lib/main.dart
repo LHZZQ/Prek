@@ -11,8 +11,7 @@ Future<void> main() async {
 
   await Supabase.initialize(
     url: 'https://vmgenpltmxpnnpbsqrqc.supabase.co',
-    anonKey:
-        'sb_publishable_Q3xocgmAafjU1LOqeGwU_g_zFK0UETP',
+    anonKey: 'sb_publishable_Q3xocgmAafjU1LOqeGwU_g_zFK0UETP',
   );
 
   runApp(
@@ -29,7 +28,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Prek App',
+      title: 'Prek',
       debugShowCheckedModeBanner: false,
       home: const AuthGate(),
       theme: lightMode,
@@ -124,7 +123,7 @@ class _MyHomePageState extends State<MyHomePage> {
           IconButton(
             icon: const Icon(Icons.history),
             onPressed: () => Navigator.pushNamed(context, '/history'),
-            tooltip: 'History',
+            tooltip: '历史',
           ),
         ],
       ),
@@ -147,7 +146,7 @@ class _MyHomePageState extends State<MyHomePage> {
           // wireframe for each widget.
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            const Text('You have pushed the button this many times:'),
+            const Text('你已经点击按钮的次数：'),
             Text(
               '$_counter',
               style: Theme.of(context).textTheme.headlineMedium,
@@ -157,7 +156,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _incrementCounter,
-        tooltip: 'Increment',
+        tooltip: '增加',
         child: const Icon(Icons.add),
       ), // This trailing comma makes auto-formatting nicer for build methods.
     );

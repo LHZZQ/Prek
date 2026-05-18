@@ -7,6 +7,7 @@ import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
 import 'package:_2025_prek/home_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 class EntryHistoryPage extends StatefulWidget {
   const EntryHistoryPage({super.key});
@@ -100,14 +101,14 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
           ),
 
           title: Text(
-            "Gratitude History",
+            "感恩历史",
             style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
           ),
         ),
         body: buildBackground(
           Center(
             child: Text(
-              "No entries yet.\nAdd your first gratitude today!",
+              "还没有记录。\n今天写下第一条感恩吧！",
               textAlign: TextAlign.center,
               style: Theme.of(
                 context,
@@ -131,7 +132,7 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
         ),
 
         title: Text(
-          "Gratitude History",
+          "感恩历史",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -196,24 +197,24 @@ class _EntryHistoryPageState extends State<EntryHistoryPage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),

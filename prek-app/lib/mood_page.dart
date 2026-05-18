@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 // import 'package:_2025_prek/reflection_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 import 'task_selection_page.dart';
 
 class MoodPage extends StatefulWidget {
@@ -90,7 +91,7 @@ class _MoodPageState extends State<MoodPage> {
                   const SizedBox(height: 18),
 
                   Text(
-                    "How are you feeling\ntoday?",
+                    "今天感觉\n怎么样？",
 
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -158,7 +159,7 @@ class _MoodPageState extends State<MoodPage> {
                               const SizedBox(height: 8),
 
                               Text(
-                                label,
+                                moodLabelZh(label),
                                 style: TextStyle(
                                   color: isSelected
                                       ? pink.withValues(alpha: 0.6)
@@ -203,7 +204,7 @@ class _MoodPageState extends State<MoodPage> {
                       ),
 
                       child: const Text(
-                        "Next",
+                        "下一步",
 
                         style: TextStyle(
                           color: Colors.white,
@@ -226,9 +227,9 @@ class _MoodPageState extends State<MoodPage> {
   String _greeting() {
     final hour = DateTime.now().hour;
 
-    if (hour < 12) return "Good morning";
-    if (hour < 18) return "Good afternoon";
-    return "Good evening";
+    if (hour < 12) return "早上好";
+    if (hour < 18) return "下午好";
+    return "晚上好";
   }
 
   Color _moodBg(String label) {

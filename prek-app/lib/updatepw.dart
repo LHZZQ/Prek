@@ -32,7 +32,7 @@ class _UpdatePWState extends State<UpdatePW> {
     final user = supabase.auth.currentUser;
 
     if (user == null) {
-      return 'Session expired. Please request reset again.';
+      return '会话已过期，请重新申请密码重置。';
     }
     try {
       await supabase.auth.updateUser(
@@ -42,7 +42,7 @@ class _UpdatePWState extends State<UpdatePW> {
       return null;
     } catch (e) {
       debugPrint('Error changing password: $e');
-      return 'Error changing password, $e';
+      return '修改密码失败，$e';
     }
   }
 
@@ -74,7 +74,7 @@ class _UpdatePWState extends State<UpdatePW> {
                     controller: emailController,
                     decoration: InputDecoration(
                       hintText: 'hello@example.com',
-                      labelText: 'Email',
+                      labelText: '邮箱',
                       icon: Icon(
                         CupertinoIcons.envelope,
                         color: Colors.pink[200],
@@ -109,7 +109,7 @@ class _UpdatePWState extends State<UpdatePW> {
                         setState(() => password = value),
                     controller: firstPasswordController,
                     decoration: InputDecoration(
-                      labelText: 'New Password',
+                      labelText: '新密码',
                       //errorText: 'Password entered is wrong',
                       icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
                       suffixIcon: IconButton(
@@ -145,7 +145,7 @@ class _UpdatePWState extends State<UpdatePW> {
                         setState(() => password = value),
                     controller: secondPasswordController,
                     decoration: InputDecoration(
-                      labelText: 'Confirm New Password',
+                      labelText: '确认新密码',
                       //errorText: 'Password entered is wrong',
                       icon: Icon(Icons.lock, color: Colors.pink[200], size: 40),
                       suffixIcon: IconButton(
@@ -217,19 +217,13 @@ class _UpdatePWState extends State<UpdatePW> {
                           final updateError = await _updatePW();
                           if (updateError != null) {
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text(
-                                  "Error changing password, $updateError",
-                                ),
-                              ),
+                              SnackBar(content: Text("修改密码失败：$updateError")),
                             );
                           } else {
                             //update successful
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("Password updated successfully!"),
-                              ),
-                            );
+                            ScaffoldMessenger.of(
+                              context,
+                            ).showSnackBar(SnackBar(content: Text("密码更新成功！")));
                             Navigator.push(
                               context,
                               MaterialPageRoute(
@@ -240,19 +234,19 @@ class _UpdatePWState extends State<UpdatePW> {
                         } else {
                           //one of the two new password fields doesn't follow the password requirement
                           ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(content: Text("Error: $checkNewPW")),
+                            SnackBar(content: Text("错误：$checkNewPW")),
                           );
                         }
                       } else {
                         //the two new password fields doesn't match
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text("New password doesn't match")),
-                        );
+                        ScaffoldMessenger.of(
+                          context,
+                        ).showSnackBar(SnackBar(content: Text("两次输入的新密码不一致")));
                       }
                     },
 
                     child: const Text(
-                      "Done",
+                      "完成",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,
@@ -274,7 +268,7 @@ class _UpdatePWState extends State<UpdatePW> {
 class SignUpValidator {
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return '请输入密码';
     }
 
     final regex = RegExp(
@@ -282,7 +276,7 @@ class SignUpValidator {
     );
 
     if (value.length < 10 || !regex.hasMatch(value)) {
-      return 'Password must have a minimum of 1 lower case letter [a-z], a minimum of 1 upper case letter [A-Z], a minimum of 1 numeric character [0-9], a minimum of 1 special character: ~`!@#%^&*()-_+={}[]|:"<>,./?, and must be at least 10 characters';
+      return '密码至少 10 位，并包含小写字母、大写字母、数字和特殊字符（~`!@#%^&*()-_+={}[]|:"<>,./?）';
     }
 
     return null;

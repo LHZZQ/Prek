@@ -9,6 +9,7 @@ import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -61,10 +62,7 @@ class _SettingsPageState extends State<SettingsPage> {
     return Scaffold(
       backgroundColor: bgColor1,
       appBar: AppBar(
-        title: const Text(
-          'Settings',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('设置', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: topBarColor,
         elevation: 0,
         foregroundColor: textColor,
@@ -142,7 +140,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Icon(Icons.person, color: Colors.white, size: 30),
                           SizedBox(width: 20),
                           Text(
-                            "Change Name",
+                            "修改姓名",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -208,7 +206,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Icon(Icons.email, color: Colors.white, size: 30),
                           SizedBox(width: 20),
                           Text(
-                            "Change Email",
+                            "修改邮箱",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -274,7 +272,7 @@ class _SettingsPageState extends State<SettingsPage> {
                           Icon(Icons.lock, color: Colors.white, size: 30),
                           SizedBox(width: 20),
                           Text(
-                            "Change Password",
+                            "修改密码",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
@@ -311,14 +309,12 @@ class _SettingsPageState extends State<SettingsPage> {
                         showDialog(
                           context: context,
                           builder: (context) => AlertDialog(
-                            title: const Text("Logout"),
-                            content: const Text(
-                              "Are you sure you want to log out?",
-                            ),
+                            title: const Text("退出登录"),
+                            content: const Text("确定要退出登录吗？"),
                             actions: [
                               TextButton(
                                 onPressed: () => Navigator.pop(context),
-                                child: const Text("Cancel"),
+                                child: const Text("取消"),
                               ),
                               TextButton(
                                 onPressed: () {
@@ -331,7 +327,7 @@ class _SettingsPageState extends State<SettingsPage> {
                                   );
                                 },
                                 child: const Text(
-                                  "Logout",
+                                  "退出登录",
                                   style: TextStyle(color: Colors.red),
                                 ),
                               ),
@@ -347,7 +343,7 @@ class _SettingsPageState extends State<SettingsPage> {
                         ),
                       ),
                       child: const Text(
-                        "Logout",
+                        "退出登录",
                         style: TextStyle(
                           color: Colors.red,
                           fontWeight: FontWeight.bold,
@@ -386,24 +382,24 @@ class _SettingsPageState extends State<SettingsPage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),

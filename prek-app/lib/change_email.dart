@@ -21,7 +21,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
     if (newEmail.isEmpty) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Email cannot be empty")));
+      ).showSnackBar(SnackBar(content: Text("邮箱不能为空")));
       return false;
     }
 
@@ -61,7 +61,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
         ),
 
         title: Text(
-          "Settings",
+          "设置",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -103,7 +103,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       controller: emailController,
 
                       decoration: const InputDecoration(
-                        hintText: "Enter your new email",
+                        hintText: "请输入新的邮箱",
                         contentPadding: EdgeInsets.all(20),
                         border: InputBorder.none,
                       ),
@@ -154,7 +154,7 @@ class _ChangeEmailState extends State<ChangeEmail> {
                       },
 
                       child: const Text(
-                        "Save",
+                        "保存",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

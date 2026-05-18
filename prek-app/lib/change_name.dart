@@ -22,7 +22,7 @@ class _ChangeNameState extends State<ChangeName> {
     if (newUsername.isEmpty) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(SnackBar(content: Text("Username cannot be empty")));
+      ).showSnackBar(SnackBar(content: Text("用户名不能为空")));
       return false;
     }
 
@@ -58,7 +58,7 @@ class _ChangeNameState extends State<ChangeName> {
         ),
 
         title: Text(
-          "Settings",
+          "设置",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -100,7 +100,7 @@ class _ChangeNameState extends State<ChangeName> {
                     child: TextField(
                       controller: nameController,
                       decoration: const InputDecoration(
-                        hintText: "Enter your new name",
+                        hintText: "请输入新的姓名",
                         contentPadding: EdgeInsets.all(20),
                         border: InputBorder.none,
                       ),
@@ -150,7 +150,7 @@ class _ChangeNameState extends State<ChangeName> {
                         );
                       },
                       child: const Text(
-                        "Save",
+                        "保存",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,

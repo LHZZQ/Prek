@@ -8,6 +8,7 @@ import 'package:_2025_prek/settings_page.dart';
 import 'reflection_page.dart';
 import 'voice_reflection_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 class TaskSelectionPage extends StatefulWidget {
   final String selectedMood;
@@ -89,7 +90,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
               children: [
                 const SizedBox(height: 20),
                 Text(
-                  "You are feeling ${widget.selectedMood} today",
+                  "你今天的心情是：${moodLabelZh(widget.selectedMood)}",
                   style: TextStyle(
                     color: currentTextColor,
                     fontSize: 16,
@@ -98,7 +99,7 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                 ),
                 const SizedBox(height: 10),
                 Text(
-                  "What would you like to do?",
+                  "想用哪种方式记录？",
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontSize: 30,
@@ -115,8 +116,8 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   currentTextColor: currentTextColor,
                   icon: Icons.edit_note_rounded,
                   iconBg: isDark ? yellow : yellow.withOpacity(0.3),
-                  title: "Write a Reflection",
-                  subtitle: "Express your thoughts in words",
+                  title: "文字反思",
+                  subtitle: "用文字写下此刻的想法",
                   onTap: () {
                     Navigator.push(
                       context,
@@ -135,8 +136,8 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   currentTextColor: currentTextColor,
                   icon: Icons.mic_rounded,
                   iconBg: isDark ? blue : blue.withOpacity(0.2),
-                  title: "Voice Reflection",
-                  subtitle: "Record your thoughts with audio",
+                  title: "语音反思",
+                  subtitle: "用声音记录你的想法",
                   onTap: () {
                     Navigator.push(
                       context,
@@ -156,8 +157,8 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
                   currentTextColor: currentTextColor,
                   icon: Icons.photo_library_rounded,
                   iconBg: isDark ? pink : pink.withOpacity(0.2),
-                  title: "Lookbook",
-                  subtitle: "Visualize your journey through photos",
+                  title: "相册",
+                  subtitle: "用照片保存你的旅程",
                   onTap: () {
                     Navigator.push(
                       context,
@@ -196,24 +197,24 @@ class _TaskSelectionPageState extends State<TaskSelectionPage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),

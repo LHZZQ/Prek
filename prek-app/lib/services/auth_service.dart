@@ -11,9 +11,9 @@ Future<void> login(String email, String password) async {
     );
 
     if (response.session == null) {
-      throw Exception('Email or password incorrect');
+      throw Exception('邮箱或密码不正确');
     }
   } catch (e) {
-    throw ('Email or password incorrect');
+    throw ('邮箱或密码不正确');
   }
 }

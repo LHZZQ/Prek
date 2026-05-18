@@ -12,9 +12,7 @@ String friendlyTime(DateTime dt, {DateTime? now}) {
   final d0 = DateTime(ref.year, ref.month, ref.day);
   final d1 = DateTime(dt.year, dt.month, dt.day);
   final days = d0.difference(d1).inDays;
-  String day = days == 0
-      ? 'Today'
-      : (days == 1 ? 'Yesterday' : '$days days ago');
+  String day = days == 0 ? '今天' : (days == 1 ? '昨天' : '$days 天前');
   String two(int n) => n.toString().padLeft(2, '0');
   return '$day · ${two(dt.hour)}:${two(dt.minute)}';
 }

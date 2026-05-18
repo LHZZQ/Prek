@@ -9,7 +9,7 @@ Future<void> saveGratitudeEntry({
   String? audioPath,
 }) async {
   final user = supabase.auth.currentUser;
-  if (user == null) throw Exception('User not logged in');
+  if (user == null) throw Exception('用户未登录');
 
   try {
     await supabase.from('Gratitude Entries').insert({
@@ -19,6 +19,6 @@ Future<void> saveGratitudeEntry({
       'audio_path': audioPath,
     });
   } catch (e) {
-    throw Exception('Error saving gratitude entry: $e');
+    throw Exception('保存感恩记录失败：$e');
   }
 }

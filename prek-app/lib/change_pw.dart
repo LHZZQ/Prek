@@ -28,7 +28,7 @@ class _ChangePWState extends State<ChangePW> {
 
   Future<String?> _checkPW() async {
     final user = supabase.auth.currentUser;
-    if (user == null) return 'User not logged in';
+    if (user == null) return '用户未登录';
 
     try {
       await supabase.auth.signInWithPassword(
@@ -40,13 +40,13 @@ class _ChangePWState extends State<ChangePW> {
     } catch (e) {
       debugPrint('Wrong current password: $e');
       setState(() => loading = false);
-      return 'Current password is wrong';
+      return '当前密码不正确';
     }
   }
 
   Future<String?> _updatePW() async {
     final user = supabase.auth.currentUser;
-    if (user == null) return 'User not logged in';
+    if (user == null) return '用户未登录';
 
     try {
       await supabase.auth.updateUser(
@@ -56,7 +56,7 @@ class _ChangePWState extends State<ChangePW> {
     } catch (e) {
       debugPrint('Error changing password: $e');
       setState(() => loading = false);
-      return 'Error changing password';
+      return '修改密码失败';
     }
   }
 
@@ -81,7 +81,7 @@ class _ChangePWState extends State<ChangePW> {
         ),
 
         title: Text(
-          "Settings",
+          "设置",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -122,7 +122,7 @@ class _ChangePWState extends State<ChangePW> {
                     child: TextFormField(
                       controller: currentPWController,
                       decoration: InputDecoration(
-                        hintText: "Current password",
+                        hintText: "当前密码",
                         contentPadding: const EdgeInsets.all(20),
                         border: InputBorder.none,
                         suffixIcon: IconButton(
@@ -164,7 +164,7 @@ class _ChangePWState extends State<ChangePW> {
                     child: TextFormField(
                       controller: newPWController,
                       decoration: InputDecoration(
-                        hintText: "New password",
+                        hintText: "新密码",
                         contentPadding: const EdgeInsets.all(20),
                         border: InputBorder.none,
                         suffixIcon: IconButton(
@@ -206,7 +206,7 @@ class _ChangePWState extends State<ChangePW> {
                     child: TextFormField(
                       controller: confirmPWController,
                       decoration: InputDecoration(
-                        hintText: "Confirm new password",
+                        hintText: "确认新密码",
                         contentPadding: const EdgeInsets.all(20),
                         border: InputBorder.none,
                         suffixIcon: IconButton(
@@ -278,18 +278,12 @@ class _ChangePWState extends State<ChangePW> {
                               final updateError = await _updatePW();
                               if (updateError != null) {
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text("Error changing password"),
-                                  ),
+                                  SnackBar(content: Text("修改密码失败")),
                                 );
                               } else {
                                 //update successful
                                 ScaffoldMessenger.of(context).showSnackBar(
-                                  SnackBar(
-                                    content: Text(
-                                      "Password updated successfully!",
-                                    ),
-                                  ),
+                                  SnackBar(content: Text("密码更新成功！")),
                                 );
                                 Navigator.push(
                                   context,
@@ -301,28 +295,24 @@ class _ChangePWState extends State<ChangePW> {
                             } else {
                               //one of the two new password fields doesn't follow the password requirement
                               ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(content: Text("Error: $checkNewPW")),
+                                SnackBar(content: Text("错误：$checkNewPW")),
                               );
                             }
                           } else {
                             //the two new password fields doesn't match
                             ScaffoldMessenger.of(context).showSnackBar(
-                              SnackBar(
-                                content: Text("New password doesn't match"),
-                              ),
+                              SnackBar(content: Text("两次输入的新密码不一致")),
                             );
                           }
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("Current password is wrong"),
-                            ),
-                          );
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text("当前密码不正确")));
                         }
                       },
 
                       child: const Text(
-                        "Save",
+                        "保存",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -345,7 +335,7 @@ class _ChangePWState extends State<ChangePW> {
 class SignUpValidator {
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return '请输入密码';
     }
 
     final regex = RegExp(
@@ -353,7 +343,7 @@ class SignUpValidator {
     );
 
     if (value.length < 10 || !regex.hasMatch(value)) {
-      return 'Password must have a minimum of 1 lower case letter [a-z], a minimum of 1 upper case letter [A-Z], a minimum of 1 numeric character [0-9], a minimum of 1 special character: ~`!@#%^&*()-_+={}[]|:"<>,./?, and must be at least 10 characters';
+      return '密码至少 10 位，并包含小写字母、大写字母、数字和特殊字符（~`!@#%^&*()-_+={}[]|:"<>,./?）';
     }
 
     return null;

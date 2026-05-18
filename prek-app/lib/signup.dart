@@ -39,7 +39,7 @@ class _SignUpState extends State<SignUp> {
       final user = res.user;
 
       if (user == null) {
-        throw Exception('Signup failed');
+        throw Exception('注册失败');
       }
 
       //Create profiles row
@@ -51,9 +51,9 @@ class _SignUpState extends State<SignUp> {
 
       if (!mounted) return;
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Account created successfully')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('账号创建成功')));
 
       Navigator.pushReplacement(
         context,
@@ -66,7 +66,7 @@ class _SignUpState extends State<SignUp> {
     } catch (e) {
       ScaffoldMessenger.of(
         context,
-      ).showSnackBar(const SnackBar(content: Text('Error')));
+      ).showSnackBar(const SnackBar(content: Text('出错了')));
     }
   }
 
@@ -118,7 +118,7 @@ class _SignUpState extends State<SignUp> {
                     child: TextFormField(
                       controller: usernameController,
                       decoration: InputDecoration(
-                        labelText: 'Username',
+                        labelText: '用户名',
                         icon: Icon(
                           Icons.person,
                           color: Colors.pink[200],
@@ -150,7 +150,7 @@ class _SignUpState extends State<SignUp> {
                       controller: emailController,
                       validator: (value) => validator.validateEmail(value),
                       decoration: InputDecoration(
-                        labelText: 'Email',
+                        labelText: '邮箱',
                         icon: Icon(
                           CupertinoIcons.envelope,
                           color: Colors.pink[200],
@@ -187,7 +187,7 @@ class _SignUpState extends State<SignUp> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) => validator.validatePassword(value),
                       decoration: InputDecoration(
-                        labelText: 'Password',
+                        labelText: '密码',
                         errorMaxLines: 10,
                         icon: Icon(
                           Icons.lock,
@@ -229,7 +229,7 @@ class _SignUpState extends State<SignUp> {
                       autovalidateMode: AutovalidateMode.onUserInteraction,
                       validator: (value) => validator.validatePassword(value),
                       decoration: InputDecoration(
-                        labelText: 'Password',
+                        labelText: '确认密码',
                         errorMaxLines: 10,
                         icon: Icon(
                           Icons.lock,
@@ -297,16 +297,14 @@ class _SignUpState extends State<SignUp> {
                             signUp();
                           }
                         } else {
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text("New password doesn't match"),
-                            ),
-                          );
+                          ScaffoldMessenger.of(
+                            context,
+                          ).showSnackBar(SnackBar(content: Text("两次输入的密码不一致")));
                         }
                       },
 
                       child: const Text(
-                        "Sign Up",
+                        "注册",
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
@@ -329,27 +327,27 @@ class _SignUpState extends State<SignUp> {
 class SignUpValidator {
   String? validateEmail(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Email is required';
+      return '请输入邮箱';
     }
 
     final email = value.trim();
 
     if (!email.contains('@')) {
-      return 'Enter a valid email';
+      return '请输入有效的邮箱地址';
     }
     return null;
   }
 
   String? validatePassword(String? value) {
     if (value == null || value.isEmpty) {
-      return 'Password is required';
+      return '请输入密码';
     }
 
     final regex = RegExp(
       r'^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[~`!@#%^&*()-_+={}[]|:"<>,./?]).+$',
     );
     if (value.length < 10 || !regex.hasMatch(value)) {
-      return 'Password must have a minimum of 1 lower case letter [a-z], a minimum of 1 upper case letter [A-Z], a minimum of 1 numeric character [0-9], a minimum of 1 special character: ~`!@#%^&*()-_+={}[]|:"<>,./?, and must be at least 10 characters';
+      return '密码至少 10 位，并包含小写字母、大写字母、数字和特殊字符（~`!@#%^&*()-_+={}[]|:"<>,./?）';
     }
     return null;
   }

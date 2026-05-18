@@ -5,6 +5,7 @@ import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/settings_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 class ReflectionPage extends StatefulWidget {
   final String selectedMood;
@@ -64,7 +65,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
         ),
 
         title: Text(
-          "Reflection",
+          "反思",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -92,7 +93,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           Text(
-                            "Take a moment to reflect on something you're grateful for today 💭",
+                            "花一点时间，想想今天值得感恩的一件事 💭",
                             textAlign: TextAlign.center,
                             style: TextStyle(
                               color: textColor,
@@ -123,7 +124,7 @@ class _ReflectionPageState extends State<ReflectionPage> {
                               maxLines: 9,
                               style: TextStyle(color: textColor),
                               decoration: InputDecoration(
-                                hintText: "Write your reflection here...",
+                                hintText: "在这里写下你的反思...",
                                 hintStyle: TextStyle(
                                   color: textColor.withOpacity(0.5),
                                 ),
@@ -184,16 +185,14 @@ class _ReflectionPageState extends State<ReflectionPage> {
                                 } catch (e) {
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Text(
-                                        "Error saving reflection: $e",
-                                      ),
+                                      content: Text("保存反思失败：$e"),
                                       backgroundColor: Colors.redAccent,
                                     ),
                                   );
                                 }
                               },
                               child: const Text(
-                                "Save Reflection",
+                                "保存反思",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -235,24 +234,24 @@ class _ReflectionPageState extends State<ReflectionPage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),

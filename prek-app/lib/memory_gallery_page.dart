@@ -4,6 +4,7 @@ import 'package:_2025_prek/home_page.dart';
 import 'package:_2025_prek/settings_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 const Color _pink = Color(0xFFFB7DA8);
 
@@ -85,7 +86,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to load memories: $e')));
+        ).showSnackBar(SnackBar(content: Text('加载回忆失败：$e')));
       }
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -102,7 +103,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
       if (mounted) {
         ScaffoldMessenger.of(
           context,
-        ).showSnackBar(SnackBar(content: Text('Failed to delete: $e')));
+        ).showSnackBar(SnackBar(content: Text('删除失败：$e')));
       }
     }
   }
@@ -122,10 +123,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
     return Scaffold(
       backgroundColor: _bgColor,
       appBar: AppBar(
-        title: const Text(
-          'Lookbook',
-          style: TextStyle(fontWeight: FontWeight.bold),
-        ),
+        title: const Text('相册', style: TextStyle(fontWeight: FontWeight.bold)),
         backgroundColor: _bgColor,
         elevation: 0,
         foregroundColor: _textColor,
@@ -148,9 +146,9 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                       height: 1.2,
                     ),
                     children: [
-                      TextSpan(text: 'Your\n'),
+                      TextSpan(text: '你的\n'),
                       TextSpan(
-                        text: 'Lookbook',
+                        text: '相册',
                         style: TextStyle(color: _pink),
                       ),
                     ],
@@ -158,7 +156,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                 ),
                 const SizedBox(height: 6),
                 Text(
-                  'Every moment worth keeping.',
+                  '每个值得珍藏的瞬间。',
                   style: TextStyle(
                     fontSize: 13,
                     color: isDark
@@ -175,7 +173,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
             child: Row(
               children: [
                 Text(
-                  'All memories',
+                  '全部回忆',
                   style: TextStyle(
                     fontFamily: 'Georgia',
                     fontSize: 15,
@@ -185,7 +183,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                 ),
                 const Spacer(),
                 Text(
-                  '${_memories.length} saved',
+                  '已保存 ${_memories.length} 条',
                   style: TextStyle(
                     fontSize: 12,
                     color: isDark
@@ -222,21 +220,19 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
                           final confirmed = await showDialog<bool>(
                             context: context,
                             builder: (ctx) => AlertDialog(
-                              title: const Text('Delete memory?'),
-                              content: const Text(
-                                'This will permanently remove the memory.',
-                              ),
+                              title: const Text('删除这条回忆？'),
+                              content: const Text('这会永久删除这条回忆。'),
                               actions: [
                                 TextButton(
                                   onPressed: () => Navigator.pop(ctx, false),
-                                  child: const Text('Cancel'),
+                                  child: const Text('取消'),
                                 ),
                                 TextButton(
                                   onPressed: () => Navigator.pop(ctx, true),
                                   style: TextButton.styleFrom(
                                     foregroundColor: _pink,
                                   ),
-                                  child: const Text('Delete'),
+                                  child: const Text('删除'),
                                 ),
                               ],
                             ),
@@ -277,24 +273,24 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),
@@ -324,7 +320,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
           ),
           const SizedBox(height: 16),
           Text(
-            'No memories yet',
+            '还没有回忆',
             style: TextStyle(
               fontFamily: 'Georgia',
               fontSize: 18,
@@ -334,7 +330,7 @@ class _MemoryGalleryPageState extends State<MemoryGalleryPage> {
           ),
           const SizedBox(height: 6),
           Text(
-            'Add one from the reflection flow',
+            '可以在反思流程中添加一条',
             style: TextStyle(fontSize: 13, color: _textColor.withOpacity(0.45)),
           ),
         ],
@@ -368,20 +364,20 @@ class _MemoryTile extends StatelessWidget {
     final d = DateTime.parse(isoDate).toLocal();
 
     const months = [
-      'Jan',
-      'Feb',
-      'Mar',
-      'Apr',
-      'May',
-      'Jun',
-      'Jul',
-      'Aug',
-      'Sep',
-      'Oct',
-      'Nov',
-      'Dec',
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
     ];
-    return '${months[d.month - 1]} ${d.day}';
+    return '${months[d.month - 1]} ${d.day}日';
   }
 
   @override
@@ -499,20 +495,20 @@ class _MemoryFullScreen extends StatelessWidget {
   String _formatDate(String isoDate) {
     final d = DateTime.parse(isoDate).toLocal();
     const months = [
-      'January',
-      'February',
-      'March',
-      'April',
-      'May',
-      'June',
-      'July',
-      'August',
-      'September',
-      'October',
-      'November',
-      'December',
+      '1月',
+      '2月',
+      '3月',
+      '4月',
+      '5月',
+      '6月',
+      '7月',
+      '8月',
+      '9月',
+      '10月',
+      '11月',
+      '12月',
     ];
-    return '${months[d.month - 1]} ${d.day}, ${d.year}';
+    return '${d.year}年${months[d.month - 1]}${d.day}日';
   }
 
   @override

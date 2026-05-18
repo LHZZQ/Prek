@@ -31,7 +31,7 @@ class _ForgotPWState extends State<ForgotPW> {
     } catch (e) {
       debugPrint('Error sending reset password link: $e');
       setState(() => loading = false);
-      return 'Error sending reset passsword link';
+      return '发送重置密码链接失败';
     }
   }
 
@@ -81,7 +81,7 @@ class _ForgotPWState extends State<ForgotPW> {
                   child: TextFormField(
                     controller: emailController,
                     decoration: InputDecoration(
-                      labelText: 'Email',
+                      labelText: '邮箱',
                       icon: Icon(
                         CupertinoIcons.envelope,
                         color: Colors.pink[200],
@@ -142,14 +142,12 @@ class _ForgotPWState extends State<ForgotPW> {
                         context: context,
                         builder: (context) {
                           return AlertDialog(
-                            title: const Text("Email Confirmation"),
-                            content: const Text(
-                              'A password reset link is sent to the email address if it is registered.',
-                            ),
+                            title: const Text("邮箱确认"),
+                            content: const Text('如果该邮箱已注册，密码重置链接会发送到这个邮箱。'),
 
                             actions: <Widget>[
                               TextButton(
-                                child: const Text('OK'),
+                                child: const Text('好的'),
                                 onPressed: () async {
                                   await _updatePW();
                                   Navigator.of(context).pop();
@@ -168,7 +166,7 @@ class _ForgotPWState extends State<ForgotPW> {
                     },
 
                     child: const Text(
-                      "Done",
+                      "完成",
                       style: TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.bold,

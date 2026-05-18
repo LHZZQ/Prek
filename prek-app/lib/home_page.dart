@@ -5,6 +5,7 @@ import 'package:_2025_prek/mood_page.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/profile_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,32 +20,32 @@ class HomePageState extends State<HomePage> {
   int _selectedIndex = 0;
 
   final affirmations = [
-    "I am super grateful for all the small joys that today brings.",
-    "I am worthy of love, peace, and happiness.",
-    "Each moment is a chance to start fresh.",
-    "I choose to focus on what I can control.",
-    "My heart is open to gratitude and kindness.",
-    "I am exactly where I need to be right now.",
-    "I trust the timing of my life.",
-    "I strive to better myself every day.",
-    "I am working towards becoming a better version of myself.",
-    "I choose to give myself grace, even when faced with challenges.",
-    "I will continue to grow into the best version of myself.",
-    "I surround myself with people who make me laugh and appreciate my presence.",
-    "I'm allowed to move at my own pace today.",
-    "Nothing is wrong with taking things slowly.",
-    "I can give myself grace and still grow.",
-    "I don't need to have everything figured out.",
-    "I'm being kinder to myself than I was before.",
-    "It's okay if today feels a little heavy.",
-    "This moment doesn't define the whole day.",
-    "Tomorrow doesn't need to be planned yet.",
-    "I can take today one decision at a time.",
-    "I'm learning how to listen to myself.",
-    "Today, showing up is enough.",
-    "I'm allowed to change my mind.",
-    "I can pause without falling behind.",
-    "I can handle what comes next.",
+    "我感恩今天带来的每一个小小快乐。",
+    "我值得拥有爱、平静和幸福。",
+    "每一刻都是重新开始的机会。",
+    "我选择专注于自己能掌控的事情。",
+    "我的心愿意接纳感恩与善意。",
+    "此刻的我正走在属于自己的位置上。",
+    "我相信人生有自己的节奏。",
+    "我每天都在努力成为更好的自己。",
+    "我正在靠近更好的自己。",
+    "即使遇到挑战，我也愿意温柔地对待自己。",
+    "我会继续成长，成为更好的自己。",
+    "我愿意靠近那些让我欢笑、珍惜我存在的人。",
+    "今天，我可以按照自己的节奏前进。",
+    "慢一点也没有关系。",
+    "我可以温柔待己，也可以继续成长。",
+    "我不需要马上弄清楚所有事情。",
+    "我正在比从前更善待自己。",
+    "如果今天有点沉重，也没关系。",
+    "这一刻不能定义一整天。",
+    "明天不必现在就规划好。",
+    "我可以一次只做一个决定。",
+    "我正在学习倾听自己的声音。",
+    "今天，愿意出现就已经足够。",
+    "我允许自己改变想法。",
+    "我可以停下来休息，而不是落后。",
+    "我能应对接下来发生的事。",
   ];
 
   late String dailyAffirmation;
@@ -113,7 +114,7 @@ class HomePageState extends State<HomePage> {
                 Image(image: AssetImage('images/prek_logo.png')),
 
                 Text(
-                  "Welcome Back 🌞",
+                  "欢迎回来 🌞",
                   style: TextStyle(
                     fontSize: 26,
                     fontWeight: FontWeight.w600,
@@ -171,7 +172,7 @@ class HomePageState extends State<HomePage> {
                     ),
                     const SizedBox(width: 8),
                     Text(
-                      "Your next affirmation will appear tomorrow",
+                      "明天会为你送上新激励",
                       style: TextStyle(
                         color: isDark ? Colors.white : textColor,
                         fontSize: 14,
@@ -225,7 +226,7 @@ class HomePageState extends State<HomePage> {
                       );
                     },
                     child: const Text(
-                      "Start Reflection",
+                      "开始反思",
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -263,24 +264,24 @@ class HomePageState extends State<HomePage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),

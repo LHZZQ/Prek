@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:_2025_prek/pages/entry_history_page.dart';
 import 'package:_2025_prek/memory_gallery_page.dart';
+import 'package:_2025_prek/utils/ui_text.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -110,7 +111,7 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     } catch (e) {
-      profileName = "error";
+      profileName = "加载失败";
       debugPrint('Error loading username: $e');
       setState(() => loading = false);
     }
@@ -132,7 +133,7 @@ class _ProfilePageState extends State<ProfilePage> {
         });
       }
     } catch (e) {
-      profileEmail = "error";
+      profileEmail = "加载失败";
       debugPrint('Error loading email: $e');
       setState(() => loading = false);
     }
@@ -205,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
 
         title: Text(
-          "Profile",
+          "我的",
           style: TextStyle(color: textColor, fontWeight: FontWeight.w600),
         ),
       ),
@@ -238,7 +239,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
                 _FunInfoPill(
                   leftText: "PREK",
-                  rightText: "Member since ${_memberSince}",
+                  rightText: "${_memberSince} 年加入",
                 ),
                 const SizedBox(height: 18),
 
@@ -333,24 +334,24 @@ class _ProfilePageState extends State<ProfilePage> {
           items: const [
             BottomNavigationBarItem(
               icon: Icon(Icons.home_rounded),
-              label: 'Home',
+              label: homeLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.history_rounded),
-              label: 'History',
+              label: historyLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.person_rounded),
-              label: 'Profile',
+              label: profileLabel,
             ),
             BottomNavigationBarItem(
               icon: Icon(Icons.photo_album_rounded),
-              label: 'Lookbook',
+              label: lookbookLabel,
             ),
 
             BottomNavigationBarItem(
               icon: Icon(Icons.settings_rounded),
-              label: 'Settings',
+              label: settingsLabel,
             ),
           ],
         ),
@@ -479,13 +480,9 @@ class _ProfileTopCard extends StatelessWidget {
                 Wrap(
                   spacing: 8,
                   children: [
-                    _MiniChip(
-                      label: "Reflections",
-                      value: reflections,
-                      accent: pink,
-                    ),
-                    _MiniChip(label: "Streak", value: streak, accent: yellow),
-                    _MiniChip(label: "Days", value: daysActive, accent: blue),
+                    _MiniChip(label: "反思", value: reflections, accent: pink),
+                    _MiniChip(label: "连续天数", value: streak, accent: yellow),
+                    _MiniChip(label: "使用天数", value: daysActive, accent: blue),
                   ],
                 ),
               ],
@@ -742,18 +739,18 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
 
   String _monthName(int month) {
     const names = [
-      "January",
-      "February",
-      "March",
-      "April",
-      "May",
-      "June",
-      "July",
-      "August",
-      "September",
-      "October",
-      "November",
-      "December",
+      "1月",
+      "2月",
+      "3月",
+      "4月",
+      "5月",
+      "6月",
+      "7月",
+      "8月",
+      "9月",
+      "10月",
+      "11月",
+      "12月",
     ];
 
     return names[month - 1];
@@ -815,7 +812,7 @@ class _MoodBoardSectionState extends State<_MoodBoardSection> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           _MoodBoardHeader(
-            title: "${_monthName(shownMonth.month)} ${shownMonth.year}",
+            title: "${shownMonth.year}年 ${_monthName(shownMonth.month)}",
             onPrev: _prevMonth,
             onNext: _nextMonth,
           ),
@@ -929,7 +926,7 @@ class _WeekdayRow extends StatelessWidget {
     const textColorOriginal = Color(0xFF94697E);
     final bool isDark = Theme.of(context).brightness == Brightness.dark;
     final Color textColor = isDark ? Colors.white : textColorOriginal;
-    const labels = ["M", "T", "W", "T", "F", "S", "S"];
+    const labels = ["一", "二", "三", "四", "五", "六", "日"];
 
     return Row(
       children: [
